@@ -1,2 +1,6 @@
 windows.txt
 build
+.vscode
+.vs
+*.exe
+*.lnk

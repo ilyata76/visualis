@@ -1,12 +1,14 @@
-//#pragma comment (lib, "D:/CPP_2020/opengl/freeglut-3.2.1/build/lib/Debug/freeglutd.lib")
 #include "./include/freeglut/glut.h"
+//freeglut-3.2.1
 
-// freeglut-3.2.1
 #include <iostream>
 
 void CALLBACK renderScene() ;
 
 int main(int argc, char** argv) {
+
+	//setlocale(65001, "ALL");
+
 	glutInit(&argc, argv);								// инициализация GLUT
 
 	int screen_width = glutGet(GLUT_SCREEN_WIDTH);
