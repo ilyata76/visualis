@@ -23,5 +23,7 @@
 @powershell "$x=(New-Object -ComObject WScript.Shell).CreateShortcut('%CD%\OPENGL.lnk'); $x.TargetPath='%CD%\PROJECT_OPENGL.exe'; $x.HotKey='CTRL+ALT+F'; $x.IconLocation = '%CD%\vamp.ico'; $x.Save()"                    								
 @echo.
 
-@pause
+
+@OPENGL.lnk
+
 @echo.
