@@ -22,13 +22,14 @@ set (ENTRYPOINT
 	src/main.cpp
 ) 
 
-#set (HEADERS
-#	src/src/.hpp
-#)
-#
-#set (SOURCES
-#	src/include/*****/.cpp
-#)
+set (HEADERS
+	src/include/visvamp.hpp
+	src/include/visvamp/vampparse.hpp
+)
+
+set (SOURCES
+	src/src/visvamp/vampparse.cpp
+)
 
 #--------------------------------------
 #	EXECUTABLE

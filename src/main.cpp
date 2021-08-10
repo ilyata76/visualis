@@ -1,6 +1,9 @@
 #include "./include/freeglut/glut.h"
 //freeglut-3.2.1
 
+#include "./include/visvamp.hpp"
+// vampire 5
+
 #include <iostream>
 
 void CALLBACK RSMAINWINDOW();							// renderScene
@@ -23,7 +26,7 @@ void CALLBACK RSMAINWINDOW2() {
 
 int main(int argc, char** argv) {
 	
-
+	std::cout << vampire5::parse()[0].stringVertex();
 
 
 	// здесь ввод файлов, потом подтверждение и скрытие консоли если ответить на вопрос YES
