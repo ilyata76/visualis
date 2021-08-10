@@ -10,6 +10,9 @@
 	#include <string>
 
 
+	#define INT_CHECK_VP 66666
+
+
 	namespace vampire5 {
 
 
@@ -34,6 +37,15 @@
 					+ " " + std::to_string(this->Y) + " " + std::to_string(this->Z) + " "
 				);
 			};
+
+			friend std::ostream& operator<<(std::ostream& out, spin& X) {
+				return (out << X.stringSpin());
+			};
+			
+
+			friend bool operator == (spin& X, int Y);
+			friend bool operator != (spin& X, int Y);
+
 
 
 			~spin() {};
@@ -67,6 +79,15 @@
 				);
 			};
 
+			friend std::ostream& operator<<(std::ostream& out, point& X) {
+				return (out << X.stringPoint());
+			}
+
+			friend bool operator == (point& X, int Y);
+			friend bool operator != (point& X, int Y);
+
+
+
 
 			~point() {};
 
@@ -91,6 +112,16 @@
 					P.stringPoint() + " " + S.stringSpin() + "\n"
 				);
 			};
+
+			friend std::ostream& operator << (std::ostream& out, vertex& X) {
+				return (out << X.stringVertex());
+			}
+
+			friend bool operator == (vertex& X, int Y);
+			friend bool operator != (vertex& X, int Y);
+
+
+
 
 			~vertex() {};
 

@@ -82,21 +82,80 @@ namespace vampire5 {
 
 				} else {
 					std::cerr << "The numbers of atoms in the two files does not converge\n";
+					result.push_back(vertex(spin(INT_CHECK_VP, INT_CHECK_VP, INT_CHECK_VP, INT_CHECK_VP), point(INT_CHECK_VP, INT_CHECK_VP, INT_CHECK_VP, INT_CHECK_VP, INT_CHECK_VP, INT_CHECK_VP), INT_CHECK_VP));
 				}
 
 
 			} else {
 				std::cerr << "Second file (spins-...) is empty or closed\n";
+				result.push_back(vertex(spin(INT_CHECK_VP, INT_CHECK_VP, INT_CHECK_VP, INT_CHECK_VP), point(INT_CHECK_VP, INT_CHECK_VP, INT_CHECK_VP, INT_CHECK_VP, INT_CHECK_VP, INT_CHECK_VP), INT_CHECK_VP));
 			}
 
 
 		} else {
 			std::cerr << "First file (.data) is empty or closed\n";
+			result.push_back(vertex(spin(INT_CHECK_VP, INT_CHECK_VP, INT_CHECK_VP, INT_CHECK_VP), point(INT_CHECK_VP, INT_CHECK_VP, INT_CHECK_VP, INT_CHECK_VP, INT_CHECK_VP, INT_CHECK_VP), INT_CHECK_VP));
 		}
 
 
 		return result;
 	}
+
+
+
+	bool operator == (point& X, int Y) {
+		if (X.m1 == Y) {
+			if (X.m2 == Y) {
+				if (X.number == Y) {
+					if (X.X == Y) {
+						if (X.Y == Y) {
+							if (X.Z == Y) {
+								return true;
+							}
+						}
+					}
+				}
+			}
+		}
+		return false;
+	}
+
+	bool operator == (spin& X, int Y) {
+		if (X.number == Y) {
+			if (X.X == Y) {
+				if (X.Y == Y) {
+					if (X.Z == Y) {
+						return true;
+					}
+				}
+			}
+		}
+		return false;
+	}
+
+	bool operator == (vertex& X, int Y) {
+		if (X.P == Y) {
+			if (X.S == Y) {
+				if (X.number == Y) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
+	bool operator != (point& X, int Y) {
+		return !(X == Y);
+	}
+
+	bool operator != (spin& X, int Y) {
+		return !(X == Y);
+	}
+
+	bool operator != (vertex& X, int Y) {
+		return !(X == Y);
+	}
+
 
 
 

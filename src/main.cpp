@@ -26,8 +26,11 @@ void CALLBACK RSMAINWINDOW2() {
 
 int main(int argc, char** argv) {
 	
-	std::cout << vampire5::parse()[0].stringVertex();
+	if (vampire5::parse()[0] != INT_CHECK_VP) {
+		std::cout << vampire5::parse()[0].stringVertex();
 
+		std::cout << vampire5::parse()[0];
+	}
 
 	// здесь ввод файлов, потом подтверждение и скрытие консоли если ответить на вопрос YES
 	// повторить всё это на окошках
