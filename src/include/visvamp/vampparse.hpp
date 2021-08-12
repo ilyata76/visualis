@@ -47,6 +47,18 @@
 			friend bool operator != (spin& X, int Y);
 
 
+			float getX() {
+				return this->X;
+			}
+
+			float getY() {
+				return this->Y;
+			}
+
+			float getZ() {
+				return this->Z;
+			}
+
 
 			~spin() {};
 
@@ -130,7 +142,13 @@
 			friend bool operator == (vertex& X, int Y);
 			friend bool operator != (vertex& X, int Y);
 
+			spin getSpin() {
+				return this->S;
+			}
 
+			point getPoint() {
+				return this->P;
+			}
 
 
 			~vertex() {};

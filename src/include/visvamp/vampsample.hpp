@@ -5,6 +5,7 @@
 
 
 	#include "./visvamp/vampparse.hpp"
+	#include <math.h>
 
 	namespace vampire5 {
 
@@ -35,7 +36,6 @@
 				this->y = y;
 				this->z = z;
 			}
-
 		};
 
 		class cone {
@@ -82,16 +82,25 @@
 		private:
 			std::vector<cone> cones;
 		public:
+			coneSample() {};
+			coneSample(std::vector<cone> C) {
+				this->cones = C;
+			};
+
+
 
 			std::string info() {
 				return ("CONE [(angle of rotation),(axis for rotation)]\n");
 			}
 
-			//getcone, i
+			cone getCone(int iteration) {
+				return this->cones[iteration];
+			}
+			
 		};
 
 
-		prototype* makeSample(std::vector<vertex> EXAMPLE, std::string istruction = "cone"); // функция для преобразования
+		prototype* makeSample(std::vector<vertex> EXAMPLE, std::string instruction = "cone"); // функция для преобразования
 	}
 
 
