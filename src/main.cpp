@@ -100,8 +100,15 @@ void CALLBACK RSMAINWINDOW() {
 		sample[0].getCone(0).getPhiAxes().x <<
 		sample[0].getCone(0).getPhiAxes().y <<
 		sample[0].getCone(0).getPhiAxes().z;
+
+
+	std::cout << std::endl << sample[0].getCone(0).getThetaAngle() <<
+		sample[0].getCone(0).getThetaAxes().x <<
+		sample[0].getCone(0).getThetaAxes().y <<
+		sample[0].getCone(0).getThetaAxes().z;
 	
 	glRotatef(90, 0, 1, 0); // для того, чтобы выровнять икс???
+	// если камера смотрит в пол, то поворот на 90 заставит её посмотреть в сторону икс
 
 	glRotatef(
 		sample[0].getCone(0).getPhiAngle(), 
@@ -117,7 +124,7 @@ void CALLBACK RSMAINWINDOW() {
 		sample[0].getCone(0).getThetaAxes().z
 	);
 
-	glutSolidCone(0.05, 0.05, 10, 10);
+	glutSolidCone(0.05, 0.1, 10, 10);
 	//glTranslated(0.1, 0.1, 0.1)
 
 	glPopMatrix();

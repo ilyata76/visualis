@@ -29,29 +29,32 @@ namespace vampire5 {
 				// phi принята углом, что от положительного направления ОХ идёт против часовой стрелки до вектора
 
 				if (Sx > 0 && Sy > 0 && Sz > 0) {
-					phi = atan(Sy / Sx);
-					theta = atan(Sz / sqrt(pow(Sx, 2) + pow(Sy, 2)));
+					phi = atan(Sy / Sx) * 180.0 / 3.1415;
+					theta = atan(Sz / sqrt(pow(Sx, 2) + pow(Sy, 2))) * 180.0 / 3.1415;
 				} else if (Sx > 0 && Sy > 0 && Sz < 0) {
-					phi = atan(Sy / Sx);
-					theta = -atan(Sz / sqrt(pow(Sx, 2) + pow(Sy, 2)));
+					phi = atan(Sy / Sx) * 180.0 / 3.1415;
+					theta = -atan(Sz / sqrt(pow(Sx, 2) + pow(Sy, 2))) * 180.0 / 3.1415;
 				} else if (Sx < 0 && Sy > 0 && Sz > 0) {
-					phi = 90 + atan(Sx / Sy);
-					theta = atan(Sz / sqrt(pow(Sx, 2) + pow(Sy, 2)));
+					phi = 90 + atan(Sx / Sy) * 180.0 / 3.1415;
+					theta = atan(Sz / sqrt(pow(Sx, 2) + pow(Sy, 2))) * 180.0 / 3.1415;
 				} else if (Sx < 0 && Sy > 0 && Sz < 0) {
-					phi = 90 + atan(Sx / Sy);
-					theta = -atan(Sz / sqrt(pow(Sx, 2) + pow(Sy, 2)));
+					phi = 90 + atan(Sx / Sy) * 180.0 / 3.1415;
+					theta = -atan(Sz / sqrt(pow(Sx, 2) + pow(Sy, 2))) * 180.0 / 3.1415;
 				} else if (Sx < 0 && Sy < 0 && Sz < 0) {
-					phi = 180 + atan(Sy / Sx);
-					theta = -atan(Sz / sqrt(pow(Sx, 2) + pow(Sy, 2)));
+					//std::cout << "mi zdes : " << Sy / Sx << std::endl;
+					phi = 180 + atan(Sy / Sx) * 180.0 / 3.1415;
+					theta = -atan(Sz / (sqrt(pow(Sx, 2) + pow(Sy, 2)))) * 180.0 / 3.1415;
+					//theta = acos(Sz / pow((pow(Sx, 2) + pow(Sy, 2) + pow(Sz, 2)), 0.5));
+					//std::cout << "theta: " << theta << "   phi : " << phi << std::endl;
 				} else if (Sx < 0 && Sy > 0 && Sz > 0) {
-					phi = 180 + atan(Sy / Sx);
-					theta = atan(Sz / sqrt(pow(Sx, 2) + pow(Sy, 2)));
+					phi = 180 + atan(Sy / Sx) * 180.0 / 3.1415;
+					theta = atan(Sz / sqrt(pow(Sx, 2) + pow(Sy, 2))) * 180.0 / 3.1415;
 				} else if (Sx > 0 && Sy < 0 && Sz > 0) {
-					phi = 270 + atan(Sx / Sy);
-					theta = atan(Sz / sqrt(pow(Sx, 2) + pow(Sy, 2)));
+					phi = 270 + atan(Sx / Sy) * 180.0 / 3.1415;
+					theta = atan(Sz / sqrt(pow(Sx, 2) + pow(Sy, 2))) * 180.0 / 3.1415;
 				} else if (Sx > 0 && Sy < 0 && Sz < 0) {
-					phi = 270 + atan(Sx / Sy);
-					theta = -atan(Sz / sqrt(pow(Sx, 2) + pow(Sy, 2)));
+					phi = 270 + atan(Sx / Sy) * 180.0 / 3.1415;
+					theta = -atan(Sz / sqrt(pow(Sx, 2) + pow(Sy, 2))) * 180.0 / 3.1415;
 				}
 
 				cones.push_back(cone(phi, theta, axis(0, 1, 0), axis(0, 0, 1), point(EXAMPLE[i].getPoint())));
