@@ -25,10 +25,12 @@ set (ENTRYPOINT
 set (HEADERS
 	src/include/visvamp.hpp
 	src/include/visvamp/vampparse.hpp
+	src/include/visvamp/vampsample.hpp
 )
 
 set (SOURCES
 	src/src/visvamp/vampparse.cpp
+	src/src/visvamp/vampsample.cpp
 )
 
 #--------------------------------------

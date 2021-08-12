@@ -4,10 +4,9 @@
 #include "./include/visvamp.hpp"
 // vampire 5
 
-#include <iostream>
-
 void CALLBACK RSMAINWINDOW();							// renderScene
 void CALLBACK PSKMAINWINDOW(int key, int x, int y);		// processSpecialKeys
+void CALLBACK KMAINWINDOW(unsigned char key, int x, int y);
 
 void MIMAINWINDOW();									// menu initialize
 void CALLBACK MPMAINWINDOW(int value);					// menu processes
@@ -26,11 +25,11 @@ void CALLBACK RSMAINWINDOW2() {
 
 int main(int argc, char** argv) {
 	
-	if (vampire5::parse()[0] != INT_CHECK_VP) {
-		std::cout << vampire5::parse()[0].stringVertex();
+	std::vector<vampire5::vertex> sample = vampire5::parse();
 
-		std::cout << vampire5::parse()[0];
-	}
+	
+	if (sample[0] != INT_CHECK_VP);
+	else return 1;
 
 	// здесь ввод файлов, потом подтверждение и скрытие консоли если ответить на вопрос YES
 	// повторить всё это на окошках
@@ -63,15 +62,16 @@ int main(int argc, char** argv) {
 	int MAINWINDOW = glutCreateWindow("MAINWINDOW");	// создаётся окошко	
 	glutSetWindowTitle("TTITLE");
 
+	glutSpecialFunc(PSKMAINWINDOW);
+	glutKeyboardFunc(KMAINWINDOW);
 
 	glutDisplayFunc(RSMAINWINDOW);
-	glutSpecialFunc(PSKMAINWINDOW);
 
 	glutSetCursor(GLUT_CURSOR_CROSSHAIR);
 
 	MIMAINWINDOW();
 
-	//glutIdleFunc(IFMAINWINDOW);
+	glutIdleFunc(RSMAINWINDOW);
 
 
 // !---------------------------------------------------------------------------------------------------------------
@@ -81,23 +81,40 @@ int main(int argc, char** argv) {
 
 }
 
+bool DRAWED = false;
 
 void CALLBACK RSMAINWINDOW() {
 	glClearColor(getColorCode(240), getColorCode(248), getColorCode(255), 1);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	
-	
 	glPushMatrix();
+	
+	
+	
+
 	// здесь выбор цвета	
 	
+	//glColor3f(0.0, 1.0, 0.0);
+	//glutSolidCone(0.1, 0.5, 100, 100);
+	//glTranslated(0.3, 0.3, 0.3);
+	//glRotated(90, 1, 1, 1);
+	////glRotatef(10, 1, 1, 1);
+	//glutSolidCone(0.1, 0.5, 100, 100);
 	
-	for (int i = 0; i < 3; i++) {
-		glColor3f(0.0, 1.0, 0.0);
-		glutSolidCone(0.1, 0.5, 100, 100);
-		glTranslated(0.3, 0.3, 0.3);
-	}
-	glPopMatrix();
+		for (int i = 0; i < 10; i++) {
+			glColor3f(0.0, 1.0, 0.0);
+			glutSolidCone(0.09, 0.05, 100, 100);
+			glTranslated(0.01, 0.01, 0.01);
+			glRotated(1, 0, 1, 0);
+		}
 
+
+	//if (GetKeyState(VK_UP) < 0) glTranslated(0.3, 0.3, 0.3);
+
+
+	glPopMatrix();
+	
+	
 	glutSwapBuffers();
 }
 
@@ -129,14 +146,29 @@ void CALLBACK PSKMAINWINDOW(int key, int x, int y) {
 	}
 }
 
+
+void CALLBACK KMAINWINDOW(unsigned char key, int x, int y) {
+
+	switch (key) {
+	case 'w':
+		glTranslated(0, 0.3, 0);
+		break;
+	case 's':
+		glTranslated(-0.3, -0.3, -0.3);
+		break;
+	}; 
+
+}
+
+
 // -------------------------------------------------------------
 void MIMAINWINDOW() {
 
 	int menu = glutCreateMenu(MPMAINWINDOW);
 	glutSetMenu(menu);
 	glutAddMenuEntry("MENU", 1);
-	glutAddMenuEntry("CHTO", 2);
-	glutAddMenuEntry("YEP", 3);
+	glutAddMenuEntry("menu 2", 2);
+	glutAddMenuEntry("menu 3", 3);
 	glutAttachMenu(GLUT_RIGHT_BUTTON);
 
 }
@@ -146,6 +178,9 @@ void CALLBACK MPMAINWINDOW(int value) {
 		case 1: {
 			std::cout << "EEEEEE\n";
 		} break;	
+		case 2: {
+			glTranslated(-0.3, -0.3, -0.3);
+		} break;
 	}
 }
 // !-------------------------------------------------------------

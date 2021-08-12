@@ -55,16 +55,16 @@
 		class point {
 		private:
 			int m1;
-			int m2;
+			int l;
 			float X;
 			float Y;
 			float Z;
 			int number;
 		public:
-			point() { this->X = this->Y = this->Z = 0; this->number = this->m1 = this->m2 = 0; };
-			point(int m1, int m2, float X, float Y, float Z, int number) {
+			point() { this->X = this->Y = this->Z = 0; this->number = this->m1 = this->l = 0; };
+			point(int m1, int l, float X, float Y, float Z, int number) {
 				this->m1 = m1;
-				this->m2 = m2;
+				this->l = l;
 				this->X = X;
 				this->Y = Y;
 				this->Z = Z;
@@ -75,7 +75,7 @@
 			std::string stringPoint() {
 				return std::string(
 					"POINT coords (X Y Z): " + std::to_string(this->X) + " " + std::to_string(this->Y) + " " + std::to_string(this->Z)
-					+ " MATERIAL (m1 m2): " + std::to_string(this->m1) + " " + std::to_string(this->m2)
+					+ " MATERIAL (m1 m2): " + std::to_string(this->m1) + " " + std::to_string(this->l)
 				);
 			};
 
@@ -87,7 +87,17 @@
 			friend bool operator != (point& X, int Y);
 
 
+			float getX() {
+				return this->X;
+			}
 
+			float getY() {
+				return this->Y;
+			}
+
+			float getZ() {
+				return this->Z;
+			}
 
 			~point() {};
 
@@ -127,19 +137,9 @@
 
 		};
 
-		class prototype {
-		private:
-			std::vector<vertex> PROTO;
-			// набор вертексов, преображённых до компонент конуса, готовый к отрисовке
-		public:
-			prototype() {};
-			~prototype() {};
-		};
 
 		std::vector<vertex> parse(); // заглавная функция для чтения данных
-
-		prototype makePrototype(std::vector<vertex> EXAMPLE); // функция для преобразования
-
+		
 		// нужен ли материал??
 
 
