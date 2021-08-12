@@ -9,20 +9,20 @@
 
 	namespace vampire5 {
 
-		class prototype {
-		public:
-			//std::vector<vertex> PROTO;
-		public:
+		//class prototype {
+		//public:
+		//	//std::vector<vertex> PROTO;
+		//public:
 
-			 prototype() {};
+		//	 prototype() {};
 
-			 /*prototype(std::vector<vertex> P) {
-				 this->PROTO = P;
-			 };*/
+		//	 /*prototype(std::vector<vertex> P) {
+		//		 this->PROTO = P;
+		//	 };*/
 
-			 virtual std::string info() = 0;
-			 virtual ~prototype() {};
-		};
+		//	 virtual std::string info() = 0;
+		//	 virtual ~prototype() {};
+		//};
 
 		
 		
@@ -78,7 +78,7 @@
 
 		};
 
-		class coneSample : public prototype {
+		class coneSample {
 		private:
 			std::vector<cone> cones;
 		public:
@@ -100,7 +100,7 @@
 		};
 
 
-		prototype* makeSample(std::vector<vertex> EXAMPLE, std::string instruction = "cone"); // функция для преобразования
+		coneSample* makeSample(std::vector<vertex> EXAMPLE, std::string instruction = "cone"); // функция для преобразования
 	}
 
 

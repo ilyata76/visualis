@@ -23,13 +23,19 @@ void CALLBACK RSMAINWINDOW2() {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
+
+vampire5::coneSample* sample;
+
 int main(int argc, char** argv) {
 	
-	std::vector<vampire5::vertex> sample = vampire5::parse();
-
+	std::vector<vampire5::vertex> vxs = vampire5::parse();
 	
-	if (sample[0] != INT_CHECK_VP);
+	if (vxs[0] != INT_CHECK_VP);
 	else return 1;
+
+
+	sample = vampire5::makeSample(vxs, "cone");
+
 
 	// здесь ввод файлов, потом подтверждение и скрытие консоли если ответить на вопрос YES
 	// повторить всё это на окошках
@@ -71,7 +77,7 @@ int main(int argc, char** argv) {
 
 	MIMAINWINDOW();
 
-	glutIdleFunc(RSMAINWINDOW);
+	//glutIdleFunc(RSMAINWINDOW);
 
 
 // !---------------------------------------------------------------------------------------------------------------
@@ -81,7 +87,6 @@ int main(int argc, char** argv) {
 
 }
 
-bool DRAWED = false;
 
 void CALLBACK RSMAINWINDOW() {
 	glClearColor(getColorCode(240), getColorCode(248), getColorCode(255), 1);
@@ -89,8 +94,34 @@ void CALLBACK RSMAINWINDOW() {
 	
 	glPushMatrix();
 	
+	glColor3f(0.0, 1.0, 0.0);
 	
+	std::cout << sample[0].getCone(0).getPhiAngle() <<
+		sample[0].getCone(0).getPhiAxes().x <<
+		sample[0].getCone(0).getPhiAxes().y <<
+		sample[0].getCone(0).getPhiAxes().z;
 	
+	glRotatef(90, 0, 1, 0); // для того, чтобы выровнять икс???
+
+	glRotatef(
+		sample[0].getCone(0).getPhiAngle(), 
+		sample[0].getCone(0).getPhiAxes().x, 
+		sample[0].getCone(0).getPhiAxes().y, 
+		sample[0].getCone(0).getPhiAxes().z
+	);
+
+	glRotatef(
+		sample[0].getCone(0).getThetaAngle(),
+		sample[0].getCone(0).getThetaAxes().x,
+		sample[0].getCone(0).getThetaAxes().y,
+		sample[0].getCone(0).getThetaAxes().z
+	);
+
+	glutSolidCone(0.05, 0.05, 10, 10);
+	//glTranslated(0.1, 0.1, 0.1)
+
+	glPopMatrix();
+	glutSwapBuffers();
 
 	// здесь выбор цвета	
 	
@@ -101,21 +132,23 @@ void CALLBACK RSMAINWINDOW() {
 	////glRotatef(10, 1, 1, 1);
 	//glutSolidCone(0.1, 0.5, 100, 100);
 	
-		for (int i = 0; i < 10; i++) {
+		/*for (int i = 0; i < 10; i++) {
+			glPushMatrix();
 			glColor3f(0.0, 1.0, 0.0);
-			glutSolidCone(0.09, 0.05, 100, 100);
-			glTranslated(0.01, 0.01, 0.01);
-			glRotated(1, 0, 1, 0);
-		}
+			glutSolidCone(0.05, 0.05, 10, 10);
+			glTranslated(0.1, 0.1, 0.1);
+			glRotated(30, 0, 1, 0);
+			glPopMatrix();
+		}*/
 
 
 	//if (GetKeyState(VK_UP) < 0) glTranslated(0.3, 0.3, 0.3);
 
 
-	glPopMatrix();
 	
 	
-	glutSwapBuffers();
+	
+	
 }
 
 
