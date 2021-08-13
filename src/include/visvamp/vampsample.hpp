@@ -8,24 +8,7 @@
 	#include <math.h>
 
 	namespace vampire5 {
-
-		//class prototype {
-		//public:
-		//	//std::vector<vertex> PROTO;
-		//public:
-
-		//	 prototype() {};
-
-		//	 /*prototype(std::vector<vertex> P) {
-		//		 this->PROTO = P;
-		//	 };*/
-
-		//	 virtual std::string info() = 0;
-		//	 virtual ~prototype() {};
-		//};
-
-		
-		
+			
 		class axis {
 		public:
 			float x; float y; float z;

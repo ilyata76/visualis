@@ -1,25 +1,14 @@
 #include "../include/visvamp/vampparse.hpp"
 
-
 namespace vampire5 {
 
 
 
-	std::vector<vertex> parse() {
+	std::vector<vertex> parse(std::ifstream& file1, std::ifstream& file2) {
 
 		std::vector<vertex> result;
 
-		//std::vector<point> points;
-		//std::vector<spin> spins;
-
-		std::ifstream file1; // for point
-		std::ifstream file2; // for spin
-
-		file1.open("D:\\CPP_2020\\opengl-visualis\\trash\\atoms-coords.data");
-		file2.open("D:\\CPP_2020\\opengl-visualis\\trash\\spins-00000000.data");
-
 		if (file1.is_open() && !file1.eof()) {
-
 
 			if (file2.is_open() && !file2.eof()) {
 
@@ -42,8 +31,6 @@ namespace vampire5 {
 
 					for (int i = 0; !file2.eof() && !file1.eof(); i++) {
 					
-						if (i % 10000 == 0) std::cout << "LOADED: " << i << "/" << numbers << std::endl;
-
 						std::getline(file1, str1);
 						std::getline(file2, str2);
 
@@ -80,6 +67,8 @@ namespace vampire5 {
 
 							//std::cout << result[i].stringVertex();
 						
+							if ((i + 1) % OUT_STEP == 0 || i + 1 == numbers) std::cout << "LOADED: " << i + 1 << "/" << numbers << std::endl;
+
 						} else continue;
 
 					}
@@ -102,7 +91,6 @@ namespace vampire5 {
 			result.push_back(vertex(spin(INT_CHECK_VP, INT_CHECK_VP, INT_CHECK_VP, INT_CHECK_VP), point(INT_CHECK_VP, INT_CHECK_VP, INT_CHECK_VP, INT_CHECK_VP, INT_CHECK_VP, INT_CHECK_VP), INT_CHECK_VP));
 		}
 
-		
 		return result;
 	}
 
@@ -163,7 +151,11 @@ namespace vampire5 {
 
 
 
-
+	std::vector<std::vector <vertex>> fullParse() {
+		std::vector<std::vector <vertex>> result;
+		// дописать
+		return result;
+	}
 
 
 } // !namespace vampire5

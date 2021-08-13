@@ -11,6 +11,7 @@
 
 
 	#define INT_CHECK_VP 66666
+	#define OUT_STEP 20000
 
 
 	namespace vampire5 {
@@ -156,11 +157,11 @@
 		};
 
 
-		std::vector<vertex> parse(); // заглавная функция для чтения данных
+		std::vector<vertex> parse(std::ifstream& file1, std::ifstream& file2); // заглавная функция для чтения данных
 		
 		// нужен ли материал??
 
-
+		std::vector<std::vector <vertex>> fullParse();
 
 
 	} // !namespace vampire5
