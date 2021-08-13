@@ -96,13 +96,13 @@ void CALLBACK RSMAINWINDOW() {
 	
 	glColor3f(0.0, 1.0, 0.0);
 	
-	std::cout << sample[0].getCone(0).getPhiAngle() <<
+	std::cout << std::endl << "PHI: " << sample[0].getCone(0).getPhiAngle() << std::endl <<
 		sample[0].getCone(0).getPhiAxes().x <<
 		sample[0].getCone(0).getPhiAxes().y <<
 		sample[0].getCone(0).getPhiAxes().z;
 
 
-	std::cout << std::endl << sample[0].getCone(0).getThetaAngle() <<
+	std::cout << std::endl << "THETA: " << sample[0].getCone(0).getThetaAngle() << std::endl <<
 		sample[0].getCone(0).getThetaAxes().x <<
 		sample[0].getCone(0).getThetaAxes().y <<
 		sample[0].getCone(0).getThetaAxes().z;
