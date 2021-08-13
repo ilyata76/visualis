@@ -67,9 +67,8 @@ namespace vampire5 {
 		} else if (instruction == "arrow") {
 			return new coneSample; // should be arrows
 		} else {
-			return new coneSample; // empty vector
+			return new coneSample(); // empty vector
 		}
 	}
-
 
 }
