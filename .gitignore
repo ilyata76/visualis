@@ -5,3 +5,4 @@ build
 *.exe
 *.lnk
 trash
+*.bat
