@@ -69,7 +69,7 @@ namespace vampire5 {
 
 							//std::cout << result[i].stringVertex();
 						
-							if ((i + 1) % OUT_STEP == 0 || i + 1 == numbers) std::cout << "LOADED: "s + std::to_string(i + 1) + "/"s + std::to_string(numbers) << std::endl;
+							if ((i + 1) % OUT_STEP == 0 || i + 1 == numbers) std::cout << "[VISUALIS/VAMPIRE] LOADED: "s + std::to_string(i + 1) + "/"s + std::to_string(numbers) << std::endl;
 
 						} else continue;
 
@@ -77,19 +77,19 @@ namespace vampire5 {
 
 
 				} else {
-					std::cerr << "The numbers of atoms in the two files does not converge\n"s;
+					std::cerr << "[VISUALIS/VAMPIRE][ERROR] : The numbers of atoms in the two files does not converge\n"s;
 					result.push_back(vertex(spin(INT_CHECK_VP, INT_CHECK_VP, INT_CHECK_VP, INT_CHECK_VP), point(INT_CHECK_VP, INT_CHECK_VP, INT_CHECK_VP, INT_CHECK_VP, INT_CHECK_VP, INT_CHECK_VP), INT_CHECK_VP));
 				}
 
 
 			} else {
-				std::cerr << "Second file (spins-...) is empty or closed\n"s;
+				std::cerr << "[VISUALIS/VAMPIRE][ERROR] : Second file (spins-...) is empty or closed\n"s;
 				result.push_back(vertex(spin(INT_CHECK_VP, INT_CHECK_VP, INT_CHECK_VP, INT_CHECK_VP), point(INT_CHECK_VP, INT_CHECK_VP, INT_CHECK_VP, INT_CHECK_VP, INT_CHECK_VP, INT_CHECK_VP), INT_CHECK_VP));
 			}
 
 
 		} else {
-			std::cerr << "First file (.data) is empty or closed\n"s;
+			std::cerr << "[VISUALIS/VAMPIRE][ERROR] : First file (.data) is empty or closed\n"s;
 			result.push_back(vertex(spin(INT_CHECK_VP, INT_CHECK_VP, INT_CHECK_VP, INT_CHECK_VP), point(INT_CHECK_VP, INT_CHECK_VP, INT_CHECK_VP, INT_CHECK_VP, INT_CHECK_VP, INT_CHECK_VP), INT_CHECK_VP));
 		}
 
@@ -97,6 +97,7 @@ namespace vampire5 {
 	}
 
 
+	// нужно ли их вне namespace определять?
 
 	bool operator == (point& X, int Y) {
 		if (X.m1 == Y) {
@@ -168,7 +169,10 @@ namespace vampire5 {
 		fileatoms.open(pathToFolder + "/atoms-coords.data"s);
 
 		if (fileatoms.is_open() && !fileatoms.eof()) {
-			std::cout << "[] Succesfully! path = " << pathToFolder << std::endl;
+			std::cout << "[VISUALIS/VAMPIRE] Succesfully! path = " << pathToFolder << std::endl;
+
+			std::cout << "[VISUALIS/VAMPIRE] ===========================================" << std::endl;
+			std::cout << "[VISUALIS/VAMPIRE] Start reading data" << std::endl;
 
 			bool condition = true;
 			int iterator = 0;
@@ -192,16 +196,18 @@ namespace vampire5 {
 
 				fileatoms.open(pathToFolder + "/atoms-coords.data"s);
 				filespins.open(pathToFolder + "/spins-"s + filenumber + ".data"s);
-				std::cout << pathToFolder + "/spins-"s + filenumber + ".data"s << std::endl;
-
+				
+				std::cout << "[VISUALIS/VAMPIRE] OPENING FILE with path: " << pathToFolder + "/spins-"s + filenumber + ".data"s << std::endl;
+				std::cout << "[VISUALIS/VAMPIRE] ___________________________________________" << std::endl;
+				
 				if (filespins.is_open() && !filespins.eof()) {
-					result.push_back(parse(fileatoms, filespins));
+					result.push_back(parse(fileatoms, filespins)); //
 				} else {
-					if (iterator == 0) std::cerr << "File opening (spins-"s + filenumber + ") failed"s << std::endl;
-					else std::cout << "File spins-"s + std::to_string(iterator - 1) +  " was the last one"s << std::endl;
+					if (iterator == 0) std::cerr << "[VISUALIS/VAMPIRE][ERROR] : File opening (spins-"s + filenumber + ") failed"s << std::endl;
+					else std::cout << "[VISUALIS/VAMPIRE] File spins-"s + std::to_string(iterator - 1) +  " was the last one"s << std::endl;
 					condition = false;
 				}
-
+				std::cout << "[VISUALIS/VAMPIRE] ===========================================" << std::endl;
 				number.clear();
 				filenumber.clear();				
 			}
@@ -209,7 +215,7 @@ namespace vampire5 {
 
 
 		} else {
-			std::cerr << "First file (atoms-coords.data) is empty or closed (path: "s + pathToFolder + ")"s << std::endl;
+			std::cerr << "[VISUALIS/VAMPIRE][ERROR] : First file (atoms-coords.data) is empty or closed (path: "s + pathToFolder + ")"s << std::endl;
 			std::vector <vertex> first;
 			first.push_back(
 				vertex(
@@ -222,7 +228,9 @@ namespace vampire5 {
 			filespins.close();
 			return result;
 		}
-
+		
+		std::cout << "[VISUALIS/VAMPIRE] ===========================================" << std::endl;
+		
 		fileatoms.close();
 		filespins.close();
 		return result;

@@ -88,7 +88,7 @@
 
 		// TODO: ПЕРЕОСМЫСЛИТЬ СОЗДАНИЕ SAMPLE для второго случая
 
-	}
+	} // !namespace vampire5
 
 
 #endif // !VAMPSAMPLE_HPP

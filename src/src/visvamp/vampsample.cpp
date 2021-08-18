@@ -55,11 +55,11 @@ namespace vampire5 {
 					phi = 270 + abs(atan(Sx / Sy) * 180.0 / 3.1415);
 					theta = -atan(Sz / sqrt(pow(Sx, 2) + pow(Sy, 2))) * 180.0 / 3.1415;
 				} else {
-					std::cerr << "случай не предусмотрен\n";
+					std::cerr << "[VISUALIS/VAMPIRE] случай не предусмотрен\n";
 				}
 
 				cones.push_back(cone(-phi, -theta, axis(1, 0, 0), axis(0, 1, 0), point(EXAMPLE[i].getPoint())));
-				if ((i + 1) % OUT_STEP == 0 || i + 1 == numbers) std::cout << "TRANSFORMATED: " << i + 1 << "/" << numbers << std::endl;
+				if ((i + 1) % OUT_STEP == 0 || i + 1 == numbers) std::cout << "[VISUALIS/VAMPIRE] TRANSFORMATED: " << i + 1 << "/" << numbers << std::endl;
 			}
 
 			return new coneSample(cones);
@@ -79,4 +79,4 @@ namespace vampire5 {
 
 
 
-}
+} // !namespace vampire5
