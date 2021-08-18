@@ -5,6 +5,8 @@ namespace vampire5 {
 
 
 	std::vector<vertex> parse(std::ifstream& file1, std::ifstream& file2) {
+		using std::literals::string_literals::operator""s;
+
 
 		std::vector<vertex> result;
 
@@ -67,7 +69,7 @@ namespace vampire5 {
 
 							//std::cout << result[i].stringVertex();
 						
-							if ((i + 1) % OUT_STEP == 0 || i + 1 == numbers) std::cout << "LOADED: " << i + 1 << "/" << numbers << std::endl;
+							if ((i + 1) % OUT_STEP == 0 || i + 1 == numbers) std::cout << "LOADED: "s + std::to_string(i + 1) + "/"s + std::to_string(numbers) << std::endl;
 
 						} else continue;
 
@@ -75,19 +77,19 @@ namespace vampire5 {
 
 
 				} else {
-					std::cerr << "The numbers of atoms in the two files does not converge\n";
+					std::cerr << "The numbers of atoms in the two files does not converge\n"s;
 					result.push_back(vertex(spin(INT_CHECK_VP, INT_CHECK_VP, INT_CHECK_VP, INT_CHECK_VP), point(INT_CHECK_VP, INT_CHECK_VP, INT_CHECK_VP, INT_CHECK_VP, INT_CHECK_VP, INT_CHECK_VP), INT_CHECK_VP));
 				}
 
 
 			} else {
-				std::cerr << "Second file (spins-...) is empty or closed\n";
+				std::cerr << "Second file (spins-...) is empty or closed\n"s;
 				result.push_back(vertex(spin(INT_CHECK_VP, INT_CHECK_VP, INT_CHECK_VP, INT_CHECK_VP), point(INT_CHECK_VP, INT_CHECK_VP, INT_CHECK_VP, INT_CHECK_VP, INT_CHECK_VP, INT_CHECK_VP), INT_CHECK_VP));
 			}
 
 
 		} else {
-			std::cerr << "First file (.data) is empty or closed\n";
+			std::cerr << "First file (.data) is empty or closed\n"s;
 			result.push_back(vertex(spin(INT_CHECK_VP, INT_CHECK_VP, INT_CHECK_VP, INT_CHECK_VP), point(INT_CHECK_VP, INT_CHECK_VP, INT_CHECK_VP, INT_CHECK_VP, INT_CHECK_VP, INT_CHECK_VP), INT_CHECK_VP));
 		}
 
@@ -151,9 +153,78 @@ namespace vampire5 {
 
 
 
-	std::vector<std::vector <vertex>> fullParse() {
+	std::vector<std::vector <vertex>> fullParse(std::string pathToFolder) {
+		using std::literals::string_literals::operator""s;
+
 		std::vector<std::vector <vertex>> result;
-		// дописать
+
+		std::ifstream fileatoms;
+		std::ifstream filespins;
+
+		for (int j = 0; j < pathToFolder.size(); j++) {
+			if (pathToFolder[j] == '\\') pathToFolder[j] = '/';
+		}
+		
+		fileatoms.open(pathToFolder + "/atoms-coords.data"s);
+
+		if (fileatoms.is_open() && !fileatoms.eof()) {
+			std::cout << "[] Succesfully! path = " << pathToFolder << std::endl;
+
+			bool condition = true;
+			int iterator = 0;
+
+			std::string number = ""s;
+			std::string et = "00000000"s;
+			std::string filenumber = ""s;
+
+			for (iterator; condition; iterator++) {
+				fileatoms.close();
+				filespins.close();
+
+				number = std::to_string(iterator);
+
+				if (number.size() < et.size()) {
+					for (int i = 0; i < et.size() - number.size(); i++) {
+						filenumber.push_back('0');
+					}
+				}
+				filenumber += number;
+
+				fileatoms.open(pathToFolder + "/atoms-coords.data"s);
+				filespins.open(pathToFolder + "/spins-"s + filenumber + ".data"s);
+				std::cout << pathToFolder + "/spins-"s + filenumber + ".data"s << std::endl;
+
+				if (filespins.is_open() && !filespins.eof()) {
+					result.push_back(parse(fileatoms, filespins));
+				} else {
+					if (iterator == 0) std::cerr << "File opening (spins-"s + filenumber + ") failed"s << std::endl;
+					else std::cout << "File spins-"s + std::to_string(iterator - 1) +  " was the last one"s << std::endl;
+					condition = false;
+				}
+
+				number.clear();
+				filenumber.clear();				
+			}
+
+
+
+		} else {
+			std::cerr << "First file (atoms-coords.data) is empty or closed (path: "s + pathToFolder + ")"s << std::endl;
+			std::vector <vertex> first;
+			first.push_back(
+				vertex(
+					spin(INT_CHECK_VP, INT_CHECK_VP, INT_CHECK_VP, INT_CHECK_VP), 
+					point(INT_CHECK_VP, INT_CHECK_VP, INT_CHECK_VP, INT_CHECK_VP, INT_CHECK_VP, INT_CHECK_VP), 
+				INT_CHECK_VP));
+			result.push_back(first);
+
+			fileatoms.close();
+			filespins.close();
+			return result;
+		}
+
+		fileatoms.close();
+		filespins.close();
 		return result;
 	}
 

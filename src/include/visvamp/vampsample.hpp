@@ -84,6 +84,10 @@
 
 
 		coneSample* makeSample(std::vector<vertex> EXAMPLE, std::string instruction = "cone"); // функция для преобразования
+		coneSample* makeSample(std::vector< std::vector<vertex> > EXAMPLE, std::string instruction = "cone", int iteration = 0);
+
+		// TODO: ПЕРЕОСМЫСЛИТЬ СОЗДАНИЕ SAMPLE для второго случая
+
 	}
 
 

@@ -11,7 +11,7 @@
 
 
 	#define INT_CHECK_VP 66666
-	#define OUT_STEP 20000
+	#define OUT_STEP 100000
 
 
 	namespace vampire5 {
@@ -161,7 +161,7 @@
 		
 		// нужен ли материал??
 
-		std::vector<std::vector <vertex>> fullParse();
+		std::vector<std::vector <vertex>> fullParse(std::string pathToFolder);
 
 
 	} // !namespace vampire5

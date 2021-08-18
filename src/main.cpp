@@ -17,18 +17,17 @@ void CALLBACK IFMAINWINDOW();							// IdleFun for MAIN WINDOW
 
 inline int welcome();
 inline int menu();
+inline int menu_1();
 
-
-void CALLBACK RSMAINWINDOW2() {
-	glClearColor(getColorCode(0), getColorCode(0), getColorCode(255), 1);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-}
 
 
 vampire5::coneSample* sample;
+std::vector< std::vector <vampire5::vertex> > FP;
 
 #define EXIT_CODE 6000
-#define ERROR_CODE 6001
+#define ERROR_CODE_1 6001
+#define ERROR_CODE_2 6002
+#define ERROR_CODE_3 6003
 
 #define MENU_CODE_1 10000
 #define MENU_CODE_11 10001
@@ -39,15 +38,32 @@ vampire5::coneSample* sample;
 
 int main(int argc, char** argv) {
 	
-	int code = welcome();
+	try {
 
-	if (code == ERROR_CODE) {
-		std::cerr << "ошибка" << std::endl;
-		return main(argc, argv);
-	} else if (code == EXIT_CODE) {
-		std::cerr << "vihod" << std::endl;
-		return 0;
-	}
+
+		int code = welcome();	
+
+
+	} catch (int _CODE) {
+
+
+		// 1 - atoms
+		// 2 - spins
+		// 3 - ошибка при обработке файлов
+
+		if (_CODE == ERROR_CODE_1) {
+			std::cerr << "ошибка" << std::endl;
+			return main(argc, argv);
+		}
+		else if (_CODE == EXIT_CODE) {
+			std::cerr << "vihod" << std::endl;
+			return 0;
+		}
+
+		return _CODE;
+	};
+
+
 
 	//FreeConsole();
 
@@ -86,6 +102,9 @@ int main(int argc, char** argv) {
 	glutMainLoop();
 
 	return 0;
+
+
+	
 
 }
 
@@ -134,11 +153,6 @@ void CALLBACK RSMAINWINDOW() {
 	
 }
 
-
-void CALLBACK IFMAINWINDOW() {
-	//
-}
-
 void CALLBACK PSKMAINWINDOW(int key, int x, int y) {
 
 	switch (key) {
@@ -161,7 +175,6 @@ void CALLBACK PSKMAINWINDOW(int key, int x, int y) {
 
 	}
 }
-
 
 void CALLBACK KMAINWINDOW(unsigned char key, int x, int y) {
 
@@ -207,7 +220,7 @@ void CALLBACK MPMAINWINDOW(int value) {
 float getColorCode(int color) {
 	return color/255.0;
 }
-
+// !-------------------------------------------------------------
 
 int welcome() {
 
@@ -216,87 +229,129 @@ int welcome() {
 	switch (choice) {
 
 		case 1: {
-			SetConsoleCP(65001);
-			SetConsoleOutputCP(65001);
 
-			std::ifstream file1; // for point
-			std::ifstream file2; // for spin
+			int choice_1 = menu_1();
 
-			std::string path = "";
+			switch (choice_1) {
 
-			std::cout << "Enter the path to folder with atoms-coords.data and spins-XXXX.data: ";
-				std::cin >> path;
+				case 1: {
+					SetConsoleCP(65001);
+					SetConsoleOutputCP(65001);
 
-				for (int j = 0; j < path.size(); j++) {
-					if (path[j] == '\\') path[j] = '/';
-				}
+					std::ifstream file1; // for point
+					std::ifstream file2; // for spin
+
+					std::string path = "";
+
+					std::cout << "Enter the path to folder with atoms-coords.data and spins-XXXX.data: ";
+						std::cin >> path;
+
+						for (int j = 0; j < path.size(); j++) {
+							if (path[j] == '\\') path[j] = '/';
+						}
 
 	
-			file1.open(path + "\\atoms-coords.data");
+					file1.open(path + "\\atoms-coords.data");
 
-			if (file1.is_open() && !file1.eof()) {
-				std::cout << "[] Succesfully! path = " << path << std::endl;
-			} else {
-				std::cerr << "ERROR: File atoms-coords.data is absent" << std::endl;
-				return ERROR_CODE;
-			}
-	
-			std::string number = "";
-			std::string et = "00000000";
-			std::string filename = "";
-
-			std::cout << "Enter the file number (1): ";
-				std::cin >> number;
-
-				if (number.size() < et.size()) {
-					for (int i = 0; i < et.size() - number.size(); i++) {
-						filename.push_back('0');
+					if (file1.is_open() && !file1.eof()) {
+						std::cout << "[] Succesfully! path = " << path << std::endl;
+					} else {
+						std::cerr << "ERROR: File atoms-coords.data is absent" << std::endl;
+						throw ERROR_CODE_1;
 					}
-				}
-				filename += number;
-
-			file2.open(path + "\\spins-" + filename + ".data");
-
-			if (file2.is_open() && !file2.eof()) {
-				std::cout << "[] Succesfully! filename = spins-" << filename << std::endl;
-			} else {
-				std::cerr << "ERROR: File spins-" << filename <<".data is absent" << std::endl;
-				return ERROR_CODE;
-			}
 	
+					std::string number = "";
+					std::string et = "00000000";
+					std::string filename = "";
 
-			std::cout << "===========================================" << std::endl;
+					std::cout << "Enter the file number (1): ";
+						std::cin >> number;
 
-			std::cout << "Start reading data" << std::endl;
-			std::cout << "___________________________________________" << std::endl;
-			std::vector<vampire5::vertex> vxs = vampire5::parse(file1, file2);
-			std::cout << "===========================================" << std::endl;
+						if (number.size() < et.size()) {
+							for (int i = 0; i < et.size() - number.size(); i++) {
+								filename.push_back('0');
+							}
+						}
+						filename += number;
 
-			for (int j = 0; j < vxs.size(); j++) {
-				if (vxs[j] == INT_CHECK_VP) return ERROR_CODE;
-			}
+					file2.open(path + "\\spins-" + filename + ".data");
+			
+					if (file2.is_open() && !file2.eof()) {
+						std::cout << "[] Succesfully! filename = spins-" << filename << std::endl;
+					} else {
+						std::cerr << "ERROR: File spins-" << filename <<".data is absent" << std::endl;
+						throw ERROR_CODE_2;
+					}
+	
+			
+					std::cout << "===========================================" << std::endl;
+
+					std::cout << "Start reading data" << std::endl;
+					std::cout << "___________________________________________" << std::endl;
+					std::vector<vampire5::vertex> vxs = vampire5::parse(file1, file2);
+					std::cout << "===========================================" << std::endl;
+
+					for (int j = 0; j < vxs.size(); j++) {
+						if (vxs[j] == INT_CHECK_VP) throw ERROR_CODE_3;
+					}
 	
 	
-			std::cout << "Start data transformations" << std::endl;
-			std::cout << "___________________________________________" << std::endl;
-			sample = vampire5::makeSample(vxs, "cone");
-			std::cout << "===========================================" << std::endl;
+					std::cout << "Start data transformations" << std::endl;
+					std::cout << "___________________________________________" << std::endl;
+					sample = vampire5::makeSample(vxs, "cone");
+					std::cout << "===========================================" << std::endl;
 
-			for (int j = vxs.size() - 1; vxs.size() != 0; j--) {
-				vxs[j].~vertex();
-				vxs.pop_back();
+					for (int j = vxs.size() - 1; vxs.size() != 0; j--) {
+						vxs[j].~vertex();
+						vxs.pop_back();
+					}
+
+					return 0;
+				} break;
+			
+				case 2: {
+					SetConsoleCP(65001);
+					SetConsoleOutputCP(65001);
+
+					std::string path = "";
+
+					std::cout << "Enter the path to folder with atoms-coords.data and spins-XXXX.data: ";
+						std::cin >> path;
+
+						for (int j = 0; j < path.size(); j++) {
+							if (path[j] == '\\') path[j] = '/';
+						}
+
+						FP = vampire5::fullParse(path);
+
+						if (FP[0][0] == INT_CHECK_VP) throw ERROR_CODE_3;
+
+
+						//sample = vampire5::makeSample(FP, "cone", 10);
+
+				} break;
+
+				case 0: {
+					throw EXIT_CODE;
+				} break;
+					  
+				default: {
+					throw EXIT_CODE;
+				} break;
+
 			}
 
-			return 0;
-		}
+
+			
+		} break;
 		
 		case 0: {
-			return EXIT_CODE;
-		}
+			throw EXIT_CODE;
+		} break;
 
 		default: {
-			return EXIT_CODE;
-		}
+			throw EXIT_CODE;
+		} break;
 	}
 }
 
@@ -305,6 +360,17 @@ int menu() {
 	int choice = 0;
 	std::cout << "|||||||||||||||||||||||||||||||||" << std::endl;
 	std::cout << "1. VAMPIRE 5" << std::endl;
+	std::cout << "0. EXIT" << std::endl;
+	std::cout << "|||||||||||||||||||||||||||||||||" << std::endl;
+	std::cout << "Choice? : "; std::cin >> choice;
+	return choice;
+}
+
+int menu_1() {
+	int choice = 0;
+	std::cout << "|||||||||||||||||||||||||||||||||" << std::endl;
+	std::cout << "1. 1 file" << std::endl;
+	std::cout << "2. all files" << std::endl;
 	std::cout << "0. EXIT" << std::endl;
 	std::cout << "|||||||||||||||||||||||||||||||||" << std::endl;
 	std::cout << "Choice? : "; std::cin >> choice;

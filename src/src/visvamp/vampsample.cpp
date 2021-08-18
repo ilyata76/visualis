@@ -71,4 +71,12 @@ namespace vampire5 {
 		}
 	}
 
+
+
+	coneSample* makeSample(std::vector< std::vector<vertex> > EXAMPLE, std::string instruction, int iteration) {
+		return makeSample(EXAMPLE[iteration], "cone");
+	}
+
+
+
 }
