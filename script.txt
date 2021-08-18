@@ -1,7 +1,7 @@
 @chcp 65001
 @echo.
-@title OPENGL
-@echo [BAT] OPENGL
+@title VISUALIS
+@echo [BAT] VISUALIS
 @echo.
 @mkdir build
 @cd build
@@ -19,8 +19,8 @@
 
 @cd ..
 @rem [BAT] 
-@copy %CD%\build\Debug\PROJECT_OPENGL.exe %CD%
-@powershell "$x=(New-Object -ComObject WScript.Shell).CreateShortcut('%CD%\OPENGL.lnk'); $x.TargetPath='%CD%\PROJECT_OPENGL.exe'; $x.HotKey='CTRL+ALT+F'; $x.IconLocation = '%CD%\vamp.ico'; $x.Save()"                    								
+@copy %CD%\build\Debug\VISUALIS_OPENGL.exe %CD%
+@powershell "$x=(New-Object -ComObject WScript.Shell).CreateShortcut('%CD%\Visualis.lnk'); $x.TargetPath='%CD%\VISUALIS_OPENGL.exe'; $x.HotKey='CTRL+ALT+F'; $x.IconLocation = '%CD%\vamp.ico'; $x.Save()"                    								
 @echo.
 
 

@@ -9,7 +9,7 @@ cmake_minimum_required (VERSION 3.18)
 #	SET PROJECT
 #--------------------------------------
 
-set (PROJECT PROJECT_OPENGL)
+set (PROJECT VISUALIS_OPENGL)
 project (${PROJECT})
 
 
