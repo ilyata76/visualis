@@ -4,7 +4,7 @@ namespace vampire5 {
 
 
 
-	std::vector<vertex> parse(std::ifstream& file1, std::ifstream& file2) {
+	std::vector<vertex> parse(std::ifstream& file1, std::ifstream& file2, std::string out_instruction) {
 		using std::literals::string_literals::operator""s;
 
 
@@ -69,7 +69,8 @@ namespace vampire5 {
 
 							//std::cout << result[i].stringVertex();
 						
-							if ((i + 1) % OUT_STEP == 0 || i + 1 == numbers) std::cout << "[VISUALIS/VAMPIRE] LOADED: "s + std::to_string(i + 1) + "/"s + std::to_string(numbers) << std::endl;
+							if (out_instruction == "yes")
+								if ((i + 1) % OUT_STEP == 0 || i + 1 == numbers) std::cout << "[VISUALIS/VAMPIRE] LOADED: "s + std::to_string(i + 1) + "/"s + std::to_string(numbers) << std::endl;
 
 						} else continue;
 
@@ -152,9 +153,12 @@ namespace vampire5 {
 		return !(X == Y);
 	}
 
+	bool vertex::vertexCreated() {
+		if (*this == INT_CHECK_VP) return false;
+		else return true;
+	}
 
-
-	std::vector<std::vector <vertex>> fullParse(std::string pathToFolder) {
+	std::vector<std::vector <vertex>> fullParse(std::string pathToFolder, std::string out_instruction) {
 		using std::literals::string_literals::operator""s;
 
 		std::vector<std::vector <vertex>> result;
@@ -169,10 +173,10 @@ namespace vampire5 {
 		fileatoms.open(pathToFolder + "/atoms-coords.data"s);
 
 		if (fileatoms.is_open() && !fileatoms.eof()) {
-			std::cout << "[VISUALIS/VAMPIRE] Succesfully! path = " << pathToFolder << std::endl;
+			if (out_instruction == "yes") std::cout << "[VISUALIS/VAMPIRE] Succesfully! path = " << pathToFolder << std::endl;
 
-			std::cout << "[VISUALIS/VAMPIRE] ===========================================" << std::endl;
-			std::cout << "[VISUALIS/VAMPIRE] Start reading data" << std::endl;
+			if (out_instruction == "yes") std::cout << "[VISUALIS/VAMPIRE] ===========================================" << std::endl;
+			if (out_instruction == "yes") std::cout << "[VISUALIS/VAMPIRE] Start reading data" << std::endl;
 
 			bool condition = true;
 			int iterator = 0;
@@ -197,17 +201,17 @@ namespace vampire5 {
 				fileatoms.open(pathToFolder + "/atoms-coords.data"s);
 				filespins.open(pathToFolder + "/spins-"s + filenumber + ".data"s);
 				
-				std::cout << "[VISUALIS/VAMPIRE] OPENING FILE with path: " << pathToFolder + "/spins-"s + filenumber + ".data"s << std::endl;
-				std::cout << "[VISUALIS/VAMPIRE] ___________________________________________" << std::endl;
+				if (out_instruction == "yes") std::cout << "[VISUALIS/VAMPIRE] OPENING FILE with path: " << pathToFolder + "/spins-"s + filenumber + ".data"s << std::endl;
+				if (out_instruction == "yes") std::cout << "[VISUALIS/VAMPIRE] ___________________________________________" << std::endl;
 				
 				if (filespins.is_open() && !filespins.eof()) {
-					result.push_back(parse(fileatoms, filespins)); //
+					result.push_back(parse(fileatoms, filespins, out_instruction)); //
 				} else {
 					if (iterator == 0) std::cerr << "[VISUALIS/VAMPIRE][ERROR] : File opening (spins-"s + filenumber + ") failed"s << std::endl;
 					else std::cout << "[VISUALIS/VAMPIRE] File spins-"s + std::to_string(iterator - 1) +  " was the last one"s << std::endl;
 					condition = false;
 				}
-				std::cout << "[VISUALIS/VAMPIRE] ===========================================" << std::endl;
+				if (out_instruction == "yes") std::cout << "[VISUALIS/VAMPIRE] ===========================================" << std::endl;
 				number.clear();
 				filenumber.clear();				
 			}

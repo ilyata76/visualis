@@ -13,7 +13,7 @@
 		public:
 			float x; float y; float z;
 		public:
-			axis() { this->y = this->z = this->x = 0; };
+			axis() { this->y = this->z = this->x = INT_CHECK_VP; };
 			axis(float x, float y, float z) {
 				this->x = x;
 				this->y = y;
@@ -32,7 +32,7 @@
 			point P;
 
 		public:
-			cone() { this->phi = 0; this->theta = 0; };
+			cone() { this->phi = INT_CHECK_VP; this->theta = INT_CHECK_VP; };
 			cone(float phi, float theta, axis Ap, axis At, point P) {
 				this->phi = phi; this->theta = theta;
 				this->Ap = Ap; this->At = At;
@@ -59,6 +59,8 @@
 				return this->P;
 			}
 
+			bool coneCreated();
+
 		};
 
 		class coneSample {
@@ -80,13 +82,15 @@
 				return this->cones[iteration];
 			}
 			
+			int size() { return cones.size(); }
+
 		};
 
 
-		coneSample* makeSample(std::vector<vertex> EXAMPLE, std::string instruction = "cone"); // функция для преобразования
-		coneSample* makeSample(std::vector< std::vector<vertex> > EXAMPLE, std::string instruction = "cone", int iteration = 0);
+		coneSample* makeSample(std::vector<vertex> EXAMPLE, std::string instruction = "cone", int iteration = 0, std::string out_instruction = "yes"); // функция для преобразования
+		//coneSample* makeSample(std::vector< std::vector<vertex> > EXAMPLE, std::string instruction = "cone", int iteration = 0);
 
-		// TODO: ПЕРЕОСМЫСЛИТЬ СОЗДАНИЕ SAMPLE для второго случая
+		std::vector < coneSample* > makeVSample(std::vector< std::vector<vertex> > EXAMPLE, std::string instruction = "cone", std::string out_instruction = "yes");
 
 	} // !namespace vampire5
 

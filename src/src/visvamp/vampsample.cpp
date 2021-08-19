@@ -3,7 +3,7 @@
 namespace vampire5 {
 
 
-	coneSample* makeSample(std::vector<vertex> EXAMPLE, std::string instruction) {
+	coneSample* makeSample(std::vector<vertex> EXAMPLE, std::string instruction, int iteration, std::string out_instruction) {
 		
 		
 		if (instruction == "cone") {
@@ -59,7 +59,9 @@ namespace vampire5 {
 				}
 
 				cones.push_back(cone(-phi, -theta, axis(1, 0, 0), axis(0, 1, 0), point(EXAMPLE[i].getPoint())));
-				if ((i + 1) % OUT_STEP == 0 || i + 1 == numbers) std::cout << "[VISUALIS/VAMPIRE] TRANSFORMATED: " << i + 1 << "/" << numbers << std::endl;
+
+				if (out_instruction == "yes") 
+					if ((i + 1) % OUT_STEP == 0 || i + 1 == numbers) std::cout << "[VISUALIS/VAMPIRE] TRANSFORMATED[" << iteration << "]: " << i + 1 << "/" << numbers << std::endl;
 			}
 
 			return new coneSample(cones);
@@ -71,10 +73,30 @@ namespace vampire5 {
 		}
 	}
 
+	bool cone::coneCreated() {
+		if (this->phi == INT_CHECK_VP || this->theta == INT_CHECK_VP 
+			|| this->Ap.x == INT_CHECK_VP|| this->At.x == INT_CHECK_VP
+			|| this->Ap.y == INT_CHECK_VP || this->At.y == INT_CHECK_VP
+			|| this->Ap.z == INT_CHECK_VP || this->At.z == INT_CHECK_VP
+			|| this->P == INT_CHECK_VP
+			) return false;
+		else return true;
+	}
 
+	std::vector < coneSample* > makeVSample(std::vector< std::vector<vertex> > EXAMPLE, std::string instruction, std::string out_instruction) {
+		using std::literals::string_literals::operator""s;
 
-	coneSample* makeSample(std::vector< std::vector<vertex> > EXAMPLE, std::string instruction, int iteration) {
-		return makeSample(EXAMPLE[iteration], "cone");
+		std::vector < coneSample* > result;
+
+		coneSample* cS;
+
+		for (int i = 0; i < EXAMPLE.size(); ++i) {
+			cS = makeSample(EXAMPLE[i], "cone", i, out_instruction);
+			if (cS->getCone(0).coneCreated()) result.push_back(cS);
+		}
+
+		return result;
+
 	}
 
 

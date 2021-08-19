@@ -18,14 +18,17 @@ inline int menu();
 inline int menu_1();
 
 
+inline std::string getOutInstruction();
 
 vampire5::coneSample* sample;
-std::vector< std::vector <vampire5::vertex> > FP;
+
+std::vector < vampire5::coneSample* > samples;
 
 #define EXIT_CODE 6000
 #define ERROR_CODE_1 6001
 #define ERROR_CODE_2 6002
 #define ERROR_CODE_3 6003
+#define ERROR_CODE_4 6004
 
 // 600X for vampire
 // 500x for mumax
@@ -36,6 +39,7 @@ std::vector< std::vector <vampire5::vertex> > FP;
 #define MENU_CODE_13 10003
 
 // TODO: организовать проверку нормального создания sample-класса
+// TODO: создать формат файлов для быстрого чтения и преобразования
 
 int main(int argc, char** argv) {
 	using std::literals::string_literals::operator""s;
@@ -56,6 +60,8 @@ int main(int argc, char** argv) {
 		} else if (_CODE == ERROR_CODE_3) {
 			std::cout << "[VISUALIS/VAMPIRE][ERROR_CODE] : The error is related to the file processing"s << std::endl;
 			//return main(argc, argv);
+		} else if (_CODE == ERROR_CODE_4){ 
+			std::cout << "[VISUALIS/VAMPIRE][ERROR_CODE] : The error is related to transformation processing"s << std::endl;
 		} else if (_CODE == EXIT_CODE) {
 			std::cout << "[VISUALIS] EXIT"s << std::endl;
 			return 0;
@@ -289,23 +295,30 @@ int welcome() {
 						throw ERROR_CODE_2;
 					}
 	
-			
-					std::cout << "[VISUALIS/VAMPIRE] ==========================================="s << std::endl;
+					std::string out_instruction = getOutInstruction();
 
-					std::cout << "[VISUALIS/VAMPIRE] Start reading data"s << std::endl;
-					std::cout << "[VISUALIS/VAMPIRE] ___________________________________________"s << std::endl;
-					std::vector<vampire5::vertex> vxs = vampire5::parse(file1, file2);
-					std::cout << "[VISUALIS/VAMPIRE] ==========================================="s << std::endl;
+					if (out_instruction == "yes") std::cout << "[VISUALIS/VAMPIRE] ==========================================="s << std::endl;
+
+					if (out_instruction == "yes") std::cout << "[VISUALIS/VAMPIRE] Start reading data"s << std::endl;
+					if (out_instruction == "yes") std::cout << "[VISUALIS/VAMPIRE] ___________________________________________"s << std::endl;
+					std::vector<vampire5::vertex> vxs = vampire5::parse(file1, file2, out_instruction);
+					if (out_instruction == "yes") std::cout << "[VISUALIS/VAMPIRE] ==========================================="s << std::endl;
 
 					for (int j = 0; j < vxs.size(); j++) {
-						if (vxs[j] == INT_CHECK_VP) throw ERROR_CODE_3;
+						if (!vxs[j].vertexCreated()) throw ERROR_CODE_3;
 					}
 	
 	
-					std::cout << "[VISUALIS/VAMPIRE] Start data transformations"s << std::endl;
-					std::cout << "[VISUALIS/VAMPIRE] ___________________________________________"s << std::endl;
-					sample = vampire5::makeSample(vxs, "cone");
-					std::cout << "[VISUALIS/VAMPIRE] ==========================================="s << std::endl;
+					if (out_instruction == "yes") std::cout << "[VISUALIS/VAMPIRE] Start data transformations"s << std::endl;
+					if (out_instruction == "yes") std::cout << "[VISUALIS/VAMPIRE] ___________________________________________"s << std::endl;
+					sample = vampire5::makeSample(vxs, "cone", 0, out_instruction);
+					if (out_instruction == "yes") std::cout << "[VISUALIS/VAMPIRE] ==========================================="s << std::endl;
+
+					for (int j = 0; j < sample->size(); j++) {
+						if (!sample->getCone(j).coneCreated()) throw ERROR_CODE_4;
+					}
+
+					std::cout << "[VISUALIS/VAMPIRE] Succesfully!"s << std::endl;
 
 					for (int j = vxs.size() - 1; vxs.size() != 0; j--) {
 						vxs[j].~vertex();
@@ -320,6 +333,7 @@ int welcome() {
 					SetConsoleOutputCP(65001);
 
 					std::string path = "";
+					std::vector< std::vector <vampire5::vertex> > FP;
 
 					std::cout << "[VISUALIS/VAMPIRE] Enter the path to folder with atoms-coords.data and spins-XXXX.data: "s;
 						std::cin >> path;
@@ -328,12 +342,16 @@ int welcome() {
 							if (path[j] == '\\') path[j] = '/';
 						}
 
-						FP = vampire5::fullParse(path);
+					std::string out_instruction = getOutInstruction();
 
-						if (FP[0][0] == INT_CHECK_VP) throw ERROR_CODE_3;
-						
+						FP = vampire5::fullParse(path, out_instruction);
 
-						//sample = vampire5::makeSample(FP, "cone", 10);
+						if (!FP[0][0].vertexCreated()) throw ERROR_CODE_3;
+
+						samples = vampire5::makeVSample(FP, "cone", out_instruction);
+
+						if (!samples[0]->getCone(0).coneCreated()) throw ERROR_CODE_4;
+
 						return 0;
 				} break;
 
@@ -393,4 +411,22 @@ int menu_1() {
 	std::cout << "[VISUALIS/VAMPIRE] *********************************"s << std::endl;
 	std::cout << "[VISUALIS/VAMPIRE] Choice? : "s; std::cin >> choice;
 	return choice;
+}
+
+
+std::string getOutInstruction() {
+	using std::literals::string_literals::operator""s;
+	std::string choice = "";
+	
+	whille:
+
+	std::cout << "[VISUALIS/VAMPIRE] *********************************"s << std::endl;
+	std::cout << "[VISUALIS] нужен ли вывод? (yes/no) "s; std::cin >> choice;
+
+	if (choice == "yes"s || choice == "y"s) return "yes"s;
+	else if (choice == "no"s || choice == "n"s) return "no"s;
+	else {
+		goto whille;
+	}
+
 }

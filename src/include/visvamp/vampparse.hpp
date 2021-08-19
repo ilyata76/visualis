@@ -24,7 +24,7 @@
 			float Z;
 			int number;
 		public:
-			spin() { this->X = this->Y = this->Z = 0; this->number = 0; };
+			spin() { this->X = this->Y = this->Z = INT_CHECK_VP; this->number = INT_CHECK_VP; };
 			spin(float X, float Y, float Z, int number) {
 				this->X = X;
 				this->Y = Y;
@@ -74,7 +74,7 @@
 			float Z;
 			int number;
 		public:
-			point() { this->X = this->Y = this->Z = 0; this->number = this->m1 = this->l = 0; };
+			point() { this->X = this->Y = this->Z = INT_CHECK_VP; this->number = this->m1 = this->l = INT_CHECK_VP; };
 			point(int m1, int l, float X, float Y, float Z, int number) {
 				this->m1 = m1;
 				this->l = l;
@@ -151,17 +151,18 @@
 				return this->P;
 			}
 
+			bool vertexCreated();
 
 			~vertex() {};
 
 		};
 
 
-		std::vector<vertex> parse(std::ifstream& file1, std::ifstream& file2); // заглавная функция для чтения данных
+		std::vector<vertex> parse(std::ifstream& file1, std::ifstream& file2, std::string out_instruction = "yes"); // заглавная функция для чтения данных
 		
 		// нужен ли материал??
 
-		std::vector<std::vector <vertex>> fullParse(std::string pathToFolder);
+		std::vector<std::vector <vertex>> fullParse(std::string pathToFolder, std::string out_instruction = "yes");
 
 
 	} // !namespace vampire5
