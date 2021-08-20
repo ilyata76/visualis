@@ -308,7 +308,40 @@ int welcome() {
 
 							std::string out_instruction = getOutInstruction();
 
+
+
+							if (out_instruction == "yes") std::cout << "[VISUALIS/VAMPIRE] ==========================================="s << std::endl;
+							if (out_instruction == "yes") std::cout << "[VISUALIS/VAMPIRE] Start processing with file"s << std::endl;
+							if (out_instruction == "yes") std::cout << "[VISUALIS/VAMPIRE] ___________________________________________"s << std::endl;
+
+							
 							vampire5::createFile(path, file1, file2, filename, out_instruction);
+
+							std::ifstream file;
+							file.open(path + "\\spins-"s + filename + ".visv"s);
+
+							std::vector< vampire5::vertex > VX = vampire5::fileParse(file, out_instruction);
+
+
+							if (out_instruction == "yes") std::cout << "[VISUALIS/VAMPIRE] ==========================================="s << std::endl;
+
+							for (int j = 0; j < VX.size(); j++) {
+								if (!VX[j].vertexCreated()) throw ERROR_CODE_3;
+							}
+
+							if (out_instruction == "yes") std::cout << "[VISUALIS/VAMPIRE] Start data transformations"s << std::endl;
+							if (out_instruction == "yes") std::cout << "[VISUALIS/VAMPIRE] ___________________________________________"s << std::endl;
+
+							sample = vampire5::makeSample(VX, "cone", 0, out_instruction);
+
+							if (out_instruction == "yes") std::cout << "[VISUALIS/VAMPIRE] ==========================================="s << std::endl;
+
+
+							for (int j = 0; j < sample->size(); j++) {
+								if (!sample->getCone(j).coneCreated()) throw ERROR_CODE_4;
+							}
+
+							std::cout << "[VISUALIS/VAMPIRE] Succesfully!"s << std::endl;
 
 							return 0;
 
@@ -370,7 +403,9 @@ int welcome() {
 							if (out_instruction == "yes") std::cout << "[VISUALIS/VAMPIRE] ==========================================="s << std::endl;
 							if (out_instruction == "yes") std::cout << "[VISUALIS/VAMPIRE] Start reading data"s << std::endl;
 							if (out_instruction == "yes") std::cout << "[VISUALIS/VAMPIRE] ___________________________________________"s << std::endl;
+
 							std::vector<vampire5::vertex> vxs = vampire5::parse(file1, file2, out_instruction);
+
 							if (out_instruction == "yes") std::cout << "[VISUALIS/VAMPIRE] ==========================================="s << std::endl;
 
 							for (int j = 0; j < vxs.size(); j++) {
@@ -389,10 +424,10 @@ int welcome() {
 
 							std::cout << "[VISUALIS/VAMPIRE] Succesfully!"s << std::endl;
 
-							for (int j = vxs.size() - 1; vxs.size() != 0; j--) {
+							/*for (int j = vxs.size() - 1; vxs.size() != 0; j--) {
 								vxs[j].~vertex();
 								vxs.pop_back();
-							}
+							}*/
 
 							return 0;
 
