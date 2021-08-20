@@ -112,6 +112,14 @@
 				return this->Z;
 			}
 
+			int getMaterial() {
+				return this->m1;
+			}
+
+			int getLayer() {
+				return this->l;
+			}
+
 			~point() {};
 
 		};
@@ -151,6 +159,10 @@
 				return this->P;
 			}
 
+			int getNumber() {
+				return this->number;
+			}
+ 
 			bool vertexCreated();
 
 			~vertex() {};

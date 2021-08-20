@@ -310,12 +310,15 @@ int welcome() {
 
 							vampire5::createFile(path, file1, file2, filename, out_instruction);
 
-							/*std::ofstream file1;
-							file1.open(path + "\\atoms-coords.visv"s);*/
+							return 0;
 
 						} break;
 
 						case 2: {
+							//
+						} break;
+
+						case 3: {
 
 							std::ifstream file1; // for point
 							std::ifstream file2; // for spin
@@ -365,7 +368,6 @@ int welcome() {
 							std::string out_instruction = getOutInstruction();
 
 							if (out_instruction == "yes") std::cout << "[VISUALIS/VAMPIRE] ==========================================="s << std::endl;
-
 							if (out_instruction == "yes") std::cout << "[VISUALIS/VAMPIRE] Start reading data"s << std::endl;
 							if (out_instruction == "yes") std::cout << "[VISUALIS/VAMPIRE] ___________________________________________"s << std::endl;
 							std::vector<vampire5::vertex> vxs = vampire5::parse(file1, file2, out_instruction);
@@ -498,8 +500,9 @@ int menu_1_1() {
 	using std::literals::string_literals::operator""s;
 	int choice = 0;
 	std::cout << "[VISUALIS/VAMPIRE] *********************************"s << std::endl;
-	std::cout << "[VISUALIS/VAMPIRE] 1. работа с файлами формата, предварительно их создав"s << std::endl;
-	std::cout << "[VISUALIS/VAMPIRE] 2. с классическими файлами"s << std::endl;
+	std::cout << "[VISUALIS/VAMPIRE] 1. работа с файлами формата, C ИХ СОЗДАНИЕМ (ПЕРЕЗАПИСЬЮ)"s << std::endl;
+	std::cout << "[VISUALIS/VAMPIRE] 2. работа с файлами формата, БЕЗ ИХ СОЗДАНИЯ (ЕСЛИ УЖЕ СОЗДАНЫ)"s << std::endl;
+	std::cout << "[VISUALIS/VAMPIRE] 3. с классическими файлами"s << std::endl;
 	std::cout << "[VISUALIS/VAMPIRE] 0. EXIT"s << std::endl;
 	std::cout << "[VISUALIS/VAMPIRE] *********************************"s << std::endl;
 	std::cout << "[VISUALIS/VAMPIRE] Choice? : "s; std::cin >> choice;
