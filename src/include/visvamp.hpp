@@ -6,5 +6,6 @@
 
 	#include "./visvamp/vampparse.hpp"
 	#include "./visvamp/vampsample.hpp"
+	#include "./visvamp/fileformat.hpp"
 
 #endif // !VISVAMP_HPP

@@ -14,8 +14,12 @@ void CALLBACK MPMAINWINDOW(int value);					// menu processes
 float gCC(int color);									// getcolorcode. from 0 to 255, https://csscolor.ru
 
 inline int welcome();
+
+//inline void oneFile(std::ifstream& file1, std::ifstream& file2);
+
 inline int menu();
-inline int menu_1();
+	inline int menu_1();
+		inline int menu_1_1();
 
 
 inline std::string getOutInstruction();
@@ -236,6 +240,9 @@ float gCC(int color) {
 int welcome() {
 	using std::literals::string_literals::operator""s;
 
+	SetConsoleCP(65001);
+	SetConsoleOutputCP(65001);
+
 	int choice = menu();
 
 	switch (choice) {
@@ -247,90 +254,162 @@ int welcome() {
 			switch (choice_1) {
 
 				case 1: {
-					SetConsoleCP(65001);
-					SetConsoleOutputCP(65001);
 
-					std::ifstream file1; // for point
-					std::ifstream file2; // for spin
+					int choice_1_1 = menu_1_1();
 
-					std::string path = "";
+					switch (choice_1_1) {
 
-					std::cout << "[VISUALIS/VAMPIRE] Enter the path to folder with atoms-coords.data and spins-XXXX.data: "s;
-						std::cin >> path;
+						case 1: {
 
-						for (int j = 0; j < path.size(); j++) {
-							if (path[j] == '\\') path[j] = '/';
-						}
+							std::string path = "";
 
-	
-					file1.open(path + "\\atoms-coords.data");
+							std::cout << "[VISUALIS/VAMPIRE] Enter the path to folder with atoms-coords.data and spins-XXXX.data: "s;
+								std::cin >> path;
 
-					if (file1.is_open() && !file1.eof()) {
-						std::cout << "[VISUALIS/VAMPIRE] Succesfully! path = "s << path << std::endl;
-					} else {
-						std::cerr << "[VISUALIS/VAMPIRE][ERROR] : File atoms-coords.data is absent"s << std::endl;
-						throw ERROR_CODE_1;
-					}
-	
-					std::string number = "";
-					std::string et = "00000000";
-					std::string filename = "";
+								for (int j = 0; j < path.size(); j++) {
+									if (path[j] == '\\') path[j] = '/';
+								}
 
-					std::cout << "[VISUALIS/VAMPIRE] Enter the file number (1): "s;
-						std::cin >> number;
+							std::ifstream file1;
+							std::ifstream file2;
+							std::ofstream file3; // for out *.visv
 
-						if (number.size() < et.size()) {
-							for (int i = 0; i < et.size() - number.size(); i++) {
-								filename.push_back('0');
+							file1.open(path + "\\atoms-coords.data"s);
+
+							if (file1.is_open() && !file1.eof()) {
+								std::cout << "[VISUALIS/VAMPIRE] Succesfully! path = "s << path << std::endl;
+							} else {
+								std::cerr << "[VISUALIS/VAMPIRE][ERROR] : File atoms-coords.data is absent"s << std::endl;
+								throw ERROR_CODE_1;
 							}
-						}
-						filename += number;
 
-					file2.open(path + "\\spins-" + filename + ".data");
+							std::string number = "";
+							std::string et = "00000000";
+							std::string filename = "";
+
+							std::cout << "[VISUALIS/VAMPIRE] Enter the file number (one): "s;
+								std::cin >> number;
+
+								if (number.size() < et.size()) {
+									for (int i = 0; i < et.size() - number.size(); i++) {
+										filename.push_back('0');
+									}
+								}
+								filename += number;
+
+							file2.open(path + "\\spins-"s + filename + ".data"s);
 			
-					if (file2.is_open() && !file2.eof()) {
-						std::cout << "[VISUALIS/VAMPIRE] Succesfully! filename = spins-"s << filename << std::endl;
-					} else {
-						std::cerr << "[VISUALIS/VAMPIRE][ERROR] : File spins-"s << filename <<".data is absent"s << std::endl;
-						throw ERROR_CODE_2;
-					}
+							if (file2.is_open() && !file2.eof()) {
+								std::cout << "[VISUALIS/VAMPIRE] Succesfully! filename = spins-"s << filename << std::endl;
+							} else {
+								std::cerr << "[VISUALIS/VAMPIRE][ERROR] : File spins-"s << filename << ".data is absent"s << std::endl;
+								throw ERROR_CODE_2;
+							}
+
+							std::string out_instruction = getOutInstruction();
+
+							vampire5::createFile(path, file1, file2, filename, out_instruction);
+
+							/*std::ofstream file1;
+							file1.open(path + "\\atoms-coords.visv"s);*/
+
+						} break;
+
+						case 2: {
+
+							std::ifstream file1; // for point
+							std::ifstream file2; // for spin
+
+							std::string path = "";
+
+							std::cout << "[VISUALIS/VAMPIRE] Enter the path to folder with atoms-coords.data and spins-XXXX.data: "s;
+								std::cin >> path;
+
+								for (int j = 0; j < path.size(); j++) {
+									if (path[j] == '\\') path[j] = '/';
+								}
+
 	
-					std::string out_instruction = getOutInstruction();
+							file1.open(path + "\\atoms-coords.data"s);
 
-					if (out_instruction == "yes") std::cout << "[VISUALIS/VAMPIRE] ==========================================="s << std::endl;
+							if (file1.is_open() && !file1.eof()) {
+								std::cout << "[VISUALIS/VAMPIRE] Succesfully! path = "s << path << std::endl;
+							} else {
+								std::cerr << "[VISUALIS/VAMPIRE][ERROR] : File atoms-coords.data is absent"s << std::endl;
+								throw ERROR_CODE_1;
+							}
+	
+							std::string number = "";
+							std::string et = "00000000";
+							std::string filename = "";
 
-					if (out_instruction == "yes") std::cout << "[VISUALIS/VAMPIRE] Start reading data"s << std::endl;
-					if (out_instruction == "yes") std::cout << "[VISUALIS/VAMPIRE] ___________________________________________"s << std::endl;
-					std::vector<vampire5::vertex> vxs = vampire5::parse(file1, file2, out_instruction);
-					if (out_instruction == "yes") std::cout << "[VISUALIS/VAMPIRE] ==========================================="s << std::endl;
+							std::cout << "[VISUALIS/VAMPIRE] Enter the file number (one): "s;
+								std::cin >> number;
 
-					for (int j = 0; j < vxs.size(); j++) {
-						if (!vxs[j].vertexCreated()) throw ERROR_CODE_3;
-					}
+								if (number.size() < et.size()) {
+									for (int i = 0; i < et.size() - number.size(); i++) {
+										filename.push_back('0');
+									}
+								}
+								filename += number;
+
+							file2.open(path + "\\spins-"s + filename + ".data"s);
+			
+							if (file2.is_open() && !file2.eof()) {
+								std::cout << "[VISUALIS/VAMPIRE] Succesfully! filename = spins-"s << filename << std::endl;
+							} else {
+								std::cerr << "[VISUALIS/VAMPIRE][ERROR] : File spins-"s << filename << ".data is absent"s << std::endl;
+								throw ERROR_CODE_2;
+							}
+	
+							std::string out_instruction = getOutInstruction();
+
+							if (out_instruction == "yes") std::cout << "[VISUALIS/VAMPIRE] ==========================================="s << std::endl;
+
+							if (out_instruction == "yes") std::cout << "[VISUALIS/VAMPIRE] Start reading data"s << std::endl;
+							if (out_instruction == "yes") std::cout << "[VISUALIS/VAMPIRE] ___________________________________________"s << std::endl;
+							std::vector<vampire5::vertex> vxs = vampire5::parse(file1, file2, out_instruction);
+							if (out_instruction == "yes") std::cout << "[VISUALIS/VAMPIRE] ==========================================="s << std::endl;
+
+							for (int j = 0; j < vxs.size(); j++) {
+								if (!vxs[j].vertexCreated()) throw ERROR_CODE_3;
+							}
 	
 	
-					if (out_instruction == "yes") std::cout << "[VISUALIS/VAMPIRE] Start data transformations"s << std::endl;
-					if (out_instruction == "yes") std::cout << "[VISUALIS/VAMPIRE] ___________________________________________"s << std::endl;
-					sample = vampire5::makeSample(vxs, "cone", 0, out_instruction);
-					if (out_instruction == "yes") std::cout << "[VISUALIS/VAMPIRE] ==========================================="s << std::endl;
+							if (out_instruction == "yes") std::cout << "[VISUALIS/VAMPIRE] Start data transformations"s << std::endl;
+							if (out_instruction == "yes") std::cout << "[VISUALIS/VAMPIRE] ___________________________________________"s << std::endl;
+							sample = vampire5::makeSample(vxs, "cone", 0, out_instruction);
+							if (out_instruction == "yes") std::cout << "[VISUALIS/VAMPIRE] ==========================================="s << std::endl;
 
-					for (int j = 0; j < sample->size(); j++) {
-						if (!sample->getCone(j).coneCreated()) throw ERROR_CODE_4;
+							for (int j = 0; j < sample->size(); j++) {
+								if (!sample->getCone(j).coneCreated()) throw ERROR_CODE_4;
+							}
+
+							std::cout << "[VISUALIS/VAMPIRE] Succesfully!"s << std::endl;
+
+							for (int j = vxs.size() - 1; vxs.size() != 0; j--) {
+								vxs[j].~vertex();
+								vxs.pop_back();
+							}
+
+							return 0;
+
+						} break;
+
+						case 0: {
+							throw EXIT_CODE;
+						} break;
+					
+						default: {
+							throw EXIT_CODE;
+						} break;
+
 					}
 
-					std::cout << "[VISUALIS/VAMPIRE] Succesfully!"s << std::endl;
-
-					for (int j = vxs.size() - 1; vxs.size() != 0; j--) {
-						vxs[j].~vertex();
-						vxs.pop_back();
-					}
-
-					return 0;
+					
 				} break;
 			
 				case 2: {
-					SetConsoleCP(65001);
-					SetConsoleOutputCP(65001);
 
 					std::string path = "";
 					std::vector< std::vector <vampire5::vertex> > FP;
@@ -381,6 +460,8 @@ int welcome() {
 // |choice for vampire or mumax
 // |--1: vampire
 	// |--1: 1 file parse
+		// |--1: работа с форматными файлами
+		// |--2: работа с сырыми файлами
 	// |--2: all files parse
 	// |--0: exit
 // |--2: mumax
@@ -413,20 +494,31 @@ int menu_1() {
 	return choice;
 }
 
+int menu_1_1() {
+	using std::literals::string_literals::operator""s;
+	int choice = 0;
+	std::cout << "[VISUALIS/VAMPIRE] *********************************"s << std::endl;
+	std::cout << "[VISUALIS/VAMPIRE] 1. работа с файлами формата, предварительно их создав"s << std::endl;
+	std::cout << "[VISUALIS/VAMPIRE] 2. с классическими файлами"s << std::endl;
+	std::cout << "[VISUALIS/VAMPIRE] 0. EXIT"s << std::endl;
+	std::cout << "[VISUALIS/VAMPIRE] *********************************"s << std::endl;
+	std::cout << "[VISUALIS/VAMPIRE] Choice? : "s; std::cin >> choice;
+	return choice;
+
+}
 
 std::string getOutInstruction() {
 	using std::literals::string_literals::operator""s;
 	std::string choice = "";
 	
 	whille:
+		std::cout << "[VISUALIS/VAMPIRE] *********************************"s << std::endl;
+		std::cout << "[VISUALIS] нужен ли вывод? (yes/no) "s; std::cin >> choice;
 
-	std::cout << "[VISUALIS/VAMPIRE] *********************************"s << std::endl;
-	std::cout << "[VISUALIS] нужен ли вывод? (yes/no) "s; std::cin >> choice;
-
-	if (choice == "yes"s || choice == "y"s) return "yes"s;
-	else if (choice == "no"s || choice == "n"s) return "no"s;
-	else {
-		goto whille;
-	}
+		if (choice == "yes"s || choice == "y"s) return "yes"s;
+		else if (choice == "no"s || choice == "n"s) return "no"s;
+		else {
+			goto whille;
+		}
 
 }
