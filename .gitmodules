@@ -1,3 +1,3 @@
-[submodule "opengl/source/libraries/Exceptio"]
+[submodule "Exceptio"]
 	path = opengl/source/libraries/Exceptio
 	url = git@github.com:ilyata76/Exceptio.git
