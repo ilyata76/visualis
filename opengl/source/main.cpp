@@ -3,6 +3,7 @@
 
 #include <iostream>
 
+// TODO слой первый или второй  а материал?
 
 int main(int argc, char* argv) {
 	try {
@@ -13,15 +14,15 @@ int main(int argc, char* argv) {
 
 
 		auto abobus = vampire5::parser::get_string(a);
-		std::string aa = abobus(1);
+		std::string aa = abobus(9);
 		int index = 0;
-		vampire5::converter::convert(aa, index);
+		vampire5::converter::convert(aa, a, index);
 
 
 
 	}
 	catch (Exceptio& E) {
-		std::cout << E.get_description();
+		std::cout << E.get_description() << "\t" << E.get_comment();
 	}
 	return 0;
 }

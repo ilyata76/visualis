@@ -10,6 +10,10 @@
 #define FORMAT_OF_SPINS_FILE_V5 ".data"
 #define START_OF_SPINS_NAME_FILE_V5 "spins-"
 
+#define START_OF_OUR_FILE "sconfiguration-"
+#define FORMAT_OF_OUR_FILE ".vvis"
+#define COMMENT_OF_OUT_FILE "#"
+
 #define PLUG_1 ';'
 #define PLUG_2 '!'
 #define PLUG_3 '?'

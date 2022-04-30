@@ -59,8 +59,8 @@ std::string vampire5::parser::get_out(const int& number) {
 	atoms_file.open(path_to_folder + "/" + name_of_atoms_file + FORMAT_OF_ATOMS_FILE_V5, std::ios_base::in);
 	spins_file.open(path_to_folder + "/" + name_of_spins_file + FORMAT_OF_SPINS_FILE_V5, std::ios_base::in);
 
-	Assert(atoms_file.is_open(), 101, "atoms_file не открылс€");
-	Assert(spins_file.is_open(), 101, "spins_file не открылс€");
+	Assert(atoms_file.is_open(), 101, "atoms_file не открылс€", "Assert. ‘”Ќ ÷»я: vampire5::parser::get_out");
+	Assert(spins_file.is_open(), 101, "spins_file не открылс€", "Assert. ‘”Ќ ÷»я: vampire5::parser::get_out");
 	
 	std::string str1 = "str1";
 	std::string str2 = "str2";
@@ -71,7 +71,7 @@ std::string vampire5::parser::get_out(const int& number) {
 	// TODO: не хватает проверки на целочисленность
 
 	Assert( std::stoi(str1) == std::stoi(str2), 102, "str1 != str2, разное количество строк в файлах", 
-											   "Assert. ѕроверьте первую строку обоих файлов" );
+											   "Assert. ѕроверьте первую строку обоих файлов. ‘”Ќ ÷»я: vampire5::parser::get_out" );
 
 	std::string format_string = std::to_string(number) + PLUG_3 + str1 + PLUG_3;
 

@@ -8,6 +8,7 @@
 
 	#include <string>
 	#include <algorithm>
+	#include <fstream>
 
 	#include "../../libraries/tia-Exceptio/include/assert.hpp"
 	#include "../defines.hpp"
@@ -21,9 +22,9 @@
 
 			std::string get_output_str(const std::string& f_str, int& index); // m;l;x;y;z;sx;sy;sz!
 
-			std::string get_spin_file_name(const std::string& number);
+			std::string get_file_name(const std::string& number);
 
-			bool convert(const std::string& formatted_str, int& index);
+			bool convert(const std::string& formatted_str, const std::string& path_to_folder, int& index);
 
 		}
 
