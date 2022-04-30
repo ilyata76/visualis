@@ -7,7 +7,7 @@
 	#include <fstream>
 	#include <algorithm>
 	
-	#include "libraries/tia/Exceptio/include/tia/assert.hpp"
+	#include "../../libraries/tia-Exceptio/include/assert.hpp"
 
 
 	namespace vampire5 {

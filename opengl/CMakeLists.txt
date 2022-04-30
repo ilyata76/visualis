@@ -18,7 +18,7 @@ set (SOURCES
     source/parser-v5.cpp
 )
 
-add_subdirectory(source/libraries/tia/Exceptio/)
+add_subdirectory(source/libraries/tia-Exceptio/)
 
 add_executable (${PROJECT}
 	${ENTRYPOINT} 

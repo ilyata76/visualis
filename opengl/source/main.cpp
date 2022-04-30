@@ -21,7 +21,7 @@ int main(int argc, char* argv) {
 
 	}
 	catch (Exceptio& E) {
-
+		std::cout << E.get_description();
 	}
 	return 0;
 }
