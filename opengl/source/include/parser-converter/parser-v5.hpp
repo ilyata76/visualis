@@ -6,9 +6,11 @@
 	#include <string>
 	#include <fstream>
 	#include <algorithm>
+	#include <filesystem>
 	
 	#include "../../libraries/tia-Exceptio/include/assert.hpp"
 
+	#include "../defines.hpp"
 
 	namespace vampire5 {
 
@@ -19,7 +21,7 @@
 			int get_count(const std::string& path_to_file);
 			int get_count(const char* path_to_file);
 
-			// получает string форматом NUMBER?COUNT?x;y;z;sx;sy;sz!x;y;z;sx;sy;sz для текущего const int& number файла
+			// получает string форматом NUMBER?COUNT?x;y;z;sx;sy;sz!x;y;z;sx;sy;sz! для текущего const int& number файла
 			std::string get_out(const int& number);
 			FUNCTION_STRING_CONSTINTL get_string(const std::string& path_to_folder);
 

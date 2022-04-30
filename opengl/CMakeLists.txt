@@ -10,6 +10,7 @@ set (ENTRYPOINT
 set (HEADERS
 	source/include/parser-converter/parser-v5.hpp
     source/include/parser-converter/converter-v5.hpp
+	source/include/defines.hpp
 
 )
 
