@@ -9,12 +9,12 @@ set (ENTRYPOINT
 
 set (HEADERS
 	source/include/parser-converter/parser-v5.hpp
-    source/include/parser-converter/converter.hpp
+    source/include/parser-converter/converter-v5.hpp
 )
 
 
 set (SOURCES
-	source/converter.cpp
+	source/converter-v5.cpp
     source/parser-v5.cpp
 )
 
