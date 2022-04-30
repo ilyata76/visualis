@@ -7,6 +7,8 @@
 // formatted string: NUMBER?COUNT?m;l;x;y;z;sx;sy;sz!x;y;z;sx;sy;sz!
 
 	#include <string>
+	#include <algorithm>
+
 	#include "../../libraries/tia-Exceptio/include/assert.hpp"
 	#include "../defines.hpp"
 
@@ -14,11 +16,14 @@
 
 		namespace converter {
 
-			std::string get_number_of_file_from_f_str(std::string& f_str, int& index); // NUMBER?
-			std::string get_count_from_f_str(std::string& f_str, int& index); // COUNT?
-			std::string get_output_str(std::string& f_str, int& index); // m;l;x;y;z;sx;sy;sz!
-			std::string get_spin_file_name(std::string& number);
-			bool convert(std::string& formatted_str);
+			std::string get_number_of_file_from_f_str(const std::string& f_str, int& index); // NUMBER?
+			std::string get_count_from_f_str(const std::string& f_str, int& index); // COUNT?
+
+			std::string get_output_str(const std::string& f_str, int& index); // m;l;x;y;z;sx;sy;sz!
+
+			std::string get_spin_file_name(const std::string& number);
+
+			bool convert(const std::string& formatted_str, int& index);
 
 		}
 

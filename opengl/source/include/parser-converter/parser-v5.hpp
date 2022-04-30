@@ -6,8 +6,7 @@
 	#include <string>
 	#include <fstream>
 	#include <algorithm>
-	#include <filesystem>
-	
+
 	#include "../../libraries/tia-Exceptio/include/assert.hpp"
 
 	#include "../defines.hpp"

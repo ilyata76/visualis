@@ -13,7 +13,9 @@ int main(int argc, char* argv) {
 
 
 		auto abobus = vampire5::parser::get_string(a);
-		std::cout << abobus(1);
+		std::string aa = abobus(1);
+		int index = 0;
+		vampire5::converter::convert(aa, index);
 
 
 
