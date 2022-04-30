@@ -42,10 +42,8 @@ std::string vampire5::parser::get_spin_file_name(const int& number) {
 	return std::string("spins-" + base);
 }
 
-#include <iostream>
-#include <algorithm>
 
-#include "libraries/tia/Exceptio/include/tia/assert.hpp"
+
 
 std::string vampire5::parser::get_out(const int& number) {
 
@@ -69,7 +67,7 @@ std::string vampire5::parser::get_out(const int& number) {
 
 	// проверка
 
-	Assert(1 == 1, "aboba");
+	Assert(1 != 1, "aboba");
 
 	std::string format_string = std::to_string(number) + "?" + str1 + "?";
 
