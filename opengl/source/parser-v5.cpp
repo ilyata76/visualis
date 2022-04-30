@@ -45,6 +45,8 @@ std::string vampire5::parser::get_spin_file_name(const int& number) {
 #include <iostream>
 #include <algorithm>
 
+#include "libraries/tia/Exceptio/include/tia/assert.hpp"
+
 std::string vampire5::parser::get_out(const int& number) {
 
 	// здесь уже проверено наличие atoms_file
@@ -65,7 +67,9 @@ std::string vampire5::parser::get_out(const int& number) {
 	std::getline(atoms_file, str1, '\n');
 	std::getline(spins_file, str2, '\n');
 
-	// проверка на равенство
+	// проверка
+
+	Assert(1 == 1, "aboba");
 
 	std::string format_string = std::to_string(number) + "?" + str1 + "?";
 
