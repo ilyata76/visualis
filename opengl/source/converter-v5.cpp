@@ -1,4 +1,4 @@
-#include "./include/parser-converter/converter-v5.hpp"
+ï»¿#include "./include/parser-converter/converter-v5.hpp"
 
 
 
@@ -29,8 +29,8 @@ bool vampire5::converter::convert(const std::wstring& formatted_str, const std::
 
 
 std::wstring vampire5::converter::get_number_of_file_from_f_str(const std::wstring& f_str, int& index) {
-	Assert(f_str != L"\0", 201, L"Ïåğåäàíà ïóñòàÿ ñòğîêà â get_number", L"Assert. ÔÓÍÊÖÈß: vampire5::converter::get_number_of_file_from_f_str");
-	//Assert(index < f_str.length(), 201, "index ïğåâçîø¸ë äëèíó ñòğîêè", "Assert. ÔÓÍÊÖÈß: vampire5::converter::get_number_of_file_from_f_str");
+	Assert(f_str != L"\0", 201, L"ĞŸĞµÑ€ĞµĞ´Ğ°Ğ½Ğ° Ğ¿ÑƒÑÑ‚Ğ°Ñ ÑÑ‚Ñ€Ğ¾ĞºĞ° Ğ² get_number", L"Assert. Ğ¤Ğ£ĞĞšĞ¦Ğ˜Ğ¯: vampire5::converter::get_number_of_file_from_f_str");
+	//Assert(index < f_str.length(), 201, "index Ğ¿Ñ€ĞµĞ²Ğ·Ğ¾ÑˆÑ‘Ğ» Ğ´Ğ»Ğ¸Ğ½Ñƒ ÑÑ‚Ñ€Ğ¾ĞºĞ¸", "Assert. Ğ¤Ğ£ĞĞšĞ¦Ğ˜Ğ¯: vampire5::converter::get_number_of_file_from_f_str");
 	std::wstring out;
 	for (int i = index; f_str[i] != PLUG_3; ++i, ++index) {
 		out.push_back(f_str[i]);
@@ -39,8 +39,8 @@ std::wstring vampire5::converter::get_number_of_file_from_f_str(const std::wstri
 }
 
 std::wstring vampire5::converter::get_count_from_f_str(const std::wstring& f_str, int& index) {
-	Assert(f_str != L"\0", 201, L"Ïåğåäàíà ïóñòàÿ ñòğîêà â get_count", L"Assert. ÔÓÍÊÖÈß: vampire5::converter::get_count_from_f_str");
-	//Assert(index < f_str.length(), 201, "index ïğåâçîø¸ë äëèíó ñòğîêè", "Assert. ÔÓÍÊÖÈß: vampire5::converter::get_count_from_f_str");
+	Assert(f_str != L"\0", 201, L"ĞŸĞµÑ€ĞµĞ´Ğ°Ğ½Ğ° Ğ¿ÑƒÑÑ‚Ğ°Ñ ÑÑ‚Ñ€Ğ¾ĞºĞ° Ğ² get_count", L"Assert. Ğ¤Ğ£ĞĞšĞ¦Ğ˜Ğ¯: vampire5::converter::get_count_from_f_str");
+	//Assert(index < f_str.length(), 201, "index Ğ¿Ñ€ĞµĞ²Ğ·Ğ¾ÑˆÑ‘Ğ» Ğ´Ğ»Ğ¸Ğ½Ñƒ ÑÑ‚Ñ€Ğ¾ĞºĞ¸", "Assert. Ğ¤Ğ£ĞĞšĞ¦Ğ˜Ğ¯: vampire5::converter::get_count_from_f_str");
 	std::wstring out;
 	for (int i = index; f_str[i] != PLUG_3; ++i, ++index) {
 		out.push_back(f_str[i]);
@@ -49,8 +49,8 @@ std::wstring vampire5::converter::get_count_from_f_str(const std::wstring& f_str
 }
 
 std::wstring vampire5::converter::get_output_str(const std::wstring& f_str, int& index) {
-	Assert(f_str != L"\0", 201, L"Ïåğåäàíà ïóñòàÿ ñòğîêà â get_out", L"Assert. ÔÓÍÊÖÈß: vampire5::converter::get_output_str");
-	//Assert(index < f_str.length(), 201, "index ïğåâçîø¸ë äëèíó ñòğîêè", "Assert. ÔÓÍÊÖÈß: vampire5::converter::get_output_str");
+	Assert(f_str != L"\0", 201, L"ĞŸĞµÑ€ĞµĞ´Ğ°Ğ½Ğ° Ğ¿ÑƒÑÑ‚Ğ°Ñ ÑÑ‚Ñ€Ğ¾ĞºĞ° Ğ² get_out", L"Assert. Ğ¤Ğ£ĞĞšĞ¦Ğ˜Ğ¯: vampire5::converter::get_output_str");
+	//Assert(index < f_str.length(), 201, "index Ğ¿Ñ€ĞµĞ²Ğ·Ğ¾ÑˆÑ‘Ğ» Ğ´Ğ»Ğ¸Ğ½Ñƒ ÑÑ‚Ñ€Ğ¾ĞºĞ¸", "Assert. Ğ¤Ğ£ĞĞšĞ¦Ğ˜Ğ¯: vampire5::converter::get_output_str");
 	std::wstring out;
 	for (int i = index; f_str[i] != PLUG_2; ++i, ++index) {
 		out.push_back(f_str[i]);
@@ -60,7 +60,7 @@ std::wstring vampire5::converter::get_output_str(const std::wstring& f_str, int&
 }
 
 std::wstring vampire5::converter::get_file_name(const std::wstring& number) {
-	Assert(number != L"\0", 201, L"Ïåğåäàíà ïóñòàÿ ñòğîêà number â get_file_name spin-xxx", L"Assert. ÔÓÍÊÖÈß: vampire5::converter::get_spin_file_name");
+	Assert(number != L"\0", 201, L"ĞŸĞµÑ€ĞµĞ´Ğ°Ğ½Ğ° Ğ¿ÑƒÑÑ‚Ğ°Ñ ÑÑ‚Ñ€Ğ¾ĞºĞ° number Ğ² get_file_name spin-xxx", L"Assert. Ğ¤Ğ£ĞĞšĞ¦Ğ˜Ğ¯: vampire5::converter::get_spin_file_name");
 	std::wstring num = number;
 	std::wstring base = BASE_NUMBER_OF_FILE_V5;
 

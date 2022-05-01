@@ -1,12 +1,12 @@
-#include "./include/parser-converter/parser-v5.hpp"
+п»ї#include "./include/parser-converter/parser-v5.hpp"
 
 ////////////////////////////////////////////////////////////
-//			ПОЛУЧЕНИЕ КОЛИЧЕСТВА СТРОК В ФАЙЛЕ
+//			РџРћР›РЈР§Р•РќРР• РљРћР›РР§Р•РЎРўР’Рђ РЎРўР РћРљ Р’ Р¤РђР™Р›Р•
 ////////////////////////////////////////////////////////////
 
 int vampire5::parser::get_count(const std::wstring& path_to_file) {
-	// количество прописывается в первой строке файла
-	// TODO: не хватает проверки на int
+	// РєРѕР»РёС‡РµСЃС‚РІРѕ РїСЂРѕРїРёСЃС‹РІР°РµС‚СЃСЏ РІ РїРµСЂРІРѕР№ СЃС‚СЂРѕРєРµ С„Р°Р№Р»Р°
+	// TODO: РЅРµ С…РІР°С‚Р°РµС‚ РїСЂРѕРІРµСЂРєРё РЅР° int
 
 	std::wfstream file; std::wstring out = L"";
 	
@@ -20,8 +20,8 @@ int vampire5::parser::get_count(const std::wstring& path_to_file) {
 }
 
 int vampire5::parser::get_count(const wchar_t* path_to_file) {
-	// количество прописывается в первой строке файла
-	// TODO: не хватает проверки на целочисленность
+	// РєРѕР»РёС‡РµСЃС‚РІРѕ РїСЂРѕРїРёСЃС‹РІР°РµС‚СЃСЏ РІ РїРµСЂРІРѕР№ СЃС‚СЂРѕРєРµ С„Р°Р№Р»Р°
+	// TODO: РЅРµ С…РІР°С‚Р°РµС‚ РїСЂРѕРІРµСЂРєРё РЅР° С†РµР»РѕС‡РёСЃР»РµРЅРЅРѕСЃС‚СЊ
 
 	std::wfstream file; std::wstring out = L"";
 
@@ -35,7 +35,7 @@ int vampire5::parser::get_count(const wchar_t* path_to_file) {
 }
 
 ////////////////////////////////////////////////////////////
-//			ПОЛУЧЕНИЕ ФОРМАТИРОВАННОЙ СТРОКИ
+//			РџРћР›РЈР§Р•РќРР• Р¤РћР РњРђРўРР РћР’РђРќРќРћР™ РЎРўР РћРљР
 ////////////////////////////////////////////////////////////
 
 std::wstring path_to_folder = L"";
@@ -59,8 +59,8 @@ std::wstring vampire5::parser::get_out(const int& number) {
 	atoms_file.open(path_to_folder + L"/" + name_of_atoms_file + FORMAT_OF_ATOMS_FILE_V5, std::ios_base::in);
 	spins_file.open(path_to_folder + L"/" + name_of_spins_file + FORMAT_OF_SPINS_FILE_V5, std::ios_base::in);
 
-	Assert(atoms_file.is_open(), 101, L"atoms_file не открылся", L"Assert. ФУНКЦИЯ: vampire5::parser::get_out");
-	Assert(spins_file.is_open(), 101, L"spins_file не открылся", L"Assert. ФУНКЦИЯ: vampire5::parser::get_out");
+	Assert(atoms_file.is_open(), 101, L"atoms_file РЅРµ РѕС‚РєСЂС‹Р»СЃСЏ", L"Assert. Р¤РЈРќРљР¦РРЇ: vampire5::parser::get_out");
+	Assert(spins_file.is_open(), 101, L"spins_file РЅРµ РѕС‚РєСЂС‹Р»СЃСЏ", L"Assert. Р¤РЈРќРљР¦РРЇ: vampire5::parser::get_out");
 	
 	std::wstring str1 = L"str1";
 	std::wstring str2 = L"str2";
@@ -68,14 +68,14 @@ std::wstring vampire5::parser::get_out(const int& number) {
 	std::getline(atoms_file, str1, L'\n');
 	std::getline(spins_file, str2, L'\n');
 
-	// TODO: не хватает проверки на целочисленность
+	// TODO: РЅРµ С…РІР°С‚Р°РµС‚ РїСЂРѕРІРµСЂРєРё РЅР° С†РµР»РѕС‡РёСЃР»РµРЅРЅРѕСЃС‚СЊ
 
-	Assert( std::stoi(str1) == std::stoi(str2), 102, L"str1 != str2, разное количество строк в файлах", 
-											   L"Assert. Проверьте первую строку обоих файлов. ФУНКЦИЯ: vampire5::parser::get_out" );
+	Assert( std::stoi(str1) == std::stoi(str2), 102, L"str1 != str2, СЂР°Р·РЅРѕРµ РєРѕР»РёС‡РµСЃС‚РІРѕ СЃС‚СЂРѕРє РІ С„Р°Р№Р»Р°С…", 
+											   L"Assert. РџСЂРѕРІРµСЂСЊС‚Рµ РїРµСЂРІСѓСЋ СЃС‚СЂРѕРєСѓ РѕР±РѕРёС… С„Р°Р№Р»РѕРІ. Р¤РЈРќРљР¦РРЇ: vampire5::parser::get_out" );
 
 	std::wstring format_string = std::to_wstring(number) + PLUG_3 + str1 + PLUG_3;
 
-	// далее цикл по сборке строки
+	// РґР°Р»РµРµ С†РёРєР» РїРѕ СЃР±РѕСЂРєРµ СЃС‚СЂРѕРєРё
 
 	while (!atoms_file.eof() && !spins_file.eof()) {
 		

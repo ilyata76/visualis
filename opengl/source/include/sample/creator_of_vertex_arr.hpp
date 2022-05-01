@@ -1,4 +1,4 @@
-#pragma once
+п»ї#pragma once
 
 #ifndef CREATOR_OF_VERTEX_ARR_HPP
 #define CREATOR_OF_VERTEX_ARR_HPP
@@ -6,16 +6,18 @@
 	#include "./point-spin.hpp"
 	#include <string>
 
-	// идея заключается в том, что здесь парсится файл .vvis и создаётся класс vertex, состоящий из Point(x,y,z), Spin(sx,sy,sz)
+	// РёРґРµСЏ Р·Р°РєР»СЋС‡Р°РµС‚СЃСЏ РІ С‚РѕРј, С‡С‚Рѕ Р·РґРµСЃСЊ РїР°СЂСЃРёС‚СЃСЏ С„Р°Р№Р» .vvis Рё СЃРѕР·РґР°С‘С‚СЃСЏ РєР»Р°СЃСЃ vertex, СЃРѕСЃС‚РѕСЏС‰РёР№ РёР· Point(x,y,z), Spin(sx,sy,sz)
 
 	namespace vvis {
 
-		// vvis должен создавать Vertex(point, spin) и массив из Vertex в creator для дальнейшей визуализации в visualization
+		// vvis РґРѕР»Р¶РµРЅ СЃРѕР·РґР°РІР°С‚СЊ Vertex(point, spin) Рё РјР°СЃСЃРёРІ РёР· Vertex РІ creator РґР»СЏ РґР°Р»СЊРЅРµР№С€РµР№ РІРёР·СѓР°Р»РёР·Р°С†РёРё РІ visualization
 		namespace creator {
 
 			class Vertex {
 
 			};
+
+			Vertex* create_arry(/*РЅРµСЏСЃРЅРѕ С‡С‚Рѕ РЅР°РґРѕ РїРµСЂРµРґР°РІР°С‚СЊ РїРѕРєР° С‡С‚Рѕ*/);
 
 		}
 	};

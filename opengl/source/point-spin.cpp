@@ -1,4 +1,4 @@
-#include "include/sample/point-spin.hpp"
+ï»¿#include "include/sample/point-spin.hpp"
 
 vvis::creator::Point::Point() {
 	this->x = DOUBLE_PLUG; this->y = DOUBLE_PLUG; this->z = DOUBLE_PLUG;
@@ -23,7 +23,7 @@ vvis::creator::Point::Point(const double& x, const double& y) {
 // use L'x' L'y' L'z'
 double vvis::creator::Point::get(wchar_t what) {
 
-	Assert((what == L'x' || what == L'y' || what == 'z'), 301, L"Íå x, íå y, íå z", L"Assert. ÔÓÍÊÖÈß: vvis::creator::Point::get");
+	Assert((what == L'x' || what == L'y' || what == 'z'), 301, L"ÐÐµ x, Ð½Ðµ y, Ð½Ðµ z", L"Assert. Ð¤Ð£ÐÐšÐ¦Ð˜Ð¯: vvis::creator::Point::get");
 
 	switch (what) {
 		case L'x': { return this->x; } break;
@@ -38,7 +38,7 @@ double vvis::creator::Point::get(wchar_t what) {
 // use L'x' etc.
 //double vvis::creator::Point::set(wchar_t what, double value) {
 //
-//	Assert((what == L'x' || what == L'y' || what == 'z'), 301, L"Íå x, íå y, íå z", L"Assert. ÔÓÍÊÖÈß: vvis::creator::Point::set");
+//	Assert((what == L'x' || what == L'y' || what == 'z'), 301, L"ÐÐµ x, Ð½Ðµ y, Ð½Ðµ z", L"Assert. Ð¤Ð£ÐÐšÐ¦Ð˜Ð¯: vvis::creator::Point::set");
 //
 //	switch (what) {
 //		case L'x': { this->x = value; return this->x; } break;
@@ -53,7 +53,7 @@ double vvis::creator::Point::get(wchar_t what) {
 // use L'x' etc.
 double vvis::creator::Point::set(wchar_t what, const double& value) {
 
-	Assert((what == L'x' || what == L'y' || what == 'z'), 301, L"Íå x, íå y, íå z", L"Assert. ÔÓÍÊÖÈß: vvis::creator::Point::set");
+	Assert((what == L'x' || what == L'y' || what == 'z'), 301, L"ÐÐµ x, Ð½Ðµ y, Ð½Ðµ z", L"Assert. Ð¤Ð£ÐÐšÐ¦Ð˜Ð¯: vvis::creator::Point::set");
 
 	switch (what) {
 		case L'x': { this->x = value; return this->x; } break;
@@ -93,7 +93,7 @@ vvis::creator::Spin::Spin(const double& sx, const double& sy) {
 // use L"x" etc.
 double vvis::creator::Spin::get(const std::wstring& what) {
 
-	Assert((what == L"sx" || what == L"sy" || what == L"sz"), 301, L"Íå sx, íå sy, íå sz", L"Assert. ÔÓÍÊÖÈß: vvis::creator::Spin::get");
+	Assert((what == L"sx" || what == L"sy" || what == L"sz"), 301, L"ÐÐµ sx, Ð½Ðµ sy, Ð½Ðµ sz", L"Assert. Ð¤Ð£ÐÐšÐ¦Ð˜Ð¯: vvis::creator::Spin::get");
 
 	if (what == L"sx") { return this->sx; };
 	if (what == L"sy") { return this->sy; };
@@ -105,7 +105,7 @@ double vvis::creator::Spin::get(const std::wstring& what) {
 // use L'x' etc.
 double vvis::creator::Spin::get(wchar_t what) {
 
-	Assert((what == L'x' || what == L'y' || what == 'z'), 301, L"Íå x, íå y, íå z", L"Assert. ÔÓÍÊÖÈß: vvis::creator::Spin::get");
+	Assert((what == L'x' || what == L'y' || what == 'z'), 301, L"ÐÐµ x, Ð½Ðµ y, Ð½Ðµ z", L"Assert. Ð¤Ð£ÐÐšÐ¦Ð˜Ð¯: vvis::creator::Spin::get");
 
 	switch (what) {
 		case L'x': { return this->sx; } break;
@@ -120,7 +120,7 @@ double vvis::creator::Spin::get(wchar_t what) {
 // use L"x" etc.
 double vvis::creator::Spin::set(const std::wstring& what, double& value) {
 
-	Assert((what == L"sx" || what == L"sy" || what == L"sz"), 301, L"Íå sx, íå sy, íå sz", L"Assert. ÔÓÍÊÖÈß: vvis::creator::Spin::set");
+	Assert((what == L"sx" || what == L"sy" || what == L"sz"), 301, L"ÐÐµ sx, Ð½Ðµ sy, Ð½Ðµ sz", L"Assert. Ð¤Ð£ÐÐšÐ¦Ð˜Ð¯: vvis::creator::Spin::set");
 
 	if (what == L"sx") { this->sx = value; return this->sx; };
 	if (what == L"sy") { this->sy = value; return this->sy; };
@@ -132,7 +132,7 @@ double vvis::creator::Spin::set(const std::wstring& what, double& value) {
 // use L"x" etc.
 //double vvis::creator::Spin::set(const std::wstring& what, double value) {
 //
-//	Assert((what == L"sx" || what == L"sy" || what == L"sz"), 301, L"Íå sx, íå sy, íå sz", L"Assert. ÔÓÍÊÖÈß: vvis::creator::Spin::set");
+//	Assert((what == L"sx" || what == L"sy" || what == L"sz"), 301, L"ÐÐµ sx, Ð½Ðµ sy, Ð½Ðµ sz", L"Assert. Ð¤Ð£ÐÐšÐ¦Ð˜Ð¯: vvis::creator::Spin::set");
 //
 //	if (what == L"sx") { this->sx = value; return this->sx; };
 //	if (what == L"sy") { this->sy = value; return this->sy; };
@@ -144,7 +144,7 @@ double vvis::creator::Spin::set(const std::wstring& what, double& value) {
 // use L'x' etc.
 double vvis::creator::Spin::set(wchar_t what, double& value) {
 
-	Assert((what == L'x' || what == L'y' || what == 'z'), 301, L"Íå x, íå y, íå z", L"Assert. ÔÓÍÊÖÈß: vvis::creator::Spin::set");
+	Assert((what == L'x' || what == L'y' || what == 'z'), 301, L"ÐÐµ x, Ð½Ðµ y, Ð½Ðµ z", L"Assert. Ð¤Ð£ÐÐšÐ¦Ð˜Ð¯: vvis::creator::Spin::set");
 
 	switch (what) {
 		case L'x': { this->sx = value; return this->sx; } break;
@@ -159,7 +159,7 @@ double vvis::creator::Spin::set(wchar_t what, double& value) {
 // use L'x' etc.
 //double vvis::creator::Spin::set(wchar_t what, double value) {
 //
-//	Assert((what == L'x' || what == L'y' || what == 'z'), 301, L"Íå x, íå y, íå z", L"Assert. ÔÓÍÊÖÈß: vvis::creator::Spin::set");
+//	Assert((what == L'x' || what == L'y' || what == 'z'), 301, L"ÐÐµ x, Ð½Ðµ y, Ð½Ðµ z", L"Assert. Ð¤Ð£ÐÐšÐ¦Ð˜Ð¯: vvis::creator::Spin::set");
 //
 //	switch (what) {
 //		case L'x': { this->sx = value; return this->sx; } break;

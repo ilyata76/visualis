@@ -1,9 +1,9 @@
-#pragma once
+п»ї#pragma once
 
 #ifndef CONVERTER_V5_HPP
 #define CONVERTER_V5_HPP
 
-// идея конвертера - он конвертирует файл и создаёт другой и только
+// РёРґРµСЏ РєРѕРЅРІРµСЂС‚РµСЂР° - РѕРЅ РєРѕРЅРІРµСЂС‚РёСЂСѓРµС‚ С„Р°Р№Р» Рё СЃРѕР·РґР°С‘С‚ РґСЂСѓРіРѕР№ Рё С‚РѕР»СЊРєРѕ
 // formatted wstring: NUMBER?COUNT?m;l;x;y;z;sx;sy;sz!x;y;z;sx;sy;sz!
 
 	#include <string>

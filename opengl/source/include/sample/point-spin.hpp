@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #ifndef POINT_SPIN_HPP
 #define POINT_SPIN_HPP
