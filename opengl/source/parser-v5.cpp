@@ -51,7 +51,7 @@ std::wstring vampire5::parser::get_spin_file_name(const int& number) {
 std::wstring vampire5::parser::get_out(const int& number) {
 
 	std::wstring name_of_atoms_file = NAME_OF_ATOMS_FILE_V5;
-	std::wstring name_of_spins_file = get_spin_file_name(number);
+	std::wstring name_of_spins_file = vampire5::parser::get_spin_file_name(number);
 	
 	std::wfstream atoms_file;
 	std::wfstream spins_file;

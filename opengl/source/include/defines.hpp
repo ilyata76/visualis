@@ -18,6 +18,7 @@
 #define PLUG_2 L'!'
 #define PLUG_3 L'?'
 
-#define DOUBLE_PLUG 0.0
+#define DOUBLE_PLUG_VVIS 0.0
+#define INT_PLUG_VVIS 0
 
 #endif 

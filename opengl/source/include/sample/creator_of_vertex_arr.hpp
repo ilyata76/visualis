@@ -5,6 +5,9 @@
 
 	#include "./point-spin.hpp"
 	#include <string>
+	#include <fstream>
+	#include <vector>
+	#include <sstream>
 
 	// идея заключается в том, что здесь парсится файл .vvis и создаётся класс vertex, состоящий из Point(x,y,z), Spin(sx,sy,sz)
 
@@ -14,10 +17,34 @@
 		namespace creator {
 
 			class Vertex {
+				protected:
+					Point point;
+					Spin spin;
+					unsigned int number;
+					short int layer;
+					short int material;
+				public:
+					//Vertex();
+					Vertex(Point& p, Spin& s, unsigned int number); 
+					Vertex(Point& p, Spin& s, unsigned int number, short int layer, short int material); 
+					Vertex(Point& p, Spin& s); 
 
-			};
+					Point get_point();
+					Spin get_spin();
+					unsigned int get_number();
+					short int get_layer();
+					short int get_material();
+					
+					// setters не нужны?
 
-			Vertex* create_arry(/*неясно что надо передавать пока что*/);
+					~Vertex() {};
+ 			};
+
+			using FUNCTION_VERTEX_CONSTINT = std::vector<Vertex>(*)(const int& index);
+			std::vector <Vertex> get_out(const int& index);
+			FUNCTION_VERTEX_CONSTINT create_arry(const std::wstring& p_t_folder); // парсит файл и создаёт вертекс
+
+			std::wstring get_file_name(const int& index);
 
 		}
 	};

@@ -1,7 +1,7 @@
 ﻿#include "include/sample/point-spin.hpp"
 
 vvis::creator::Point::Point() {
-	this->x = DOUBLE_PLUG; this->y = DOUBLE_PLUG; this->z = DOUBLE_PLUG;
+	this->x = DOUBLE_PLUG_VVIS; this->y = DOUBLE_PLUG_VVIS; this->z = DOUBLE_PLUG_VVIS;
 }
 
 //vvis::creator::Point::Point(double x, double y, double z) {
@@ -17,7 +17,7 @@ vvis::creator::Point::Point(const double& x, const double& y, const double& z) {
 }
 
 vvis::creator::Point::Point(const double& x, const double& y) {
-	this->x = y; this->y = y; this->z = DOUBLE_PLUG;
+	this->x = y; this->y = y; this->z = DOUBLE_PLUG_VVIS;
 }
 
 // use L'x' L'y' L'z'
@@ -32,7 +32,7 @@ double vvis::creator::Point::get(wchar_t what) {
 		default:;
 	}
 
-	return DOUBLE_PLUG;
+	return DOUBLE_PLUG_VVIS;
 }
 
 // use L'x' etc.
@@ -62,7 +62,7 @@ double vvis::creator::Point::set(wchar_t what, const double& value) {
 		default:;
 	}
 
-	return DOUBLE_PLUG;
+	return DOUBLE_PLUG_VVIS;
 }
 
 
@@ -71,7 +71,7 @@ double vvis::creator::Point::set(wchar_t what, const double& value) {
 // -
 
 vvis::creator::Spin::Spin() {
-	this->sx = DOUBLE_PLUG; this->sy = DOUBLE_PLUG; this->sz = DOUBLE_PLUG;
+	this->sx = DOUBLE_PLUG_VVIS; this->sy = DOUBLE_PLUG_VVIS; this->sz = DOUBLE_PLUG_VVIS;
 }
 
 //vvis::creator::Spin::Spin(double sx, double sy, double sz) {
@@ -87,7 +87,7 @@ vvis::creator::Spin::Spin(const double& sx, const double& sy, const double& sz) 
 }
 
 vvis::creator::Spin::Spin(const double& sx, const double& sy) {
-	this->sx = sx; this->sy = sy; this->sz = DOUBLE_PLUG;
+	this->sx = sx; this->sy = sy; this->sz = DOUBLE_PLUG_VVIS;
 }
 
 // use L"x" etc.
@@ -99,7 +99,7 @@ double vvis::creator::Spin::get(const std::wstring& what) {
 	if (what == L"sy") { return this->sy; };
 	if (what == L"sz") { return this->sz; };
 
-	return DOUBLE_PLUG;
+	return DOUBLE_PLUG_VVIS;
 }
 
 // use L'x' etc.
@@ -114,7 +114,7 @@ double vvis::creator::Spin::get(wchar_t what) {
 		default:;
 	}
 
-	return DOUBLE_PLUG;
+	return DOUBLE_PLUG_VVIS;
 }
 
 // use L"x" etc.
@@ -126,7 +126,7 @@ double vvis::creator::Spin::set(const std::wstring& what, double& value) {
 	if (what == L"sy") { this->sy = value; return this->sy; };
 	if (what == L"sz") { this->sz = value; return this->sz; };
 
-	return DOUBLE_PLUG;
+	return DOUBLE_PLUG_VVIS;
 }
 
 // use L"x" etc.
@@ -153,7 +153,7 @@ double vvis::creator::Spin::set(wchar_t what, double& value) {
 		default:;
 	}
 
-	return DOUBLE_PLUG;
+	return DOUBLE_PLUG_VVIS;
 }
 
 // use L'x' etc.

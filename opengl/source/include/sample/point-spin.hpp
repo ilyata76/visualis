@@ -36,6 +36,8 @@
 
 					// Use L'x' etc.
 					double set(wchar_t what, const double& value);
+
+					~Point() {};
 			};
 
 			class Spin {
@@ -70,6 +72,8 @@
 					double set(wchar_t what, double& value);
 
 					//double set(wchar_t what, double value);
+
+					~Spin() {};
 			};
 
 
