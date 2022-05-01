@@ -31,6 +31,7 @@ set (SOURCES
 message("CALLING TO EXCEPTIO SUBDIRECTORY")
 
 add_subdirectory(source/libraries/tia-Exceptio/)
+add_subdirectory(source/libraries/freeglut)
 
 message("CREATING EXECUTABLE FILE")
 
@@ -44,6 +45,12 @@ add_executable (${PROJECT}
 
 message("LINKING LIBRARIES")
 
+find_library(FREGL freeglut)
+
 target_link_libraries(${PROJECT} 
 	EXCEPTIO_CPP_LIBRARY
+	freeglut
+	freeglut_static
+	
+	#freeglut_staticd "D:/CPP_2020/opengl-visualis/opengl/build/source/libraries/freeglut/lib/Debug"
 )
