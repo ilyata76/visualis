@@ -18,6 +18,6 @@
 #define PLUG_2 L'!'
 #define PLUG_3 L'?'
 
-#define DOUBLE_PLUG 909.909
+#define DOUBLE_PLUG 0.0
 
 #endif 
