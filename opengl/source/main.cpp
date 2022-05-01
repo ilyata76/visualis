@@ -41,6 +41,7 @@ int main(int argc, char** argv) {
 		//vvis::creator::Spin ss(aboba, 2.0, 3.0);
 		//std::wcout << ss.get(L'x');
 		//std::wcout << ss.get(L"sx");
+		glutInit(&argc, argv);
 	}
 	catch (Exceptio& E) {
 		_wsetlocale(LC_ALL, L".UTF-8"); // !!! ГДЕ ВЫ БЫЛИ РАНЬШЕ С ВАШИМ .UTF-8
