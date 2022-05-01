@@ -4,7 +4,7 @@
 #define CONVERTER_V5_HPP
 
 // идея конвертера - он конвертирует файл и создаёт другой и только
-// formatted string: NUMBER?COUNT?m;l;x;y;z;sx;sy;sz!x;y;z;sx;sy;sz!
+// formatted wstring: NUMBER?COUNT?m;l;x;y;z;sx;sy;sz!x;y;z;sx;sy;sz!
 
 	#include <string>
 	#include <algorithm>
@@ -17,14 +17,14 @@
 
 		namespace converter {
 
-			std::string get_number_of_file_from_f_str(const std::string& f_str, int& index); // NUMBER?
-			std::string get_count_from_f_str(const std::string& f_str, int& index); // COUNT?
+			std::wstring get_number_of_file_from_f_str(const std::wstring& f_str, int& index); // NUMBER?
+			std::wstring get_count_from_f_str(const std::wstring& f_str, int& index); // COUNT?
 
-			std::string get_output_str(const std::string& f_str, int& index); // m;l;x;y;z;sx;sy;sz!
+			std::wstring get_output_str(const std::wstring& f_str, int& index); // m;l;x;y;z;sx;sy;sz!
 
-			std::string get_file_name(const std::string& number);
+			std::wstring get_file_name(const std::wstring& number);
 
-			bool convert(const std::string& formatted_str, const std::string& path_to_folder, int& index);
+			bool convert(const std::wstring& formatted_str, const std::wstring& path_to_folder, int& index);
 
 		}
 

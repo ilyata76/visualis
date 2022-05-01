@@ -1,28 +1,31 @@
-#include "./include/parser-converter/converter-v5.hpp"
+п»ї#include "./include/parser-converter/converter-v5.hpp"
 #include "./include/parser-converter/parser-v5.hpp"
 
 #include <iostream>
+#include <ctime>
 
-// TODO слой первый или второй  а материал?
+// TODO СЃР»РѕР№ РїРµСЂРІС‹Р№ РёР»Рё РІС‚РѕСЂРѕР№  Р° РјР°С‚РµСЂРёР°Р»?
 
 int main(int argc, char* argv) {
 	try {
-		std::to_string(argv[0]); // <- для пути и вариаций
-		// флажки придумаем
-		std::string a = "../temp";
+		time_t aaa;
+		std::wcout << (aaa = std::time(0));
+		std::to_string(argv[0]); // <- РґР»СЏ РїСѓС‚Рё Рё РІР°СЂРёР°С†РёР№
+		// С„Р»Р°Р¶РєРё РїСЂРёРґСѓРјР°РµРј
+		std::wstring a = L"../temp";
 		//std::cout << vampire5::parser::get_count("");
 
 
 		auto abobus = vampire5::parser::get_string(a);
-		std::string aa = abobus(9);
+		std::wstring aa = abobus(9);
 		int index = 0;
 		vampire5::converter::convert(aa, a, index);
-
-
+		time_t bbb;
+		std::wcout << (bbb = std::time(0)) << L" " << bbb - aaa;
 
 	}
 	catch (Exceptio& E) {
-		std::cout << E.get_description() << "\t" << E.get_comment();
+		std::wcout << E.get_description() << "\t" << E.get_comment();
 	}
 	return 0;
 }

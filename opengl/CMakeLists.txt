@@ -9,14 +9,14 @@ set (ENTRYPOINT
 
 set (HEADERS
 	source/include/parser-converter/parser-v5.hpp
-    source/include/parser-converter/converter-v5.hpp
+	source/include/parser-converter/converter-v5.hpp
 	source/include/defines.hpp
 
 )
 
 set (SOURCES
 	source/converter-v5.cpp
-    source/parser-v5.cpp
+	source/parser-v5.cpp
 )
 
 add_subdirectory(source/libraries/tia-Exceptio/)
