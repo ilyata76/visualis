@@ -2,7 +2,7 @@
 
 
 
-// formatted string: NUMBER?COUNT?x;y;z;sx;sy;sz!x;y;z;sx;sy;sz!
+// formatted wstring: NUMBER?COUNT?x;y;z;sx;sy;sz!x;y;z;sx;sy;sz!
 bool vampire5::converter::convert(const std::wstring& formatted_str, const std::wstring& path_to_folder, int& index) {
 
 	std::wfstream output;
