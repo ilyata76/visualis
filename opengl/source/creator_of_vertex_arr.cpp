@@ -44,6 +44,14 @@ unsigned int Vertex::get_number() {
 	return this->number;
 }
 
+short int vvis::creator::Vertex::get_layer() {
+	return this->layer;
+}
+
+short int vvis::creator::Vertex::get_material() {
+	return this->material;
+}
+
 ///////
 
 std::wstring path_to_folder_ = L"";
