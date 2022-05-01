@@ -14,7 +14,7 @@
 #define FORMAT_OF_OUR_FILE L".vvis"
 #define COMMENT_OF_OUR_FILE L"#"
 
-#define PLUG_1 L'x'
+#define PLUG_1 L';'
 #define PLUG_2 L'!'
 #define PLUG_3 L'?'
 

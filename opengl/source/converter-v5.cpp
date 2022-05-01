@@ -1,16 +1,12 @@
 ﻿#include "./include/parser-converter/converter-v5.hpp"
 
 
-
-// formatted wstring: NUMBER?COUNT?x;y;z;sx;sy;sz!x;y;z;sx;sy;sz!
-bool vampire5::converter::convert(const std::wstring& formatted_str, const std::wstring& path_to_folder, int& index) {
+bool vampire5::converter::convert(const std::wstring& formatted_str, const std::wstring& path_to_folder, int index) {
 
 	std::wfstream output;
-
 	std::wstring number = vampire5::converter::get_number_of_file_from_f_str(formatted_str, index);
 	std::wstring filename = vampire5::converter::get_file_name(number);
 	std::wstring count = vampire5::converter::get_count_from_f_str(formatted_str, index);
-
 	output.open(path_to_folder + L"/" + filename + FORMAT_OF_OUR_FILE, std::ios_base::out | std::ios_base::trunc);
 
 	output << COMMENT_OF_OUR_FILE << L'\t' << L"number" << L'\t' << L"count" << L'\n';

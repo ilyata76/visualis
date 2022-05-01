@@ -24,7 +24,10 @@
 
 			std::wstring get_file_name(const std::wstring& number);
 
-			bool convert(const std::wstring& formatted_str, const std::wstring& path_to_folder, int& index);
+			// formatted wstring: NUMBER?COUNT?x;y;z;sx;sy;sz!x;y;z;sx;sy;sz!
+			// path_to_folder like L"../temp"
+			// index = use 0 for standart working; index of first symbol of formatted_str
+			bool convert(const std::wstring& formatted_str, const std::wstring& path_to_folder, int index = 0);
 
 		}
 

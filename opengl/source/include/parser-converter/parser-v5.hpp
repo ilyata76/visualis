@@ -21,6 +21,7 @@
 			using FUNCTION_STRING_CONSTINTL = std::wstring(*)(const int&);
 			// получает string форматом NUMBER?COUNT?x;y;z;sx;sy;sz!x;y;z;sx;sy;sz! для текущего const int& number файла
 			std::wstring get_out(const int& number);
+			// результатом является функция, возвращаются wstring и зависящая от const int& number, где number - NUMBER OF FILE
 			FUNCTION_STRING_CONSTINTL get_string(const std::wstring& path_to_folder);
 
 			std::wstring get_spin_file_name(const int& number);
