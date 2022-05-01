@@ -1,5 +1,6 @@
 ﻿#include "./include/parser-converter/converter-v5.hpp"
 #include "./include/parser-converter/parser-v5.hpp"
+#include "include/sample/point-spin.hpp"
 
 #include <iostream>
 #include <ctime>
@@ -26,10 +27,20 @@ int main(int argc, char* argv) {
 		//vampire5::converter::convert(aa, a, index);
 		//time_t bbb = aaa;
 		//std::wcout << (bbb = std::time(0)) << L" " << bbb - aaa;
+		double aboba = 1.0;
+		vvis::creator::Point a(aboba, 2.0, 3.0);
+		std::wcout << a.get(L'x');
+		a.set(L'x', 1.1);
+		std::wcout << a.get(L'b');
+		vvis::creator::Spin ss(aboba, 2.0, 3.0);
+		std::wcout << ss.get(L'x');
+		std::wcout << ss.get(L"sx");
 
 	}
 	catch (Exceptio& E) {
-		std::wcout << E.get_description() << "\t" << E.get_comment();
+		_wsetlocale(LC_ALL, L".UTF-8"); // !!! ГДЕ ВЫ БЫЛИ РАНЬШЕ С ВАШИМ .UTF-8
+
+		std::wcout << E.get_description() << L"   " << E.get_comment();
 	}
 	return 0;
 }

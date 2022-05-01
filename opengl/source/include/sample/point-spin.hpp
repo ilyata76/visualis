@@ -5,6 +5,9 @@
 
 	#include <string>
 
+	#include "../../libraries/tia-Exceptio/include/assert.hpp"
+	#include "../defines.hpp"
+
 	namespace vvis {
 
 		namespace creator {
@@ -17,10 +20,22 @@
 
 				public:
 					Point();
-					Point(double x, double y, double z);
-					Point(double x, double y);
 
-					double get(std::wstring& what);
+					Point(const double& x, const double& y, const double& z);
+
+					//Point(double x, double y, double z);
+
+					Point(const double& x, const double& y);
+
+					//Point(double x, double y);
+
+					// Use L'x' etc.
+					double get(wchar_t what);
+
+					//double set(wchar_t what, double value);
+
+					// Use L'x' etc.
+					double set(wchar_t what, const double& value);
 			};
 
 			class Spin {
@@ -31,10 +46,30 @@
 
 				public:
 					Spin();
-					Spin(double sx, double sy, double sz);
-					Spin(double sx, double sy);
 
-					double get(std::wstring& what);
+					Spin(const double& sx, const double& sy, const double& sz);
+
+					//Spin(double sx, double sy, double sz);
+
+					Spin(const double& sx, const double& sy);
+
+					//Spin(double sx, double sy);
+
+					// Use L"x" etc.
+					double get(const std::wstring& what);
+
+					// Use L'x' etc.
+					double get(wchar_t what);
+
+					// Use L"sx" etc.
+					double set(const std::wstring& what, double& value);
+
+					//double set(const std::wstring& what, double value);
+					
+					// Use L'x' etc.
+					double set(wchar_t what, double& value);
+
+					//double set(wchar_t what, double value);
 			};
 
 
