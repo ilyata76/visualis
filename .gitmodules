@@ -1,6 +1,6 @@
-[submodule "opengl/source/libraries/tia-Exceptio"]
-	path = opengl/source/libraries/tia-Exceptio
+[submodule "windows-opengl/source/libraries/tia-Exceptio"]
+	path = windows-opengl/source/libraries/tia-Exceptio
 	url = git@github.com:ilyata76/tia-Exceptio.git
-[submodule "opengl/source/libraries/freeglut"]
-	path = opengl/source/libraries/freeglut
-	url = git@github.com:FreeGLUTProject/freeglut.git
+[submodule "windows-opengl/source/libraries/freeglut"]
+	path = windows-opengl/source/libraries/freeglut
+	url = https://github.com/FreeGLUTProject/freeglut.git
