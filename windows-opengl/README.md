@@ -4,7 +4,7 @@
 - [x] .data parser
     - [x] .data -> string -> convertor to .vvis
 - [x] .vvis -> creator of vertex array
-- [+] adding the freeglut in project structure
+- [x] adding the freeglut in project structure
     - [ ] отмучаться с dll - решения нет?
     - [ ] preparation for drawing
 - [ ] vertex array -> creating a shape
