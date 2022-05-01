@@ -4,7 +4,8 @@
 - [x] .data parser
     - [x] .data -> string -> convertor to .vvis
 - [x] .vvis -> creator of vertex array
-- [ ] adding the freeglut in project structure
+- [+] adding the freeglut in project structure
+    - [ ] отмучаться с dll - решения нет?
     - [ ] preparation for drawing
 - [ ] vertex array -> creating a shape
     - [ ] shape -> printing sample
@@ -53,7 +54,9 @@
         * sstream - используется для обработки строк из getline
 
 ## Зависимости
-+ [Exceptio](https://github.com/ilyata76/tia-Exceptio.git) для исключений и `Assert`
++ **[Exceptio](https://github.com/ilyata76/tia-Exceptio.git)** для исключений и `Assert`. CMake самостоятельно (через инструкцию)
+линкует библиотеку
++ **[freeglut](https://github.com/FreeGLUTProject/freeglut.git)** для рисования. Через CMake можно подключить `.lib` библиотеки (см. CmakeLists.txt), а вот с `.dll` - нужно перетаскивать вместе с экзешником или сохранять в PATH
   
 ## Пространства имён
 Основные функции  
