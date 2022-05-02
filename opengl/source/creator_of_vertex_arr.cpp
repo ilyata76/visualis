@@ -5,8 +5,6 @@ using vvis::creator::Spin;
 using vvis::creator::Vertex;
 
 
-
-
 //Vertex::Vertex(Point& p, Spin& s, unsigned int number) {
 //	this->point = p;
 //	this->spin = s;
@@ -68,7 +66,7 @@ std::wstring vvis::creator::get_file_name(const int& number) {
 
 std::vector <Vertex> vvis::creator::get_out(const int& index) {
 	// TODO: не хватает проверок
-	std::vector<Vertex> result;
+	
 
 	std::wstring name_of_file = vvis::creator::get_file_name(index);
 
@@ -88,7 +86,7 @@ std::vector <Vertex> vvis::creator::get_out(const int& index) {
 	std::wstringstream sstream(line_with_number_and_count); 
 
 	int number_of_file = INT_PLUG_VVIS;
-	int spins_count = INT_PLUG_VVIS;
+	size_t spins_count = INT_PLUG_VVIS;
 
 	int layer = INT_PLUG_VVIS;
 	int material = INT_PLUG_VVIS;
@@ -103,6 +101,8 @@ std::vector <Vertex> vvis::creator::get_out(const int& index) {
 	std::wstring abob;
 
 	sstream >> number_of_file >> spins_count; // 2nd line
+	std::vector<Vertex> result; size_t for_reserve = spins_count + 1; // на последней итерации цикла vector добавляет место под ещё один элемент, хотя его не будет
+	result.reserve(for_reserve); // change capacity of vector
 
 	for (int _index = 0; !input_file.eof() && _index != spins_count; ++_index) {
 		
@@ -129,8 +129,6 @@ std::vector <Vertex> vvis::creator::get_out(const int& index) {
 		mystream >> material >> layer >> x >> y >> z >> sx >> sy >> sz;
 		
 		result.push_back(Vertex(Point(x, y, z), Spin(sx, sy, sz), _index, layer, material));
-
-		//std::wcout << material << " " << layer << " " << x << " " << y << " " << z << " " << sx << " " << sy << " " << sz << " " << L'\n';
 	}
 
 	input_file.close();
