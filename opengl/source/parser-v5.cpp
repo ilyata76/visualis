@@ -42,8 +42,9 @@ std::wstring path_to_folder = L"";
 
 std::wstring vampire5::parser::get_spin_file_name(const int& number) {
 	std::wstring num = std::to_wstring(number); std::wstring base = BASE_NUMBER_OF_FILE_V5;
-	for (int i = 0; num.length() != 0; ++i, num.pop_back()) {
-		base[base.length() - 1 - i] = num[num.length() - 1];
+	size_t num_lenght = num.length(); size_t base_lenght = base.length();
+	for (int i = 0; num_lenght != 0; ++i, num.pop_back(), num_lenght = num.length()) {
+		base[base_lenght - 1 - i] = num[num_lenght - 1];
 	};
 	return std::wstring(START_OF_SPINS_NAME_FILE_V5 + base);
 }

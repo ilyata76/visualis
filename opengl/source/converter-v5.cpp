@@ -60,8 +60,9 @@ std::wstring vampire5::converter::get_file_name(const std::wstring& number) {
 	std::wstring num = number;
 	std::wstring base = BASE_NUMBER_OF_FILE_V5;
 
-	for (int i = 0; num.length() != 0; ++i, num.pop_back()) {
-		base[base.length() - 1 - i] = num[num.length() - 1];
+	size_t num_lenght = num.length(); size_t base_lenght = base.length();
+	for (int i = 0; num_lenght != 0; ++i, num.pop_back(), num_lenght = num.length()) {
+		base[base_lenght - 1 - i] = num[num_lenght - 1];
 	};
 
 	return std::wstring(START_OF_OUR_FILE + base);
