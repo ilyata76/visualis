@@ -1,4 +1,4 @@
-#include "./include/parser-converter/converter-v5.hpp"
+п»ї#include "./include/parser-converter/converter-v5.hpp"
 #include "./include/parser-converter/parser-v5.hpp"
 #include "include/sample/point-spin.hpp"
 #include "include/sample/creator_of_vertex_arr.hpp"
@@ -8,9 +8,9 @@
 #include <iostream>
 #include <ctime>
 
-// TODO: слой первый или второй  а материал?
-// TODO: нет проверок соответствует ли количество строк тому, что написано в начале файла
-// TODO: добавить комментарии а то с индексом уже запутался
+// TODO: СЃР»РѕР№ РїРµСЂРІС‹Р№ РёР»Рё РІС‚РѕСЂРѕР№  Р° РјР°С‚РµСЂРёР°Р»?
+// TODO: РЅРµС‚ РїСЂРѕРІРµСЂРѕРє СЃРѕРѕС‚РІРµС‚СЃС‚РІСѓРµС‚ Р»Рё РєРѕР»РёС‡РµСЃС‚РІРѕ СЃС‚СЂРѕРє С‚РѕРјСѓ, С‡С‚Рѕ РЅР°РїРёСЃР°РЅРѕ РІ РЅР°С‡Р°Р»Рµ С„Р°Р№Р»Р°
+// TODO: РґРѕР±Р°РІРёС‚СЊ РєРѕРјРјРµРЅС‚Р°СЂРёРё Р° С‚Рѕ СЃ РёРЅРґРµРєСЃРѕРј СѓР¶Рµ Р·Р°РїСѓС‚Р°Р»СЃСЏ
 
 int main(int argc, char** argv) {
 	try {
@@ -33,7 +33,7 @@ int main(int argc, char** argv) {
 		std::wcout << time(0);
 	}
 	catch (Exceptio& E) {
-		_wsetlocale(LC_ALL, L".UTF-8"); // !!! ГДЕ ВЫ БЫЛИ РАНЬШЕ С ВАШИМ .UTF-8
+		_wsetlocale(LC_ALL, L".UTF-8"); // !!! Р“Р”Р• Р’Р« Р‘Р«Р›Р Р РђРќР¬РЁР• РЎ Р’РђРЁРРњ .UTF-8
 
 		std::wcout << E.get_description() << L"   " << E.get_comment();
 	}

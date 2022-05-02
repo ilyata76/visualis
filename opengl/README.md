@@ -97,9 +97,11 @@ namespace vvis {
 ```
 
 ## Текущее быстродействие
+```
 01.05.2022 : Для кофигурации из 110922 спинов  
     START: 1651438262
     AFTER PARSING: 1651438267 5
     AFTER CONVERTING: 1651438269 2 7
     AFTER VERTEX CREATING: 1651438276 7 14
 При условии, что parsing+converting будет лишь единожды проведено.
+```
