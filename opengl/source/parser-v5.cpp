@@ -74,7 +74,10 @@ std::wstring vampire5::parser::get_out(const int& number) {
 	Assert( std::stoi(str1) == std::stoi(str2), 102, L"str1 != str2, разное количество строк в файлах", 
 											   L"Assert. Проверьте первую строку обоих файлов. ФУНКЦИЯ: vampire5::parser::get_out" );
 
-	std::wstring format_string = std::to_wstring(number) + PLUG_3 + str1 + PLUG_3;
+	
+	std::wstring format_string;
+	format_string.reserve( sizeof(std::to_wstring(number) + PLUG_3 + str1 + PLUG_3) + sizeof(char) * 9 * number + sizeof(PLUG_2)*number + sizeof(char)*5*number);
+	format_string += std::to_wstring(number) + PLUG_3 + str1 + PLUG_3;
 
 	// далее цикл по сборке строки
 
