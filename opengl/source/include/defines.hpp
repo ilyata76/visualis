@@ -21,4 +21,8 @@
 #define DOUBLE_PLUG_VVIS 0.0
 #define INT_PLUG_VVIS 0
 
+#define SHAPE_CONE 'c'
+#define SHAPE_CONE_STR L"cone"
+
+
 #endif 

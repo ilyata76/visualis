@@ -16,6 +16,8 @@ set (HEADERS
 #	source/include/parser-converter/vvis-parser.hpp
 	source/include/sample/creator_of_vertex_arr.hpp
 	source/include/sample/point-spin.hpp
+	source/include/sample/shape.hpp
+	source/include/sample/color_class.hpp
 )
 
 set (SOURCES
@@ -24,6 +26,8 @@ set (SOURCES
 #	source/vvis-parser.cpp
 	source/point-spin.cpp
 	source/creator_of_vertex_arr.cpp
+	source/shape.cpp
+	source/color_class.cpp
 )
 
 # ----------- |  | ----------- 
