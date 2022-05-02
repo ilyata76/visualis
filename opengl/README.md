@@ -6,7 +6,7 @@
 - [x] .vvis -> creator of vertex array
 - [x] adding the freeglut in project structure
     - [ ] отмучаться с dll - решения нет?
-    - [ ] preparation for drawing
+    - [x] preparation for drawing
 - [ ] vertex array -> creating a shape
     - [ ] shape -> printing sample
 - [ ] variable main.cpp
@@ -97,11 +97,4 @@ namespace vvis {
 ```
 
 ## Текущее быстродействие
-```
-01.05.2022 : Для кофигурации из 110922 спинов  
-    START: 1651438262
-    AFTER PARSING: 1651438267 5
-    AFTER CONVERTING: 1651438269 2 7
-    AFTER VERTEX CREATING: 1651438276 7 14
-При условии, что parsing+converting будет лишь единожды проведено.
-```
+- [issues/Оптимизация](https://github.com/ilyata76/visualis/issues/12)

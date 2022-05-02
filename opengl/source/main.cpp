@@ -12,29 +12,45 @@
 // TODO: нет проверок соответствует ли количество строк тому, что написано в начале файла
 // TODO: добавить комментарии а то с индексом уже запутался
 
+
+void display() {
+	glClearColor(1, 1, 1, 0);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glPushMatrix();
+	
+	glColor3f(0, 0, 0);
+	glRotatef(90, 0, 1, 0);
+	glRotatef(90, 0, 0, 1);
+	glRotatef(90, 0, 1, 0);
+	glutSolidCone(0.05, 0.5, 10, 10);
+	glRotatef(-90, 0, 1, 0);
+	glRotatef(-90, 0, 0, 1);
+	glRotatef(-90, 0, 1, 0);
+	glTranslatef(0.1, 0, 0);
+	glRotatef(-90, 0, 1, 0);
+	glRotatef(-90, 0, 0, 1);
+	glRotatef(-90, 0, 1, 0);
+	glutSolidCone(0.05, 0.5, 10, 10);
+	glPopMatrix();
+	glutSwapBuffers();
+}
+
+
 int main(int argc, char** argv) {
 	try {
-		time_t current = time(0);
-		std::wstring a = L"../temp";
-		int index = 9;
-		std::wstring str = vampire5::parser::get_string(a)(index);
-		time_t afterparser = time(0);
-		int nol = 0;
-		bool created = vampire5::converter::convert(str, a);
-		time_t afterconverter = time(0);
-		std::vector<vvis::creator::Vertex> A = vvis::creator::create_arry(a)(index);
-		time_t aftercreator = time(0);
-
-		std::wcout << "START: " << current << '\n';
-		std::wcout << "AFTER PARSING: " << afterparser << " " << afterparser - current << '\n';
-		std::wcout << "AFTER CONVERTING: " << afterconverter << " " << afterconverter - afterparser << " " << afterconverter - current << '\n';
-		std::wcout << "AFTER VERTEX CREATING: " << aftercreator << " " << aftercreator - afterconverter << " " << aftercreator - current << '\n';
-		std::wcout << A[100000].get_point().get('x') << '\n';
-		std::wcout << time(0);
+		glutInitWindowSize(500, 250);
+		glutInitWindowPosition(140, 140);
+		glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE);
+		glutInit(&argc, argv);
+		int MAINWINDOW = glutCreateWindow("mainwindow");
+		glutSetWindowTitle("TTITLE");
+		glutDisplayFunc(display);
+		//glutIdleFunc(display);
+		glutMainLoop();
+		system("pause");
 	}
 	catch (Exceptio& E) {
-		_wsetlocale(LC_ALL, L".UTF-8"); // !!! ГДЕ ВЫ БЫЛИ РАНЬШЕ С ВАШИМ .UTF-8
-
+		_wsetlocale(LC_ALL, L".UTF-8");
 		std::wcout << E.get_description() << L"   " << E.get_comment();
 	}
 	return 0;
