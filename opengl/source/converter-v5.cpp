@@ -16,7 +16,7 @@ bool vampire5::converter::convert(const std::wstring& formatted_str, const std::
 
 	while (index < formatted_str.length()) {
 		output << vampire5::converter::get_output_str(formatted_str, index) << '\n';
-	} output << std::flush;
+	} //output << std::flush;
 	
 	output.close();
 

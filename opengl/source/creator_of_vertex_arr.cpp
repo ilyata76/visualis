@@ -7,29 +7,29 @@ using vvis::creator::Vertex;
 
 
 
-Vertex::Vertex(Point& p, Spin& s, unsigned int number) {
-	this->point = p;
-	this->spin = s;
-	this->number = number;
-	this->material = INT_PLUG_VVIS;
-	this->layer = INT_PLUG_VVIS;
-}
-
-Vertex::Vertex(Point& p, Spin& s) {
-	this->point = p;
-	this->spin = s;
-	this->number = INT_PLUG_VVIS;
-	this->material = INT_PLUG_VVIS;
-	this->layer = INT_PLUG_VVIS;
-}
-
-Vertex::Vertex(Point& p, Spin& s, unsigned int number, short int layer, short int material) {
-	this->point = p;
-	this->spin = s;
-	this->number = number;
-	this->material = material;
-	this->layer = layer;
-}
+//Vertex::Vertex(Point& p, Spin& s, unsigned int number) {
+//	this->point = p;
+//	this->spin = s;
+//	this->number = number;
+//	this->material = INT_PLUG_VVIS;
+//	this->layer = INT_PLUG_VVIS;
+//}
+//
+//Vertex::Vertex(Point& p, Spin& s) {
+//	this->point = p;
+//	this->spin = s;
+//	this->number = INT_PLUG_VVIS;
+//	this->material = INT_PLUG_VVIS;
+//	this->layer = INT_PLUG_VVIS;
+//}
+//
+//Vertex::Vertex(Point& p, Spin& s, unsigned int number, short int layer, short int material) {
+//	this->point = p;
+//	this->spin = s;
+//	this->number = number;
+//	this->material = material;
+//	this->layer = layer;
+//}
 
 
 Point Vertex::get_point() {
@@ -77,7 +77,7 @@ std::vector <Vertex> vvis::creator::get_out(const int& index) {
 	input_file.open(path_to_folder_ + L"/" + name_of_file + FORMAT_OF_OUR_FILE, std::ios_base::in);
 
 	std::wstring line_with_number_and_count = [&input_file]() {
-		std::wstring str = L""; 
+		std::wstring str; 
 		do { 
 			std::getline(input_file, str); 
 		} while (str[0] == '#'); // scip #coms
@@ -100,7 +100,7 @@ std::vector <Vertex> vvis::creator::get_out(const int& index) {
 	double sy = DOUBLE_PLUG_VVIS;
 	double sz = DOUBLE_PLUG_VVIS;
 
-	std::wstring abob = L"";
+	std::wstring abob;
 
 	sstream >> number_of_file >> spins_count; // 2nd line
 

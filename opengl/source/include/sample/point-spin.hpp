@@ -19,13 +19,18 @@
 					double z;
 
 				public:
-					Point();
+					//Point();
 
-					Point(const double& x, const double& y, const double& z);
+					//Point(const double& x, const double& y, const double& z);
+					//Point(const double& x, const double& y, const double& z);
 
 					//Point(double x, double y, double z);
 
-					Point(const double& x, const double& y);
+					//Point(const double& x, const double& y);
+
+					Point() : x(DOUBLE_PLUG_VVIS), y(DOUBLE_PLUG_VVIS), z(DOUBLE_PLUG_VVIS) {};
+					Point(const double& x, const double& y, const double& z) : x(x), y(y), z(z) {};
+					Point(const double& x, const double& y) : x(x), y(y), z(DOUBLE_PLUG_VVIS) {};
 
 					//Point(double x, double y);
 
@@ -47,13 +52,17 @@
 					double sz;
 
 				public:
-					Spin();
+					//Spin();
 
-					Spin(const double& sx, const double& sy, const double& sz);
+					//Spin(const double& sx, const double& sy, const double& sz);
 
 					//Spin(double sx, double sy, double sz);
 
-					Spin(const double& sx, const double& sy);
+					//Spin(const double& sx, const double& sy);
+
+					Spin() : sx(DOUBLE_PLUG_VVIS), sy(DOUBLE_PLUG_VVIS), sz(DOUBLE_PLUG_VVIS) {};
+					Spin(const double& sx, const double& sy, const double& sz) : sx(sx), sy(sy), sz(sz) {};
+					Spin(const double& sx, const double& sy) : sx(sx), sy(sy), sz(DOUBLE_PLUG_VVIS) {};
 
 					//Spin(double sx, double sy);
 

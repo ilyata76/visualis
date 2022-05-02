@@ -1,8 +1,8 @@
 ﻿#include "include/sample/point-spin.hpp"
 
-vvis::creator::Point::Point() {
-	this->x = DOUBLE_PLUG_VVIS; this->y = DOUBLE_PLUG_VVIS; this->z = DOUBLE_PLUG_VVIS;
-}
+//vvis::creator::Point::Point() {
+//	this->x = DOUBLE_PLUG_VVIS; this->y = DOUBLE_PLUG_VVIS; this->z = DOUBLE_PLUG_VVIS;
+//}
 
 //vvis::creator::Point::Point(double x, double y, double z) {
 //	this->x = x; this->y = y; this->z = z;
@@ -12,13 +12,13 @@ vvis::creator::Point::Point() {
 //	this->x = y; this->y = y; this->z = DOUBLE_PLUG;
 //}
 
-vvis::creator::Point::Point(const double& x, const double& y, const double& z) {
-	this->x = x; this->y = y; this->z = z;
-}
-
-vvis::creator::Point::Point(const double& x, const double& y) {
-	this->x = y; this->y = y; this->z = DOUBLE_PLUG_VVIS;
-}
+//vvis::creator::Point::Point(const double& x, const double& y, const double& z) {
+//	this->x = x; this->y = y; this->z = z;
+//}
+//
+//vvis::creator::Point::Point(const double& x, const double& y) {
+//	this->x = y; this->y = y; this->z = DOUBLE_PLUG_VVIS;
+//}
 
 // use L'x' L'y' L'z'
 double vvis::creator::Point::get(wchar_t what) {
@@ -70,9 +70,9 @@ double vvis::creator::Point::set(wchar_t what, const double& value) {
 // spin
 // -
 
-vvis::creator::Spin::Spin() {
-	this->sx = DOUBLE_PLUG_VVIS; this->sy = DOUBLE_PLUG_VVIS; this->sz = DOUBLE_PLUG_VVIS;
-}
+//vvis::creator::Spin::Spin() {
+//	this->sx = DOUBLE_PLUG_VVIS; this->sy = DOUBLE_PLUG_VVIS; this->sz = DOUBLE_PLUG_VVIS;
+//}
 
 //vvis::creator::Spin::Spin(double sx, double sy, double sz) {
 //	this->sx = sx; this->sy = sy; this->sz = sz;
@@ -82,13 +82,13 @@ vvis::creator::Spin::Spin() {
 //	this->sx = sx; this->sy = sy; this->sz = DOUBLE_PLUG;
 //}
 
-vvis::creator::Spin::Spin(const double& sx, const double& sy, const double& sz) {
-	this->sx = sx; this->sy = sy; this->sz = sz;
-}
-
-vvis::creator::Spin::Spin(const double& sx, const double& sy) {
-	this->sx = sx; this->sy = sy; this->sz = DOUBLE_PLUG_VVIS;
-}
+//vvis::creator::Spin::Spin(const double& sx, const double& sy, const double& sz) {
+//	this->sx = sx; this->sy = sy; this->sz = sz;
+//}
+//
+//vvis::creator::Spin::Spin(const double& sx, const double& sy) {
+//	this->sx = sx; this->sy = sy; this->sz = DOUBLE_PLUG_VVIS;
+//}
 
 // use L"x" etc.
 double vvis::creator::Spin::get(const std::wstring& what) {

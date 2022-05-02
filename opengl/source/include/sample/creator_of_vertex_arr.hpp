@@ -25,9 +25,12 @@
 					short int material;
 				public:
 					//Vertex();
-					Vertex(Point& p, Spin& s, unsigned int number); 
-					Vertex(Point& p, Spin& s, unsigned int number, short int layer, short int material); 
-					Vertex(Point& p, Spin& s); 
+					//Vertex(Point& p, Spin& s, unsigned int number); 
+					//Vertex(Point& p, Spin& s, unsigned int number, short int layer, short int material); 
+					//Vertex(Point& p, Spin& s);
+					Vertex(Point& p, Spin& s, unsigned int number) : point(p), spin(s), number(number), layer(INT_PLUG_VVIS), material(INT_PLUG_VVIS) {};
+					Vertex(Point& p, Spin& s, unsigned int number, short int layer, short int material) : point(p), spin(s), number(number), layer(layer), material(material) {};
+					Vertex(Point& p, Spin& s) : point(p), spin(s), number(INT_PLUG_VVIS), layer(INT_PLUG_VVIS), material(INT_PLUG_VVIS) {};
 
 					Point get_point();
 					Spin get_spin();
