@@ -111,12 +111,12 @@ namespace vvis {
         class Shape; // содержит в себе Vertex. Это родительский класс для всех фигур
 
         class Cone : public Shape; // содержит в себе два эейлеровых угла
-        	bool set_draw_configuration();	// на основании this->vertex построит конфигурацию		
-			bool draw(double base, double height, GLint slices, GLint stacks, vvis::visualization::VvisColor_3f color);  // рисует
+            bool set_draw_configuration();	// на основании this->vertex построит конфигурацию		
+            bool draw(double base, double height, GLint slices, GLint stacks, vvis::visualization::VvisColor_3f color);  // рисует
             wchar_t info_wchar(); // вернёт L'c'
-            
+
         float get_euler_phi(const double& sx, const double& sy, const double& sz);
-		float get_euler_theta(const double& sx, const double& sy, const double& sz);
+        float get_euler_theta(const double& sx, const double& sy, const double& sz);
     }
 }
 ```

@@ -23,11 +23,11 @@ void display() {
 	glRotatef(-90, 1, 0, 0); // представление второе (по часовой стрелке)
 	
 
-	vvis::creator::Vertex A(vvis::creator::Point(1, 1, 1), vvis::creator::Spin(0, 0, 0));
+	vvis::creator::Vertex A(vvis::creator::Point(1, 1, 1), vvis::creator::Spin(1,1,-1));
 
 	vvis::visualization::Cone B(A);
 	B.set_draw_configuration();
-	B.draw(0.05, 0.5, 200, 200, vvis::visualization::VvisColor_3f(1, 0, 0));
+	B.draw(0.05, 0.5, 200, 200, vvis::visualization::VvisColor_3f(0, 1, 0)/*vvis::visualization::get_color_by_direction(0.1, 1, 0.9)*/);
 	//glTranslatef(0.1, 0, 0); 	B.draw(0.05, 0.5, 200, 200, vvis::visualization::VvisColor_3f(0, 1, 0));
 	//glTranslatef(0, 0.1, 0); 	B.draw(0.05, 0.5, 200, 200, vvis::visualization::VvisColor_3f(0, 0, 1));
 	//glTranslatef(0, 0, 0.3); B.draw(0.05, 0.5, 200, 200, vvis::visualization::VvisColor_3f(0, 0, 0));
@@ -49,7 +49,6 @@ int main(int argc, char** argv) {
 		//glutIdleFunc(display);
 		glutMainLoop();
 		system("pause");
-
 
 	}
 	catch (Exceptio& E) {

@@ -7,7 +7,11 @@
 namespace vvis {
 	namespace visualization {
 
-		class VvisColor_3f {
+		class VvisColor {
+			//
+		};
+
+		class VvisColor_3f : public VvisColor {
 			public:
 				int red; int green; int blue;
 

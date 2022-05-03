@@ -13,7 +13,7 @@ bool vvis::visualization::Cone::set_draw_configuration() {
 	double sy = vrt.get_spin().get(L'y');
 	double sz = vrt.get_spin().get(L'z');
 
-	if (sx == sy == sz == 0) return false;
+	if (sx == 0.0 && sy == 0.0 && sx == 0.0) return false;
 
 	this->euler_phi = vvis::visualization::get_euler_phi(sx, sy, sz);
 	this->euler_theta = vvis::visualization::get_euler_theta(sx, sy, sz);
@@ -57,12 +57,9 @@ float vvis::visualization::get_euler_theta(const double& sx, const double& sy, c
 	
 	if (sz == 0) return (sign * 90.0f);
 	
-	if (sx != 0) {
-		if (sz > 0) return (sign * (atan(abs(sx / sz))) * 180.0 / 3.1415);
-		else if (sz < 0) return (sign * (180 - atan(abs(sx / sz))) * 180.0 / 3.1415);
-	} else {
-		if (sz > 0) return (sign * (atan(abs(sy / sz))) * 180.0 / 3.1415);
-		else if (sz < 0) return (sign * (180 - atan(abs(sy / sz))) * 180.0 / 3.1415);
-	}
+	if (sz > 0) return (sign * (atan(abs(sqrt(pow(sx, 2) + pow(sy, 2))) / abs(sz))) * 180.0 / 3.1415);
+	else return (sign * (180 - (atan(abs(sqrt(pow(sx, 2) + pow(sy, 2)) / sz))) * 180.0 / 3.1415));
+
+
 	return (sign * 0.0f);
 }
