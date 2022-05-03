@@ -21,6 +21,7 @@ bool vvis::visualization::Cone::set_draw_configuration() {
 	return true;
 }
 
+
 bool vvis::visualization::Cone::draw(double base, double height, GLint slices, GLint stacks, vvis::visualization::VvisColor_3f color) {
 	glColor3f(color.red, color.green, color.blue);
 	// повернули

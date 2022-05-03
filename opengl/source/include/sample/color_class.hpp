@@ -13,13 +13,13 @@ namespace vvis {
 
 		class VvisColor_3f : public VvisColor {
 			public:
-				int red; int green; int blue;
+				float red; float green; float blue;
 
 				VvisColor_3f() : red(1), green(1), blue(1) {};
-				VvisColor_3f(int red, int green, int blue) : red(red), green(green), blue(blue) {};
+				VvisColor_3f(float red, float green, float blue) : red(red), green(green), blue(blue) {};
 		};
 
-		VvisColor_3f get_color_by_direction(int x, int y, int z);
+		VvisColor_3f get_color_by_direction(float x, float y, float z);
 
 	}
 }
