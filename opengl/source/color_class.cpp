@@ -1,4 +1,4 @@
-#include "include\sample\color_class.hpp"
+﻿#include "include\sample\color_class.hpp"
 
 using vvis::visualization::VvisColor_3f;
 

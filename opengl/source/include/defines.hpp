@@ -24,5 +24,8 @@
 #define SHAPE_CONE 'c'
 #define SHAPE_CONE_STR L"cone"
 
+#define COUNTERCLOCKWISE 1 // use 0 for not
+#define INVERT_OY 1 // use 0 for not
+
 
 #endif 

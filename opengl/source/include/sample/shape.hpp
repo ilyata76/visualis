@@ -1,17 +1,18 @@
-#pragma once
+п»ї#pragma once
 
 #ifndef SHAPE_HPP
 #define SHAPE_HPP
 
 	#include "./creator_of_vertex_arr.hpp"
 	#include "./color_class.hpp"
-	#include "../../libraries/freeglut/include/GL/glut.h"
+	#include "../../libraries/freeglut/include/GL/glut.h"	
+	#include <math.h>
 
 	namespace vvis {
 		namespace visualization {
 
 			using creator::Vertex;
-			// Vertex можно заменить на Spin, если не развивать идею со слоями, материалами и пр.
+			// Vertex РјРѕР¶РЅРѕ Р·Р°РјРµРЅРёС‚СЊ РЅР° Spin, РµСЃР»Рё РЅРµ СЂР°Р·РІРёРІР°С‚СЊ РёРґРµСЋ СЃРѕ СЃР»РѕСЏРјРё, РјР°С‚РµСЂРёР°Р»Р°РјРё Рё РїСЂ.
 			class Shape {
 				protected:
 					Vertex vrt;
@@ -31,13 +32,16 @@
 				public:
 					Cone(Vertex& x) : Shape(x), euler_phi(0.0), euler_theta(0.0) {};
 
-					bool set_draw_configuration();	// на основании this->vertex построит конфигурацию
+					bool set_draw_configuration();	// РЅР° РѕСЃРЅРѕРІР°РЅРёРё this->vertex РїРѕСЃС‚СЂРѕРёС‚ РєРѕРЅС„РёРіСѓСЂР°С†РёСЋ
 					
-					bool draw(double base, double height, GLint slices, GLint stacks, vvis::visualization::VvisColor_3f color);  // рисует
+					bool draw(double base, double height, GLint slices, GLint stacks, vvis::visualization::VvisColor_3f color);  // СЂРёСЃСѓРµС‚
 
 					wchar_t info_wchar();
 					std::wstring info_wstr();
 			};
+
+			float get_euler_phi(const double& sx, const double& sy, const double& sz);
+			float get_euler_theta(const double& sx, const double& sy, const double& sz);
 		}
 	}
 

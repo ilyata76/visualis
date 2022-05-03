@@ -128,6 +128,9 @@ std::vector <Vertex> vvis::creator::get_out(const int& index) {
 		std::wstringstream mystream(str);
 		mystream >> material >> layer >> x >> y >> z >> sx >> sy >> sz;
 		
+		// INVERTING OY IN VISUALIZATION
+		if (INVERT_OY) { sy = -sy; y = -y; };
+
 		result.push_back(Vertex(Point(x, y, z), Spin(sx, sy, sz), _index, layer, material));
 	}
 
