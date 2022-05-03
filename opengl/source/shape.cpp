@@ -8,9 +8,6 @@ std::wstring vvis::visualization::Cone::info_wstr() {
 	return SHAPE_CONE_STR;
 }
 
-
-#include <iostream>
-
 bool vvis::visualization::Cone::set_draw_configuration() {
 	double sx = vrt.get_spin().get(L'x');
 	double sy = vrt.get_spin().get(L'y');
@@ -20,8 +17,6 @@ bool vvis::visualization::Cone::set_draw_configuration() {
 
 	this->euler_phi = vvis::visualization::get_euler_phi(sx, sy, sz);
 	this->euler_theta = vvis::visualization::get_euler_theta(sx, sy, sz);
-
-	std::wcout << euler_phi << " " << euler_theta;
 
 	return true;
 }

@@ -8,6 +8,8 @@
     - [ ] отмучаться с dll - решения нет?
     - [x] preparation for drawing
 - [ ] vertex array -> creating a shape
+    - [x] shape -> cone
+        - [x] cone -> printing simple cone
     - [ ] shape -> printing sample
 - [ ] variable main.cpp
   
@@ -52,6 +54,14 @@
         * fstream
         * vector
         * sstream - используется для обработки строк из getline
+* **shape**.cpp содержит в себе класс(-ы) конечных фигур, которые вспоследствии будут отрисованы
+    * shape.hpp
+        * creator_of_vertex_arr.hpp
+        * color_class.hpp
+        * glut.h для того, чтобы методы классов уже умели рисовать
+        * math.h
+* **color_cass**.cpp содержит в себе определение класса цвета
+    * color_cass.hpp
 
 ## Зависимости
 + **[Exceptio](https://github.com/ilyata76/tia-Exceptio.git)** для исключений и `Assert`. CMake самостоятельно (через инструкцию)
@@ -92,6 +102,21 @@ namespace vvis {
         special_func create_arry(const std::wstring& p_t_folder); // запоминает путь (как в parse-v5), возвращает get_out
 
         std::wstring get_file_name(const int& index); // получить имя (аналогично parse-v5) типа spins-xxx
+    }
+    namespace visualization {
+
+        class VvisColor_3f; // содержит в себе 3 поля RGB
+        VvisColor_3f get_color_by_direction(int x, int y, int z); // для определение цвета конечного элемента
+
+        class Shape; // содержит в себе Vertex. Это родительский класс для всех фигур
+
+        class Cone : public Shape; // содержит в себе два эейлеровых угла
+        	bool set_draw_configuration();	// на основании this->vertex построит конфигурацию		
+			bool draw(double base, double height, GLint slices, GLint stacks, vvis::visualization::VvisColor_3f color);  // рисует
+            wchar_t info_wchar(); // вернёт L'c'
+            
+        float get_euler_phi(const double& sx, const double& sy, const double& sz);
+		float get_euler_theta(const double& sx, const double& sy, const double& sz);
     }
 }
 ```
