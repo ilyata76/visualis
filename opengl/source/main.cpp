@@ -8,6 +8,7 @@
 #include "./include/defines.hpp"
 
 #include "./include/sample/shape.hpp"
+#include "./include/sample/drawing_shape_opengl.hpp"
 
 #include <iostream>
 #include <ctime>
@@ -33,35 +34,7 @@
 //double dipole_head_length = scale * dist_min / 2.0;
 //double dipole_head_radius = dipole_head_length / 4.0;
 
-//void draw_spin(int& index) {
-//	glPushMatrix();
-//	glRotatef(-90, 1, 0, 0);
-//	vvis::creator::Point p = vect[index].get_point();
-//	dx = p.get(L'x'); dy = p.get(L'y'); dz = p.get(L'z');
-//	vvis::visualization::Cone B(vect[index]);
-//	
-//	glTranslated(dx / 32, dy / 32, dz / 32);
-//	
-//	B.set_draw_configuration();
-//
-//	B.draw(0.005, 0.05, 10, 10, vvis::visualization::VvisColor_3f(0, 0, 0));
-//	glPopMatrix();
-//}
 
-void display() {
-	//index = 0;
-	glClearColor(1, 1, 1, 0);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);	
-	if (ROTATE_Z_FO_SECOND_REPRESENTATION) glRotatef(-90, 1, 0, 0);
-	//for (index;index != size;++index)
-	//	draw_spin(index);
-	vvis::creator::Vertex A = vvis::creator::Vertex(vvis::creator::Point(0, 0, 0), vvis::creator::Spin(-1, 1, -1));
-	vvis::visualization::Cone B(A);
-	B.set_draw_configuration();
-	B.draw(0.05, 0.5, 10, 10, vvis::visualization::get_color_by_direction(A.get_spin()));
-	glutSwapBuffers();
-
-}
 
 
 int main(int argc, char** argv) {
@@ -84,15 +57,11 @@ int main(int argc, char** argv) {
 			//size = vect.size();
 			//std::wcout << size;
 
-			glutInitWindowSize(1800, 1000);
-			glutInitWindowPosition(0, 0);
-			glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE);
-			glutInit(&argc, argv);
-			int MAINWINDOW = glutCreateWindow("mainwindow");
-			glutSetWindowTitle("TTITLE");
-			glutDisplayFunc(display);
-			//glutIdleFunc(display);
-			glutMainLoop();
+			//void vvis::visualization::main_glut(int argc, char** argv, std::vector<vvis::creator::Vertex> vect, 
+			//wchar_t shape, bool color, int index) {
+
+			vvis::visualization::main_glut(argc, argv, vect, SHAPE_CONE, false, DRAW_ALL);
+
 			system("pause");
 		};
 

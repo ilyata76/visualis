@@ -18,6 +18,7 @@ set (HEADERS
 	source/include/sample/point-spin.hpp
 	source/include/sample/shape.hpp
 	source/include/sample/color_class.hpp
+	source/include/sample/drawing_shape_opengl.hpp
 )
 
 set (SOURCES
@@ -28,6 +29,7 @@ set (SOURCES
 	source/creator_of_vertex_arr.cpp
 	source/shape.cpp
 	source/color_class.cpp
+	source/drawing_shape_opengl.cpp
 )
 
 # ----------- |  | ----------- 

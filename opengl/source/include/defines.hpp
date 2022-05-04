@@ -28,5 +28,6 @@
 #define COUNTERCLOCKWISE 1 // use 0 for not
 #define INVERT_Y_FOR_THIRD_REPRESENTATION 1 // use 0 for not
 
+#define DRAW_ALL -1
 
 #endif 
