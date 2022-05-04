@@ -22,19 +22,8 @@
 
 // TODO: что насчёт Assert? кажется, мы забыли про них
 
-//int index = 0;
-//double dx = 0;
-//double dy = 0;
-//double dz = 0;
-//std::vector <vvis::creator::Vertex> vect;
-//int size = 0;
-//double scale = 0.01 * 1.0e-9;
-
-//double dist_min = 3.e-10;
-//double dipole_head_length = scale * dist_min / 2.0;
-//double dipole_head_radius = dipole_head_length / 4.0;
-
-
+// TODO: reshape функция
+// разбираться с ней стоит после того, как разберёмся с камерой и движениями
 
 
 int main(int argc, char** argv) {
@@ -53,14 +42,9 @@ int main(int argc, char** argv) {
 			std::wcout << "AFTER PARSING: " << afterparser << " " << afterparser - current << '\n';
 			std::wcout << "AFTER CONVERTING: " << afterconverter << " " << afterconverter - afterparser << " " << afterconverter - current << '\n';
 			std::wcout << "AFTER VERTEX CREATING: " << aftercreator << " " << aftercreator - afterconverter << " " << aftercreator - current << '\n';
-			//std::wcout << L"ONE : " << vect[0].get_spin().get(L'x');
-			//size = vect.size();
-			//std::wcout << size;
 
-			//void vvis::visualization::main_glut(int argc, char** argv, std::vector<vvis::creator::Vertex> vect, 
-			//wchar_t shape, bool color, int index) {
 
-			vvis::visualization::main_glut(argc, argv, vect, SHAPE_CONE, false, DRAW_ALL);
+			vvis::visualization::main_glut(argc, argv, vect, L'l', false, DRAW_ALL);
 
 			system("pause");
 		};
@@ -68,7 +52,7 @@ int main(int argc, char** argv) {
 
 
 
-
+		system("pause");
 	}
 	catch (Exceptio& E) {
 		_wsetlocale(LC_ALL, L".UTF-8");
