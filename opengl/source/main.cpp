@@ -14,43 +14,73 @@
 // TODO: нет проверок соответствует ли количество строк тому, что написано в начале файла
 // TODO: добавить комментарии а то с индексом уже запутался
 
+int index = 0;
+double dx = 0;
+double dy = 0;
+double dz = 0;
+std::vector <vvis::creator::Vertex> vect;
+int size = 0;
+double scale = 0.01 * 1.0e-9;
+
+//double dist_min = 3.e-10;
+//double dipole_head_length = scale * dist_min / 2.0;
+//double dipole_head_radius = dipole_head_length / 4.0;
+
+void draw_spin(int& index) {
+	glPushMatrix();
+	glRotatef(-90, 1, 0, 0);
+	vvis::creator::Point p = vect[index].get_point();
+	dx = p.get(L'x'); dy = p.get(L'y'); dz = p.get(L'z');
+	vvis::visualization::Cone B(vect[index]);
+	
+	glTranslated(dx / 16, dy / 16, dz / 16);
+	
+	B.set_draw_configuration();
+
+	B.draw(0.005, 0.05, 10, 10, vvis::visualization::VvisColor_3f(0, 0, 0));
+	glPopMatrix();
+}
 
 void display() {
+	index = 0;
 	glClearColor(1, 1, 1, 0);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	glPushMatrix();
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);	
 	
-	glRotatef(-90, 1, 0, 0); // представление второе (по часовой стрелке)
-	
-
-	vvis::creator::Vertex A(vvis::creator::Point(1, 1, 1), vvis::creator::Spin(-1, -1, 1));
-	// при -1 -1 -1 ломается
-	// и при -1 -1 1 (-1 1 1) ломается - смотрит не в ту сторону при изменении Y 
-
-	vvis::visualization::Cone B(A);
-	B.set_draw_configuration();
-	B.draw(0.05, 0.5, 200, 200, vvis::visualization::VvisColor_3f(0.5f, 1.0f, 1.0f));
-	//glTranslatef(0.1, 0, 0); 	B.draw(0.05, 0.5, 200, 200, vvis::visualization::VvisColor_3f(0, 1, 0));
-	//glTranslatef(0, 0.1, 0); 	B.draw(0.05, 0.5, 200, 200, vvis::visualization::VvisColor_3f(0, 0, 1));
-	//glTranslatef(0, 0, 0.3); B.draw(0.05, 0.5, 200, 200, vvis::visualization::VvisColor_3f(0, 0, 0));
-
-	glPopMatrix();
+	for (index;index != size;++index)
+		draw_spin(index);
+		 
 	glutSwapBuffers();
+
 }
 
 
 int main(int argc, char** argv) {
 	try {
-		glutInitWindowSize(500, 250);
-		glutInitWindowPosition(140, 140);
-		glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE);
-		glutInit(&argc, argv);
-		int MAINWINDOW = glutCreateWindow("mainwindow");
-		glutSetWindowTitle("TTITLE");
-		glutDisplayFunc(display);
-		//glutIdleFunc(display);
-		glutMainLoop();
-		system("pause");
+		index = 0;
+		std::wstring fstr = vampire5::parser::get_string(L"../temp")(31);
+		bool converted = vampire5::converter::convert(fstr, L"../temp");
+
+		if (converted) {
+			vect = vvis::creator::create_arry(L"../temp")(31);
+			std::wcout << L"ONE : " << vect[0].get_spin().get(L'x');
+			size = vect.size();
+			std::wcout << size;
+
+			glutInitWindowSize(1800, 1000);
+			glutInitWindowPosition(0, 0);
+			glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE);
+			glutInit(&argc, argv);
+			int MAINWINDOW = glutCreateWindow("mainwindow");
+			glutSetWindowTitle("TTITLE");
+			glutDisplayFunc(display);
+			//glutIdleFunc(display);
+			glutMainLoop();
+			system("pause");
+		};
+
+
+
+
 
 	}
 	catch (Exceptio& E) {

@@ -5,6 +5,7 @@
 #define COLOR_CLASS_HPP
 
 	#include <math.h>
+	#include "../defines.hpp"
 
 	namespace vvis {
 		namespace visualization {
