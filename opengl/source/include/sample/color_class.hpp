@@ -6,6 +6,7 @@
 
 	#include <math.h>
 	#include "../defines.hpp"
+	#include "./point-spin.hpp"
 
 	namespace vvis {
 		namespace visualization {
@@ -22,7 +23,11 @@
 					VvisColor_3f(double red, double green, double blue) : red(red), green(green), blue(blue) {};
 			};
 
-			VvisColor_3f get_color_by_direction(double x, double y, double z);
+			VvisColor_3f get_color_by_direction(const double& x, const double& y, const double &z);
+			VvisColor_3f get_color_by_direction(vvis::creator::Spin& spin);
+
+			float get_euler_phi(const double& sx, const double& sy, const double& sz);
+			float get_euler_theta(const double& sx, const double& sy, const double& sz);
 
 		}
 	}

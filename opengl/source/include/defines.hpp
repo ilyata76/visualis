@@ -24,8 +24,9 @@
 #define SHAPE_CONE 'c'
 #define SHAPE_CONE_STR L"cone"
 
+#define ROTATE_Z_FO_SECOND_REPRESENTATION 1 // 0 for not
 #define COUNTERCLOCKWISE 1 // use 0 for not
-#define INVERT_OY 1 // use 0 for not
+#define INVERT_Y_FOR_THIRD_REPRESENTATION 1 // use 0 for not
 
 
 #endif 

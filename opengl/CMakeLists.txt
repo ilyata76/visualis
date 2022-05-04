@@ -55,6 +55,5 @@ target_link_libraries(${PROJECT}
 	EXCEPTIO_CPP_LIBRARY
 	freeglut
 	freeglut_static
-	
-	#freeglut_staticd "D:/CPP_2020/opengl-visualis/opengl/build/source/libraries/freeglut/lib/Debug"
+
 )

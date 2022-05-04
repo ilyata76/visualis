@@ -40,8 +40,7 @@
 					std::wstring info_wstr();
 			};
 
-			float get_euler_phi(const double& sx, const double& sy, const double& sz);
-			float get_euler_theta(const double& sx, const double& sy, const double& sz);
+
 		}
 	}
 

@@ -129,7 +129,7 @@ std::vector <Vertex> vvis::creator::get_out(const int& index) {
 		mystream >> material >> layer >> x >> y >> z >> sx >> sy >> sz;
 		
 		// INVERTING OY IN VISUALIZATION
-		if (INVERT_OY) { sy = -sy; y = -y; };
+		if (INVERT_Y_FOR_THIRD_REPRESENTATION) { sy = -sy; y = -y; };
 
 		result.push_back(Vertex(Point(x, y, z), Spin(sx, sy, sz), _index, layer, material));
 	}

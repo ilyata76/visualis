@@ -5,6 +5,8 @@
 #include "./libraries/freeglut/include/GL/freeglut.h"
 #include "./libraries/tia-Exceptio/include/assert.hpp"
 
+#include "./include/defines.hpp"
+
 #include "./include/sample/shape.hpp"
 
 #include <iostream>
@@ -17,44 +19,46 @@
 // TODO: сделать вектор из Cone из Vertex : функцию для этого, чтобы при рисовании не создавать новых конусов
 // TODO: может также сделать и с Point? из Vertex : функция для вычленения
 
-int index = 0;
-double dx = 0;
-double dy = 0;
-double dz = 0;
-std::vector <vvis::creator::Vertex> vect;
-int size = 0;
-double scale = 0.01 * 1.0e-9;
+// TODO: что насчёт Assert? кажется, мы забыли про них
+
+//int index = 0;
+//double dx = 0;
+//double dy = 0;
+//double dz = 0;
+//std::vector <vvis::creator::Vertex> vect;
+//int size = 0;
+//double scale = 0.01 * 1.0e-9;
 
 //double dist_min = 3.e-10;
 //double dipole_head_length = scale * dist_min / 2.0;
 //double dipole_head_radius = dipole_head_length / 4.0;
 
-void draw_spin(int& index) {
-	glPushMatrix();
-	glRotatef(-90, 1, 0, 0);
-	vvis::creator::Point p = vect[index].get_point();
-	dx = p.get(L'x'); dy = p.get(L'y'); dz = p.get(L'z');
-	vvis::visualization::Cone B(vect[index]);
-	
-	glTranslated(dx / 32, dy / 32, dz / 32);
-	
-	B.set_draw_configuration();
-
-	B.draw(0.005, 0.05, 10, 10, vvis::visualization::VvisColor_3f(0, 0, 0));
-	glPopMatrix();
-}
+//void draw_spin(int& index) {
+//	glPushMatrix();
+//	glRotatef(-90, 1, 0, 0);
+//	vvis::creator::Point p = vect[index].get_point();
+//	dx = p.get(L'x'); dy = p.get(L'y'); dz = p.get(L'z');
+//	vvis::visualization::Cone B(vect[index]);
+//	
+//	glTranslated(dx / 32, dy / 32, dz / 32);
+//	
+//	B.set_draw_configuration();
+//
+//	B.draw(0.005, 0.05, 10, 10, vvis::visualization::VvisColor_3f(0, 0, 0));
+//	glPopMatrix();
+//}
 
 void display() {
-	index = 0;
+	//index = 0;
 	glClearColor(1, 1, 1, 0);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);	
-	glRotatef(-90, 1, 0, 0);
+	if (ROTATE_Z_FO_SECOND_REPRESENTATION) glRotatef(-90, 1, 0, 0);
 	//for (index;index != size;++index)
 	//	draw_spin(index);
-		 
-	vvis::visualization::Cone B(vvis::creator::Vertex(vvis::creator::Point(0, 0, 0), vvis::creator::Spin(1, 0, 1)));
+	vvis::creator::Vertex A = vvis::creator::Vertex(vvis::creator::Point(0, 0, 0), vvis::creator::Spin(-1, 1, -1));
+	vvis::visualization::Cone B(A);
 	B.set_draw_configuration();
-	B.draw(0.05, 0.5, 10, 10, vvis::visualization::VvisColor_3f(0, 0, 0));
+	B.draw(0.05, 0.5, 10, 10, vvis::visualization::get_color_by_direction(A.get_spin()));
 	glutSwapBuffers();
 
 }
@@ -62,12 +66,20 @@ void display() {
 
 int main(int argc, char** argv) {
 	try {
+		time_t current = time(0);
 		//index = 0;
-		//std::wstring fstr = vampire5::parser::get_string(L"../temp")(31);
-		bool converted = true;//= vampire5::converter::convert(fstr, L"../temp");
+		std::wstring fstr = vampire5::parser::get_string(L"../temp")(31);
+		time_t afterparser = time(0);
+		bool converted = vampire5::converter::convert(fstr, L"../temp");
+		time_t afterconverter = time(0);
 
 		if (converted) {
-			//vect = vvis::creator::create_arry(L"../temp")(31);
+			std::vector <vvis::creator::Vertex> vect = vvis::creator::create_arry(L"../temp")(31);
+			time_t aftercreator = time(0);
+			std::wcout << "START: " << current << '\n';
+			std::wcout << "AFTER PARSING: " << afterparser << " " << afterparser - current << '\n';
+			std::wcout << "AFTER CONVERTING: " << afterconverter << " " << afterconverter - afterparser << " " << afterconverter - current << '\n';
+			std::wcout << "AFTER VERTEX CREATING: " << aftercreator << " " << aftercreator - afterconverter << " " << aftercreator - current << '\n';
 			//std::wcout << L"ONE : " << vect[0].get_spin().get(L'x');
 			//size = vect.size();
 			//std::wcout << size;
