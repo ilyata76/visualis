@@ -7,10 +7,12 @@
 - [x] adding the freeglut in project structure
     - [ ] отмучаться с dll - решения нет?
     - [x] preparation for drawing
-- [ ] vertex array -> creating a shape
+- [x] vertex -> creating a shape
     - [x] shape -> cone
-        - [x] cone -> printing simple cone
-    - [ ] shape -> printing sample
+    - [ ] vertex array -> shape array
+    - [x] cone -> printing simple cone
+    - [x] shape -> printing sample
+    - [ ] printing sample -> cam, keys, etc
 - [ ] variable main.cpp
   
 ## Файлы  
@@ -106,7 +108,7 @@ namespace vvis {
     namespace visualization {
 
         class VvisColor_3f; // содержит в себе 3 поля RGB
-        VvisColor_3f get_color_by_direction(int x, int y, int z); // для определение цвета конечного элемента
+        VvisColor_3f get_color_by_direction(int x, int y, int z); // для определение цвета конечного элемента (WIP)
 
         class Shape; // содержит в себе Vertex. Это родительский класс для всех фигур
 

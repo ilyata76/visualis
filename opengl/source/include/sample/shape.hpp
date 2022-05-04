@@ -11,13 +11,13 @@
 	namespace vvis {
 		namespace visualization {
 
-			using creator::Vertex;
+			//using creator::Vertex;
 			// Vertex можно заменить на Spin, если не развивать идею со слоями, материалами и пр.
 			class Shape {
 				protected:
-					Vertex vrt;
+					creator::Vertex vrt;
 				public:
-					Shape(Vertex& x) : vrt(x) {};
+					Shape(creator::Vertex& x) : vrt(x) {};
 
 					virtual bool set_draw_configuration() = 0;
 
@@ -30,7 +30,7 @@
 					float euler_phi;    // around Y axis 
 					float euler_theta;	// X axis
 				public:
-					Cone(Vertex& x) : Shape(x), euler_phi(0.0), euler_theta(0.0) {};
+					Cone(creator::Vertex& x) : Shape(x), euler_phi(0.0), euler_theta(0.0) {};
 
 					bool set_draw_configuration();	// на основании this->vertex построит конфигурацию
 					
