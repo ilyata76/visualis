@@ -63,7 +63,6 @@ std::wstring vvis::creator::get_file_name(const int& number) {
 	return std::wstring(START_OF_OUR_FILE + base);
 }
 
-
 std::vector <Vertex> vvis::creator::get_out(const int& index) {
 	// TODO: не хватает проверок
 	
@@ -123,6 +122,7 @@ std::vector <Vertex> vvis::creator::get_out(const int& index) {
 
 		do { 
 			std::getline(input_file, str); 
+
 		} while (str[0] == '#'); // skip #  comments 
 		
 		std::wstringstream mystream(str);
@@ -131,7 +131,8 @@ std::vector <Vertex> vvis::creator::get_out(const int& index) {
 		// INVERTING OY IN VISUALIZATION
 		if (INVERT_Y_FOR_THIRD_REPRESENTATION) { sy = -sy; y = -y; };
 
-		result.push_back(Vertex(Point(x, y, z), Spin(sx, sy, sz), _index, layer, material));
+		if (str != L"\0" && str != L"\n") result.push_back(Vertex(Point(x, y, z), Spin(sx, sy, sz), _index, layer, material));
+
 	}
 
 	input_file.close();

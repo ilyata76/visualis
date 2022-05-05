@@ -1,6 +1,5 @@
 ﻿#include "./include/sample/drawing_shape_opengl.hpp"
 
-#include <iostream>
 
 int glob_index = 0;
 int glob_color = false;
@@ -94,7 +93,7 @@ void vvis::visualization::draw_cone_spin(int& index, bool color) {
 	
 	glTranslated(x / 32, y / 32, z / 32); // TODO: параметры скейлинга трансляции
 
-	if (color == true) 
+	if (color == true)
 		my_cone.draw(0.005 * glob_shape_scaling.x, 0.05 * glob_shape_scaling.y, 10, 10, vvis::visualization::get_color_by_direction(vrt_vctr[glob_index].get_spin())); // TODO: параметры конуса
 	else 
 		my_cone.draw(0.005 * glob_shape_scaling.x, 0.05 * glob_shape_scaling.y, 10, 10, vvis::visualization::VvisColor_3f(0, 0, 0)); // TODO: параметры конуса
@@ -122,14 +121,13 @@ void vvis::visualization::display_cone() {
 			draw_cone_spin(glob_index, glob_color);
 		}
 		glob_index = DRAW_ALL;
-
 	} else {
 
 		// TODO : проверка не больше ли чем размер
 		draw_cone_spin(glob_index, glob_color);
 	}
 
-	//glFlush();
+	glFlush();
 	glutSwapBuffers();
 }
 
@@ -240,19 +238,20 @@ void vvis::visualization::main_glut(int argc, char** argv, std::vector<vvis::cre
 									wchar_t shape, bool color, int index) {
 	
 	vrt_vctr = vect;
+
 	glob_index = index;
 	glob_color = color;
 
 	glutInit(&argc, argv);
 
-	glutInitWindowSize(glutGet(GLUT_SCREEN_HEIGHT), glutGet(GLUT_SCREEN_WIDTH)); // ПОКА НЕТ RESHAPE
+	glutInitWindowSize(glutGet(GLUT_SCREEN_WIDTH), glutGet(GLUT_SCREEN_HEIGHT)); // ПОКА НЕТ RESHAPE
 	glutInitWindowPosition(0, 0);
 
 	glutInitDisplayMode(GLUT_RGB | GLUT_SINGLE);
 		
 	int MAINWINDOW = glutCreateWindow("mainwindow"); 
 	
-	glutFullScreen(); // ПОКА НЕТ RESHAPE
+	//glutFullScreen(); // ПОКА НЕТ RESHAPE
 	
 	glutSetWindowTitle("TTITLE");
 
