@@ -24,10 +24,21 @@
 #define SHAPE_CONE 'c'
 #define SHAPE_CONE_STR L"cone"
 
-#define ROTATE_Z_FO_SECOND_REPRESENTATION 1 // 0 for not
+#define ROTATE_Z_FO_SECOND_REPRESENTATION 0 // 0 for not
 #define COUNTERCLOCKWISE 1 // use 0 for not
-#define INVERT_Y_FOR_THIRD_REPRESENTATION 1 // use 0 for not
+#define INVERT_Y_FOR_THIRD_REPRESENTATION 0 // use 0 for not
 
 #define DRAW_ALL -1
+
+
+
+#define TRANSLATION_CONST 0.1
+#define TRANSLATION_BY_HEAD -1.0 // use 1 for not or -1 for yes
+
+#define SCALING_SHAPE_UPPER_LIMIT 3
+#define SCALING_SHAPE_LOWER_LIMIT 0.1
+
+#define SCALING_TRANSLATION_UPPER_LIMIT 1.5
+#define SCALING_TRANSLATION_LOWER_LIMIT 0.5
 
 #endif 

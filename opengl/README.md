@@ -1,5 +1,5 @@
 # visualis openGL
-**PAUSED**
+
 ## Roadmap
 - [x] .data parser
     - [x] .data -> string -> convertor to .vvis
@@ -12,7 +12,8 @@
     - [ ] vertex array -> shape array
     - [x] cone -> printing simple cone
     - [x] shape -> printing sample
-    - [ ] printing sample -> cam, keys, etc
+    - [x] printing sample -> keys, etc
+    - [] CAMERA
 - [ ] variable main.cpp
   
 ## Файлы  

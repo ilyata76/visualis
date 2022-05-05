@@ -44,7 +44,7 @@ int main(int argc, char** argv) {
 			std::wcout << "AFTER VERTEX CREATING: " << aftercreator << " " << aftercreator - afterconverter << " " << aftercreator - current << '\n';
 
 
-			vvis::visualization::main_glut(argc, argv, vect, L'l', false, DRAW_ALL);
+			vvis::visualization::main_glut(argc, argv, vect, SHAPE_CONE, true, DRAW_ALL);
 
 			system("pause");
 		};

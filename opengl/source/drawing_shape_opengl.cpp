@@ -1,20 +1,66 @@
 ﻿#include "./include/sample/drawing_shape_opengl.hpp"
 
 #include <iostream>
+
 int glob_index = 0;
 int glob_color = false;
+
+
+// TODO: поведение камеры странное, будто не хватает пространства для видения (Far, Near плоскости)
+// TODO: и это не только в отношении z
+// что с ней делать?
+
+struct transl {
+	double x;
+	double y;
+	double z;
+
+	transl() : x(0), y(0), z(0) {};
+	transl(double x, double y, double z) : x(x), y(y), z(z) {};
+} glob_transl(0, 0, 0);
+
+struct scaling {
+	double x;
+	double y;
+	double z;
+
+	scaling() : x(0), y(0), z(0) {};
+	scaling(double x, double y, double z) : x(x), y(y), z(z) {};
+} glob_shape_scaling(1, 1, 1);
+
+scaling glob_translation_scaling(1, 1, 1);
+
+struct camera {
+	double x;
+	double y;
+	double z;
+
+	camera() : x(0), y(0), z(0) {};
+	camera(double x, double y, double z) : x(x), y(y), z(z) {};
+} glob_camera(0, 0, 1);
+
+struct element {
+	double x;
+	double y;
+	double z;
+
+	element() : x(0), y(0), z(0) {};
+	element(double x, double y, double z) : x(x), y(y), z(z) {};
+} glob_elem(0, 0, 0);
 
 std::vector<vvis::creator::Vertex> vrt_vctr;
 
 void vvis::visualization::display_nothing() {
 	// TODO: это работает, но я не знаю каким образом надо бы разобраться с матрицами и viewimport'ом
 	// тоже кстати не с первого раза запустилась вопрос почему открытый
+	
 	glClearColor(1, 1, 1, 0);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	
 	glMatrixMode(GL_PROJECTION);
 	glPushMatrix();
 	glLoadIdentity();
-	gluOrtho2D(0, 1400, 0, 800);
+	//gluOrtho2D(0, 1400, 0, 800);
 
 	glMatrixMode(GL_MODELVIEW);
 	glPushMatrix();
@@ -30,39 +76,28 @@ void vvis::visualization::display_nothing() {
 	glutSwapBuffers();
 }
 
-void vvis::visualization::display_l() {
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	std::wcout << "И ГДЕ ТРЕУГОЛЬНИК?\n";
-	glBegin(GL_TRIANGLES);
-	glColor3f(1, 0, 0);
-		glVertex3f(-0.5, -0.5, 0.0);
-		glColor3f(0, 0, 1);
-		glVertex3f(0.0, 0.5, 0.0);
-		glColor3f(0, 1, 0);
-		glVertex3f(0.5, -0.5, 0.0);
-	glEnd();
-
-	glutSwapBuffers();
-}
-
 void vvis::visualization::draw_cone_spin(int& index, bool color) {
-	double x = vrt_vctr[glob_index].get_point().get(L'x');
-	double y = vrt_vctr[glob_index].get_point().get(L'y');
-	double z = vrt_vctr[glob_index].get_point().get(L'z');
+	double x = vrt_vctr[glob_index].get_point().get(L'x') * glob_translation_scaling.x;
+	double y = vrt_vctr[glob_index].get_point().get(L'y') * glob_translation_scaling.y;
+	double z = vrt_vctr[glob_index].get_point().get(L'z') * glob_translation_scaling.z;
 	vvis::visualization::Cone my_cone(vrt_vctr[glob_index]);
 
 	glPushMatrix();
-	
+
 	if (ROTATE_Z_FO_SECOND_REPRESENTATION) glRotatef(-90, 1, 0, 0);
+	
+	glTranslated(glob_transl.x, glob_transl.y, glob_transl.z);
+	
+	// glScaled(glob_scaling.x, glob_scaling.y, glob_scaling.z); плохо работает: куда деваются конусы?
 	
 	my_cone.set_draw_configuration();
 	
 	glTranslated(x / 32, y / 32, z / 32); // TODO: параметры скейлинга трансляции
 
 	if (color == true) 
-		my_cone.draw(0.005, 0.05, 10, 10, vvis::visualization::get_color_by_direction(vrt_vctr[glob_index].get_spin())); // TODO: параметры конуса
+		my_cone.draw(0.005 * glob_shape_scaling.x, 0.05 * glob_shape_scaling.y, 10, 10, vvis::visualization::get_color_by_direction(vrt_vctr[glob_index].get_spin())); // TODO: параметры конуса
 	else 
-		my_cone.draw(0.005, 0.05, 10, 10, vvis::visualization::VvisColor_3f(0, 0, 0)); // TODO: параметры конуса
+		my_cone.draw(0.005 * glob_shape_scaling.x, 0.05 * glob_shape_scaling.y, 10, 10, vvis::visualization::VvisColor_3f(0, 0, 0)); // TODO: параметры конуса
 
 	glPopMatrix();
 }
@@ -71,20 +106,134 @@ void vvis::visualization::display_cone() {
 	glClearColor(1, 1, 1, 0);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
+	
+	gluLookAt(
+		glob_camera.x, glob_camera.y, glob_camera.z, 
+		glob_elem.x, glob_elem.y, glob_elem.z, 
+		0, 1, 0
+	);
 	
 	if (glob_index == DRAW_ALL) {
-		glob_index = 0;
-		size_t size = vrt_vctr.size();
+
+		glob_index = 0; size_t size = vrt_vctr.size();
 		for (glob_index; glob_index != size; ++glob_index) {
 			draw_cone_spin(glob_index, glob_color);
 		}
 		glob_index = DRAW_ALL;
+
 	} else {
+
 		// TODO : проверка не больше ли чем размер
 		draw_cone_spin(glob_index, glob_color);
 	}
-	
+
+	//glFlush();
 	glutSwapBuffers();
+}
+
+void vvis::visualization::normal_keys(unsigned char key, int x, int y) {
+	switch (key) {
+
+		case 'w' : {
+			glob_camera.y += 0.1;
+
+		} break;
+
+		case 's' : {
+			glob_camera.y -= 0.1;
+
+		} break;
+
+		case 'a' : {
+			glob_camera.x += 0.1;
+
+		} break;
+
+		case 'd' : {
+			glob_camera.x -= 0.1;
+			
+		} break;
+
+		case ' ': {
+			glob_camera.z += 0.1;
+
+		} break;
+
+		case '9': {
+			if (glob_translation_scaling.x < SCALING_TRANSLATION_UPPER_LIMIT && glob_translation_scaling.y < SCALING_TRANSLATION_UPPER_LIMIT && glob_translation_scaling.z < SCALING_TRANSLATION_UPPER_LIMIT) {
+				glob_translation_scaling.x *= 1.1;
+				glob_translation_scaling.y *= 1.1;
+				glob_translation_scaling.z *= 1.1;
+			} // здесь, кстати говоря, конусы тоже пропадают
+		} break;
+
+		case '8': {
+			if (glob_translation_scaling.x > SCALING_TRANSLATION_LOWER_LIMIT && glob_translation_scaling.y > SCALING_TRANSLATION_LOWER_LIMIT && glob_translation_scaling.z > SCALING_TRANSLATION_LOWER_LIMIT) {
+				glob_translation_scaling.x *= 0.9;
+				glob_translation_scaling.y *= 0.9;
+				glob_translation_scaling.z *= 0.9;
+			}
+		} break;
+
+	} glutPostRedisplay();
+}
+
+void vvis::visualization::special_keys(int key, int x, int y) {
+	switch (key) {
+
+		case GLUT_KEY_PAGE_UP: {
+			if (glob_shape_scaling.x < SCALING_SHAPE_UPPER_LIMIT && glob_shape_scaling.y < SCALING_SHAPE_UPPER_LIMIT && glob_shape_scaling.z < SCALING_SHAPE_UPPER_LIMIT) {
+				glob_shape_scaling.x *= 1.1;
+				glob_shape_scaling.y *= 1.1;
+				glob_shape_scaling.z *= 1.1;
+			}
+		} break;
+
+		case GLUT_KEY_PAGE_DOWN: {
+			if (glob_shape_scaling.x > SCALING_SHAPE_LOWER_LIMIT && glob_shape_scaling.y > SCALING_SHAPE_LOWER_LIMIT && glob_shape_scaling.z > SCALING_SHAPE_LOWER_LIMIT) {
+				glob_shape_scaling.x *= 0.9;
+				glob_shape_scaling.y *= 0.9;
+				glob_shape_scaling.z *= 0.9;
+			} 
+			
+		} break;
+
+		case GLUT_KEY_LEFT: {
+			glob_transl.x += -1.0 * TRANSLATION_BY_HEAD * TRANSLATION_CONST;
+			glob_transl.y += 0;
+			glob_transl.z += 0;
+
+		} break;
+
+		case GLUT_KEY_RIGHT: {
+			glob_transl.x += TRANSLATION_BY_HEAD * TRANSLATION_CONST;
+			glob_transl.y += 0;
+			glob_transl.z += 0;
+
+		} break;
+
+		case GLUT_KEY_UP: {
+			glob_transl.x += 0;
+			glob_transl.y += TRANSLATION_BY_HEAD * TRANSLATION_CONST;
+			glob_transl.z += 0;
+
+		} break;
+
+		case GLUT_KEY_DOWN: {
+			glob_transl.x += 0;
+			glob_transl.y += -1.0 * TRANSLATION_BY_HEAD * TRANSLATION_CONST;
+			glob_transl.z += 0;
+
+		} break;
+
+		case GLUT_KEY_SHIFT_L: {
+			glob_camera.z -= 0.1;
+
+		} break;
+
+	} glutPostRedisplay();
 }
 
 void vvis::visualization::main_glut(int argc, char** argv, std::vector<vvis::creator::Vertex>& vect, 
@@ -94,28 +243,35 @@ void vvis::visualization::main_glut(int argc, char** argv, std::vector<vvis::cre
 	glob_index = index;
 	glob_color = color;
 
-
 	glutInit(&argc, argv);
-	glutInitWindowSize(400, 400);
-	glutInitWindowPosition(100, 100);
-	glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE);
+
+	glutInitWindowSize(glutGet(GLUT_SCREEN_HEIGHT), glutGet(GLUT_SCREEN_WIDTH)); // ПОКА НЕТ RESHAPE
+	glutInitWindowPosition(0, 0);
+
+	glutInitDisplayMode(GLUT_RGB | GLUT_SINGLE);
+		
+	int MAINWINDOW = glutCreateWindow("mainwindow"); 
 	
-	int MAINWINDOW = glutCreateWindow("mainwindow");
+	glutFullScreen(); // ПОКА НЕТ RESHAPE
+	
 	glutSetWindowTitle("TTITLE");
 
 	switch (shape) {
 		case SHAPE_CONE: {
+
 			glutDisplayFunc(vvis::visualization::display_cone);
-			glutReshapeFunc(vvis::visualization::myReshape);
+
+			glutKeyboardFunc(vvis::visualization::normal_keys);
+			glutSpecialFunc(vvis::visualization::special_keys);
+
+			//glutReshapeFunc(vvis::visualization::myReshape); doesnt work
+
 			glutMainLoop();
 		} break;
-		case L'l': {
-			glutDisplayFunc(vvis::visualization::display_l);
-			glutReshapeFunc(vvis::visualization::myReshape);
-			glutMainLoop();
-		} break;
+
 		default: {
 			glutDisplayFunc(vvis::visualization::display_nothing);
+
 			glutMainLoop();
 		}
 	}
@@ -131,39 +287,39 @@ void vvis::visualization::main_glut(int argc, char** argv, std::vector<vvis::cre
 // NeHe : gluPerspective(45.0f, (GLfloat)w / (GLfloat)h, 0.1f, 100.0f);
 // это не работает!!!
 
-void vvis::visualization::myReshape(int w, int h) {
-
-	// предупредим деление на ноль
-	// если окно сильно перетянуто будет
-	if (h == 0)
-		h = 1;
-	float ratio = 1.0 * w / h;
-	std::wcout << w;
-	// используем матрицу проекции
-	glMatrixMode(GL_PROJECTION);
-
-	// Reset матрицы
-	glLoadIdentity();
-
-	// определяем окно просмотра
-	glViewport(0, 0, w, h);
-
-	// установить корректную перспективу.
-
-	// 0 do nothing
-	//gluPerspective(45, ratio, 1, 1000);
-	//gluLookAt(0, 0, 1, 0, 0, 0, 0, 1, 0);
-	
-	// ну конечно!!! http://dkhramov.dp.ua/Comp.GlutAndOpenGL#.YnMK7OrP2Uk ! мы просто ничего не видим
-
-
-	glOrtho(0.0, w, h, 0.0, 0.0, 0.0);
-	// и как это того этого?
-
-	// https://docs.microsoft.com/en-us/windows/win32/opengl/glortho
-	// https://stackoverflow.com/questions/2571402/how-to-use-glortho-in-opengl
-	// https://ru.stackoverflow.com/questions/434277/glutreshapefunc-и-glutdisplayfunc-в-opengl
-
-	// вернуться к модели
-	glMatrixMode(GL_MODELVIEW);
-}
+//void vvis::visualization::myReshape(int w, int h) {
+//
+//	// предупредим деление на ноль
+//	// если окно сильно перетянуто будет
+//	if (h == 0)
+//		h = 1;
+//	float ratio = 1.0 * w / h;
+//	std::wcout << w;
+//	// используем матрицу проекции
+//	glMatrixMode(GL_PROJECTION);
+//
+//	// Reset матрицы
+//	glLoadIdentity();
+//
+//	// определяем окно просмотра
+//	glViewport(0, 0, w, h);
+//
+//	// установить корректную перспективу.
+//
+//	// 0 do nothing
+//	//gluPerspective(45, ratio, 1, 1000);
+//	//gluLookAt(0, 0, 1, 0, 0, 0, 0, 1, 0);
+//	
+//	// ну конечно!!! http://dkhramov.dp.ua/Comp.GlutAndOpenGL#.YnMK7OrP2Uk ! мы просто ничего не видим
+//
+//
+//	glOrtho(0.0, w, h, 0.0, 0.0, 0.0);
+//	// и как это того этого?
+//
+//	// https://docs.microsoft.com/en-us/windows/win32/opengl/glortho
+//	// https://stackoverflow.com/questions/2571402/how-to-use-glortho-in-opengl
+//	// https://ru.stackoverflow.com/questions/434277/glutreshapefunc-и-glutdisplayfunc-в-opengl
+//
+//	// вернуться к модели
+//	glMatrixMode(GL_MODELVIEW);
+//}
