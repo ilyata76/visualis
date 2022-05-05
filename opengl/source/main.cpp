@@ -1,24 +1,10 @@
-﻿#include "./include/parser-converter/parser-v5.hpp"
+#include "./include/parser-converter/parser-v5.hpp"
 #include "./include/parser-converter/converter-v5.hpp"
 
 #include "./include/sample/creator_of_vertex_arr.hpp"
 #include "./include/sample/drawing_shape_opengl.hpp"
 
 #include <iostream>
-
-// TODO: слой первый или второй  а материал?
-// TODO: нет проверок соответствует ли количество строк тому, что написано в начале файла
-// TODO: добавить комментарии а то с индексом уже запутался
-
-// TODO: сделать вектор из Cone из Vertex : функцию для этого, чтобы при рисовании не создавать новых конусов
-// тогда в Cone нужен геттер вертекса
-// TODO: может также сделать и с Point? из Vertex : функция для вычленения
-
-// TODO: что насчёт Assert? кажется, мы забыли про них
-
-// TODO: reshape функция
-// разбираться с ней стоит после того, как разберёмся с камерой и движениями
-// с камерой проблемы
 
 
 int main(int argc, char** argv) {

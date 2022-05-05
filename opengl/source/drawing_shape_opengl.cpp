@@ -49,6 +49,8 @@ struct element {
 
 std::vector<vvis::creator::Vertex> vrt_vctr;
 
+double lx = 1, lz = 0;
+
 void vvis::visualization::display_nothing() {
 	// TODO: это работает, но я не знаю каким образом надо бы разобраться с матрицами и viewimport'ом
 	// тоже кстати не с первого раза запустилась вопрос почему открытый
@@ -98,7 +100,9 @@ void vvis::visualization::draw_cone_spin(int& index, bool color) {
 	else 
 		my_cone.draw(0.005 * glob_shape_scaling.x, 0.05 * glob_shape_scaling.y, 10, 10, vvis::visualization::VvisColor_3f(0, 0, 0)); // TODO: параметры конуса
 
-	glPopMatrix();
+	
+
+	glPopMatrix(); 
 }
 
 void vvis::visualization::display_cone() {
