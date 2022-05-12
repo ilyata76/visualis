@@ -5,32 +5,6 @@
 
 // TODO: перемещение камеры по плоскостям образца
 
-void display_nothing() {
-	// TODO: это работает, но я не знаю каким образом надо бы разобраться с матрицами и viewimport'ом
-	// тоже кстати не с первого раза запустилась вопрос почему открытый
-	
-	glClearColor(1, 1, 1, 0);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	
-	glMatrixMode(GL_PROJECTION);
-	glPushMatrix();
-	glLoadIdentity();
-	//gluOrtho2D(0, 1400, 0, 800);
-
-	glMatrixMode(GL_MODELVIEW);
-	glPushMatrix();
-	std::string menu = "NOTHING TO DISPLAY";
-	glLoadIdentity();
-	int len = menu.length();
-	glColor3f(0, 0, 0);
-	glRasterPos2i(10, 200);  // move in 10 pixels from the left and bottom edges
-	for (int i = 0; i < len; ++i) {
-		glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_10, menu[i]);
-	}
-	glPopMatrix();
-	glutSwapBuffers();
-}
-
 vvis::visualization::app_freeglut::app_freeglut() {
 	this->index_of_line = 0;
 	this->additional_rotation_phi = 0.0;
@@ -128,41 +102,71 @@ void vvis::visualization::display() {
 	glClearColor(1, 1, 1, 0);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	glMatrixMode(GL_MODELVIEW);
-		glLoadIdentity();
+	if (glob_app->shape == SHAPE_NOTHING || glob_app->vect_of_vertexes.size() == 0 || glob_app->index_of_line >= glob_app->vect_of_vertexes.size()) {
 
-		gluLookAt(
-			glob_app->position_of_camera.x, glob_app->position_of_camera.y, glob_app->position_of_camera.z,			//
-			glob_app->position_of_element.x, glob_app->position_of_element.y, glob_app->position_of_element.z,		//
-			0, 1, 0
-		);
+		glMatrixMode(GL_PROJECTION);
+			
+			glLoadIdentity();
+			gluOrtho2D(0, glob_app->width_of_window, 0, glob_app->height_of_window);
+			glColor3f(0, 0, 0);
+			
+		glMatrixMode(GL_MODELVIEW);
+			
+			glPushMatrix();
+			glColor3f(0, 0, 0);
+			glLoadIdentity();
+			
+			glRasterPos2i(glob_app->width_of_window/2, glob_app->height_of_window/2);
 
-	glMatrixMode(GL_PROJECTION);
-		glLoadIdentity();
-		
-		// TODO: use ortho?
-		glOrtho(-1 * glob_app->estrangement, 1 * glob_app->estrangement, -1 * glob_app->estrangement, 1 * glob_app->estrangement, 1, 1000);	//
+			[](std::string text) {int len = text.length(); for (int i = 0; i < len; ++i) glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, text[i]); }("NOTHING TO DISPLAY");
+			
+			glPopMatrix();
 
-	glMatrixMode(GL_MODELVIEW);
-
-	// TODO: проверка на индекс	
-
-	if (glob_app->index_of_line == DRAW_ALL) {
-					
-		size_t size_of_vector = glob_app->vect_of_vertexes.size();
-					
-		for (unsigned int i = 0; i != size_of_vector; ++i) {
-			draw_shape(i);
-		}
+		glutSwapBuffers();
 
 	} else {
-		draw_shape(glob_app->index_of_line);
+
+		glMatrixMode(GL_MODELVIEW);
+			glLoadIdentity();
+
+			gluLookAt(
+				glob_app->position_of_camera.x, glob_app->position_of_camera.y, glob_app->position_of_camera.z,			//
+				glob_app->position_of_element.x, glob_app->position_of_element.y, glob_app->position_of_element.z,		//
+				0, 1, 0
+			);
+
+		glMatrixMode(GL_PROJECTION);
+			glLoadIdentity();
+		
+			// TODO: use ortho?
+			glOrtho(-1 * glob_app->estrangement, 1 * glob_app->estrangement, -1 * glob_app->estrangement, 1 * glob_app->estrangement, 1, 1000);	//
+			//glOrtho(0, glob_app->width_of_window * glob_app->estrangement, 0, glob_app->height_of_window * glob_app->estrangement, 1, 1000);	//картинка при скейлинге в 1 в нижнем левом углу, но нужно понижать чувствительность
+			//glOrtho(-(glob_app->width_of_window / 2) * glob_app->estrangement, (glob_app->width_of_window/2) * glob_app->estrangement, -(glob_app->width_of_window / 2) * glob_app->estrangement, (glob_app->width_of_window / 2) * glob_app->estrangement, 1, 1000);
+			// работают все варианты, но нужно определиться с тем, который использовать, потому что всё остальное зависит от него
+
+		glMatrixMode(GL_MODELVIEW);
+
+		// TODO: проверка на индекс	
+
+
+
+		if (glob_app->index_of_line == DRAW_ALL) {
+					
+			size_t size_of_vector = glob_app->vect_of_vertexes.size();
+					
+			for (unsigned int i = 0; i != size_of_vector; ++i) {
+				draw_shape(i);
+			}
+
+		} else {
+			draw_shape(glob_app->index_of_line);
+		}
+
+
+		glFlush();
+		glutSwapBuffers();
+
 	}
-
-
-	glFlush();
-	glutSwapBuffers();
-
 }
 
 
@@ -191,10 +195,8 @@ void vvis::visualization::draw_shape(int index) {
 
 		} break;
 
-
-
 		default: { 
-			shape = new Cone(current_vertex); 
+			shape = new Cone(current_vertex);
 
 			args_for_draw[0] = 0.005 * glob_app->scaling_parameters.x;		//
 			args_for_draw[1] = 0.05 * glob_app->scaling_parameters.y;		//
@@ -230,7 +232,7 @@ void vvis::visualization::draw_shape(int index) {
 		color_config = vvis::visualization::get_color_by_direction(current_vertex.get_spin());
 	}
 
-	shape->new_draw(color_config, args_for_draw);
+	shape->draw(color_config, args_for_draw);
 
 	glPopMatrix();
 

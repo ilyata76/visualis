@@ -21,7 +21,7 @@
 
 					virtual bool set_draw_configuration() = 0;
 
-					virtual bool new_draw(vvis::visualization::VvisColor_3f color, double* args) = 0;
+					virtual bool draw(vvis::visualization::VvisColor_3f color, double* args) = 0;
 
 					virtual wchar_t info_wchar() = 0;
 					virtual std::wstring info_wstr() = 0;
@@ -34,12 +34,9 @@
 				public:
 					Cone(creator::Vertex& x) : Shape(x), euler_phi(0.0), euler_theta(0.0) {};
 
-					bool set_draw_configuration();	// на основании this->vertex построит конфигурацию
+					bool set_draw_configuration();	// на основании this->vertex построит конфигурацию			
 					
-					bool draw(double base, double height, GLint slices, GLint stacks, vvis::visualization::VvisColor_3f color);  // рисует
-					
-					
-					bool new_draw(vvis::visualization::VvisColor_3f color, double* args);  // рисует
+					bool draw(vvis::visualization::VvisColor_3f color, double* args);  // рисует
 
 					wchar_t info_wchar();
 					std::wstring info_wstr();

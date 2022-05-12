@@ -21,22 +21,7 @@ bool vvis::visualization::Cone::set_draw_configuration() {
 	return true;
 }
 
-bool vvis::visualization::Cone::draw(double base, double height, GLint slices, GLint stacks, vvis::visualization::VvisColor_3f color) {
-	// TODO: проверка на соответсвтие аргументов
-	glColor3f(color.red, color.green, color.blue);
-	// повернули
-	glRotatef(this->euler_phi, 0, 0, 1);
-	glRotatef(this->euler_theta, 0, 1, 0);
-	// нарисовали
-	glutSolidCone(base, height, slices, stacks);
-	// отвернули
-	glRotatef(- this->euler_theta, 0, 1, 0);
-	glRotatef(- this->euler_phi, 0, 0, 1);
-
-	return true;
-}
-
-bool vvis::visualization::Cone::new_draw(vvis::visualization::VvisColor_3f color, double* args) {
+bool vvis::visualization::Cone::draw(vvis::visualization::VvisColor_3f color, double* args) {
 	// TODO: проверка на соответсвтие аргументов
 	glColor3f(color.red, color.green, color.blue);
 	// повернули
