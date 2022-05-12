@@ -96,14 +96,13 @@ void vvis::visualization::draw_sample(app_freeglut& app, int argc, char** argv) 
 		glutMainLoop();
 }
 
-
 void vvis::visualization::display() {
 
 	glClearColor(1, 1, 1, 0);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	if (glob_app->shape == SHAPE_NOTHING || glob_app->vect_of_vertexes.size() == 0 || glob_app->index_of_line >= glob_app->vect_of_vertexes.size()) {
-
+	if (glob_app->shape == SHAPE_NOTHING || glob_app->vect_of_vertexes.size() == 0) {
+		// TODO: не хватает проверок. почему-то DRAW_ALL >= .size() true (???)
 		glMatrixMode(GL_PROJECTION);
 			
 			glLoadIdentity();
@@ -122,6 +121,7 @@ void vvis::visualization::display() {
 			
 			glPopMatrix();
 
+		glFlush();
 		glutSwapBuffers();
 
 	} else {

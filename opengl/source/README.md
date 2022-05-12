@@ -47,6 +47,9 @@
         * math.h
 * **color_cass**.cpp содержит в себе определение класса цвета
     * color_cass.hpp
+        * math.h
+        * point-spin.hpp
+        * defines.hpp
 
 ## Пространства имён
 Основные функции  
@@ -87,7 +90,8 @@ namespace vvis {
     namespace visualization {
 
         class VvisColor_3f; // содержит в себе 3 поля RGB
-        VvisColor_3f get_color_by_direction(int x, int y, int z); // для определение цвета конечного элемента (WIP)
+            VvisColor_3f get_color_by_direction(int x, int y, int z); // для определение цвета конечного элемента (WIP)
+            VvisColor_3f get_color_by_direction(vvis::creator::Spin& spin);
 
         class Shape; // содержит в себе Vertex. Это родительский класс для всех фигур
 
@@ -99,10 +103,57 @@ namespace vvis {
         float get_euler_phi(const double& sx, const double& sy, const double& sz);
         float get_euler_theta(const double& sx, const double& sy, const double& sz);
 
+        ////////////////////////////
 
-        void main_glut(int argc, char** argv, std::vector <vvis::creator::Vertex>& vect, wchar_t shape, bool color, int index); // главная фуннкция для отрисовки
+        struct vec3; // три точки double
+        struct app_freeglut;   // большой набор глобальных изменяемых переменных, связанных с конечным окном
+
+
+        void draw_sample(app_freeglut& app, int argc, char** argv); // - рисует окно и образец с помощью вспомогательных функций 
+            void display();
+            void draw_shape(int index);
+
+            void n_keys(unsigned char key, int x, int y);
+            void s_keys(int key, int x, int y);
+
+        // Конструктор app_freeglut, где всё определяется через defines.hpp
+
+        vvis::visualization::app_freeglut::app_freeglut(std::vector<vvis::creator::Vertex>& vect_of_vertexes, wchar_t shape, bool use_color, int index_of_line) {
+            this->index_of_line = index_of_line;
+            this->additional_rotation_phi = 0.0;
+            this->additional_rotation_theta = 0.0;
+
+            this->estrangement = 1.0;
+
+            this->use_color = use_color;
+            this->shape = shape;
+
+            this->height_of_window = 0;
+            this->width_of_window = 0;
+
+            this->global_translation = vec3(0., 0., 0.);
+            this->scaling_parameters = vec3(1., 1., 1.);
+            this->scaling_translation = vec3(1./32., 1./32., 1./32.);
+            this->position_of_camera = vec3(0., 0., 0.);
+            this->position_of_element = vec3(0., 0., -100.);
+
+            this->scaling_translation_changes_up = vec3(SCALING_PARAMETERS_CHANGES_UP_X, SCALING_PARAMETERS_CHANGES_UP_Y, SCALING_PARAMETERS_CHANGES_UP_Z);
+            this->scaling_translation_changes_down = vec3(SCALING_PARAMETERS_CHANGES_DOWN_X, SCALING_PARAMETERS_CHANGES_DOWN_Y, SCALING_PARAMETERS_CHANGES_DOWN_Z);
+
+            this->translation_changes = vec3(TRANSLATION_CHANGES_X, TRANSLATION_CHANGES_Y, TRANSLATION_CHANGES_Z);
+
+            this->translation_by_element = ELEMENT_TRANSLATION;
+
+            this->camera_changes = vec3(CAMERA_CHANGES_X, CAMERA_CHANGES_Y, CAMERA_CHANGES_Z);
+
+            this->estrangement_changes = ESTRAGNEMENT_CHANGES;
+
+            this->vect_of_vertexes = vect_of_vertexes;
+        }
 
 
     }
 }
 ```
+  
+Конструктор `app_freeglut` должен полностью определять параметры окна и образца, изменения его ориентации, поворотов, масштабирования, трансляций и пр.  

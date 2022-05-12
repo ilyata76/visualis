@@ -28,10 +28,10 @@ int main(int argc, char** argv) {
 	try {
 		_wsetlocale(LC_ALL, L".UTF-8");
 		std::wstring path(L""); int index = 0;
-		//std::wcout << L"Введите путь ДО ПАПКИ: "; std::wcin >> path; std::wcout << L'\n';
-		path = L"../temp/b";
-		//std::wcout << L"Введите номер файла: "; std::wcin >> index; std::wcout << L'\n';
-		index = 30;
+		std::wcout << L"Введите путь ДО ПАПКИ: "; std::wcin >> path; std::wcout << L'\n';
+		//path = L"../temp/b";
+		std::wcout << L"Введите номер файла: "; std::wcin >> index; std::wcout << L'\n';
+		//index = 30;
 		
 		std::wcout << L"Парсим файл...\n";
 		std::wstring fstr = vampire5::parser::get_string(path)(index);
@@ -43,7 +43,7 @@ int main(int argc, char** argv) {
 			std::vector <vvis::creator::Vertex> vect = vvis::creator::create_arry(path)(index);
 			std::wcout << L"Количество загруженных спинов: " << vect.size() << '\n';
 
-			vvis::visualization::app_freeglut app(vect, SHAPE_NOTHING, true, DRAW_ALL);
+			vvis::visualization::app_freeglut app(vect, SHAPE_CONE, true, DRAW_ALL);
 			vvis::visualization::draw_sample(app, argc, argv);
 		};
 		system("pause");
