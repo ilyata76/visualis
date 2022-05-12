@@ -22,6 +22,8 @@
 
 // TODO: class app
 
+// TODO: draw не полиморфна
+
 int main(int argc, char** argv) {
 	try {
 		_wsetlocale(LC_ALL, L".UTF-8");

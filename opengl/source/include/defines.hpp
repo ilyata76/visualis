@@ -21,12 +21,16 @@
 #define DOUBLE_PLUG_VVIS 0.0
 #define INT_PLUG_VVIS 0
 
-#define SHAPE_CONE 'c'
-#define SHAPE_CONE_STR L"cone"
 
-#define ROTATE_Z_FO_SECOND_REPRESENTATION 0 // 0 for not
+
+#define ROTATE_Z_FOR_SECOND_REPRESENTATION 0 // 0 for not
 #define COUNTERCLOCKWISE 1 // use 0 for not
 #define INVERT_Y_FOR_THIRD_REPRESENTATION 0 // use 0 for not
+
+
+#define SHAPE_CONE L'c'
+#define SHAPE_CONE_STR L"cone"
+#define SHAPE_NOTHING L'n'
 
 #define DRAW_ALL -1
 

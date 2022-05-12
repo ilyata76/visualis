@@ -10,6 +10,56 @@
 	namespace vvis {
 		namespace visualization {
 
+			struct vec3 {
+				double x;
+				double y;
+				double z;
+
+				vec3() : x(0), y(0), z(0) {};
+				vec3(double x, double y, double z) : x(x), y(y), z(z) {};
+			};
+
+			struct app_freeglut {
+
+					int index_of_line;
+
+					double additional_rotation_phi;
+					double additional_rotation_theta;
+				
+					std::vector <vvis::creator::Vertex> vect_of_vertexes;
+
+					double estrangement;
+
+					vec3 global_translation;
+					vec3 scaling_parameters;
+					vec3 scaling_translation;
+					vec3 position_of_camera;
+					vec3 position_of_element;
+
+					bool use_color;
+					wchar_t shape;
+
+					int width_of_window;
+					int height_of_window;
+
+					app_freeglut();
+					app_freeglut(std::vector <vvis::creator::Vertex>& vect_of_vertexes, wchar_t shape, bool use_color, int index_of_line);
+
+			};
+
+			// freeGLUT вынуждает пользоваться просто функциями, а не методами классов
+			void draw_sample(app_freeglut& app, int argc, char** argv);
+
+			void display();
+
+			void n_keys(unsigned char key, int x, int y);
+			void s_keys(int key, int x, int y);
+
+			
+			/// <summary>
+			/// ///////////
+			/// </summary>
+			
 			void display_nothing();
 			void display_l();
 

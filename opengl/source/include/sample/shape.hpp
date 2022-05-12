@@ -35,6 +35,9 @@
 					bool set_draw_configuration();	// на основании this->vertex построит конфигурацию
 					
 					bool draw(double base, double height, GLint slices, GLint stacks, vvis::visualization::VvisColor_3f color);  // рисует
+					
+					
+					bool new_draw(vvis::visualization::VvisColor_3f color, double* args);  // рисует
 
 					wchar_t info_wchar();
 					std::wstring info_wstr();
