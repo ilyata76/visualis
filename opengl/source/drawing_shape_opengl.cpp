@@ -9,6 +9,10 @@ int glob_color = false;
 // TODO: и это не только в отношении z
 // что с ней делать?
 
+// TODO: проверить; page up показал, что 0 1 1 лежит поверх 1 0 0 (увеличение конусов), т.е. Z смотрит НА НАС? ало так правильно всё нормально
+
+// TODO: возможность настройки т.е. кнопкой вызываем консоль туда вбиваем что-нибудь и оно меняет параметры
+
 struct transl {
 	double x;
 	double y;
@@ -36,7 +40,7 @@ struct camera {
 
 	camera() : x(0), y(0), z(0) {};
 	camera(double x, double y, double z) : x(x), y(y), z(z) {};
-} glob_camera(0, 0, 1);
+} glob_camera(0, 0, 0);
 
 struct element {
 	double x;
@@ -45,7 +49,15 @@ struct element {
 
 	element() : x(0), y(0), z(0) {};
 	element(double x, double y, double z) : x(x), y(y), z(z) {};
-} glob_elem(0, 0, 0);
+} glob_elem(0, 0, -100); // ???
+
+
+double glob_camera_phi = 0.0;
+double glob_camera_theta = 0.0;
+
+double glob_estrangement = 1.0;
+
+double ANGLE = 0.0;
 
 std::vector<vvis::creator::Vertex> vrt_vctr;
 
@@ -83,9 +95,18 @@ void vvis::visualization::draw_cone_spin(int& index, bool color) {
 
 	glPushMatrix();
 
+
+
+	glRotated(glob_camera_phi, 0, 1, 0);
+	glRotated(glob_camera_theta, 1, 0, 0);
+
+	glTranslatef(0, 0, glob_elem.z);
+
 	if (ROTATE_Z_FO_SECOND_REPRESENTATION) glRotatef(-90, 1, 0, 0);
 	
 	glTranslated(glob_transl.x, glob_transl.y, glob_transl.z);
+	glTranslated(-glob_camera.x, -glob_camera.y, -glob_camera.z);
+
 	
 	// glScaled(glob_scaling.x, glob_scaling.y, glob_scaling.z); плохо работает: куда деваются конусы?
 	
@@ -107,12 +128,27 @@ void vvis::visualization::display_cone() {
 
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
-	
+		
 	gluLookAt(
-		glob_camera.x, glob_camera.y, glob_camera.z, 
-		glob_elem.x, glob_elem.y, glob_elem.z, 
+		glob_camera.x, glob_camera.y, glob_camera.z,
+		glob_elem.x, glob_elem.y, glob_elem.z,
 		0, 1, 0
 	);
+
+	//glTranslated(glob_camera.x, glob_camera.y, glob_camera.z); doesnt work
+
+	//gluPerspective(10, glutGet(GLUT_SCREEN_WIDTH)/glutGet(GLUT_SCREEN_HEIGHT), 1.0, 400.0); // при угле в 1 видно картинку rolf
+	
+	
+	
+	//glFrustum(-1, 1, -1, 1, 10 * glob_estrangement, 4000); // этим можно пользоваться, чтобы управлять камерой
+	
+	// TODO: надо понять как рассчитать изменение положение glob_elem
+
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+	glOrtho(-1 * glob_estrangement, 1 * glob_estrangement, -1 * glob_estrangement, 1 * glob_estrangement, 1, 1000); // ортогональная проекция
+	glMatrixMode(GL_MODELVIEW);
 	
 	if (glob_index == DRAW_ALL) {
 
@@ -127,35 +163,80 @@ void vvis::visualization::display_cone() {
 		draw_cone_spin(glob_index, glob_color);
 	}
 
+
+
 	glFlush();
 	glutSwapBuffers();
 }
 
+//#include <iostream>
+
+// поставить поближе и крутить точнее и чувствительнее? - неудобно для отображения
+
 void vvis::visualization::normal_keys(unsigned char key, int x, int y) {
+	
 	switch (key) {
 
+
 		case 'w' : {
-			glob_camera.y += 0.1;
+			glob_camera.y += 0.1f;
+			glob_elem.y -= 0.1f;
 
 		} break;
 
 		case 's' : {
-			glob_camera.y -= 0.1;
+			glob_camera.y -= 0.1f;
+			glob_elem.y += 0.1f;
 
 		} break;
 
 		case 'a' : {
-			glob_camera.x += 0.1;
+			glob_camera.x += 0.1f;
+			glob_elem.x -= 0.1f;
 
 		} break;
 
 		case 'd' : {
-			glob_camera.x -= 0.1;
+			glob_camera.x -= 0.1f;
+			glob_elem.x += 0.1f;
 			
 		} break;
 
+
+
+		// отдельный блок поворота системы
+
+		// TODO переименовать переменные
+
+
+		//case 'i' : {
+		//	//std::cout << "ABOBUS: "; int a; std::cin >> a; это работает
+		//	glob_camera_theta += 0.1f;
+
+		//} break;
+
+		//case 'k' : {
+		//	glob_camera_theta -= 0.1f;
+
+		//} break;
+
+		//case 'j' : {
+		//	glob_camera_phi += 0.1f;
+
+		//} break;
+
+		//case 'l' : {
+		//	glob_camera_phi -= 0.1f;
+		//	
+		//} break;
+
+
+
+
+
+
 		case ' ': {
-			glob_camera.z += 0.1;
+			glob_estrangement += 0.1;
 
 		} break;
 
@@ -226,8 +307,10 @@ void vvis::visualization::special_keys(int key, int x, int y) {
 
 		} break;
 
+
+		case GLUT_KEY_CTRL_L:
 		case GLUT_KEY_SHIFT_L: {
-			glob_camera.z -= 0.1;
+			glob_estrangement -= 0.1;
 
 		} break;
 
