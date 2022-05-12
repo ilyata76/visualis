@@ -42,7 +42,9 @@ int main(int argc, char** argv) {
 			std::wcout << L"Читаем файл...\n";
 			std::vector <vvis::creator::Vertex> vect = vvis::creator::create_arry(path)(index);
 			std::wcout << L"Количество загруженных спинов: " << vect.size() << '\n';
-			vvis::visualization::main_glut(argc, argv, vect, SHAPE_CONE, true, DRAW_ALL);
+			//vvis::visualization::main_glut(argc, argv, vect, SHAPE_CONE, true, DRAW_ALL);
+			vvis::visualization::app_freeglut app(vect, SHAPE_CONE, true, DRAW_ALL);
+			vvis::visualization::draw_sample(app, argc, argv);
 		};
 		system("pause");
 	}

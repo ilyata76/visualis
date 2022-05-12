@@ -36,6 +36,20 @@
 					vec3 position_of_camera;
 					vec3 position_of_element;
 
+
+					// то, что сможет изменить пользователь? определяется изначально в defines
+
+					vec3 scaling_translation_changes_up;
+					vec3 scaling_translation_changes_down;
+
+					vec3 translation_changes;
+
+					double translation_by_element;
+
+					vec3 camera_changes;
+
+					double estrangement_changes;
+
 					bool use_color;
 					wchar_t shape;
 
@@ -51,6 +65,7 @@
 			void draw_sample(app_freeglut& app, int argc, char** argv);
 
 			void display();
+			void draw_shape(int index);
 
 			void n_keys(unsigned char key, int x, int y);
 			void s_keys(int key, int x, int y);

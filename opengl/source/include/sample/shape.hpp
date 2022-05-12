@@ -21,6 +21,8 @@
 
 					virtual bool set_draw_configuration() = 0;
 
+					virtual bool new_draw(vvis::visualization::VvisColor_3f color, double* args) = 0;
+
 					virtual wchar_t info_wchar() = 0;
 					virtual std::wstring info_wstr() = 0;
 			};

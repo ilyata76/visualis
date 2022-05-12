@@ -28,16 +28,40 @@
 #define INVERT_Y_FOR_THIRD_REPRESENTATION 0 // use 0 for not
 
 
+
+// рисование
+
 #define SHAPE_CONE L'c'
 #define SHAPE_CONE_STR L"cone"
 #define SHAPE_NOTHING L'n'
 
 #define DRAW_ALL -1
 
+#define SCALING_PARAMETERS_CHANGES_UP_X 1.1 // >= 1
+#define SCALING_PARAMETERS_CHANGES_UP_Y 1.1
+#define SCALING_PARAMETERS_CHANGES_UP_Z 1.1
 
+#define SCALING_PARAMETERS_CHANGES_DOWN_X 0.9 // <= 1
+#define SCALING_PARAMETERS_CHANGES_DOWN_Y 0.9
+#define SCALING_PARAMETERS_CHANGES_DOWN_Z 0.9
+
+#define TRANSLATION_CHANGES_X 0.1
+#define TRANSLATION_CHANGES_Y 0.1
+#define TRANSLATION_CHANGES_Z 0.1
+
+#define ELEMENT_TRANSLATION -1.0 // 1 if left-left; -1 left-right <- translation by head
+
+#define CAMERA_CHANGES_X 0.1
+#define CAMERA_CHANGES_Y 0.1
+#define CAMERA_CHANGES_Z 0.1
 
 #define TRANSLATION_CONST 0.1
-#define TRANSLATION_BY_HEAD -1.0 // use 1 for not or -1 for yes
+#define TRANSLATION_BY_HEAD -1.0
+
+#define ESTRAGNEMENT_CHANGES 0.1
+
+//
+
 
 #define SCALING_SHAPE_UPPER_LIMIT 3
 #define SCALING_SHAPE_LOWER_LIMIT 0.1
