@@ -20,12 +20,13 @@ vvis::visualization::app_freeglut::app_freeglut() {
 
 	this->global_translation = vec3(0., 0., 0.);
 	this->scaling_parameters = vec3(1., 1., 1.);
-	this->scaling_translation = vec3(1. / 32., 1. / 32., 1. / 32.);
+	this->scaling_translation = vec3(1., 1., 1.);
 	this->position_of_camera = vec3(0., 0., 0.);
 	this->position_of_element = vec3(0., 0., -100.);
 
-	this->scaling_translation_changes_up = vec3(SCALING_PARAMETERS_CHANGES_UP_X, SCALING_PARAMETERS_CHANGES_UP_Y, SCALING_PARAMETERS_CHANGES_UP_Z);
-	this->scaling_translation_changes_down = vec3(SCALING_PARAMETERS_CHANGES_DOWN_X, SCALING_PARAMETERS_CHANGES_DOWN_Y, SCALING_PARAMETERS_CHANGES_DOWN_Z);
+	this->scaling_translation_changes = vec3(SCALING_PARAMETERS_CHANGES_X, SCALING_PARAMETERS_CHANGES_Y, SCALING_PARAMETERS_CHANGES_Z);
+	//this->scaling_translation_changes_up = vec3(SCALING_PARAMETERS_CHANGES_UP_X, SCALING_PARAMETERS_CHANGES_UP_Y, SCALING_PARAMETERS_CHANGES_UP_Z);
+	//this->scaling_translation_changes_down = vec3(SCALING_PARAMETERS_CHANGES_DOWN_X, SCALING_PARAMETERS_CHANGES_DOWN_Y, SCALING_PARAMETERS_CHANGES_DOWN_Z);
 
 	this->translation_changes = vec3(TRANSLATION_CHANGES_X, TRANSLATION_CHANGES_Y, TRANSLATION_CHANGES_Z);
 
@@ -51,13 +52,14 @@ vvis::visualization::app_freeglut::app_freeglut(std::vector<vvis::creator::Verte
 	this->width_of_window = 0;
 
 	this->global_translation = vec3(0., 0., 0.);
-	this->scaling_parameters = vec3(1., 1., 1.);
-	this->scaling_translation = vec3(1./32., 1./32., 1./32.);
+	this->scaling_parameters = vec3(20., 20., 20.);
+	this->scaling_translation = vec3(1., 1., 1.);
 	this->position_of_camera = vec3(0., 0., 0.);
 	this->position_of_element = vec3(0., 0., -100.);
 
-	this->scaling_translation_changes_up = vec3(SCALING_PARAMETERS_CHANGES_UP_X, SCALING_PARAMETERS_CHANGES_UP_Y, SCALING_PARAMETERS_CHANGES_UP_Z);
-	this->scaling_translation_changes_down = vec3(SCALING_PARAMETERS_CHANGES_DOWN_X, SCALING_PARAMETERS_CHANGES_DOWN_Y, SCALING_PARAMETERS_CHANGES_DOWN_Z);
+	this->scaling_translation_changes = vec3(SCALING_PARAMETERS_CHANGES_X, SCALING_PARAMETERS_CHANGES_Y, SCALING_PARAMETERS_CHANGES_Z);
+	//this->scaling_translation_changes_up = vec3(SCALING_PARAMETERS_CHANGES_UP_X, SCALING_PARAMETERS_CHANGES_UP_Y, SCALING_PARAMETERS_CHANGES_UP_Z);
+	//this->scaling_translation_changes_down = vec3(SCALING_PARAMETERS_CHANGES_DOWN_X, SCALING_PARAMETERS_CHANGES_DOWN_Y, SCALING_PARAMETERS_CHANGES_DOWN_Z);
 
 	this->translation_changes = vec3(TRANSLATION_CHANGES_X, TRANSLATION_CHANGES_Y, TRANSLATION_CHANGES_Z);
 
@@ -93,7 +95,9 @@ void vvis::visualization::draw_sample(app_freeglut& app, int argc, char** argv) 
 		glutKeyboardFunc(vvis::visualization::n_keys);
 		glutSpecialFunc(vvis::visualization::s_keys);
 
-		glutMainLoop();
+
+
+	glutMainLoop();
 }
 
 void vvis::visualization::display() {
@@ -139,16 +143,27 @@ void vvis::visualization::display() {
 			glLoadIdentity();
 		
 			// TODO: use ortho?
-			glOrtho(-1 * glob_app->estrangement, 1 * glob_app->estrangement, -1 * glob_app->estrangement, 1 * glob_app->estrangement, 1, 1000);	//
+			//glOrtho(-1 * glob_app->estrangement, 1 * glob_app->estrangement, -1 * glob_app->estrangement, 1 * glob_app->estrangement, 1, 1000);	//
 			//glOrtho(0, glob_app->width_of_window * glob_app->estrangement, 0, glob_app->height_of_window * glob_app->estrangement, 1, 1000);	//картинка при скейлинге в 1 в нижнем левом углу, но нужно понижать чувствительность
-			//glOrtho(-(glob_app->width_of_window / 2) * glob_app->estrangement, (glob_app->width_of_window/2) * glob_app->estrangement, -(glob_app->width_of_window / 2) * glob_app->estrangement, (glob_app->width_of_window / 2) * glob_app->estrangement, 1, 1000);
+			glOrtho(-(glob_app->width_of_window / 2) * glob_app->estrangement, (glob_app->width_of_window/2) * glob_app->estrangement, -(glob_app->width_of_window / 2) * glob_app->estrangement, (glob_app->width_of_window / 2) * glob_app->estrangement, 1, 1000);
 			// работают все варианты, но нужно определиться с тем, который использовать, потому что всё остальное зависит от него
+			// нужно подготовить переход к 0 width 0 height это будет удобнее для последующего 
+
+			//glob_app->global_translation.x = glob_app->width_of_window / 2;
+			//glob_app->global_translation.y = glob_app->height_of_window / 2;
+
+			
 
 		glMatrixMode(GL_MODELVIEW);
 
 		// TODO: проверка на индекс	
 
-
+		// TODO: как сюда добавить текст, чтобы по-умному?
+		// этот внизу работаетъ
+		// сделать подокна
+		//glColor3f(0, 0, 0);
+		//glRasterPos3i(-glob_app->width_of_window / 3, -glob_app->height_of_window / 3, 0);
+		//[](std::string text) {int len = text.length(); for (int i = 0; i < len; ++i) glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, text[i]); }("NOTHING TO DISPLAY");
 
 		if (glob_app->index_of_line == DRAW_ALL) {
 					
@@ -249,18 +264,18 @@ void vvis::visualization::s_keys(int key, int x, int y) {
 
 		case GLUT_KEY_PAGE_UP: {
 
-			glob_app->scaling_parameters.x *= glob_app->scaling_translation_changes_up.x;
-			glob_app->scaling_parameters.y *= glob_app->scaling_translation_changes_up.y;
-			glob_app->scaling_parameters.z *= glob_app->scaling_translation_changes_up.z;
+			glob_app->scaling_parameters.x += glob_app->scaling_translation_changes.x;
+			glob_app->scaling_parameters.y += glob_app->scaling_translation_changes.y;
+			glob_app->scaling_parameters.z += glob_app->scaling_translation_changes.z;
 				
 			glutPostRedisplay();
 		} break;
 
 		case GLUT_KEY_PAGE_DOWN: {
 
-			glob_app->scaling_parameters.x *= glob_app->scaling_translation_changes_down.x;
-			glob_app->scaling_parameters.y *= glob_app->scaling_translation_changes_down.y;
-			glob_app->scaling_parameters.z *= glob_app->scaling_translation_changes_down.z;
+			glob_app->scaling_parameters.x -= glob_app->scaling_translation_changes.x;
+			glob_app->scaling_parameters.y -= glob_app->scaling_translation_changes.y;
+			glob_app->scaling_parameters.z -= glob_app->scaling_translation_changes.z;
 
 			glutPostRedisplay();
 		} break;

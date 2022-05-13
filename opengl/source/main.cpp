@@ -24,6 +24,9 @@
 
 // TODO: draw не полиморфна
 
+// TODO: функция проверки, существуют ли уже конвертированные файлы
+// флаг -convert -force
+
 int main(int argc, char** argv) {
 	try {
 		_wsetlocale(LC_ALL, L".UTF-8");
@@ -46,11 +49,12 @@ int main(int argc, char** argv) {
 			vvis::visualization::app_freeglut app(vect, SHAPE_CONE, true, DRAW_ALL);
 			vvis::visualization::draw_sample(app, argc, argv);
 		};
-		system("pause");
 	}
 	catch (Exceptio& E) {
 		_wsetlocale(LC_ALL, L".UTF-8");
 		std::wcout << E.get_description() << L"   " << E.get_comment();
+		return E.get_index();
 	}
+	system("pause");
 	return 0;
 }

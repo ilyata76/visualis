@@ -39,14 +39,16 @@
 
 					// то, что сможет изменить пользователь? определяется изначально в defines
 
-					vec3 scaling_translation_changes_up;
-					vec3 scaling_translation_changes_down;
+					//vec3 scaling_translation_changes_up;
+					//vec3 scaling_translation_changes_down;
+
+					vec3 scaling_translation_changes;
 
 					vec3 translation_changes;
 
 					double translation_by_element;
 
-					vec3 camera_changes;
+					vec3 camera_changes; // +-
 
 					double estrangement_changes;
 
