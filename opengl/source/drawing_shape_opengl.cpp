@@ -82,7 +82,7 @@ void vvis::visualization::draw_sample(app_freeglut& app, int argc, char** argv) 
 	glob_app->height_of_window = glutGet(GLUT_SCREEN_HEIGHT) * 2 / 3; //
 	glob_app->width_of_window = glutGet(GLUT_SCREEN_HEIGHT) * 2 / 3; //
 	
-	glutInitWindowSize(glob_app->height_of_window, glob_app->width_of_window); // ПОКА НЕТ RESHAPE
+	glutInitWindowSize(glob_app->height_of_window, glob_app->width_of_window);
 
 	glutInitWindowPosition(0, 0);
 
@@ -90,7 +90,8 @@ void vvis::visualization::draw_sample(app_freeglut& app, int argc, char** argv) 
 
 	int MAINWINDOW = glutCreateWindow("main_window"); glutSetWindowTitle("VISUALIS");
 
-		glutDisplayFunc(display);
+		glutDisplayFunc(vvis::visualization::display);
+		glutReshapeFunc(vvis::visualization::reshape);
 
 		glutKeyboardFunc(vvis::visualization::n_keys);
 		glutSpecialFunc(vvis::visualization::s_keys);
@@ -136,7 +137,7 @@ void vvis::visualization::display() {
 			gluLookAt(
 				glob_app->position_of_camera.x, glob_app->position_of_camera.y, glob_app->position_of_camera.z,			//
 				glob_app->position_of_element.x, glob_app->position_of_element.y, glob_app->position_of_element.z,		//
-				0, 1, 0
+				0., 1., 0.
 			);
 
 		glMatrixMode(GL_PROJECTION);
@@ -145,10 +146,13 @@ void vvis::visualization::display() {
 			// TODO: use ortho?
 			//glOrtho(-1 * glob_app->estrangement, 1 * glob_app->estrangement, -1 * glob_app->estrangement, 1 * glob_app->estrangement, 1, 1000);	//
 			//glOrtho(0, glob_app->width_of_window * glob_app->estrangement, 0, glob_app->height_of_window * glob_app->estrangement, 1, 1000);	//картинка при скейлинге в 1 в нижнем левом углу, но нужно понижать чувствительность
-			glOrtho(-(glob_app->width_of_window / 2) * glob_app->estrangement, (glob_app->width_of_window/2) * glob_app->estrangement, -(glob_app->width_of_window / 2) * glob_app->estrangement, (glob_app->width_of_window / 2) * glob_app->estrangement, 1, 1000);
-			// работают все варианты, но нужно определиться с тем, который использовать, потому что всё остальное зависит от него
-			// нужно подготовить переход к 0 width 0 height это будет удобнее для последующего 
-
+			
+			glOrtho(
+				-(double(glob_app->width_of_window) / 2.) * double(glob_app->estrangement), (double(glob_app->width_of_window) / 2.) * double(glob_app->estrangement), 
+				-(double(glob_app->height_of_window) / 2.) * double(glob_app->estrangement), (double(glob_app->height_of_window) / 2.) * double(glob_app->estrangement),
+				1., 1000.
+			);
+			
 			//glob_app->global_translation.x = glob_app->width_of_window / 2;
 			//glob_app->global_translation.y = glob_app->height_of_window / 2;
 
@@ -254,6 +258,20 @@ void vvis::visualization::draw_shape(int index) {
 	delete shape;
 
 }
+
+void vvis::visualization::reshape(int w, int h) {
+
+	if (h == 0) h = 1;
+	if (w == 0) w = 1;
+
+	glViewport(0, 0, w, h);
+	
+	// по сути эти переприсвоения и сохраняет пропорции
+	glob_app->width_of_window = w;
+	glob_app->height_of_window = h;
+
+}
+
 
 void vvis::visualization::s_keys(int key, int x, int y) {
 	

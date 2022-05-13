@@ -67,6 +67,7 @@
 			void draw_sample(app_freeglut& app, int argc, char** argv);
 
 			void display();
+			void reshape(int w, int h);
 			void draw_shape(int index);
 
 			void n_keys(unsigned char key, int x, int y);
