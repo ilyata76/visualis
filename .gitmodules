@@ -1,0 +1,6 @@
+[submodule "freeglut/source/libraries/tia-Exceptio"]
+	path = freeglut/source/libraries/tia-Exceptio
+	url = git@github.com:ilyata76/tia-Exceptio.git
+[submodule "freeglut/source/libraries/freeglut"]
+	path = freeglut/source/libraries/freeglut
+	url = git@github.com:FreeGLUTProject/freeglut.git
