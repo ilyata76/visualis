@@ -61,7 +61,10 @@ std::wstring vampire5::parser::get_out(const int& number) {
 	spins_file.open(path_to_folder + L"/" + name_of_spins_file + FORMAT_OF_SPINS_FILE_V5, std::ios_base::in);
 
 	Assert(atoms_file.is_open(), 101, L"atoms_file не открылся", L"Assert. ФУНКЦИЯ: vampire5::parser::get_out");
-	Assert(spins_file.is_open(), 101, L"spins_file не открылся", L"Assert. ФУНКЦИЯ: vampire5::parser::get_out");
+
+	std::wstring desc = name_of_spins_file + L" не открылся";
+	std::wstring comm = L"Assert. ФУНКЦИЯ: vampire5::parser::get_out";
+	Assert(spins_file.is_open(), 111, desc, comm);
 	
 	std::wstring str1 = L"str1";
 	std::wstring str2 = L"str2";

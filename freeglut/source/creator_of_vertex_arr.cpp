@@ -64,7 +64,7 @@ std::wstring vvis::creator::get_file_name(const int& number) {
 }
 
 std::vector <Vertex> vvis::creator::get_out(const int& index) {
-	// TODO: не хватает проверок
+	// TODO: не хватает проверок если файл не открыт то он не пытается его сконвертировать этой функции это нафик не нужно
 	
 
 	std::wstring name_of_file = vvis::creator::get_file_name(index);
