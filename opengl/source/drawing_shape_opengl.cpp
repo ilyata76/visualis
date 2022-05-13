@@ -5,6 +5,41 @@
 
 // TODO: перемещение камеры по плоскостям образца
 
+#define MENU_RENDER_MOVEMENTS_BY_ARROWS 1010
+
+#define MENU_RENDER_MOVEMENTS_BY_ARROWS_SHOW_SENSIVITY 1011
+#define MENU_RENDER_MOVEMENTS_BY_ARROWS_INCREASE_SENSIVITY 1012
+#define MENU_RENDER_MOVEMENTS_BY_ARROWS_DECREASE_SENSIVITY 1013
+
+
+
+#define MENU_RENDER_MOVEMENTS_BY_WASD 1020
+
+#define MENU_RENDER_MOVEMENTS_BY_WASD_SHOW_SENSIVITY 1021
+#define MENU_RENDER_MOVEMENTS_BY_WASD_INCREASE_SENSIVITY 1022
+#define MENU_RENDER_MOVEMENTS_BY_WASD_DECREASE_SENSIVITY 1023
+
+
+
+#define MENU_RENDER_MOVEMENTS_BY_IJKL 1030
+
+
+
+#define MENU_RENDER_MOVEMENTS_BY_SHIFTSPACE 1040
+
+#define MENU_RENDER_MOVEMENTS_BY_SHIFTSPACE_SHOW_SENSIVITY 1041
+#define MENU_RENDER_MOVEMENTS_BY_SHIFTSPACE_INCREASE_SENSIVITY 1042
+#define MENU_RENDER_MOVEMENTS_BY_SHIFTSPACE_DECREASE_SENSIVITY 1043
+
+
+#define MENU_RENDER_SCALING 1050
+
+#define MENU_RENDER_SCALING_SHOW_SENSIVITY 1051
+#define MENU_RENDER_SCALING_INCREASE_SENSIVITY 1052
+#define MENU_RENDER_SCALING_DECREASE_SENSIVITY 1053
+
+
+
 vvis::visualization::app_freeglut::app_freeglut() {
 	this->index_of_line = 0;
 	this->additional_rotation_phi = 0.0;
@@ -14,6 +49,7 @@ vvis::visualization::app_freeglut::app_freeglut() {
 
 	this->use_color = false;
 	this->shape = SHAPE_NOTHING;
+	this->fullscreen = false;
 
 	this->height_of_window = 0;
 	this->width_of_window = 0;
@@ -24,7 +60,7 @@ vvis::visualization::app_freeglut::app_freeglut() {
 	this->position_of_camera = vec3(0., 0., 0.);
 	this->position_of_element = vec3(0., 0., -100.);
 
-	this->scaling_translation_changes = vec3(SCALING_PARAMETERS_CHANGES_X, SCALING_PARAMETERS_CHANGES_Y, SCALING_PARAMETERS_CHANGES_Z);
+	this->scaling_parameters_changes = vec3(SCALING_PARAMETERS_CHANGES_X, SCALING_PARAMETERS_CHANGES_Y, SCALING_PARAMETERS_CHANGES_Z);
 	//this->scaling_translation_changes_up = vec3(SCALING_PARAMETERS_CHANGES_UP_X, SCALING_PARAMETERS_CHANGES_UP_Y, SCALING_PARAMETERS_CHANGES_UP_Z);
 	//this->scaling_translation_changes_down = vec3(SCALING_PARAMETERS_CHANGES_DOWN_X, SCALING_PARAMETERS_CHANGES_DOWN_Y, SCALING_PARAMETERS_CHANGES_DOWN_Z);
 
@@ -47,6 +83,7 @@ vvis::visualization::app_freeglut::app_freeglut(std::vector<vvis::creator::Verte
 
 	this->use_color = use_color;
 	this->shape = shape;
+	this->fullscreen = false;
 
 	this->height_of_window = 0;
 	this->width_of_window = 0;
@@ -57,7 +94,7 @@ vvis::visualization::app_freeglut::app_freeglut(std::vector<vvis::creator::Verte
 	this->position_of_camera = vec3(0., 0., 0.);
 	this->position_of_element = vec3(0., 0., -100.);
 
-	this->scaling_translation_changes = vec3(SCALING_PARAMETERS_CHANGES_X, SCALING_PARAMETERS_CHANGES_Y, SCALING_PARAMETERS_CHANGES_Z);
+	this->scaling_parameters_changes = vec3(SCALING_PARAMETERS_CHANGES_X, SCALING_PARAMETERS_CHANGES_Y, SCALING_PARAMETERS_CHANGES_Z);
 	//this->scaling_translation_changes_up = vec3(SCALING_PARAMETERS_CHANGES_UP_X, SCALING_PARAMETERS_CHANGES_UP_Y, SCALING_PARAMETERS_CHANGES_UP_Z);
 	//this->scaling_translation_changes_down = vec3(SCALING_PARAMETERS_CHANGES_DOWN_X, SCALING_PARAMETERS_CHANGES_DOWN_Y, SCALING_PARAMETERS_CHANGES_DOWN_Z);
 
@@ -90,18 +127,19 @@ void vvis::visualization::draw_sample(app_freeglut& app, int argc, char** argv) 
 
 	int MAINWINDOW = glutCreateWindow("main_window"); glutSetWindowTitle("VISUALIS");
 
-		glutDisplayFunc(vvis::visualization::display);
-		glutReshapeFunc(vvis::visualization::reshape);
+		glutDisplayFunc(display_render);
+		glutReshapeFunc(reshape_render);
 
-		glutKeyboardFunc(vvis::visualization::n_keys);
-		glutSpecialFunc(vvis::visualization::s_keys);
+		glutKeyboardFunc(n_keys);
+		glutSpecialFunc(s_keys);
 
+		main_menu_init();
 
 
 	glutMainLoop();
 }
 
-void vvis::visualization::display() {
+void vvis::visualization::display_render() {
 
 	glClearColor(1, 1, 1, 0);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -188,7 +226,6 @@ void vvis::visualization::display() {
 	}
 }
 
-
 void vvis::visualization::draw_shape(int index) {
 
 	Shape* shape = NULL; // полиморфная
@@ -259,7 +296,7 @@ void vvis::visualization::draw_shape(int index) {
 
 }
 
-void vvis::visualization::reshape(int w, int h) {
+void vvis::visualization::reshape_render(int w, int h) {
 
 	if (h == 0) h = 1;
 	if (w == 0) w = 1;
@@ -273,6 +310,169 @@ void vvis::visualization::reshape(int w, int h) {
 }
 
 
+
+void vvis::visualization::main_menu_init() {
+	int _main_menu_render = glutCreateMenu(main_menu_render);
+	
+	int _menu_movements_by_arrows = glutCreateMenu(menu_movements_by_arrows);
+	int _menu_movements_by_wasd = glutCreateMenu(menu_movements_by_wasd);
+	int _menu_movements_by_shiftspace = glutCreateMenu(menu_movements_by_shiftspace);
+	int _menu_scaling = glutCreateMenu(menu_scaling);
+
+	// sprintf делает вывод в массив buff
+
+	glutSetMenu(_menu_movements_by_arrows);
+		char buff[256]; sprintf(buff, "Current: (%g, %g, %g)", glob_app->translation_changes.x, glob_app->translation_changes.y, glob_app->translation_changes.z);
+		glutAddMenuEntry(buff, MENU_RENDER_MOVEMENTS_BY_ARROWS_SHOW_SENSIVITY);
+		glutAddMenuEntry("Inrease sensivity", MENU_RENDER_MOVEMENTS_BY_ARROWS_INCREASE_SENSIVITY);
+		glutAddMenuEntry("Decrease sensivity", MENU_RENDER_MOVEMENTS_BY_ARROWS_DECREASE_SENSIVITY);
+
+	glutSetMenu(_menu_movements_by_wasd);
+		sprintf(buff, "Current: (%g, %g, %g)", glob_app->camera_changes.x, glob_app->camera_changes.y, glob_app->camera_changes.z);
+		glutAddMenuEntry(buff, MENU_RENDER_MOVEMENTS_BY_WASD_SHOW_SENSIVITY);
+		glutAddMenuEntry("Inrease sensivity", MENU_RENDER_MOVEMENTS_BY_WASD_INCREASE_SENSIVITY);
+		glutAddMenuEntry("Decrease sensivity", MENU_RENDER_MOVEMENTS_BY_WASD_DECREASE_SENSIVITY);
+
+	glutSetMenu(_menu_movements_by_shiftspace);
+		sprintf(buff, "Current: (%g)", glob_app->estrangement_changes);
+		glutAddMenuEntry(buff, MENU_RENDER_MOVEMENTS_BY_SHIFTSPACE_SHOW_SENSIVITY);
+		glutAddMenuEntry("Inrease sensivity", MENU_RENDER_MOVEMENTS_BY_SHIFTSPACE_INCREASE_SENSIVITY);
+		glutAddMenuEntry("Decrease sensivity", MENU_RENDER_MOVEMENTS_BY_SHIFTSPACE_DECREASE_SENSIVITY);
+
+	glutSetMenu(_menu_scaling);
+		sprintf(buff, "Current: (%g, %g, %g)", glob_app->scaling_parameters_changes.x, glob_app->scaling_parameters_changes.y, glob_app->scaling_parameters_changes.z);
+		glutAddMenuEntry(buff, MENU_RENDER_SCALING_SHOW_SENSIVITY);
+		glutAddMenuEntry("Inrease sensivity", MENU_RENDER_SCALING_INCREASE_SENSIVITY);
+		glutAddMenuEntry("Decrease sensivity", MENU_RENDER_SCALING_DECREASE_SENSIVITY);
+
+	glutSetMenu(_main_menu_render);
+		glutAddSubMenu("Movements by arrows", _menu_movements_by_arrows);
+		glutAddSubMenu("Movements by wasd/ijkl", _menu_movements_by_wasd);
+		glutAddSubMenu("Movements by shift(lctrl)/space", _menu_movements_by_shiftspace);
+		glutAddSubMenu("Scaling parameters by pageup/pagedown", _menu_scaling);
+
+	glutAttachMenu(GLUT_RIGHT_BUTTON);
+	glutDetachMenu(GLUT_LEFT_BUTTON);
+
+}
+
+void vvis::visualization::main_menu_render(int code) {
+	switch (code) {
+		default: {
+
+		} break;
+	}
+}
+
+void vvis::visualization::menu_movements_by_arrows(int code) {
+	switch (code) {
+
+
+		case MENU_RENDER_MOVEMENTS_BY_ARROWS_INCREASE_SENSIVITY: {
+			glob_app->translation_changes.x *= MOVEMENTS_BY_ARROWS_MULTIPLY_SENSIVITY;
+			glob_app->translation_changes.y *= MOVEMENTS_BY_ARROWS_MULTIPLY_SENSIVITY;
+			glob_app->translation_changes.z *= MOVEMENTS_BY_ARROWS_MULTIPLY_SENSIVITY;
+
+			char buff[256]; sprintf(buff, "Current: (%g, %g, %g)", glob_app->translation_changes.x, glob_app->translation_changes.y, glob_app->translation_changes.z);
+			glutChangeToMenuEntry(1, buff, MENU_RENDER_MOVEMENTS_BY_ARROWS_SHOW_SENSIVITY);
+
+		} break;
+
+		case MENU_RENDER_MOVEMENTS_BY_ARROWS_DECREASE_SENSIVITY: {
+			glob_app->translation_changes.x /= MOVEMENTS_BY_ARROWS_MULTIPLY_SENSIVITY;
+			glob_app->translation_changes.y /= MOVEMENTS_BY_ARROWS_MULTIPLY_SENSIVITY;
+			glob_app->translation_changes.z /= MOVEMENTS_BY_ARROWS_MULTIPLY_SENSIVITY;
+
+			char buff[256]; sprintf(buff, "Current: (%g, %g, %g)", glob_app->translation_changes.x, glob_app->translation_changes.y, glob_app->translation_changes.z);
+			glutChangeToMenuEntry(1, buff, MENU_RENDER_MOVEMENTS_BY_ARROWS_SHOW_SENSIVITY);
+
+		} break;
+
+		default: {
+
+		} break;
+	}
+}
+
+void vvis::visualization::menu_movements_by_wasd(int code) {
+	switch (code) {
+
+
+		case MENU_RENDER_MOVEMENTS_BY_WASD_INCREASE_SENSIVITY: {
+			glob_app->camera_changes.x *= MOVEMENTS_BY_WASD_MULTIPLY_SENSIVITY;
+			glob_app->camera_changes.y *= MOVEMENTS_BY_WASD_MULTIPLY_SENSIVITY;
+			glob_app->camera_changes.z *= MOVEMENTS_BY_WASD_MULTIPLY_SENSIVITY;
+
+			char buff[256]; sprintf(buff, "Current: (%g, %g, %g)", glob_app->camera_changes.x, glob_app->camera_changes.y, glob_app->camera_changes.z);
+			glutChangeToMenuEntry(1, buff, MENU_RENDER_MOVEMENTS_BY_WASD_SHOW_SENSIVITY);
+
+		} break;
+
+		case MENU_RENDER_MOVEMENTS_BY_WASD_DECREASE_SENSIVITY: {
+			glob_app->camera_changes.x /= MOVEMENTS_BY_WASD_MULTIPLY_SENSIVITY;
+			glob_app->camera_changes.y /= MOVEMENTS_BY_WASD_MULTIPLY_SENSIVITY;
+			glob_app->camera_changes.z /= MOVEMENTS_BY_WASD_MULTIPLY_SENSIVITY;
+
+			char buff[256]; sprintf(buff, "Current: (%g, %g, %g)", glob_app->camera_changes.x, glob_app->camera_changes.y, glob_app->camera_changes.z);
+			glutChangeToMenuEntry(1, buff, MENU_RENDER_MOVEMENTS_BY_WASD_SHOW_SENSIVITY);
+
+		} break;
+
+		default: {
+
+		} break;
+	}
+}
+
+void vvis::visualization::menu_movements_by_shiftspace(int code) {
+	switch (code) {
+
+		case MENU_RENDER_MOVEMENTS_BY_SHIFTSPACE_INCREASE_SENSIVITY: {
+			glob_app->estrangement_changes *= MOVEMENTS_BY_SHIFTSPACE_MULTIPLY_SENSIVITY;
+
+			char buff[256]; sprintf(buff, "Current: (%g)", glob_app->estrangement_changes);
+			glutChangeToMenuEntry(1, buff, MENU_RENDER_MOVEMENTS_BY_SHIFTSPACE_SHOW_SENSIVITY);
+
+		} break;
+
+		case MENU_RENDER_MOVEMENTS_BY_SHIFTSPACE_DECREASE_SENSIVITY: {
+			glob_app->estrangement_changes /= MOVEMENTS_BY_SHIFTSPACE_MULTIPLY_SENSIVITY;
+
+			char buff[256]; sprintf(buff, "Current: (%g)", glob_app->estrangement_changes);
+			glutChangeToMenuEntry(1, buff, MENU_RENDER_MOVEMENTS_BY_SHIFTSPACE_SHOW_SENSIVITY);
+
+		} break;
+
+		default: {
+
+		} break;
+	}
+}
+
+void vvis::visualization::menu_scaling(int code) {
+	switch (code) {
+
+		case MENU_RENDER_SCALING_INCREASE_SENSIVITY: {
+			glob_app->scaling_parameters_changes.x *= SCALING_MULTIPLY_SENSIVITY_X;
+			glob_app->scaling_parameters_changes.y *= SCALING_MULTIPLY_SENSIVITY_Y;
+			glob_app->scaling_parameters_changes.z *= SCALING_MULTIPLY_SENSIVITY_Z;
+
+			char buff[256]; sprintf(buff, "Current: (%g, %g, %g)", glob_app->scaling_parameters_changes.x, glob_app->scaling_parameters_changes.y, glob_app->scaling_parameters_changes.z);
+			glutChangeToMenuEntry(1, buff, MENU_RENDER_SCALING_SHOW_SENSIVITY);
+		} break;
+
+		case MENU_RENDER_SCALING_DECREASE_SENSIVITY: {
+			glob_app->scaling_parameters_changes.x /= SCALING_MULTIPLY_SENSIVITY_X;
+			glob_app->scaling_parameters_changes.y /= SCALING_MULTIPLY_SENSIVITY_Y;
+			glob_app->scaling_parameters_changes.z /= SCALING_MULTIPLY_SENSIVITY_Z;
+
+			char buff[256]; sprintf(buff, "Current: (%g, %g, %g)", glob_app->scaling_parameters_changes.x, glob_app->scaling_parameters_changes.y, glob_app->scaling_parameters_changes.z);
+			glutChangeToMenuEntry(1, buff, MENU_RENDER_SCALING_SHOW_SENSIVITY);
+		} break;
+
+	}
+}
+
 void vvis::visualization::s_keys(int key, int x, int y) {
 	
 	switch (key) {
@@ -282,18 +482,18 @@ void vvis::visualization::s_keys(int key, int x, int y) {
 
 		case GLUT_KEY_PAGE_UP: {
 
-			glob_app->scaling_parameters.x += glob_app->scaling_translation_changes.x;
-			glob_app->scaling_parameters.y += glob_app->scaling_translation_changes.y;
-			glob_app->scaling_parameters.z += glob_app->scaling_translation_changes.z;
+			glob_app->scaling_parameters.x += glob_app->scaling_parameters_changes.x;
+			glob_app->scaling_parameters.y += glob_app->scaling_parameters_changes.y;
+			glob_app->scaling_parameters.z += glob_app->scaling_parameters_changes.z;
 				
 			glutPostRedisplay();
 		} break;
 
 		case GLUT_KEY_PAGE_DOWN: {
 
-			glob_app->scaling_parameters.x -= glob_app->scaling_translation_changes.x;
-			glob_app->scaling_parameters.y -= glob_app->scaling_translation_changes.y;
-			glob_app->scaling_parameters.z -= glob_app->scaling_translation_changes.z;
+			glob_app->scaling_parameters.x -= glob_app->scaling_parameters_changes.x;
+			glob_app->scaling_parameters.y -= glob_app->scaling_parameters_changes.y;
+			glob_app->scaling_parameters.z -= glob_app->scaling_parameters_changes.z;
 
 			glutPostRedisplay();
 		} break;
@@ -337,6 +537,18 @@ void vvis::visualization::s_keys(int key, int x, int y) {
 			glob_app->estrangement -= glob_app->estrangement_changes;
 
 			glutPostRedisplay();
+		} break;
+
+		// полный экран
+
+		case GLUT_KEY_F11: {
+
+			if (!glob_app->fullscreen) {
+				glutFullScreen(); glob_app->fullscreen = true;
+			} else {
+				glutPositionWindow(0, 0); glob_app->fullscreen = false;
+			}
+				
 		} break;
 
 

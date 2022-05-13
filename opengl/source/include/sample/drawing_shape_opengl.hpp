@@ -42,7 +42,7 @@
 					//vec3 scaling_translation_changes_up;
 					//vec3 scaling_translation_changes_down;
 
-					vec3 scaling_translation_changes;
+					vec3 scaling_parameters_changes;
 
 					vec3 translation_changes;
 
@@ -53,6 +53,7 @@
 					double estrangement_changes;
 
 					bool use_color;
+					bool fullscreen;
 					wchar_t shape;
 
 					int width_of_window;
@@ -66,9 +67,17 @@
 			// freeGLUT вынуждает пользоваться просто функциями, а не методами классов
 			void draw_sample(app_freeglut& app, int argc, char** argv);
 
-			void display();
-			void reshape(int w, int h);
+			void display_render();
+			void reshape_render(int w, int h);
 			void draw_shape(int index);
+
+			void main_menu_init();
+			void main_menu_render(int code);
+			void menu_movements_by_arrows(int code);
+			void menu_movements_by_wasd(int code);
+			void menu_movements_by_ijkl(int code);
+			void menu_movements_by_shiftspace(int code);
+			void menu_scaling(int code);
 
 			void n_keys(unsigned char key, int x, int y);
 			void s_keys(int key, int x, int y);
