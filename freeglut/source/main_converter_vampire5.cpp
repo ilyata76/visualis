@@ -13,7 +13,7 @@ bool is_number(const std::wstring& s) {
 
 std::wstring my_path(const std::wstring& backup_path, const std::wstring& path) {
     if (path[0] == L'.') {
-        return  backup_path + L'\\' + path;
+        return  backup_path + path;
     } else  {
         return path;
     }
@@ -22,11 +22,15 @@ std::wstring my_path(const std::wstring& backup_path, const std::wstring& path) 
 
 int main(int argc, char** argv) {
     try {
+        using std::operator""s;
+
         if (argc == 1) {
 
             _wsetlocale(LC_ALL, L""); std::wstring F; std::wstring backup_path;
 
-            std::string paths(argv[0]); std::wstring path(paths.begin(), paths.end()); path.erase(path.end() - 17, path.end()); backup_path = path;
+            
+
+            std::string paths(argv[0]); std::wstring path(paths.begin(), paths.end()); path.erase(path.end() - "converter_v5.exe"s.size(), path.end()); backup_path = path;
             std::wcout << L"| | Directory: " << path << '\n';
 
             // https://docs.microsoft.com/ru-ru/dotnet/standard/io/file-path-formats
@@ -109,7 +113,5 @@ int main(int argc, char** argv) {
 
     }
 
-
-    system("pause");
     return 0;
 }

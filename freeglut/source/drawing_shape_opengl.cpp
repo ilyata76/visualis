@@ -267,9 +267,11 @@ void vvis::visualization::draw_shape(int index) {
 
 	glPushMatrix();
 
+	if (ROTATE_Z_FOR_SECOND_REPRESENTATION) glRotatef(-90, 1, 0, 0);
+
 	glTranslated(0, 0, glob_app->position_of_element.z); // отвели на position_of_element от камеры нашу структуру
 
-	if (ROTATE_Z_FOR_SECOND_REPRESENTATION) glRotatef(-90, 1, 0, 0);
+	
 
 	glTranslated(glob_app->global_translation.x, glob_app->global_translation.y, glob_app->global_translation.z); // делает возможным движение вверх-вниз и вправо-влево
 	glTranslated(-glob_app->position_of_camera.x, -glob_app->position_of_camera.y, -glob_app->position_of_camera.z); // делает возможным прокрутку камеры
