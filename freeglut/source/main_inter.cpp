@@ -57,7 +57,12 @@ int Interpretator::switch_code_of_operation(std::map<std::wstring, int> mapp, st
 	return it == mapp.end() ? UNKNOW_COMMAND : it->second;
 }
 
-std::wstring Interpretator::by_synonyms(const std::wstring& _value) {
+void Interpretator::set_number_from_file_name(const std::wstring& _path) {
+	size_t a = _path.find(START_OF_OUR_FILE);
+	this->settings.number_of_file = std::stoi(_path.substr(a + 15, 8));
+}
+
+std::wstring by_synonyms(const std::wstring& _value) {
 	std::wstring copy_value = _value; tolower_wstr(copy_value);
 
 	std::vector<std::wstring> exit = {L"exit", L"(exit)", L"exit.", L"end"};
@@ -80,13 +85,15 @@ std::wstring Interpretator::by_synonyms(const std::wstring& _value) {
 
 void Interpretator::loop(int argc, char** argv) {
 	std::wstring line;
-	do {
-		
-		// приглашение ввода и ввод
-		std::wcout << this->prompt; std::getline(std::wcin, line);
 
+	// приглашение ввода и ввод
+	
+
+	while (true) {
+		
+		std::wcout << this->prompt; std::getline(std::wcin, line);
 		// отсекаем выход
-		if (this->by_synonyms(line) == L"exit") break;
+		if (by_synonyms(line) == L"exit") { break; }
 		if (line == L"" | line == L"\n") continue;
 
 		std::wstringstream ss; ss.str(line); line = L"";
@@ -103,7 +110,7 @@ void Interpretator::loop(int argc, char** argv) {
 				
 				line = L""; if (ss.eof()) ss.str(L""); else ss >> line;
 
-				switch (switch_code_of_operation(this->sub1_command, line)) {
+				switch (switch_code_of_operation(this->subSet_command, line)) {
 
 					
 					case SUBCOMMAND_SET_FOLDERPATH : {
@@ -180,7 +187,7 @@ void Interpretator::loop(int argc, char** argv) {
 			case COMMAND_UNSET: {
 				line = L""; if (ss.eof()) ss.str(L""); else ss >> line;
 
-				switch (switch_code_of_operation(this->sub1_command, line)) {
+				switch (switch_code_of_operation(this->subSet_command, line)) {
 
 					case SUBCOMMAND_SET_FOLDERPATH: {
 						this->settings.path_to_folder = INTERPETATOR_PATH_PLUG_WSTR;
@@ -228,7 +235,7 @@ void Interpretator::loop(int argc, char** argv) {
 			case COMMAND_CONVERT: {
 				line = L""; if (ss.eof()) ss.str(L""); else ss >> line;
 
-				switch (switch_code_of_operation(this->sub2_command, line)) {
+				switch (switch_code_of_operation(this->subConvert_command, line)) {
 					
 					case SUBCOMMAND_CONVERT_VAMPIRE6: {
 						//TODO: кроссплатформенность?
@@ -274,9 +281,95 @@ void Interpretator::loop(int argc, char** argv) {
 
 
 
+
 			case COMMAND_VISUALIZE: {
+				line = L""; if (ss.eof()) ss.str(L""); else ss >> line;
+
+				switch (switch_code_of_operation(this->subVisualize_command, line)) {
+
+
+
+					case SUBCOMMAND_VISUALIZE_BY_FILE: {
+
+						bool Bol = false;
+
+						std::wcout << L"\n";
+						std::wcout << L"\tPath to file : " << this->settings.path_to_sconfiguration_file << L"\n";
+
+						Bol = file_exist(this->settings.path_to_sconfiguration_file);
+
+						this->set_number_from_file_name(this->settings.path_to_sconfiguration_file);
+
+						std::wstring file = vvis::creator::get_file_name(this->settings.number_of_file) + FORMAT_OF_OUR_FILE;
+
+						std::wcout << L"\tFile " << file << L") exists : "
+							<< std::boolalpha << Bol << "\n";
+
+						if (!Bol) { std::wcout << std::endl; break; }
+
+						std::wstring path = this->settings.path_to_sconfiguration_file;
+						path.erase(path.end() - file.size(), path.end()); this->settings.path_to_folder = path;
+
+						std::wcout << L"\tParsing... : ";
+							std::vector <vvis::creator::Vertex> vect = vvis::creator::create_arry(this->settings.path_to_folder)(this->settings.number_of_file);
+						std::wcout << (vect.size() != 0 ? L"Succsesfully\n" : L"Unsuccessfully\n");
+						std::wcout << L"\tLoaded " << vect.size() << L" spins\n";
+							vvis::visualization::app_freeglut app(vect, this->settings.shape, this->settings.using_color, this->settings.index_of_spin);
+
+						std::wcout << L"\tDrawing... \n";
+							vvis::visualization::draw_sample(app, argc, argv);
+
+						std::wcout << std::endl;
+					} break;
+
+
+
+
+
+
+					case SUBCOMMAND_VISUALIZE_BY_FOLDER: {
+
+						bool Bol = false;
+
+						std::wcout << L"\n";
+						std::wcout << L"\tPath to folder : " << this->settings.path_to_folder << L"\n";
+						std::wstring file = vvis::creator::get_file_name(this->settings.number_of_file) + FORMAT_OF_OUR_FILE;
+
+						Bol = file_exist(this->settings.path_to_folder + L"/" + file);
+
+						std::wcout << L"\tFile " << file << L" exists : "
+							<< std::boolalpha << Bol << "\n";
+
+						if (!Bol) { std::wcout << std::endl; break; }
+						
+						std::wcout << L"\tParsing... : ";
+							std::vector <vvis::creator::Vertex> vect = vvis::creator::create_arry(this->settings.path_to_folder)(this->settings.number_of_file);
+						std::wcout << (vect.size() != 0 ? L"Succsesfully\n" : L"Unsuccessfully\n");
+						std::wcout << L"\tLoaded " << vect.size() << L" spins\n";
+							vvis::visualization::app_freeglut app(vect, this->settings.shape, this->settings.using_color, this->settings.index_of_spin);
+
+						std::wcout << L"\tDrawing... \n";
+							vvis::visualization::draw_sample(app, argc, argv);
+
+						std::wcout << std::endl;
+
+					} break;
+
+
+
+
+
+					case UNKNOW_COMMAND: {
+						std::wcout << L"\n\tERROR: Unknow subcommand for \"visualize\": " << this->get_command_for_error(line) << L"\n" << std::endl;
+					} break;
+
+					default: {} break;
+
+				};
+
 
 			} break;
+
 
 
 
@@ -294,6 +387,8 @@ void Interpretator::loop(int argc, char** argv) {
 				this->settings.path_to_folder = INTERPETATOR_PATH_PLUG_WSTR;
 				this->settings.path_to_sconfiguration_file = INTERPETATOR_PATH_PLUG_WSTR;
 				this->settings.using_color = false;
+				this->settings.shape = SHAPE_CONE;
+				this->settings.index_of_spin = DRAW_ALL;
 				Assert(false, L"Restarting the program", L"The settings have been reset ");
 			} break;
 			
@@ -310,16 +405,16 @@ void Interpretator::loop(int argc, char** argv) {
 			case COMMAND_HELP: {
 				std::wcout
 				 << "\n\t \'set\' : sets up the settings\n"
-					<< "\t\t-- \'fp\'/\'folderpath\' <path-to-folder> : sets up the path to folder with sconfiguration or other files\n"
-					<< "\t\t-- \'fn\'/\'filenumber\' <integer-number> : sets up the number of sconfiguration file or other\n"
+					<< "\t\t-- \'folderpath\'/\'folp\' <path-to-folder> : sets up the path to folder with sconfiguration or other files\n"
+					<< "\t\t-- \'filenumber\'/\'fn\' <integer-number> : sets up the number of sconfiguration file or other\n"
 					<< "\t\t\tNOTE: You can specify only one of the paths (to folder or to file)\n"
 					<< "\t\t\tNOTE: Supports absolute or relative path \n"
-					<< "\t\t-- \'filepath\' <path-to-file> : sets up the path to sconfiguration file\n"
-					<< "\t\t-- \'color\' <y/n> : shape coloring\n"
+					<< "\t\t-- \'filepath\'/\'fp\' <path-to-file> : sets up the path to sconfiguration file\n"
+					<< "\t\t-- \'color\'/\'c\' <y/n> : shape coloring\n"
 				 << "\n\t \'show\' : shows current settings\n"
 				 << "\n\t \'unset\' <as in set> : sets up the base values\n"
 				 << "\n\t \'convert\'/\'con\' : converts to .vvis format using global settings (folderpath, filenumber)\n"
-					<< "\t\t-- \'vampire\'/\'vampire6\'/\'vampire5\' : looking for atoms-coords.data & spins-xxx.data\n"
+					<< "\t\t-- \'v6\'/\'vampire6\'/\'v5\'/\'vampire5\' : looking for atoms-coords.data & spins-xxx.data\n"
 				 //<< "\t \n"
 				 //<< "\t \n"
 				 << "\n\t \'restart\'/\'reset\' : reset the all current settings and restart the program\n"
@@ -338,5 +433,5 @@ void Interpretator::loop(int argc, char** argv) {
 			default: {} break;
 		}
 
-	} while (true);
+	}
 }

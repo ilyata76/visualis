@@ -44,7 +44,8 @@
 		std::wstring path_to_sconfiguration_file	= INTERPETATOR_PATH_PLUG_WSTR;
 		bool using_color							= false;
 		int number_of_file							= INTERPETATOR_NUMBER_PLUG_INT;
-
+		wchar_t shape								= SHAPE_CONE;
+		int index_of_spin							= DRAW_ALL;
 
 		friend std::wostream& operator<<(std::wostream& out, const Settings& SET) {
 			out << L"\t Path to folder with files\t\t: " << SET.path_to_folder << L"\n";
@@ -62,13 +63,17 @@
 	bool is_number(const std::wstring& s);
 
 	void remove_quotation(std::wstring& str);
-
+	
+	// yes no exit
+	std::wstring by_synonyms(const std::wstring& _value);
+	
 	inline bool file_exist(const std::wstring& s);
 
 	class Interpretator {
 		private:
 			Settings settings;
 			std::wstring prompt;
+			
 
 			std::map<std::wstring, int> main_command = {
 				{L"set", COMMAND_SET},
@@ -81,25 +86,30 @@
 			};
 
 			// set unset
-			std::map<std::wstring, int> sub1_command = {
-				{L"folderpath", SUBCOMMAND_SET_FOLDERPATH }, {L"fp", SUBCOMMAND_SET_FOLDERPATH },
+			std::map<std::wstring, int> subSet_command = {
+				{L"folderpath", SUBCOMMAND_SET_FOLDERPATH }, {L"folp", SUBCOMMAND_SET_FOLDERPATH },
 				{L"filenumber", SUBCOMMAND_SET_FILENUMBER}, {L"fn", SUBCOMMAND_SET_FILENUMBER},
-				{L"filepath", SUBCOMMAND_SET_FILEPATH},
-				{L"color", SUBCOMMAND_SET_COLORING}
+				{L"filepath", SUBCOMMAND_SET_FILEPATH}, {L"fp", SUBCOMMAND_SET_FILEPATH},
+				{L"color", SUBCOMMAND_SET_COLORING}, {L"c", SUBCOMMAND_SET_COLORING}
 				
 			};
 			
 			// convert visualize
-			std::map<std::wstring, int> sub2_command = {
-				{L"vampire", SUBCOMMAND_CONVERT_VAMPIRE6}, {L"vampire5", SUBCOMMAND_CONVERT_VAMPIRE6}, {L"vampire6", SUBCOMMAND_CONVERT_VAMPIRE6},
-				{L"folder", SUBCOMMAND_VISUALIZE_BY_FOLDER}, {L"file", SUBCOMMAND_VISUALIZE_BY_FILE}
+			std::map<std::wstring, int> subConvert_command = {
+				{L"vampire5", SUBCOMMAND_CONVERT_VAMPIRE6}, {L"vampire6", SUBCOMMAND_CONVERT_VAMPIRE6}, {L"v5", SUBCOMMAND_CONVERT_VAMPIRE6}, {L"v6", SUBCOMMAND_CONVERT_VAMPIRE6},
+				
 			};
 			
+			std::map<std::wstring, int> subVisualize_command = {
+				{L"folder", SUBCOMMAND_VISUALIZE_BY_FOLDER}, { L"file", SUBCOMMAND_VISUALIZE_BY_FILE }
+			};
 
 			std::wstring get_command_for_error(const std::wstring& _value);
 			int switch_code_of_operation(std::map<std::wstring, int> _mapp, std::wstring& _value);
 
-			std::wstring by_synonyms(const std::wstring& _value);
+			void set_number_from_file_name(const std::wstring& _str);
+
+			
 
 		public:
 			Interpretator();
@@ -108,6 +118,5 @@
 			void loop(int argc, char** argv);
 	};
 
-	
 
 #endif
