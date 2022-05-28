@@ -45,13 +45,17 @@
 		bool using_color							= false;
 		int number_of_file							= INTERPETATOR_NUMBER_PLUG_INT;
 		wchar_t shape								= SHAPE_CONE;
+		std::wstring shape_str						= SHAPE_CONE_STR;
 		int index_of_spin							= DRAW_ALL;
+		// TODO: int spin_rate
 
 		friend std::wostream& operator<<(std::wostream& out, const Settings& SET) {
-			out << L"\t Path to folder with files\t\t: " << SET.path_to_folder << L"\n";
-			out << L"\t Path to sconfiguration file\t\t: " << SET.path_to_sconfiguration_file << L"\n";
-			out << L"\t Using color?\t\t\t\t: " << std::boolalpha << SET.using_color << L"\n";
-			out << L"\t Number of file\t\t\t\t: " << SET.number_of_file;
+			out << L"\t Path to folder with files\t\t (c): " << SET.path_to_folder << L"\n";
+			out << L"\t Path to sconfiguration file\t\t (c): " << SET.path_to_sconfiguration_file << L"\n";
+			out << L"\t Using color?\t\t\t\t (c): " << std::boolalpha << SET.using_color << L"\n";
+			out << L"\t Number of file\t\t\t\t (c): " << SET.number_of_file << L"\n";
+			out << L"\t Shape for drawing\t\t\t (u): " << SET.shape << L" " << SET.shape_str << L"\n";
+			out << L"\t Index of spin\t\t\t\t (u): " << (SET.index_of_spin == DRAW_ALL ? L"DRAW ALL" : std::to_wstring(SET.index_of_spin));
 			return out;
 		};
 	};

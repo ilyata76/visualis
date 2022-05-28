@@ -141,7 +141,8 @@ void vvis::visualization::draw_sample(app_freeglut& app, int argc, char** argv) 
 
 void vvis::visualization::display_render() {
 
-	glClearColor(1, 1, 1, 0);
+	//glClearColor(108/255., 146/255., 175/255., 0);
+	glClearColor(1.0, 1.0, 1.0, 0.0);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	if (glob_app->shape == SHAPE_NOTHING || glob_app->vect_of_vertexes.size() == 0) {

@@ -415,9 +415,12 @@ void Interpretator::loop(int argc, char** argv) {
 				 << "\n\t \'unset\' <as in set> : sets up the base values\n"
 				 << "\n\t \'convert\'/\'con\' : converts to .vvis format using global settings (folderpath, filenumber)\n"
 					<< "\t\t-- \'v6\'/\'vampire6\'/\'v5\'/\'vampire5\' : looking for atoms-coords.data & spins-xxx.data\n"
-				 //<< "\t \n"
+				 << "\n\t \'visualize\'/\'vis\' : drawing a sample using global settings\n"
+					<< "\t\t-- \'folder\' : ... using folderpath & filename\n"
+					<< "\t\t-- \'file\' : ... using filepath\n"
 				 //<< "\t \n"
 				 << "\n\t \'restart\'/\'reset\' : reset the all current settings and restart the program\n"
+				 << "\n\t \'exit\' : close the program\n"
 				<< std::endl;
 			} break;
 

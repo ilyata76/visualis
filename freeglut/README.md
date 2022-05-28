@@ -1,29 +1,98 @@
-# visualis openGL
-
+# visualis freeglut
+  
+```  
+  _   ____________  _____   __   ________  
+ | | / /  _/ __/ / / / _ | / /  /  _/ __/  
+ | |/ // /_\ \/ /_/ / __ |/ /___/ /_\ \  
+ |___/___/___/\____/_/ |_/____/___/___/  
+```
+  
 ## Roadmap
-- [x] .data parser
-    - [x] .data -> string -> convertor to .vvis
-- [x] .vvis -> creator of vertex array
-- [x] adding the freeglut in project structure
-    - [ ] отмучаться с dll - решения нет?
-    - [x] preparation for drawing
-- [x] vertex -> creating a shape
-    - [x] shape -> cone
-        - [ ] vertex array -> shape array
-    - [x] cone -> printing simple cone
-    - [x] shape -> printing sample
-    - [x] printing sample -> keys, etc
-    - [x] CAMERA
-        - [x] повороты образца, а не камеры
-- [ ] variable main.cpp
+- [x] .data vampire parser
+- [x] convertor to .vvis
+- [x] .vvis -> vertex(point, spin) array
+- [x] adding the freeglut library in project
+- [x] vertex -> shape::cone
+    - [x] printing simple cone
+    - [x] printing full sample
+- [x] picture -> camera and sample movements
+    - [x] colorful
+- [x] -> menu with settings
+- [x] interactive main-function with cmds interpetator
+- [ ] запоминание настроек (json)
+- [ ] выборка отрисовки не всех конусов
+- [ ] разделение окна на подокна
+- [ ] новые фигуры для рисования (стрелки, например)
+- [ ] FLTK или что-то другое?
+- [ ] ????
+  
+## Compiling with CMake
+Можно склонировать репозиторий со всеми подмодулями  
+```
+    git clone --recursive-submodules git@github.com:ilyata76/visualis.git
+```
+Или же без них, но в папки, находящиеся по пути `source/libraries/`, требуется разместить соответствующие библиотеки (см. зависимости)  
+```
+    cd ./freeglut/
+    mkdir build 
+    cd build
+    cmake ..
+    cmake --build .
+```
   
 ## Зависимости
-+ **[Exceptio](https://github.com/ilyata76/tia-Exceptio.git)** для исключений и `Assert`. CMake самостоятельно (через инструкцию)
-линкует библиотеку
-+ **[freeglut](https://github.com/FreeGLUTProject/freeglut.git)** для рисования. Через CMake можно подключить `.lib` библиотеки (см. CmakeLists.txt), а вот с `.dll` - нужно перетаскивать вместе с экзешником или сохранять в PATH
++ **[Exceptio](https://github.com/ilyata76/tia-Exceptio.git)** для обработки исключений и ошибок. CMake самостоятельно (через инструкцию) линкует библиотеку
++ **[freeglut](https://github.com/FreeGLUTProject/freeglut.git)** для рисования. Через CMake можно подключить `.lib` библиотеки (см. CmakeLists.txt), а вот с `.dll`, `.so` - нужно перетаскивать вместе с исполняемым или сохранять в PATH
   
-## Манипуляции с образцом
+## Консольное приложение
+```
+    ____   ____.___  _____________ ___  _____  .____    .___  _________
+    \   \ /   /|   |/   _____/    |   \/  _  \ |    |   |   |/  _____/
+     \   Y   / |   |\_____  \|    |   /  /_\  \|    |   |   |\_____ \
+      \     /  |   |/        \    |  /    |    \    |___|   |/       \
+       \___/   |___/_______  /______/\____|__  /_______ \___/_______ /
+                           \/                \/        \/          \/
 
+vis > show
+
+         Path to folder with files               (c): <nothing>
+         Path to sconfiguration file             (c): <nothing>
+         Using color?                            (c): false
+         Number of file                          (c): 0
+         Shape for drawing                       (u): c cone
+         Index of spin                           (u): DRAW ALL
+
+vis > set folderpath ../../temp/b
+
+        Path to folder : ../../temp/b : has been set up
+
+vis > set filenumber 1
+
+        Number of file : 1 : has been set up
+
+vis >
+```
+Приглашение для ввода `vis > `. Ожидается введение некоторых управляющих команд:
++ `help` выводит в консоль список команд и их краткое описание
++ `show` показывает влияющие на работу программы переменные (изменяемые (c) и неизменяемые (u))
++ `set` позволяет устанавливать значение для некоторых переменных
+    + `folderpath <path-to-folder>` позволяет устанавливать путь до папки с файлами, подлежащими конвертации и/или формата .vvis (Синоним `folp`)
+    + `filenumber <integer>` позволяет устанавливать, какой файл будет подлежать конвертации и/или визуализации .vvis (Синоним `fn`)
+    + `filepath <path-to-file>` позволяет устанавливать пусть до файла sconfiguration-xxx.vvis (Синоним `fp`)
+    + `color <y/n>` позволяет устанавливать, будет ли использоваться цвет (Синоним `c`)
++ `unset` позволяет сбросить переменную до стандартного значения, принимает всё то же, что и `set`
++ `convert` конвертирует файлы в формат `.vvis`
+    + `vampire6` конвертирует файлы [Vampire6](https://github.com/richard-evans/vampire), Vampire5 (Синонимы `v6`, `v5`)
++ `visualize` рисует спиновую систему
+    + ``folder`` позволяет рисовать спиновую систему, используя путь до папки (`folderpath`) и номер файла (`filenumber`)
+    + `file` позволяет рисовать спиную систему, используя путь до файла sconfiguration-xxx.vvis (`filepath`)
++ `restart` полностью обнуляет все переменные и перезапускает программу
++ `exit` выход из приложения
+
+## Манипуляции с образцом
+  
+### Клавиши
+  
 При настройке by_head в левую-правую сторону будет как бы поворачиваться голова, сама камера:  
 + Поднять/опустить камеру: `W`/`S`  
 + Повернуть влево/вправо камеру: `A`/`D`  
@@ -36,6 +105,16 @@
 + Повернуть вокруг оси X : `I`/`K`  
 + Повернуть вокруг оси Y : `J`/`L`  
   
+### Клавиши мыши
+  
+При нажатии ПКМ открывается выпадающее меню, в котором можно:
++ включить/выключить цвет
++ изменить чувствительность
 
+  
 ## Текущее быстродействие
 - [issues/Оптимизация](https://github.com/ilyata76/visualis/issues/12)
+
+## Examples
+![colorful_vertex](https://github.com/ilyata76/visualis/blob/master/freeglut/guide/colorful_vertex.png)
+![colorful_vertex](https://github.com/ilyata76/visualis/blob/master/freeglut/guide/Curie_Ni_colorful.png)
