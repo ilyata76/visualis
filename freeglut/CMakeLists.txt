@@ -19,6 +19,7 @@ set (HEADERS_VISUALIS
 	source/include/sample/shape.hpp
 	source/include/sample/color_class.hpp
 	source/include/sample/drawing_shape_opengl.hpp
+	source/include/main_inter.hpp
 )
 
 set (SOURCES_VISUALIS
@@ -30,6 +31,7 @@ set (SOURCES_VISUALIS
 	source/shape.cpp
 	source/color_class.cpp
 	source/drawing_shape_opengl.cpp
+	source/main_inter.cpp
 )
 
 # ----------- |  | ----------- 
