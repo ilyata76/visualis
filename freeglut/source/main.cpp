@@ -7,24 +7,20 @@
 
 // TODO: сделать вектор из Cone из Vertex : функцию для этого, чтобы при рисовании не создавать новых конусов
 // тогда в Cone нужен геттер вертекса
-// TODO: может также сделать и с Point? из Vertex : функция для вычленения
-
+// может также сделать и с Point? из Vertex : функция для вычленения
 // TODO: что насчёт Assert? кажется, мы забыли про них
-
-// TODO: class app
-
 // TODO: draw не полиморфна
 
-// TODO: функция проверки, существуют ли уже конвертированные файлы
-// флаг -convert -force
 
+
+Interpretator i; // TODO чтобы при ошибке не слетали параметры надо сделать файл с настройками?
 
 int main(int argc, char** argv) {
 	try {
 		_wsetlocale(LC_ALL, L"");
 		
 		print_visualis_logo();
-		Interpretator i;
+		
 		i.loop(argc, argv);
 		
 
@@ -59,8 +55,8 @@ int main(int argc, char** argv) {
 	}
 	catch (Exceptio& E) {
 		_wsetlocale(LC_ALL, L"");
-		std::wcout << E.get_description() << L"   " << E.get_comment();
-		return E.get_index();
+		std::wcout << L"\n" << E.get_description() << L"   " << E.get_comment() << L"\n" << std::endl;
+		return main(argc, argv);
 	}
 	
 

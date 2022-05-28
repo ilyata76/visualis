@@ -18,12 +18,19 @@
 	#define COMMAND_SET 102
 	#define COMMAND_UNSET 103
 	#define COMMAND_SHOW_SETTINGS 104
+	#define COMMAND_CONVERT 105
+	#define COMMAND_RESTART 106
+	#define COMMAND_VISUALIZE 107
 	
-	#define SUBCOMMAND_FOLDERPATH 201
-	#define SUBCOMMAND_FILENUMBER 202
-	#define SUBCOMMAND_FILEPATH 203
-	#define SUBCOMMAND_COLORING 204
+	#define SUBCOMMAND_SET_FOLDERPATH 201
+	#define SUBCOMMAND_SET_FILENUMBER 202
+	#define SUBCOMMAND_SET_FILEPATH 203
+	#define SUBCOMMAND_SET_COLORING 204
 
+	#define SUBCOMMAND_CONVERT_VAMPIRE6 501 
+
+	#define SUBCOMMAND_VISUALIZE_BY_FOLDER 701
+	#define SUBCOMMAND_VISUALIZE_BY_FILE 702
 
 	#include <iostream>
 	#include <algorithm>
@@ -54,6 +61,10 @@
 
 	bool is_number(const std::wstring& s);
 
+	void remove_quotation(std::wstring& str);
+
+	inline bool file_exist(const std::wstring& s);
+
 	class Interpretator {
 		private:
 			Settings settings;
@@ -63,15 +74,26 @@
 				{L"set", COMMAND_SET},
 				{L"unset", COMMAND_UNSET},
 				{L"show", COMMAND_SHOW_SETTINGS},
-				{L"help", COMMAND_HELP}
+				{L"help", COMMAND_HELP},
+				{L"convert", COMMAND_CONVERT}, {L"con", COMMAND_CONVERT},
+				{L"restart", COMMAND_RESTART}, {L"reset", COMMAND_RESTART},
+				{L"visualize", COMMAND_VISUALIZE}, {L"vis", COMMAND_VISUALIZE}
 			};
+
+			// set unset
 			std::map<std::wstring, int> sub1_command = {
-				{L"folderpath", SUBCOMMAND_FOLDERPATH }, {L"fp", SUBCOMMAND_FOLDERPATH },
-				{L"filenumber", SUBCOMMAND_FILENUMBER}, {L"fn", SUBCOMMAND_FILENUMBER},
-				{L"filepath", SUBCOMMAND_FILEPATH},
-				{L"color", SUBCOMMAND_COLORING}
+				{L"folderpath", SUBCOMMAND_SET_FOLDERPATH }, {L"fp", SUBCOMMAND_SET_FOLDERPATH },
+				{L"filenumber", SUBCOMMAND_SET_FILENUMBER}, {L"fn", SUBCOMMAND_SET_FILENUMBER},
+				{L"filepath", SUBCOMMAND_SET_FILEPATH},
+				{L"color", SUBCOMMAND_SET_COLORING}
+				
 			};
 			
+			// convert visualize
+			std::map<std::wstring, int> sub2_command = {
+				{L"vampire", SUBCOMMAND_CONVERT_VAMPIRE6}, {L"vampire5", SUBCOMMAND_CONVERT_VAMPIRE6}, {L"vampire6", SUBCOMMAND_CONVERT_VAMPIRE6},
+				{L"folder", SUBCOMMAND_VISUALIZE_BY_FOLDER}, {L"file", SUBCOMMAND_VISUALIZE_BY_FILE}
+			};
 			
 
 			std::wstring get_command_for_error(const std::wstring& _value);
