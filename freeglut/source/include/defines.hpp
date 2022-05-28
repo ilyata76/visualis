@@ -63,6 +63,11 @@
 
 // TODO: increase, decrease by 0.9, 0.8, 0.7 etc.
 
+
+#define INTERPETATOR_PATH_PLUG_WSTR L"<nothing>"
+#define INTERPETATOR_NUMBER_PLUG_INT 0
+
+
 //
 
 #endif 

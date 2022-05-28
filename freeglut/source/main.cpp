@@ -24,13 +24,13 @@ int main(int argc, char** argv) {
 		_wsetlocale(LC_ALL, L"");
 		
 		print_visualis_logo();
-		
-		interpertator_loop(argc, argv);
+		Interpretator i;
+		i.loop(argc, argv);
 		
 
 		
 		std::wstring path(L""); int index = 0;
-		std::wcout << prompt <<L"Введите путь ДО ПАПКИ: "; std::wcin >> path;
+		std::wcout <<L"\nВведите путь ДО ПАПКИ: "; std::wcin >> path;
 		//path = L"../temp/b";
 		std::wcout << L"Введите номер файла: "; std::wcin >> index;
 		//index = 30;
