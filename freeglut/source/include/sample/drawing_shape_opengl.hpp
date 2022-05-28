@@ -78,6 +78,7 @@
 			void menu_movements_by_ijkl(int code);
 			void menu_movements_by_shiftspace(int code);
 			void menu_scaling(int code);
+			void menu_color(int code);
 
 			void n_keys(unsigned char key, int x, int y);
 			void s_keys(int key, int x, int y);

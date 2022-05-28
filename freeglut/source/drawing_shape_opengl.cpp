@@ -11,19 +11,13 @@
 #define MENU_RENDER_MOVEMENTS_BY_ARROWS_INCREASE_SENSIVITY 1012
 #define MENU_RENDER_MOVEMENTS_BY_ARROWS_DECREASE_SENSIVITY 1013
 
-
-
 #define MENU_RENDER_MOVEMENTS_BY_WASD 1020
 
 #define MENU_RENDER_MOVEMENTS_BY_WASD_SHOW_SENSIVITY 1021
 #define MENU_RENDER_MOVEMENTS_BY_WASD_INCREASE_SENSIVITY 1022
 #define MENU_RENDER_MOVEMENTS_BY_WASD_DECREASE_SENSIVITY 1023
 
-
-
 #define MENU_RENDER_MOVEMENTS_BY_IJKL 1030
-
-
 
 #define MENU_RENDER_MOVEMENTS_BY_SHIFTSPACE 1040
 
@@ -31,12 +25,16 @@
 #define MENU_RENDER_MOVEMENTS_BY_SHIFTSPACE_INCREASE_SENSIVITY 1042
 #define MENU_RENDER_MOVEMENTS_BY_SHIFTSPACE_DECREASE_SENSIVITY 1043
 
-
 #define MENU_RENDER_SCALING 1050
 
 #define MENU_RENDER_SCALING_SHOW_SENSIVITY 1051
 #define MENU_RENDER_SCALING_INCREASE_SENSIVITY 1052
 #define MENU_RENDER_SCALING_DECREASE_SENSIVITY 1053
+
+#define MENU_COLOR_OO 1060
+
+#define MENU_COLOR_OO_ON 1061
+#define MENU_COLOR_OO_OFF 1062
 
 
 
@@ -135,8 +133,10 @@ void vvis::visualization::draw_sample(app_freeglut& app, int argc, char** argv) 
 
 		main_menu_init();
 
-
+	
+	glutSetOption(GLUT_ACTION_ON_WINDOW_CLOSE, GLUT_ACTION_CONTINUE_EXECUTION);
 	glutMainLoop();
+	
 }
 
 void vvis::visualization::display_render() {
@@ -320,6 +320,7 @@ void vvis::visualization::main_menu_init() {
 	int _menu_movements_by_wasd = glutCreateMenu(menu_movements_by_wasd);
 	int _menu_movements_by_shiftspace = glutCreateMenu(menu_movements_by_shiftspace);
 	int _menu_scaling = glutCreateMenu(menu_scaling);
+	int _menu_color = glutCreateMenu(menu_color);
 
 	// sprintf делает вывод в массив buff
 
@@ -347,11 +348,16 @@ void vvis::visualization::main_menu_init() {
 		glutAddMenuEntry("Inrease sensivity", MENU_RENDER_SCALING_INCREASE_SENSIVITY);
 		glutAddMenuEntry("Decrease sensivity", MENU_RENDER_SCALING_DECREASE_SENSIVITY);
 
+	glutSetMenu(_menu_color);
+		glutAddMenuEntry("ON", MENU_COLOR_OO_ON);
+		glutAddMenuEntry("OFF", MENU_COLOR_OO_OFF);
+
 	glutSetMenu(_main_menu_render);
 		glutAddSubMenu("Movements by arrows", _menu_movements_by_arrows);
 		glutAddSubMenu("Movements by wasd/ijkl", _menu_movements_by_wasd);
 		glutAddSubMenu("Movements by shift(lctrl)/space", _menu_movements_by_shiftspace);
 		glutAddSubMenu("Scaling parameters by pageup/pagedown", _menu_scaling);
+		glutAddSubMenu("Coloring", _menu_color);
 
 	glutAttachMenu(GLUT_RIGHT_BUTTON);
 	glutDetachMenu(GLUT_LEFT_BUTTON);
@@ -475,6 +481,24 @@ void vvis::visualization::menu_scaling(int code) {
 	}
 }
 
+void vvis::visualization::menu_color(int code) {
+	switch (code) {
+
+		case MENU_COLOR_OO_OFF: {
+			glob_app->use_color = false;
+
+			glutPostRedisplay();
+		} break;
+
+		case MENU_COLOR_OO_ON: {
+			glob_app->use_color = true;
+
+			glutPostRedisplay();
+		} break;
+
+	}
+}
+
 void vvis::visualization::s_keys(int key, int x, int y) {
 	
 	switch (key) {
@@ -553,7 +577,6 @@ void vvis::visualization::s_keys(int key, int x, int y) {
 				
 		} break;
 
-
 		default: {
 			//
 		} break;
@@ -629,6 +652,11 @@ void vvis::visualization::n_keys(unsigned char key, int x, int y) {
 			glob_app->estrangement += glob_app->estrangement_changes;
 
 			glutPostRedisplay();
+		} break;
+
+		case 27: {
+			//int mod = glutGetModifiers(); if mod == GLUT_ACTIVE_SHIFT ctrl alt 
+			glutLeaveMainLoop();
 		} break;
 
 		default: {
