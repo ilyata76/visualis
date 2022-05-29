@@ -20,6 +20,8 @@ else()
  	option(FREEGLUT_BUILD_STATIC_LIBS "USE STATIC_FREEGLUT LIBRARY" OFF)	
 endif()
 
+option(JSON_BuildTests "" OFF)
+
 if (COMPILE_FREEGLUT_EXAMPLES)
 	option(FREEGLUT_BUILD_DEMOS "freeglut demos" ON)
 else()

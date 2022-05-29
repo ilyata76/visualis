@@ -1,10 +1,10 @@
-﻿#include "./include/main_inter.hpp"
+﻿#include "./include/main_inter.hpp" 
 
 Interpretator::Interpretator() {
 	this->prompt = ex_prompt;
 }
 
-Interpretator::Interpretator(std::wstring _PROMPT, Settings settings) {
+Interpretator::Interpretator(const std::wstring& _PROMPT, const Settings& settings) {
 	this->prompt = _PROMPT;
 	this->settings = settings;
 }
@@ -100,6 +100,52 @@ void Interpretator::loop(int argc, char** argv) {
 		ss >> line;
 
 		switch (switch_code_of_operation(this->main_command, line)) {
+
+
+			case COMMAND_SETTINGS: {
+				line = L""; if (ss.eof()) ss.str(L""); else ss >> line;
+
+				switch (switch_code_of_operation(this->subSettings_command, line)) {
+					
+
+					case SUBCOMMAND_SAVE_SETTINGS: {
+						line = L""; if (ss.eof()) ss.str(L""); else ss >> line;
+						
+						this->settings.save_settings(line + L"/" + VISUALIS_SETTINGS_JSON);
+						
+						std::wcout << "\n\tSuccsesful\n" << std::endl;
+					} break;
+					
+					case SUBCOMMAND_GET_SETTINGS: {
+						line = L""; if (ss.eof()) ss.str(L""); else ss >> line;
+						
+						bool Bol = file_exist(line + L"/" + VISUALIS_SETTINGS_JSON);
+						if (!Bol) { std::wcout << "\n\t ERROR: file doesnt exist" << std::endl; break; }
+						
+						this->settings.get_settings(line + L"/" + VISUALIS_SETTINGS_JSON);
+						
+						std::wcout << "\n\tSuccsesful\n" << std::endl;
+					} break;
+
+					case UNKNOW_COMMAND: {
+						std::wcout << L"\n\tERROR: Unknow subcommand for \"settings\": " << this->get_command_for_error(line) << L"\n" << std::endl;
+					} break;
+
+					default: {} break;
+
+				}				
+
+			} break;
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -322,7 +368,7 @@ void Interpretator::loop(int argc, char** argv) {
 
 						std::wstring file = vvis::creator::get_file_name(this->settings.number_of_file) + FORMAT_OF_OUR_FILE;
 
-						std::wcout << L"\tFile " << file << L") exists : "
+						std::wcout << L"\tFile " << file << L" exists : "
 							<< std::boolalpha << Bol << "\n";
 
 						if (!Bol) { std::wcout << std::endl; break; }
@@ -421,6 +467,7 @@ void Interpretator::loop(int argc, char** argv) {
 				this->settings.shape = SHAPE_CONE;
 				this->settings.index_of_spin = DRAW_ALL;
 				this->settings.background = vvis::visualization::VvisColor_3f(1, 1, 1);
+				std::wcout << "\n\tSuccessful!\n" << std::endl;
 			} break;
 			
 			case COMMAND_SHOW_SETTINGS: {
@@ -440,9 +487,9 @@ void Interpretator::loop(int argc, char** argv) {
 					<< "\t\t-- \'filenumber\'/\'fn\' <integer-number> : sets up the number of sconfiguration file or other\n"
 					<< "\t\t\tNOTE: You can specify only one of the paths (to folder or to file)\n"
 					<< "\t\t\tNOTE: Supports absolute or relative path \n"
-					<< "\t\t\tEXAMPLE: set folp ../../temp/b"
+					<< "\t\t\tEXAMPLE: set folp ../../temp/b\n"
 					<< "\t\t-- \'filepath\'/\'fp\' <path-to-file> : sets up the path to sconfiguration file\n"
-					<< "\t\t\tEXAMPLE: set fp ../../temp/b/sconfiguration-00000010.vvis"
+					<< "\t\t\tEXAMPLE: set fp ../../temp/b/sconfiguration-00000010.vvis\n"
 					<< "\t\t-- \'coloring\'/\'cg\' <y/n> : shape coloring\n"
 					<< "\t\t-- \'backgroundcolor\'/\'bgc\' <red> <green> <blue> : integers 0-255\n"
 				 << "\n\t \'show\' : shows current settings\n"
@@ -452,6 +499,9 @@ void Interpretator::loop(int argc, char** argv) {
 				 << "\n\t \'visualize\'/\'vis\' : drawing a sample using global settings\n"
 					<< "\t\t-- \'folder\' : ... using folderpath & filename\n"
 					<< "\t\t-- \'file\' : ... using filepath\n"
+				<< "\n\t \'settings\'\n"
+					<< "\t\t-- \'save\' <path>: save current variables to .json\n"
+					<< "\t\t-- \'save\' <path>: restore the variables from .json\n"
 				 //<< "\t \n"
 				 << "\n\t \'restart\'/\'reset\' : reset the all current settings and restart the program\n"
 				 << "\n\t \'exit\' : close the program\n"

@@ -1,6 +1,6 @@
 ﻿#include "./include/main_inter.hpp"
 
-Interpretator i; // TODO чтобы при ошибке не слетали параметры надо сделать файл с настройками?
+
 
 // TODO: штука, чтобы загружать настройки чувствительностей
 
@@ -10,6 +10,7 @@ int main(int argc, char** argv) {
 		
 		print_visualis_logo();
 		
+		Interpretator i(ex_prompt, Settings());
 		i.loop(argc, argv);
 
 	}

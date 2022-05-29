@@ -10,6 +10,8 @@
 	#include "./include/sample/creator_of_vertex_arr.hpp"
 	#include "./include/sample/drawing_shape_opengl.hpp"
 
+	#include "../libraries/json/single_include/nlohmann/json.hpp"
+
 	#define ex_prompt _prompt()
 
 	#define UNKNOW_COMMAND 100
@@ -22,6 +24,7 @@
 	#define COMMAND_RESTART 106
 	#define COMMAND_VISUALIZE 107
 	#define COMMAND_RESET 108
+	#define COMMAND_SETTINGS 109
 	
 	#define SUBCOMMAND_SET_FOLDERPATH 201
 	#define SUBCOMMAND_SET_FILENUMBER 202
@@ -34,12 +37,29 @@
 	#define SUBCOMMAND_VISUALIZE_BY_FOLDER 701
 	#define SUBCOMMAND_VISUALIZE_BY_FILE 702
 
+	#define SUBCOMMAND_SAVE_SETTINGS 901
+	#define SUBCOMMAND_GET_SETTINGS 902
+
 	#include <iostream>
 	#include <algorithm>
 	#include <map>
 
+	using nlohmann::json;
 
 	void print_visualis_logo();
+
+	std::wstring _prompt();
+
+	std::wstring tolower_wstr(std::wstring& _value);
+
+	bool is_number(const std::wstring& s);
+
+	void remove_quotation(std::wstring& str);
+
+	// yes no exit
+	std::wstring by_synonyms(const std::wstring& _value);
+
+	inline bool file_exist(const std::wstring& s);
 
 	struct Settings {
 		std::wstring path_to_folder						= INTERPETATOR_PATH_PLUG_WSTR;
@@ -62,20 +82,62 @@
 			out << L"\t Background color (RGB)\t\t\t (c): " << SET.background.red * 255 << L"/255 " << SET.background.green * 255 << L"/255 " << SET.background.blue * 255 << L"/255 ";
 			return out;
 		};
+
+		// https://github.com/nlohmann/json
+
+		void save_settings(std::wstring& _path_to_file) {
+			std::fstream file; json _json;
+
+			if (file_exist(_path_to_file)) { 
+				file.open(_path_to_file, std::ios_base::in); 
+				_json << file;
+				file.close();
+			};
+			
+			file.open(_path_to_file, std::ios_base::out | std::ios_base::trunc);
+			
+			_json["inter"]["path_to_folder"] = this->path_to_folder;
+			_json["inter"]["path_to_sconfiguration_file"] = this->path_to_sconfiguration_file;
+			_json["inter"]["using_color"] = this->using_color;
+			_json["inter"]["number_of_file"] = this->number_of_file;
+			_json["inter"]["shape"] = this->shape;
+			_json["inter"]["shape_str"] = this->shape_str;
+			_json["inter"]["index_of_spin"] = this->index_of_spin;
+			_json["inter"]["background"]["red"] = this->background.red;
+			_json["inter"]["background"]["green"] = this->background.green;
+			_json["inter"]["background"]["blue"] = this->background.blue;
+			
+			file << _json.dump(4);
+
+			file.close();
+
+		};
+
+
+		void get_settings(std::wstring& _path_to_file) {
+			std::fstream file;
+			file.open(_path_to_file, std::ios::in);
+
+			json _json;
+			_json << file;
+
+			this->path_to_folder = _json["inter"]["path_to_folder"].get<std::wstring>();
+			this->path_to_sconfiguration_file = _json["inter"]["path_to_sconfiguration_file"].get<std::wstring>();
+			this->using_color = _json["inter"]["using_color"].get<bool>();
+			this->number_of_file= _json["inter"]["number_of_file"].get<int>();
+			this->shape = _json["inter"]["shape"].get<wchar_t>();
+			this->shape_str = _json["inter"]["shape_str"].get<std::wstring>();
+			this->index_of_spin = _json["inter"]["index_of_spin"].get<int>();
+			this->background.red = _json["inter"]["background"]["red"].get<double>();
+			this->background.green = _json["inter"]["background"]["green"].get<double>();
+			this->background.blue = _json["inter"]["background"]["blue"].get<double>();
+
+			file.close();
+		};
+
 	};
 	
-	std::wstring _prompt();
 
-	std::wstring tolower_wstr(std::wstring& _value);
-
-	bool is_number(const std::wstring& s);
-
-	void remove_quotation(std::wstring& str);
-	
-	// yes no exit
-	std::wstring by_synonyms(const std::wstring& _value);
-	
-	inline bool file_exist(const std::wstring& s);
 
 	class Interpretator {
 		private:
@@ -91,7 +153,13 @@
 				{L"convert", COMMAND_CONVERT}, {L"con", COMMAND_CONVERT},
 				{L"restart", COMMAND_RESTART}, 
 				{L"reset", COMMAND_RESET},
-				{L"visualize", COMMAND_VISUALIZE}, {L"vis", COMMAND_VISUALIZE}
+				{L"visualize", COMMAND_VISUALIZE}, {L"vis", COMMAND_VISUALIZE},
+				{L"settings", COMMAND_SETTINGS}
+			};
+
+			std::map<std::wstring, int> subSettings_command = {
+				{L"save", SUBCOMMAND_SAVE_SETTINGS},
+				{L"get", SUBCOMMAND_GET_SETTINGS}
 			};
 
 			// set unset
@@ -122,7 +190,7 @@
 
 		public:
 			Interpretator();
-			Interpretator(std::wstring _PROMPT, Settings settings);
+			Interpretator(const std::wstring& _PROMPT, const Settings& settings);
 
 			void loop(int argc, char** argv);
 	};

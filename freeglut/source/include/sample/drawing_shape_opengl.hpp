@@ -61,6 +61,20 @@
 
 					vvis::visualization::VvisColor_3f background;
 
+					/*		
+							_json["vis"]["scaling_parameters_changes"]["x"] = SCALING_PARAMETERS_CHANGES_X;
+							_json["vis"]["scaling_parameters_changes"]["y"] = SCALING_PARAMETERS_CHANGES_Y;
+							_json["vis"]["scaling_parameters_changes"]["z"] = SCALING_PARAMETERS_CHANGES_Z;
+							_json["vis"]["translation_changes"]["x"] = TRANSLATION_CHANGES_X;
+							_json["vis"]["translation_changes"]["y"] = TRANSLATION_CHANGES_Y;
+							_json["vis"]["translation_changes"]["z"] = TRANSLATION_CHANGES_Z;
+							_json["vis"]["camera_changes"]["x"] = CAMERA_CHANGES_X;
+							_json["vis"]["camera_changes"]["y"] = CAMERA_CHANGES_Y;
+							_json["vis"]["camera_changes"]["z"] = CAMERA_CHANGES_Z;
+							_json["vis"]["estrangement_changes"] = ESTRAGNEMENT_CHANGES;
+					*/
+
+
 					app_freeglut();
 					app_freeglut(std::vector <vvis::creator::Vertex>& vect_of_vertexes, wchar_t shape, bool use_color, vvis::visualization::VvisColor_3f background, int index_of_line);
 
