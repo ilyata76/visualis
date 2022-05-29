@@ -120,7 +120,7 @@ void Interpretator::loop(int argc, char** argv) {
 						line = L""; if (ss.eof()) ss.str(L""); else ss >> line;
 						
 						bool Bol = file_exist(line + L"/" + VISUALIS_SETTINGS_JSON);
-						if (!Bol) { std::wcout << "\n\t ERROR: file doesnt exist" << std::endl; break; }
+						if (!Bol) { std::wcout << "\n\t ERROR: file doesnt exist\n" << std::endl; break; }
 						
 						this->settings.get_settings(line + L"/" + VISUALIS_SETTINGS_JSON);
 						

@@ -48,6 +48,7 @@
 ## Зависимости
 + **[Exceptio](https://github.com/ilyata76/tia-Exceptio.git)** для обработки исключений и ошибок
 + **[freeglut](https://github.com/FreeGLUTProject/freeglut.git)** для рисования
++ **[json](https://github.com/nlohmann/json.git)** для хранения настроек
 При стандартных настройках и наличия их в требуемых директориях, проект соберётся самостоятельно. Динамическую же библиотеку придётся искать
   
 ## Консольное приложение
