@@ -192,16 +192,18 @@ void Interpretator::loop(int argc, char** argv) {
 
 					case SUBCOMMAND_SET_FILEPATH: {
 						line = L""; if (ss.eof()) ss.str(L""); else ss >> line;
-
-						this->settings.path_to_sconfiguration_file = (line == L"" || 
+						
+						this->settings.path_to_sconfiguration_file = (line.size() <= 10 || 
 							(line.find(FORMAT_OF_OUR_FILE) == std::wstring::npos || line.find(START_OF_OUR_FILE) == std::wstring::npos)) ?
 								 INTERPETATOR_PATH_PLUG_WSTR : line;
 						
 						remove_quotation(this->settings.path_to_sconfiguration_file);
 
-						std::wstring file = vvis::creator::get_file_name(this->settings.number_of_file) + FORMAT_OF_OUR_FILE;
-						std::wstring path = this->settings.path_to_sconfiguration_file;
-						path.erase(path.end() - file.size(), path.end()); this->settings.path_to_folder = path;
+						if (settings.path_to_sconfiguration_file != INTERPETATOR_PATH_PLUG_WSTR) {
+							std::wstring file = vvis::creator::get_file_name(this->settings.number_of_file) + FORMAT_OF_OUR_FILE;
+							std::wstring path = this->settings.path_to_sconfiguration_file;
+							path.erase(path.end() - file.size(), path.end()); this->settings.path_to_folder = path;
+						}
 
 						std::wcout << L"\n\tPath to sconfiguration file : " << this->settings.path_to_sconfiguration_file << L" : has been set up\n";
 						if (this->settings.path_to_sconfiguration_file == INTERPETATOR_PATH_PLUG_WSTR) std::wcout << L"\tERROR: path was not entered or incorrectly\n";
