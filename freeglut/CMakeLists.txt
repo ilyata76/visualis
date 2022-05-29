@@ -65,6 +65,9 @@ add_subdirectory(source/libraries/tia-Exceptio/)
 message("[visualis] : CALLING TO FREEGLUT SUBDIRECTORY")
 add_subdirectory(source/libraries/freeglut)
 
+message("[visualis] : CALLING TO JSON SUBDIRECTORY")
+add_subdirectory(source/libraries/json)
+
 message("[visualis] : CREATING AN EXECUTABLE VISUALIS_FREEGLUT FILE")
 
 # ----------- | EXECUTABLE | ----------- 
