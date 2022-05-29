@@ -65,45 +65,35 @@ vis > show
 
          Path to folder with files               (c): <nothing>
          Path to sconfiguration file             (c): <nothing>
+         Path to folder with .json settings      (c): <nothing>
          Using color?                            (c): false
          Number of file                          (c): 0
          Shape for drawing                       (u): c - cone
          Index of spin                           (u): DRAW ALL
          Background color (RGB)                  (c): 255/255 255/255 255/255
 
-vis > set folp ../../temp/b
+vis > set sp ../temp/b
 
-        Path to folder : ../../temp/b : has been set up
+        Path to settings file folder : ../temp/b : has been set up
 
-vis > set filepath "../../temp/b/sconfiguration-00000010.vvis"
+vis > settings get
 
-        Path to sconfiguration file : ../../temp/b/sconfiguration-00000010.vvis : has been set up
-
-vis > set filenumber 1
-
-        Number of file : 1 : has been set up
-
-vis > set backgroundcolor 200 140 200
-
-        Coloring background : 0.784314*255 0.54902*255 0.784314*255 : has been set up
-
-vis > set coloring yes
-
-        Coloring mode : true : has been set up
+        Succsesful
 
 vis > show
 
-         Path to folder with files               (c): ../../temp/b
-         Path to sconfiguration file             (c): ../../temp/b/sconfiguration-00000010.vvis
-         Using color?                            (c): true
-         Number of file                          (c): 1
+         Path to folder with files               (c): .
+         Path to sconfiguration file             (c): <nothing>
+         Path to folder with .json settings      (c): ../temp/b
+         Using color?                            (c): false
+         Number of file                          (c): 30
          Shape for drawing                       (u): c - cone
          Index of spin                           (u): DRAW ALL
-         Background color (RGB)                  (c): 200/255 140/255 200/255
+         Background color (RGB)                  (c): 255/255 200/255 150/255
 
 vis >
 ```
-Приглашение для ввода `vis > `. Ожидается введение некоторых управляющих команд:
+Приглашение для ввода `vis > `. Ожидается введение некоторых управляющих команд (синонимы к ним прописаны в `help`):
 + `help` выводит в консоль список команд и их краткое описание
 + `show` показывает влияющие на работу программы переменные (изменяемые (c) и неизменяемые (u))
 + `set` позволяет устанавливать значение для некоторых переменных
@@ -112,6 +102,7 @@ vis >
     + `filepath <path-to-file>` позволяет устанавливать пусть до файла sconfiguration-xxx.vvis
     + `coloring <y/n>` позволяет устанавливать, будет ли использоваться цвет
     + `backgroundcolor <red> <green> <blue>` в числах от 0 до 255 устанавливает цвет фона картинки
+    + `settingspath <path-to-folder>` указывает на директорию, в которой должен(или есть) находиться файл visualis-settings.json
 + `unset` позволяет сбросить переменную до стандартного значения, принимает всё то же, что и `set`
 + `convert` конвертирует файлы в формат `.vvis`
     + `vampire6` конвертирует файлы [Vampire6](https://github.com/richard-evans/vampire), Vampire5
@@ -119,8 +110,8 @@ vis >
     + `folder` позволяет рисовать спиновую систему, используя путь до папки (`folderpath`) и номер файла (`filenumber`)
     + `file` позволяет рисовать спиную систему, используя путь до файла sconfiguration-xxx.vvis (`filepath`)
 + `settings`
-    + `save <path>` позволяет сохранить переменные в файле формата .json по указанному пути
-    + `get <path>` позволяет получить переменные из файла формата .json, который был сохранён предыдущей подкомандой, по указанному пути
+    + `save` позволяет сохранить переменные в файле формата .json по пути settingspath/visualis-settings.json. Если файла не существует, то он создастся
+    + `get` позволяет получить переменные из файла формата .json, который был сохранён предыдущей подкомандой, по пути settingspath/visualis-settings.json
 + `reset` обнуляет все переменные, но не перезапускает программу
 + `restart` полностью обнуляет все переменные и перезапускает программу
 + `exit` выход из приложения
@@ -146,6 +137,7 @@ vis >
 При нажатии ПКМ открывается выпадающее меню, в котором можно:
 + включить/выключить цвет
 + изменить чувствительность
++ сохранить, восстановить, сбросить и сбросить в файле visualis-settings.json настройки, касающиеся поведения клавиш
 
   
 ## Текущее быстродействие

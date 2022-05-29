@@ -10,10 +10,10 @@ Interpretator::Interpretator(const std::wstring& _PROMPT, const Settings& settin
 }
 
 // TODO: only windows
-inline bool file_exist(const std::wstring& s) {
-	struct _stat buf;
-	return (_wstat(s.c_str(), &buf) != -1);
-}
+//inline bool file_exist(const std::wstring& s) {
+//	struct _stat buf;
+//	return (_wstat(s.c_str(), &buf) != -1);
+//}
 
 
 void print_visualis_logo() {
@@ -111,7 +111,12 @@ void Interpretator::loop(int argc, char** argv) {
 					case SUBCOMMAND_SAVE_SETTINGS: {
 						line = L""; if (ss.eof()) ss.str(L""); else ss >> line;
 						
-						this->settings.save_settings(line + L"/" + VISUALIS_SETTINGS_JSON);
+						if (this->settings.path_to_folder == INTERPETATOR_PATH_PLUG_WSTR && this->settings.path_to_settings_file_folder == INTERPETATOR_PATH_PLUG_WSTR) {
+							std::wcout << "\n\t ERROR: first initialize one of the paths (to settings or to folder)\n" << std::endl;
+							break;
+						}
+
+						this->settings.save_settings();
 						
 						std::wcout << "\n\tSuccsesful\n" << std::endl;
 					} break;
@@ -119,10 +124,10 @@ void Interpretator::loop(int argc, char** argv) {
 					case SUBCOMMAND_GET_SETTINGS: {
 						line = L""; if (ss.eof()) ss.str(L""); else ss >> line;
 						
-						bool Bol = file_exist(line + L"/" + VISUALIS_SETTINGS_JSON);
+						bool Bol = file_exist(this->settings.path_to_settings_file_folder + L"/" + VISUALIS_SETTINGS_JSON);
 						if (!Bol) { std::wcout << "\n\t ERROR: file doesnt exist\n" << std::endl; break; }
 						
-						this->settings.get_settings(line + L"/" + VISUALIS_SETTINGS_JSON);
+						this->settings.get_settings();
 						
 						std::wcout << "\n\tSuccsesful\n" << std::endl;
 					} break;
@@ -194,6 +199,10 @@ void Interpretator::loop(int argc, char** argv) {
 						
 						remove_quotation(this->settings.path_to_sconfiguration_file);
 
+						std::wstring file = vvis::creator::get_file_name(this->settings.number_of_file) + FORMAT_OF_OUR_FILE;
+						std::wstring path = this->settings.path_to_sconfiguration_file;
+						path.erase(path.end() - file.size(), path.end()); this->settings.path_to_folder = path;
+
 						std::wcout << L"\n\tPath to sconfiguration file : " << this->settings.path_to_sconfiguration_file << L" : has been set up\n";
 						if (this->settings.path_to_sconfiguration_file == INTERPETATOR_PATH_PLUG_WSTR) std::wcout << L"\tERROR: path was not entered or incorrectly\n";
 						std::wcout << std::endl;
@@ -223,6 +232,19 @@ void Interpretator::loop(int argc, char** argv) {
 						std::wcout << L"\n\tColoring background : " << this->settings.background.red << L"*255 " << this->settings.background.green << L"*255 "
 							<< this->settings.background.blue << L"*255 : has been set up\n";
 						std::wcout << std::endl;
+					} break;
+
+					case SUBCOMMAND_SET_SETTINGS_PATH: {
+						line = L""; if (ss.eof()) ss.str(L""); else ss >> line;
+
+						this->settings.path_to_settings_file_folder = (line == L"") ? INTERPETATOR_PATH_PLUG_WSTR : line;
+
+						remove_quotation(this->settings.path_to_settings_file_folder);
+
+						std::wcout << L"\n\tPath to settings file folder : " << this->settings.path_to_settings_file_folder << L" : has been set up\n";
+						if (this->settings.path_to_settings_file_folder == INTERPETATOR_PATH_PLUG_WSTR) std::wcout << L"\tERROR: path was not entered or incorrectly\n";
+						std::wcout << std::endl;
+
 					} break;
 
 					
@@ -282,6 +304,12 @@ void Interpretator::loop(int argc, char** argv) {
 						std::wcout << std::endl;
 					} break;
 
+					case SUBCOMMAND_SET_SETTINGS_PATH: {
+						this->settings.path_to_settings_file_folder = INTERPETATOR_PATH_PLUG_WSTR;
+
+						std::wcout << L"\n\tPath to settings file : " << this->settings.path_to_settings_file_folder << L" : has been set up\n";
+						std::wcout << std::endl;
+					} break;
 
 					case UNKNOW_COMMAND: {
 						std::wcout << L"\n\tERROR: Unknow subcommand for \"unset\": " << this->get_command_for_error(line) << L"\n" << std::endl;
@@ -373,14 +401,15 @@ void Interpretator::loop(int argc, char** argv) {
 
 						if (!Bol) { std::wcout << std::endl; break; }
 
-						std::wstring path = this->settings.path_to_sconfiguration_file;
-						path.erase(path.end() - file.size(), path.end()); this->settings.path_to_folder = path;
+						//это инициализируется ещё при инициализации filepath
+						//std::wstring path = this->settings.path_to_sconfiguration_file;
+						//path.erase(path.end() - file.size(), path.end()); this->settings.path_to_folder = path;
 
 						std::wcout << L"\tParsing... : ";
 							std::vector <vvis::creator::Vertex> vect = vvis::creator::create_arry(this->settings.path_to_folder)(this->settings.number_of_file);
 						std::wcout << (vect.size() != 0 ? L"Succsesfully\n" : L"Unsuccessfully\n");
 						std::wcout << L"\tLoaded " << vect.size() << L" spins\n";
-							vvis::visualization::app_freeglut app(vect, this->settings.shape, this->settings.using_color, this->settings.background, this->settings.index_of_spin);
+							vvis::visualization::app_freeglut app(vect, this->settings.shape, this->settings.using_color, this->settings.background, this->settings.index_of_spin, this->settings.path_to_folder, this->settings.path_to_settings_file_folder + L"/" + VISUALIS_SETTINGS_JSON);
 
 						std::wcout << L"\tDrawing... \n";
 							vvis::visualization::draw_sample(app, argc, argv);
@@ -412,7 +441,7 @@ void Interpretator::loop(int argc, char** argv) {
 							std::vector <vvis::creator::Vertex> vect = vvis::creator::create_arry(this->settings.path_to_folder)(this->settings.number_of_file);
 						std::wcout << (vect.size() != 0 ? L"Succsesfully\n" : L"Unsuccessfully\n");
 						std::wcout << L"\tLoaded " << vect.size() << L" spins\n";
-							vvis::visualization::app_freeglut app(vect, this->settings.shape, this->settings.using_color, this->settings.background, this->settings.index_of_spin);
+							vvis::visualization::app_freeglut app(vect, this->settings.shape, this->settings.using_color, this->settings.background, this->settings.index_of_spin, this->settings.path_to_folder, this->settings.path_to_settings_file_folder + L"/" + VISUALIS_SETTINGS_JSON);
 
 						std::wcout << L"\tDrawing... \n";
 							vvis::visualization::draw_sample(app, argc, argv);
@@ -454,8 +483,10 @@ void Interpretator::loop(int argc, char** argv) {
 				this->settings.path_to_sconfiguration_file = INTERPETATOR_PATH_PLUG_WSTR;
 				this->settings.using_color = false;
 				this->settings.shape = SHAPE_CONE;
+				this->settings.shape_str = SHAPE_CONE_STR;
 				this->settings.index_of_spin = DRAW_ALL;
 				this->settings.background = vvis::visualization::VvisColor_3f(1, 1, 1);
+				this->settings.path_to_settings_file_folder = INTERPETATOR_PATH_PLUG_WSTR;
 				Assert(false, L"Restarting the program", L"The settings have been reset ");
 			} break;
 
@@ -465,8 +496,10 @@ void Interpretator::loop(int argc, char** argv) {
 				this->settings.path_to_sconfiguration_file = INTERPETATOR_PATH_PLUG_WSTR;
 				this->settings.using_color = false;
 				this->settings.shape = SHAPE_CONE;
+				this->settings.shape_str = SHAPE_CONE_STR;
 				this->settings.index_of_spin = DRAW_ALL;
 				this->settings.background = vvis::visualization::VvisColor_3f(1, 1, 1);
+				this->settings.path_to_settings_file_folder = INTERPETATOR_PATH_PLUG_WSTR;
 				std::wcout << "\n\tSuccessful!\n" << std::endl;
 			} break;
 			
@@ -492,6 +525,8 @@ void Interpretator::loop(int argc, char** argv) {
 					<< "\t\t\tEXAMPLE: set fp ../../temp/b/sconfiguration-00000010.vvis\n"
 					<< "\t\t-- \'coloring\'/\'cg\' <y/n> : shape coloring\n"
 					<< "\t\t-- \'backgroundcolor\'/\'bgc\' <red> <green> <blue> : integers 0-255\n"
+					<< "\t\t-- \'settingspath\'/\'sp\' <path-to-folder> : path to visualis-settings.json\n"
+					<< "\t\t\tEXAMPLE: set sp ../b\n"
 				 << "\n\t \'show\' : shows current settings\n"
 				 << "\n\t \'unset\' <as in set> : sets up the base values\n"
 				 << "\n\t \'convert\'/\'con\' : converts to .vvis format using global settings (folderpath, filenumber)\n"
@@ -500,8 +535,10 @@ void Interpretator::loop(int argc, char** argv) {
 					<< "\t\t-- \'folder\' : ... using folderpath & filename\n"
 					<< "\t\t-- \'file\' : ... using filepath\n"
 				<< "\n\t \'settings\'\n"
-					<< "\t\t-- \'save\' <path>: save current variables to .json\n"
-					<< "\t\t-- \'save\' <path>: restore the variables from .json\n"
+					<< "\t\t-- \'save\' : save current variables to .json\n"
+					<< "\t\t-- \'get\' : restore the variables from .json\n"
+					<< "\t\t\tNOTE: looking for visualis-settings.json in current settings directory (settingspath)\n"
+					<< "\t\t\tNOTE: this file used to save the drawer settings (f.e. sensivity) also by pop-menu\n"
 				 //<< "\t \n"
 				 << "\n\t \'restart\'/\'reset\' : reset the all current settings and restart the program\n"
 				 << "\n\t \'exit\' : close the program\n"

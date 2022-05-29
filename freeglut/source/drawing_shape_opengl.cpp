@@ -5,76 +5,9 @@
 
 // TODO: перемещение камеры по плоскостям образца
 
-#define MENU_RENDER_MOVEMENTS_BY_ARROWS 1010
-
-#define MENU_RENDER_MOVEMENTS_BY_ARROWS_SHOW_SENSIVITY 1011
-#define MENU_RENDER_MOVEMENTS_BY_ARROWS_INCREASE_SENSIVITY 1012
-#define MENU_RENDER_MOVEMENTS_BY_ARROWS_DECREASE_SENSIVITY 1013
-
-#define MENU_RENDER_MOVEMENTS_BY_WASD 1020
-
-#define MENU_RENDER_MOVEMENTS_BY_WASD_SHOW_SENSIVITY 1021
-#define MENU_RENDER_MOVEMENTS_BY_WASD_INCREASE_SENSIVITY 1022
-#define MENU_RENDER_MOVEMENTS_BY_WASD_DECREASE_SENSIVITY 1023
-
-#define MENU_RENDER_MOVEMENTS_BY_IJKL 1030
-
-#define MENU_RENDER_MOVEMENTS_BY_SHIFTSPACE 1040
-
-#define MENU_RENDER_MOVEMENTS_BY_SHIFTSPACE_SHOW_SENSIVITY 1041
-#define MENU_RENDER_MOVEMENTS_BY_SHIFTSPACE_INCREASE_SENSIVITY 1042
-#define MENU_RENDER_MOVEMENTS_BY_SHIFTSPACE_DECREASE_SENSIVITY 1043
-
-#define MENU_RENDER_SCALING 1050
-
-#define MENU_RENDER_SCALING_SHOW_SENSIVITY 1051
-#define MENU_RENDER_SCALING_INCREASE_SENSIVITY 1052
-#define MENU_RENDER_SCALING_DECREASE_SENSIVITY 1053
-
-#define MENU_COLOR_OO 1060
-
-#define MENU_COLOR_OO_ON 1061
-#define MENU_COLOR_OO_OFF 1062
-
-
-
-vvis::visualization::app_freeglut::app_freeglut() {
-	this->index_of_line = 0;
-	this->additional_rotation_phi = 0.0;
-	this->additional_rotation_theta = 0.0;
-
-	this->estrangement = 1.0;
-
-	this->use_color = false;
-	this->shape = SHAPE_NOTHING;
-	this->fullscreen = false;
-
-	this->height_of_window = 0;
-	this->width_of_window = 0;
-
-	this->global_translation = vec3(0., 0., 0.);
-	this->scaling_parameters = vec3(1., 1., 1.);
-	this->scaling_translation = vec3(1., 1., 1.);
-	this->position_of_camera = vec3(0., 0., 0.);
-	this->position_of_element = vec3(0., 0., -100.);
-
-	this->scaling_parameters_changes = vec3(SCALING_PARAMETERS_CHANGES_X, SCALING_PARAMETERS_CHANGES_Y, SCALING_PARAMETERS_CHANGES_Z);
-	//this->scaling_translation_changes_up = vec3(SCALING_PARAMETERS_CHANGES_UP_X, SCALING_PARAMETERS_CHANGES_UP_Y, SCALING_PARAMETERS_CHANGES_UP_Z);
-	//this->scaling_translation_changes_down = vec3(SCALING_PARAMETERS_CHANGES_DOWN_X, SCALING_PARAMETERS_CHANGES_DOWN_Y, SCALING_PARAMETERS_CHANGES_DOWN_Z);
-
-	this->translation_changes = vec3(TRANSLATION_CHANGES_X, TRANSLATION_CHANGES_Y, TRANSLATION_CHANGES_Z);
-
-	this->translation_by_element = ELEMENT_TRANSLATION;
-
-	this->camera_changes = vec3(CAMERA_CHANGES_X, CAMERA_CHANGES_Y, CAMERA_CHANGES_Z);
-
-	this->estrangement_changes = ESTRAGNEMENT_CHANGES;
-
-	this->background = VvisColor_3f(1, 1, 1);
-
-}
-
-vvis::visualization::app_freeglut::app_freeglut(std::vector<vvis::creator::Vertex>& vect_of_vertexes, wchar_t shape, bool use_color, vvis::visualization::VvisColor_3f background, int index_of_line) {
+vvis::visualization::app_freeglut::app_freeglut(std::vector<vvis::creator::Vertex>& vect_of_vertexes, wchar_t shape, bool use_color,
+													vvis::visualization::VvisColor_3f background, int index_of_line, std::wstring& _path_to_folder, 
+													std::wstring& _path_to_settings_file) {
 	this->index_of_line = index_of_line;
 	this->additional_rotation_phi = 0.0;
 	this->additional_rotation_theta = 0.0;
@@ -95,8 +28,6 @@ vvis::visualization::app_freeglut::app_freeglut(std::vector<vvis::creator::Verte
 	this->position_of_element = vec3(0., 0., -100.);
 
 	this->scaling_parameters_changes = vec3(SCALING_PARAMETERS_CHANGES_X, SCALING_PARAMETERS_CHANGES_Y, SCALING_PARAMETERS_CHANGES_Z);
-	//this->scaling_translation_changes_up = vec3(SCALING_PARAMETERS_CHANGES_UP_X, SCALING_PARAMETERS_CHANGES_UP_Y, SCALING_PARAMETERS_CHANGES_UP_Z);
-	//this->scaling_translation_changes_down = vec3(SCALING_PARAMETERS_CHANGES_DOWN_X, SCALING_PARAMETERS_CHANGES_DOWN_Y, SCALING_PARAMETERS_CHANGES_DOWN_Z);
 
 	this->translation_changes = vec3(TRANSLATION_CHANGES_X, TRANSLATION_CHANGES_Y, TRANSLATION_CHANGES_Z);
 
@@ -109,6 +40,9 @@ vvis::visualization::app_freeglut::app_freeglut(std::vector<vvis::creator::Verte
 	this->vect_of_vertexes = vect_of_vertexes;
 
 	this->background = background;
+
+	this->path_to_folder = _path_to_folder; // должен быть всегда инициализирован
+	this->path_to_settings_file = (_path_to_settings_file == INTERPETATOR_PATH_PLUG_WSTR) ? this->path_to_folder + L"/" + VISUALIS_SETTINGS_JSON : _path_to_settings_file;
 }
 
 vvis::visualization::app_freeglut* glob_app;
@@ -326,30 +260,31 @@ void vvis::visualization::main_menu_init() {
 	int _menu_movements_by_shiftspace = glutCreateMenu(menu_movements_by_shiftspace);
 	int _menu_scaling = glutCreateMenu(menu_scaling);
 	int _menu_color = glutCreateMenu(menu_color);
+	int _menu_settings = glutCreateMenu(menu_settings);
 
 	// sprintf делает вывод в массив buff
 
 	glutSetMenu(_menu_movements_by_arrows);
-		char buff[256]; sprintf(buff, "Current: (%g, %g, %g)", glob_app->translation_changes.x, glob_app->translation_changes.y, glob_app->translation_changes.z);
-		glutAddMenuEntry(buff, MENU_RENDER_MOVEMENTS_BY_ARROWS_SHOW_SENSIVITY);
+		//char buff[256]; sprintf(buff, "Current: (%g, %g, %g)", glob_app->translation_changes.x, glob_app->translation_changes.y, glob_app->translation_changes.z);
+		//glutAddMenuEntry(buff, MENU_RENDER_MOVEMENTS_BY_ARROWS_SHOW_SENSIVITY);
 		glutAddMenuEntry("Inrease sensivity", MENU_RENDER_MOVEMENTS_BY_ARROWS_INCREASE_SENSIVITY);
 		glutAddMenuEntry("Decrease sensivity", MENU_RENDER_MOVEMENTS_BY_ARROWS_DECREASE_SENSIVITY);
 
 	glutSetMenu(_menu_movements_by_wasd);
-		sprintf(buff, "Current: (%g, %g, %g)", glob_app->camera_changes.x, glob_app->camera_changes.y, glob_app->camera_changes.z);
-		glutAddMenuEntry(buff, MENU_RENDER_MOVEMENTS_BY_WASD_SHOW_SENSIVITY);
+		//sprintf(buff, "Current: (%g, %g, %g)", glob_app->camera_changes.x, glob_app->camera_changes.y, glob_app->camera_changes.z);
+		//glutAddMenuEntry(buff, MENU_RENDER_MOVEMENTS_BY_WASD_SHOW_SENSIVITY);
 		glutAddMenuEntry("Inrease sensivity", MENU_RENDER_MOVEMENTS_BY_WASD_INCREASE_SENSIVITY);
 		glutAddMenuEntry("Decrease sensivity", MENU_RENDER_MOVEMENTS_BY_WASD_DECREASE_SENSIVITY);
 
 	glutSetMenu(_menu_movements_by_shiftspace);
-		sprintf(buff, "Current: (%g)", glob_app->estrangement_changes);
-		glutAddMenuEntry(buff, MENU_RENDER_MOVEMENTS_BY_SHIFTSPACE_SHOW_SENSIVITY);
+		//sprintf(buff, "Current: (%g)", glob_app->estrangement_changes);
+		//glutAddMenuEntry(buff, MENU_RENDER_MOVEMENTS_BY_SHIFTSPACE_SHOW_SENSIVITY);
 		glutAddMenuEntry("Inrease sensivity", MENU_RENDER_MOVEMENTS_BY_SHIFTSPACE_INCREASE_SENSIVITY);
 		glutAddMenuEntry("Decrease sensivity", MENU_RENDER_MOVEMENTS_BY_SHIFTSPACE_DECREASE_SENSIVITY);
 
 	glutSetMenu(_menu_scaling);
-		sprintf(buff, "Current: (%g, %g, %g)", glob_app->scaling_parameters_changes.x, glob_app->scaling_parameters_changes.y, glob_app->scaling_parameters_changes.z);
-		glutAddMenuEntry(buff, MENU_RENDER_SCALING_SHOW_SENSIVITY);
+		//sprintf(buff, "Current: (%g, %g, %g)", glob_app->scaling_parameters_changes.x, glob_app->scaling_parameters_changes.y, glob_app->scaling_parameters_changes.z);
+		//glutAddMenuEntry(buff, MENU_RENDER_SCALING_SHOW_SENSIVITY);
 		glutAddMenuEntry("Inrease sensivity", MENU_RENDER_SCALING_INCREASE_SENSIVITY);
 		glutAddMenuEntry("Decrease sensivity", MENU_RENDER_SCALING_DECREASE_SENSIVITY);
 
@@ -357,12 +292,21 @@ void vvis::visualization::main_menu_init() {
 		glutAddMenuEntry("ON", MENU_COLOR_OO_ON);
 		glutAddMenuEntry("OFF", MENU_COLOR_OO_OFF);
 
+	glutSetMenu(_menu_settings);
+		//glutAddMenuEntry("SHOW IN CONSOLE", MENU_SETTINGS_GS_SHOW);
+		glutAddMenuEntry("SAVE", MENU_SETTINGS_GS_SAVE);
+		glutAddMenuEntry("GET", MENU_SETTINGS_GS_GET);
+		glutAddMenuEntry("RESET", MENU_SETTINGS_GS_RESET);
+		glutAddMenuEntry("RESET FILE", MENU_SETTINGS_GS_RESET_FILE);
+		
+
 	glutSetMenu(_main_menu_render);
 		glutAddSubMenu("Movements by arrows", _menu_movements_by_arrows);
 		glutAddSubMenu("Movements by wasd/ijkl", _menu_movements_by_wasd);
 		glutAddSubMenu("Movements by shift(lctrl)/space", _menu_movements_by_shiftspace);
 		glutAddSubMenu("Scaling parameters by pageup/pagedown", _menu_scaling);
 		glutAddSubMenu("Coloring", _menu_color);
+		glutAddSubMenu("Settings", _menu_settings);
 
 	glutAttachMenu(GLUT_RIGHT_BUTTON);
 	glutDetachMenu(GLUT_LEFT_BUTTON);
@@ -386,8 +330,8 @@ void vvis::visualization::menu_movements_by_arrows(int code) {
 			glob_app->translation_changes.y *= MOVEMENTS_BY_ARROWS_MULTIPLY_SENSIVITY;
 			glob_app->translation_changes.z *= MOVEMENTS_BY_ARROWS_MULTIPLY_SENSIVITY;
 
-			char buff[256]; sprintf(buff, "Current: (%g, %g, %g)", glob_app->translation_changes.x, glob_app->translation_changes.y, glob_app->translation_changes.z);
-			glutChangeToMenuEntry(1, buff, MENU_RENDER_MOVEMENTS_BY_ARROWS_SHOW_SENSIVITY);
+			//char buff[256]; sprintf(buff, "Current: (%g, %g, %g)", glob_app->translation_changes.x, glob_app->translation_changes.y, glob_app->translation_changes.z);
+			//glutChangeToMenuEntry(1, buff, MENU_RENDER_MOVEMENTS_BY_ARROWS_SHOW_SENSIVITY);
 
 		} break;
 
@@ -396,8 +340,8 @@ void vvis::visualization::menu_movements_by_arrows(int code) {
 			glob_app->translation_changes.y /= MOVEMENTS_BY_ARROWS_MULTIPLY_SENSIVITY;
 			glob_app->translation_changes.z /= MOVEMENTS_BY_ARROWS_MULTIPLY_SENSIVITY;
 
-			char buff[256]; sprintf(buff, "Current: (%g, %g, %g)", glob_app->translation_changes.x, glob_app->translation_changes.y, glob_app->translation_changes.z);
-			glutChangeToMenuEntry(1, buff, MENU_RENDER_MOVEMENTS_BY_ARROWS_SHOW_SENSIVITY);
+			//char buff[256]; sprintf(buff, "Current: (%g, %g, %g)", glob_app->translation_changes.x, glob_app->translation_changes.y, glob_app->translation_changes.z);
+			//glutChangeToMenuEntry(1, buff, MENU_RENDER_MOVEMENTS_BY_ARROWS_SHOW_SENSIVITY);
 
 		} break;
 
@@ -416,8 +360,8 @@ void vvis::visualization::menu_movements_by_wasd(int code) {
 			glob_app->camera_changes.y *= MOVEMENTS_BY_WASD_MULTIPLY_SENSIVITY;
 			glob_app->camera_changes.z *= MOVEMENTS_BY_WASD_MULTIPLY_SENSIVITY;
 
-			char buff[256]; sprintf(buff, "Current: (%g, %g, %g)", glob_app->camera_changes.x, glob_app->camera_changes.y, glob_app->camera_changes.z);
-			glutChangeToMenuEntry(1, buff, MENU_RENDER_MOVEMENTS_BY_WASD_SHOW_SENSIVITY);
+			//char buff[256]; sprintf(buff, "Current: (%g, %g, %g)", glob_app->camera_changes.x, glob_app->camera_changes.y, glob_app->camera_changes.z);
+			//glutChangeToMenuEntry(1, buff, MENU_RENDER_MOVEMENTS_BY_WASD_SHOW_SENSIVITY);
 
 		} break;
 
@@ -426,8 +370,8 @@ void vvis::visualization::menu_movements_by_wasd(int code) {
 			glob_app->camera_changes.y /= MOVEMENTS_BY_WASD_MULTIPLY_SENSIVITY;
 			glob_app->camera_changes.z /= MOVEMENTS_BY_WASD_MULTIPLY_SENSIVITY;
 
-			char buff[256]; sprintf(buff, "Current: (%g, %g, %g)", glob_app->camera_changes.x, glob_app->camera_changes.y, glob_app->camera_changes.z);
-			glutChangeToMenuEntry(1, buff, MENU_RENDER_MOVEMENTS_BY_WASD_SHOW_SENSIVITY);
+			//char buff[256]; sprintf(buff, "Current: (%g, %g, %g)", glob_app->camera_changes.x, glob_app->camera_changes.y, glob_app->camera_changes.z);
+			//glutChangeToMenuEntry(1, buff, MENU_RENDER_MOVEMENTS_BY_WASD_SHOW_SENSIVITY);
 
 		} break;
 
@@ -443,16 +387,16 @@ void vvis::visualization::menu_movements_by_shiftspace(int code) {
 		case MENU_RENDER_MOVEMENTS_BY_SHIFTSPACE_INCREASE_SENSIVITY: {
 			glob_app->estrangement_changes *= MOVEMENTS_BY_SHIFTSPACE_MULTIPLY_SENSIVITY;
 
-			char buff[256]; sprintf(buff, "Current: (%g)", glob_app->estrangement_changes);
-			glutChangeToMenuEntry(1, buff, MENU_RENDER_MOVEMENTS_BY_SHIFTSPACE_SHOW_SENSIVITY);
+			//char buff[256]; sprintf(buff, "Current: (%g)", glob_app->estrangement_changes);
+			//glutChangeToMenuEntry(1, buff, MENU_RENDER_MOVEMENTS_BY_SHIFTSPACE_SHOW_SENSIVITY);
 
 		} break;
 
 		case MENU_RENDER_MOVEMENTS_BY_SHIFTSPACE_DECREASE_SENSIVITY: {
 			glob_app->estrangement_changes /= MOVEMENTS_BY_SHIFTSPACE_MULTIPLY_SENSIVITY;
 
-			char buff[256]; sprintf(buff, "Current: (%g)", glob_app->estrangement_changes);
-			glutChangeToMenuEntry(1, buff, MENU_RENDER_MOVEMENTS_BY_SHIFTSPACE_SHOW_SENSIVITY);
+			//char buff[256]; sprintf(buff, "Current: (%g)", glob_app->estrangement_changes);
+			//glutChangeToMenuEntry(1, buff, MENU_RENDER_MOVEMENTS_BY_SHIFTSPACE_SHOW_SENSIVITY);
 
 		} break;
 
@@ -470,8 +414,8 @@ void vvis::visualization::menu_scaling(int code) {
 			glob_app->scaling_parameters_changes.y *= SCALING_MULTIPLY_SENSIVITY_Y;
 			glob_app->scaling_parameters_changes.z *= SCALING_MULTIPLY_SENSIVITY_Z;
 
-			char buff[256]; sprintf(buff, "Current: (%g, %g, %g)", glob_app->scaling_parameters_changes.x, glob_app->scaling_parameters_changes.y, glob_app->scaling_parameters_changes.z);
-			glutChangeToMenuEntry(1, buff, MENU_RENDER_SCALING_SHOW_SENSIVITY);
+			//char buff[256]; sprintf(buff, "Current: (%g, %g, %g)", glob_app->scaling_parameters_changes.x, glob_app->scaling_parameters_changes.y, glob_app->scaling_parameters_changes.z);
+			//glutChangeToMenuEntry(1, buff, MENU_RENDER_SCALING_SHOW_SENSIVITY);
 		} break;
 
 		case MENU_RENDER_SCALING_DECREASE_SENSIVITY: {
@@ -479,8 +423,8 @@ void vvis::visualization::menu_scaling(int code) {
 			glob_app->scaling_parameters_changes.y /= SCALING_MULTIPLY_SENSIVITY_Y;
 			glob_app->scaling_parameters_changes.z /= SCALING_MULTIPLY_SENSIVITY_Z;
 
-			char buff[256]; sprintf(buff, "Current: (%g, %g, %g)", glob_app->scaling_parameters_changes.x, glob_app->scaling_parameters_changes.y, glob_app->scaling_parameters_changes.z);
-			glutChangeToMenuEntry(1, buff, MENU_RENDER_SCALING_SHOW_SENSIVITY);
+			//char buff[256]; sprintf(buff, "Current: (%g, %g, %g)", glob_app->scaling_parameters_changes.x, glob_app->scaling_parameters_changes.y, glob_app->scaling_parameters_changes.z);
+			//glutChangeToMenuEntry(1, buff, MENU_RENDER_SCALING_SHOW_SENSIVITY);
 		} break;
 
 	}
@@ -500,6 +444,140 @@ void vvis::visualization::menu_color(int code) {
 
 			glutPostRedisplay();
 		} break;
+
+	}
+}
+
+void vvis::visualization::menu_settings(int code) {
+	switch (code) {
+
+
+
+
+		case MENU_SETTINGS_GS_SAVE: {
+			//std::wcout << glob_app->path_to_folder << std::endl;
+			
+			std::fstream file; json _json;
+			//
+
+			if (file_exist(glob_app->path_to_settings_file)) {
+				file.open(glob_app->path_to_settings_file, std::ios_base::in);
+				_json << file;
+				file.close();
+			};
+
+			file.open(glob_app->path_to_settings_file, std::ios_base::out | std::ios_base::trunc);
+
+			_json["vis"]["scaling_parameters_changes"]["x"] = glob_app->scaling_parameters_changes.x;
+			_json["vis"]["scaling_parameters_changes"]["y"] = glob_app->scaling_parameters_changes.y;
+			_json["vis"]["scaling_parameters_changes"]["z"] = glob_app->scaling_parameters_changes.z;
+			_json["vis"]["translation_changes"]["x"] = glob_app->translation_changes.x;
+			_json["vis"]["translation_changes"]["y"] = glob_app->translation_changes.y;
+			_json["vis"]["translation_changes"]["z"] = glob_app->translation_changes.z;
+			_json["vis"]["camera_changes"]["x"] = glob_app->camera_changes.x;
+			_json["vis"]["camera_changes"]["y"] = glob_app->camera_changes.y;
+			_json["vis"]["camera_changes"]["z"] = glob_app->camera_changes.z;
+			_json["vis"]["estrangement_changes"] = glob_app->estrangement_changes;
+
+			file << _json.dump(4);
+
+			file.close();
+
+		
+		} break;
+
+
+
+
+		case MENU_SETTINGS_GS_GET: {
+			if (glob_app->path_to_settings_file == INTERPETATOR_PATH_PLUG_WSTR) glob_app->path_to_settings_file = glob_app->path_to_folder + L"/" + VISUALIS_SETTINGS_JSON;
+			if (glob_app->path_to_settings_file == INTERPETATOR_PATH_PLUG_WSTR) break;
+		
+			std::fstream file;
+
+			file.open(glob_app->path_to_settings_file, std::ios::in);
+
+			json _json;
+			_json << file;
+
+			if (_json["vis"] == nullptr) break;
+
+			glob_app->scaling_parameters_changes.x = _json["vis"]["scaling_parameters_changes"]["x"].get<double>();
+			glob_app->scaling_parameters_changes.y = _json["vis"]["scaling_parameters_changes"]["y"].get<double>();
+			glob_app->scaling_parameters_changes.z = _json["vis"]["scaling_parameters_changes"]["z"].get<double>();
+
+			glob_app->translation_changes.x = _json["vis"]["translation_changes"]["x"].get<double>();
+			glob_app->translation_changes.y = _json["vis"]["translation_changes"]["y"].get<double>();
+			glob_app->translation_changes.z = _json["vis"]["translation_changes"]["z"].get<double>();
+
+			glob_app->camera_changes.x = _json["vis"]["camera_changes"]["x"].get<double>();
+			glob_app->camera_changes.y = _json["vis"]["camera_changes"]["y"].get<double>();
+			glob_app->camera_changes.z = _json["vis"]["camera_changes"]["z"].get<double>();
+
+			glob_app->estrangement_changes = _json["vis"]["estrangement_changes"].get<double>();
+
+		} break;
+
+
+		
+		case MENU_SETTINGS_GS_RESET: {
+			glob_app->scaling_parameters_changes.x = SCALING_PARAMETERS_CHANGES_X;
+			glob_app->scaling_parameters_changes.y = SCALING_PARAMETERS_CHANGES_Y;
+			glob_app->scaling_parameters_changes.z = SCALING_PARAMETERS_CHANGES_Z;
+
+			glob_app->translation_changes.x = TRANSLATION_CHANGES_X;
+			glob_app->translation_changes.y = TRANSLATION_CHANGES_Y;
+			glob_app->translation_changes.z = TRANSLATION_CHANGES_Z;
+
+			glob_app->camera_changes.x = CAMERA_CHANGES_X;
+			glob_app->camera_changes.y = CAMERA_CHANGES_Y;
+			glob_app->camera_changes.z = CAMERA_CHANGES_Z;
+
+			glob_app->estrangement_changes = ESTRAGNEMENT_CHANGES;
+
+		} break;
+
+
+
+
+
+		case MENU_SETTINGS_GS_RESET_FILE: {
+			std::fstream file; json _json;
+
+			if (file_exist(glob_app->path_to_settings_file)) {
+				file.open(glob_app->path_to_settings_file, std::ios_base::in);
+				_json << file;
+				file.close();
+			};
+
+			file.open(glob_app->path_to_settings_file, std::ios_base::out | std::ios_base::trunc);
+
+			_json["vis"]["scaling_parameters_changes"]["x"] = SCALING_PARAMETERS_CHANGES_X;
+			_json["vis"]["scaling_parameters_changes"]["y"] = SCALING_PARAMETERS_CHANGES_Y;
+			_json["vis"]["scaling_parameters_changes"]["z"] = SCALING_PARAMETERS_CHANGES_Z;
+			_json["vis"]["translation_changes"]["x"] = TRANSLATION_CHANGES_X;
+			_json["vis"]["translation_changes"]["y"] = TRANSLATION_CHANGES_Y;
+			_json["vis"]["translation_changes"]["z"] = TRANSLATION_CHANGES_Z;
+			_json["vis"]["camera_changes"]["x"] = CAMERA_CHANGES_X;
+			_json["vis"]["camera_changes"]["y"] = CAMERA_CHANGES_Y;
+			_json["vis"]["camera_changes"]["z"] = CAMERA_CHANGES_Z;
+			_json["vis"]["estrangement_changes"] = ESTRAGNEMENT_CHANGES;
+
+			file << _json.dump(4);
+
+			file.close();
+			
+		} break;
+
+			//case MENU_SETTINGS_GS_SHOW: {
+//	std::wcout << L"\n" <<
+//		L"\t\t [drawer] Scaling parameters changes (pageUp/pageDown): (" << glob_app->scaling_parameters_changes.x << L", " << glob_app->scaling_parameters_changes.y << L", " << glob_app->scaling_parameters_changes.z << ")\n" <<
+//		L"\t\t [drawer] Camera changes (wasd/ijkl): (" << glob_app->camera_changes.x << L", " << glob_app->camera_changes.y << L", " << glob_app->camera_changes.z << ")\n" <<
+//		L"\t\t [drawer] Estrangement changes (shift/space): (" << glob_app->estrangement_changes << L")\n" <<
+//		L"\t\t [drawer] Translation changes (arrows): (" << glob_app->translation_changes.x << L", " << glob_app->translation_changes.y << L", " << glob_app->translation_changes.z << L")\n"
+//		;
+//	std::wcout << std::endl;
+//} break;
 
 	}
 }

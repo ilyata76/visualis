@@ -3,9 +3,57 @@
 
 
 	#include <vector>
+
 	#include "creator_of_vertex_arr.hpp"
 	#include "../../libraries/freeglut/include/GL/freeglut.h"
+	#include "../../libraries/json/single_include/nlohmann/json.hpp"
 	#include "./shape.hpp"
+
+	#define MENU_RENDER_MOVEMENTS_BY_ARROWS 1010
+
+	#define MENU_RENDER_MOVEMENTS_BY_ARROWS_SHOW_SENSIVITY 1011
+	#define MENU_RENDER_MOVEMENTS_BY_ARROWS_INCREASE_SENSIVITY 1012
+	#define MENU_RENDER_MOVEMENTS_BY_ARROWS_DECREASE_SENSIVITY 1013
+
+	#define MENU_RENDER_MOVEMENTS_BY_WASD 1020
+
+	#define MENU_RENDER_MOVEMENTS_BY_WASD_SHOW_SENSIVITY 1021
+	#define MENU_RENDER_MOVEMENTS_BY_WASD_INCREASE_SENSIVITY 1022
+	#define MENU_RENDER_MOVEMENTS_BY_WASD_DECREASE_SENSIVITY 1023
+
+	#define MENU_RENDER_MOVEMENTS_BY_IJKL 1030
+
+	#define MENU_RENDER_MOVEMENTS_BY_SHIFTSPACE 1040
+
+	#define MENU_RENDER_MOVEMENTS_BY_SHIFTSPACE_SHOW_SENSIVITY 1041
+	#define MENU_RENDER_MOVEMENTS_BY_SHIFTSPACE_INCREASE_SENSIVITY 1042
+	#define MENU_RENDER_MOVEMENTS_BY_SHIFTSPACE_DECREASE_SENSIVITY 1043
+
+	#define MENU_RENDER_SCALING 1050
+
+	#define MENU_RENDER_SCALING_SHOW_SENSIVITY 1051
+	#define MENU_RENDER_SCALING_INCREASE_SENSIVITY 1052
+	#define MENU_RENDER_SCALING_DECREASE_SENSIVITY 1053
+
+	#define MENU_COLOR_OO 1060
+
+	#define MENU_COLOR_OO_ON 1061
+	#define MENU_COLOR_OO_OFF 1062
+
+	#define MENU_SETTINGS_GS 1070
+
+	#define MENU_SETTINGS_GS_SAVE 1071
+	#define MENU_SETTINGS_GS_GET 1072
+	#define MENU_SETTINGS_GS_RESET 1073
+	#define MENU_SETTINGS_GS_RESET_FILE 1074
+	#define MENU_SETTINGS_GS_SHOW 1075
+
+	using nlohmann::json;
+
+	inline bool file_exist(const std::wstring& s) {
+		struct _stat buf;
+		return (_wstat(s.c_str(), &buf) != -1);
+	}
 
 	namespace vvis {
 		namespace visualization {
@@ -61,22 +109,11 @@
 
 					vvis::visualization::VvisColor_3f background;
 
-					/*		
-							_json["vis"]["scaling_parameters_changes"]["x"] = SCALING_PARAMETERS_CHANGES_X;
-							_json["vis"]["scaling_parameters_changes"]["y"] = SCALING_PARAMETERS_CHANGES_Y;
-							_json["vis"]["scaling_parameters_changes"]["z"] = SCALING_PARAMETERS_CHANGES_Z;
-							_json["vis"]["translation_changes"]["x"] = TRANSLATION_CHANGES_X;
-							_json["vis"]["translation_changes"]["y"] = TRANSLATION_CHANGES_Y;
-							_json["vis"]["translation_changes"]["z"] = TRANSLATION_CHANGES_Z;
-							_json["vis"]["camera_changes"]["x"] = CAMERA_CHANGES_X;
-							_json["vis"]["camera_changes"]["y"] = CAMERA_CHANGES_Y;
-							_json["vis"]["camera_changes"]["z"] = CAMERA_CHANGES_Z;
-							_json["vis"]["estrangement_changes"] = ESTRAGNEMENT_CHANGES;
-					*/
-
+					std::wstring path_to_folder;
+					std::wstring path_to_settings_file;
 
 					app_freeglut();
-					app_freeglut(std::vector <vvis::creator::Vertex>& vect_of_vertexes, wchar_t shape, bool use_color, vvis::visualization::VvisColor_3f background, int index_of_line);
+					app_freeglut(std::vector <vvis::creator::Vertex>& vect_of_vertexes, wchar_t shape, bool use_color, vvis::visualization::VvisColor_3f background, int index_of_line, std::wstring& path_to_folder, std::wstring& _path_to_settings_file);
 
 			};
 
@@ -94,6 +131,7 @@
 			void menu_movements_by_shiftspace(int code);
 			void menu_scaling(int code);
 			void menu_color(int code);
+			void menu_settings(int code);
 
 			void n_keys(unsigned char key, int x, int y);
 			void s_keys(int key, int x, int y);
