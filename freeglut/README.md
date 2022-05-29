@@ -12,7 +12,7 @@
     - [x] colorful
 - [x] -> menu with settings
 - [x] interactive main-function with cmds interpetator
-- [ ] запоминание настроек (json)
+- [x] запоминание настроек (json)
 - [ ] выборка отрисовки не всех конусов
 - [ ] флаги для запуска .\visualis_freeglut
 - [ ] разделение окна на подокна
