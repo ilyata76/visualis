@@ -1,9 +1,32 @@
 ﻿cmake_minimum_required (VERSION 3.18)
 
-set (PROJECT_VISUALIS visualis_freeglut) 
-project (${PROJECT_VISUALIS})
+set (VISUALIS vvis) 
 
-# ----------- |  | ----------- 
+project (${VISUALIS})
+
+# ----------- | VISUALIS PROJECT : OPTIONS | ----------- 
+
+option(USE_STATIC "Use static freeglut library" ON)
+option(COMPILE_FREEGLUT_EXAMPLES "Compile freeglut examples?" OFF)
+
+message("[visualis] : USE STATIC FREEGLUT LIBRARIES: " ${USE_STATIC})
+message("[visualis] : COMPILE FREEGLUT EXAMPLES: " ${COMPILE_FREEGLUT_EXAMPLES})
+
+if(USE_STATIC)
+ 	option(FREEGLUT_BUILD_SHARED_LIBS "USE SHARED FREEGLUT LIBRARY" OFF)
+ 	option(FREEGLUT_BUILD_STATIC_LIBS "USE STATIC_FREEGLUT LIBRARY" ON)
+else()
+ 	option(FREEGLUT_BUILD_SHARED_LIBS "USE SHARED FREEGLUT LIBRARY" ON)
+ 	option(FREEGLUT_BUILD_STATIC_LIBS "USE STATIC_FREEGLUT LIBRARY" OFF)	
+endif()
+
+if (COMPILE_FREEGLUT_EXAMPLES)
+	option(FREEGLUT_BUILD_DEMOS "freeglut demos" ON)
+else()
+	option(FREEGLUT_BUILD_DEMOS "freeglut demos" OFF)
+endif()
+
+# ----------- | VISUALIS PROJECT FILES | ----------- 
 
 set (ENTRYPOINT_VISUALIS
 	source/main.cpp
@@ -13,7 +36,6 @@ set (HEADERS_VISUALIS
 	source/include/defines.hpp
 	source/include/parser-converter/parser-v5.hpp
 	source/include/parser-converter/converter-v5.hpp
-#	source/include/parser-converter/vvis-parser.hpp
 	source/include/sample/creator_of_vertex_arr.hpp
 	source/include/sample/point-spin.hpp
 	source/include/sample/shape.hpp
@@ -25,7 +47,6 @@ set (HEADERS_VISUALIS
 set (SOURCES_VISUALIS
 	source/parser-v5.cpp
 	source/converter-v5.cpp
-#	source/vvis-parser.cpp
 	source/point-spin.cpp
 	source/creator_of_vertex_arr.cpp
 	source/shape.cpp
@@ -34,38 +55,50 @@ set (SOURCES_VISUALIS
 	source/main_inter.cpp
 )
 
-# ----------- |  | ----------- 
+# ----------- | SUBDIRECTORIES | ----------- 
 
-message("CALLING TO EXCEPTIO SUBDIRECTORY")
-
+message("[visualis] : CALLING TO EXCEPTIO SUBDIRECTORY")
 add_subdirectory(source/libraries/tia-Exceptio/)
+
+message("[visualis] : CALLING TO FREEGLUT SUBDIRECTORY")
 add_subdirectory(source/libraries/freeglut)
 
-message("CREATING EXECUTABLE FILE")
+message("[visualis] : CREATING AN EXECUTABLE VISUALIS_FREEGLUT FILE")
 
-add_executable (${PROJECT_VISUALIS}
+# ----------- | EXECUTABLE | ----------- 
+
+add_executable (${VISUALIS}
 	${ENTRYPOINT_VISUALIS} 
 	${HEADERS_VISUALIS} 
 	${SOURCES_VISUALIS}
 )
 
-# ----------- | LINKING LIBRARIES: Exceptio | ----------- 
+# ----------- | LINKING LIBRARIES | ----------- 
 
-message("LINKING LIBRARIES")
+message("[visualis] : LINKING LIBRARIES : exceptio")
 
-find_library(FREGL freeglut)
-
-target_link_libraries(${PROJECT_VISUALIS} 
+target_link_libraries( ${VISUALIS} 
 	EXCEPTIO_CPP_LIBRARY
-	freeglut
-	freeglut_static
 )
 
+message("[visualis] : LINKING LIBRARIES : freeglut")
 
-# ----||----
+if(USE_STATIC)
+	find_library(FREGL freeglut_static)
+	target_link_libraries( ${VISUALIS} 
+		freeglut_static
+	)
+else()
+	find_library(FREGL freeglut)
+	target_link_libraries( ${VISUALIS} 
+		freeglut
+	)
+endif()
 
-set (PROJECT_CONVERTER_VAMPIRE5 converter_v5) 
-project (${PROJECT_CONVERTER_VAMPIRE5})
+
+# ----| CONVERTER |----
+
+set (CONVERTER_VAMPIRE5 vvis_converter_v5) 
 
 set (ENTRYPOINT_CONVERTER_VAMPIRE5
 	source/main_converter_vampire5.cpp
@@ -82,12 +115,14 @@ set (SOURCES_CONVERTER_VAMPIRE5
 	source/converter-v5.cpp
 )
 
-add_executable (${PROJECT_CONVERTER_VAMPIRE5}
+message("[visualis] : CREATING AN EXECUTABLE VISUALIS_CONVERTER_V5 FILE")
+
+add_executable (${CONVERTER_VAMPIRE5}
 	${ENTRYPOINT_CONVERTER_VAMPIRE5}
 	${HEADERS_CONVERTER_VAMPIRE5} 
 	${SOURCES_CONVERTER_VAMPIRE5}
 )
 
-target_link_libraries(${PROJECT_CONVERTER_VAMPIRE5} 
+target_link_libraries(${CONVERTER_VAMPIRE5} 
 	EXCEPTIO_CPP_LIBRARY
 )

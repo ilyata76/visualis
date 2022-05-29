@@ -64,7 +64,6 @@
 
 			};
 
-			// freeGLUT вынуждает пользоваться просто функциями, а не методами классов
 			void draw_sample(app_freeglut& app, int argc, char** argv);
 
 			void display_render();

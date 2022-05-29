@@ -2,6 +2,8 @@
 
 Interpretator i; // TODO чтобы при ошибке не слетали параметры надо сделать файл с настройками?
 
+// TODO: штука, чтобы загружать настройки чувствительностей
+
 int main(int argc, char** argv) {
 	try {
 		_wsetlocale(LC_ALL, L"");

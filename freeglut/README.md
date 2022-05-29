@@ -1,12 +1,5 @@
 # visualis freeglut
   
-```  
-  _   ____________  _____   __   ________  
- | | / /  _/ __/ / / / _ | / /  /  _/ __/  
- | |/ // /_\ \/ /_/ / __ |/ /___/ /_\ \  
- |___/___/___/\____/_/ |_/____/___/___/  
-```
-  
 ## Roadmap
 - [x] .data vampire parser
 - [x] convertor to .vvis
@@ -21,6 +14,7 @@
 - [x] interactive main-function with cmds interpetator
 - [ ] запоминание настроек (json)
 - [ ] выборка отрисовки не всех конусов
+- [ ] флаги для запуска .\visualis_freeglut
 - [ ] разделение окна на подокна
 - [ ] новые фигуры для рисования (стрелки, например)
 - [ ] FLTK или что-то другое?
@@ -28,7 +22,7 @@
   
 ## Compiling with CMake
 Можно склонировать репозиторий со всеми подмодулями  
-```
+```s
     git clone --recursive-submodules git@github.com:ilyata76/visualis.git
 ```
 Или же без них, но в папки, находящиеся по пути `source/libraries/`, требуется разместить соответствующие библиотеки (см. зависимости)  
@@ -39,10 +33,22 @@
     cmake ..
     cmake --build .
 ```
-  
+Существующие опции
+```s
+    USE_STATIC "Use static freeglut library" ON
+    COMPILE_FREEGLUT_EXAMPLES "Compile freeglut examples?" OFF
+```
+Чтобы собрать проект с динамической freeglut библиотекой, достаточно:
+```
+    cmake -DUSE_STATIC=OFF ..
+    cmake --build .
+```
+
+
 ## Зависимости
-+ **[Exceptio](https://github.com/ilyata76/tia-Exceptio.git)** для обработки исключений и ошибок. CMake самостоятельно (через инструкцию) линкует библиотеку
-+ **[freeglut](https://github.com/FreeGLUTProject/freeglut.git)** для рисования. Через CMake можно подключить `.lib` библиотеки (см. CmakeLists.txt), а вот с `.dll`, `.so` - нужно перетаскивать вместе с исполняемым или сохранять в PATH
++ **[Exceptio](https://github.com/ilyata76/tia-Exceptio.git)** для обработки исключений и ошибок
++ **[freeglut](https://github.com/FreeGLUTProject/freeglut.git)** для рисования
+При стандартных настройках и наличия их в требуемых директориях, проект соберётся самостоятельно. Динамическую же библиотеку придётся искать
   
 ## Консольное приложение
 ```
