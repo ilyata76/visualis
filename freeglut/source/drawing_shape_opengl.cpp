@@ -70,9 +70,11 @@ vvis::visualization::app_freeglut::app_freeglut() {
 
 	this->estrangement_changes = ESTRAGNEMENT_CHANGES;
 
+	this->background = VvisColor_3f(1, 1, 1);
+
 }
 
-vvis::visualization::app_freeglut::app_freeglut(std::vector<vvis::creator::Vertex>& vect_of_vertexes, wchar_t shape, bool use_color, int index_of_line) {
+vvis::visualization::app_freeglut::app_freeglut(std::vector<vvis::creator::Vertex>& vect_of_vertexes, wchar_t shape, bool use_color, vvis::visualization::VvisColor_3f background, int index_of_line) {
 	this->index_of_line = index_of_line;
 	this->additional_rotation_phi = 0.0;
 	this->additional_rotation_theta = 0.0;
@@ -105,6 +107,8 @@ vvis::visualization::app_freeglut::app_freeglut(std::vector<vvis::creator::Verte
 	this->estrangement_changes = ESTRAGNEMENT_CHANGES;
 
 	this->vect_of_vertexes = vect_of_vertexes;
+
+	this->background = background;
 }
 
 vvis::visualization::app_freeglut* glob_app;
@@ -142,7 +146,7 @@ void vvis::visualization::draw_sample(app_freeglut& app, int argc, char** argv) 
 void vvis::visualization::display_render() {
 
 	//glClearColor(108/255., 146/255., 175/255., 0);
-	glClearColor(1.0, 1.0, 1.0, 0.0);
+	glClearColor(glob_app->background.red, glob_app->background.green, glob_app->background.blue, 0.0);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	if (glob_app->shape == SHAPE_NOTHING || glob_app->vect_of_vertexes.size() == 0) {

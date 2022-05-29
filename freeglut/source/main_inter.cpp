@@ -120,8 +120,8 @@ void Interpretator::loop(int argc, char** argv) {
 						
 						remove_quotation(this->settings.path_to_folder);
 
-						std::wcout << "\n\tPath to folder : " << this->settings.path_to_folder << " : has been set up\n";
-						if (this->settings.path_to_folder == INTERPETATOR_PATH_PLUG_WSTR) std::wcout << "\tERROR: path was not entered\n";
+						std::wcout << L"\n\tPath to folder : " << this->settings.path_to_folder << L" : has been set up\n";
+						if (this->settings.path_to_folder == INTERPETATOR_PATH_PLUG_WSTR) std::wcout << L"\tERROR: path was not entered\n";
 						std::wcout<< std::endl;
 
 
@@ -132,8 +132,8 @@ void Interpretator::loop(int argc, char** argv) {
 
 						this->settings.number_of_file = (!is_number(line))? INTERPETATOR_NUMBER_PLUG_INT : std::stoi(line);
 
-						std::wcout << "\n\tNumber of file : " << this->settings.number_of_file << " : has been set up\n";
-						if (this->settings.number_of_file == INTERPETATOR_NUMBER_PLUG_INT) std::wcout << "\tERROR: not number\n";
+						std::wcout << L"\n\tNumber of file : " << this->settings.number_of_file << L" : has been set up\n";
+						if (this->settings.number_of_file == INTERPETATOR_NUMBER_PLUG_INT) std::wcout << L"\tERROR: not number\n";
 						std::wcout<< std::endl;
 
 
@@ -148,8 +148,8 @@ void Interpretator::loop(int argc, char** argv) {
 						
 						remove_quotation(this->settings.path_to_sconfiguration_file);
 
-						std::wcout << "\n\tPath to sconfiguration file : " << this->settings.path_to_sconfiguration_file << " : has been set up\n";
-						if (this->settings.path_to_sconfiguration_file == INTERPETATOR_PATH_PLUG_WSTR) std::wcout << "\tERROR: path was not entered or incorrectly\n";
+						std::wcout << L"\n\tPath to sconfiguration file : " << this->settings.path_to_sconfiguration_file << L" : has been set up\n";
+						if (this->settings.path_to_sconfiguration_file == INTERPETATOR_PATH_PLUG_WSTR) std::wcout << L"\tERROR: path was not entered or incorrectly\n";
 						std::wcout << std::endl;
 
 
@@ -161,12 +161,23 @@ void Interpretator::loop(int argc, char** argv) {
 						if (L"yes" == by_synonyms(line)) this->settings.using_color = true;
 						else if (L"no" == by_synonyms(line)) this->settings.using_color = false;
 
-						std::wcout << "\n\tColoring mode : " << std::boolalpha << this->settings.using_color << " : has been set up\n";
+						std::wcout << L"\n\tColoring mode : " << std::boolalpha << this->settings.using_color << L" : has been set up\n";
 						std::wcout << std::endl;
 					} break;
 
 
+					case SUBCOMMAND_SET_BACKGROUNDCOLOR: {
+						for (int j = 0; j < 3; ++j) {
+							line = L""; if (ss.eof()) { ss.str(L""); break; } else ss >> line;
+							if (j == 0) this->settings.background.red = (!is_number(line) || std::stoi(line) >= 255) ? 1 : std::stoi(line)/255.;
+							if (j == 1) this->settings.background.green = (!is_number(line) || std::stoi(line) >= 255) ? 1 : std::stoi(line)/255.;
+							if (j == 2) this->settings.background.blue = (!is_number(line) || std::stoi(line) >= 255) ? 1 : std::stoi(line)/255.;
+						}
 
+						std::wcout << L"\n\tColoring background : " << this->settings.background.red << L"*255 " << this->settings.background.green << L"*255 "
+							<< this->settings.background.blue << L"*255 : has been set up\n";
+						std::wcout << std::endl;
+					} break;
 
 					
 					case UNKNOW_COMMAND: {
@@ -192,30 +203,39 @@ void Interpretator::loop(int argc, char** argv) {
 					case SUBCOMMAND_SET_FOLDERPATH: {
 						this->settings.path_to_folder = INTERPETATOR_PATH_PLUG_WSTR;
 
-						std::wcout << "\n\tPath to folder : " << this->settings.path_to_folder << " : has been set up\n";
+						std::wcout << L"\n\tPath to folder : " << this->settings.path_to_folder << L" : has been set up\n";
 						std::wcout << std::endl;
 					} break;
 
 					case SUBCOMMAND_SET_FILEPATH: {
 						this->settings.path_to_sconfiguration_file = INTERPETATOR_PATH_PLUG_WSTR;
 
-						std::wcout << "\n\tPath to sconfiguration file : " << this->settings.path_to_sconfiguration_file << " : has been set up\n";
+						std::wcout << L"\n\tPath to sconfiguration file : " << this->settings.path_to_sconfiguration_file << L" : has been set up\n";
 						std::wcout << std::endl;
 					} break;
 
 					case SUBCOMMAND_SET_FILENUMBER: {
 						this->settings.number_of_file = INTERPETATOR_NUMBER_PLUG_INT;
 
-						std::wcout << "\n\tNumber of file : " << this->settings.number_of_file << " : has been set up\n";
+						std::wcout << L"\n\tNumber of file : " << this->settings.number_of_file << L" : has been set up\n";
 						std::wcout << std::endl;
 					} break;
 
 					case SUBCOMMAND_SET_COLORING: {
 						this->settings.using_color = false;
 
-						std::wcout << "\n\tColoring mode : " << std::boolalpha << this->settings.using_color << " : has been set up\n";
+						std::wcout << L"\n\tColoring mode : " << std::boolalpha << this->settings.using_color << L" : has been set up\n";
 						std::wcout << std::endl;
-					}
+					} break;
+
+					case SUBCOMMAND_SET_BACKGROUNDCOLOR: {
+						this->settings.background = vvis::visualization::VvisColor_3f(1, 1, 1);
+
+						std::wcout << L"\n\tColoring background : " << this->settings.background.red << L"*255 " << this->settings.background.green << L"*255 "
+							<< this->settings.background.blue << L"*255 : has been set up\n";
+						std::wcout << std::endl;
+					} break;
+
 
 					case UNKNOW_COMMAND: {
 						std::wcout << L"\n\tERROR: Unknow subcommand for \"unset\": " << this->get_command_for_error(line) << L"\n" << std::endl;
@@ -314,7 +334,7 @@ void Interpretator::loop(int argc, char** argv) {
 							std::vector <vvis::creator::Vertex> vect = vvis::creator::create_arry(this->settings.path_to_folder)(this->settings.number_of_file);
 						std::wcout << (vect.size() != 0 ? L"Succsesfully\n" : L"Unsuccessfully\n");
 						std::wcout << L"\tLoaded " << vect.size() << L" spins\n";
-							vvis::visualization::app_freeglut app(vect, this->settings.shape, this->settings.using_color, this->settings.index_of_spin);
+							vvis::visualization::app_freeglut app(vect, this->settings.shape, this->settings.using_color, this->settings.background, this->settings.index_of_spin);
 
 						std::wcout << L"\tDrawing... \n";
 							vvis::visualization::draw_sample(app, argc, argv);
@@ -346,7 +366,7 @@ void Interpretator::loop(int argc, char** argv) {
 							std::vector <vvis::creator::Vertex> vect = vvis::creator::create_arry(this->settings.path_to_folder)(this->settings.number_of_file);
 						std::wcout << (vect.size() != 0 ? L"Succsesfully\n" : L"Unsuccessfully\n");
 						std::wcout << L"\tLoaded " << vect.size() << L" spins\n";
-							vvis::visualization::app_freeglut app(vect, this->settings.shape, this->settings.using_color, this->settings.index_of_spin);
+							vvis::visualization::app_freeglut app(vect, this->settings.shape, this->settings.using_color, this->settings.background, this->settings.index_of_spin);
 
 						std::wcout << L"\tDrawing... \n";
 							vvis::visualization::draw_sample(app, argc, argv);
@@ -389,7 +409,18 @@ void Interpretator::loop(int argc, char** argv) {
 				this->settings.using_color = false;
 				this->settings.shape = SHAPE_CONE;
 				this->settings.index_of_spin = DRAW_ALL;
+				this->settings.background = vvis::visualization::VvisColor_3f(1, 1, 1);
 				Assert(false, L"Restarting the program", L"The settings have been reset ");
+			} break;
+
+			case COMMAND_RESET: {
+				this->settings.number_of_file = INTERPETATOR_NUMBER_PLUG_INT;
+				this->settings.path_to_folder = INTERPETATOR_PATH_PLUG_WSTR;
+				this->settings.path_to_sconfiguration_file = INTERPETATOR_PATH_PLUG_WSTR;
+				this->settings.using_color = false;
+				this->settings.shape = SHAPE_CONE;
+				this->settings.index_of_spin = DRAW_ALL;
+				this->settings.background = vvis::visualization::VvisColor_3f(1, 1, 1);
 			} break;
 			
 			case COMMAND_SHOW_SETTINGS: {
@@ -409,8 +440,11 @@ void Interpretator::loop(int argc, char** argv) {
 					<< "\t\t-- \'filenumber\'/\'fn\' <integer-number> : sets up the number of sconfiguration file or other\n"
 					<< "\t\t\tNOTE: You can specify only one of the paths (to folder or to file)\n"
 					<< "\t\t\tNOTE: Supports absolute or relative path \n"
+					<< "\t\t\tEXAMPLE: set folp ../../temp/b"
 					<< "\t\t-- \'filepath\'/\'fp\' <path-to-file> : sets up the path to sconfiguration file\n"
-					<< "\t\t-- \'color\'/\'c\' <y/n> : shape coloring\n"
+					<< "\t\t\tEXAMPLE: set fp ../../temp/b/sconfiguration-00000010.vvis"
+					<< "\t\t-- \'coloring\'/\'cg\' <y/n> : shape coloring\n"
+					<< "\t\t-- \'backgroundcolor\'/\'bgc\' <red> <green> <blue> : integers 0-255\n"
 				 << "\n\t \'show\' : shows current settings\n"
 				 << "\n\t \'unset\' <as in set> : sets up the base values\n"
 				 << "\n\t \'convert\'/\'con\' : converts to .vvis format using global settings (folderpath, filenumber)\n"

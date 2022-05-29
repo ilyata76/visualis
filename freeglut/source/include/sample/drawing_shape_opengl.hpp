@@ -59,8 +59,10 @@
 					int width_of_window;
 					int height_of_window;
 
+					vvis::visualization::VvisColor_3f background;
+
 					app_freeglut();
-					app_freeglut(std::vector <vvis::creator::Vertex>& vect_of_vertexes, wchar_t shape, bool use_color, int index_of_line);
+					app_freeglut(std::vector <vvis::creator::Vertex>& vect_of_vertexes, wchar_t shape, bool use_color, vvis::visualization::VvisColor_3f background, int index_of_line);
 
 			};
 
