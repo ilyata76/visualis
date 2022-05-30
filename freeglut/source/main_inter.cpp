@@ -38,7 +38,7 @@ std::wstring tolower_wstr(std::wstring& _value) {
 
 bool is_number(const std::wstring& s) {
 	return !s.empty() && std::find_if(s.begin(),
-		s.end(), [](wchar_t c) { return !std::isdigit(c); }) == s.end();
+		s.end(), [](wchar_t c) { return !(std::isdigit(c) || c == L'0'); }) == s.end();
 }
 
 void remove_quotation(std::wstring& str) {
@@ -118,7 +118,8 @@ void Interpretator::loop(int argc, char** argv) {
 
 						this->settings.save_settings();
 						
-						std::wcout << "\n\tSuccsesful\n" << std::endl;
+						if (this->settings.path_to_settings_file_folder != INTERPETATOR_PATH_PLUG_WSTR) std::wcout << "\n\tSuccsesful\n" << std::endl;
+						else std::wcout << "\n\tUnsuccsesful\n" << std::endl;
 					} break;
 					
 					case SUBCOMMAND_GET_SETTINGS: {
@@ -129,7 +130,8 @@ void Interpretator::loop(int argc, char** argv) {
 						
 						this->settings.get_settings();
 						
-						std::wcout << "\n\tSuccsesful\n" << std::endl;
+						if(this->settings.path_to_settings_file_folder != INTERPETATOR_PATH_PLUG_WSTR) std::wcout << "\n\tSuccsesful\n" << std::endl;
+						else std::wcout << "\n\tUnsuccsesful (settingspath has not been set up)\n" << std::endl;
 					} break;
 
 					case UNKNOW_COMMAND: {

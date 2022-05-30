@@ -1,0 +1,73 @@
+{
+    "inter": {
+        "background": {
+            "blue": 0.6862745098039216,
+            "green": 0.5725490196078431,
+            "red": 0.4235294117647059
+        },
+        "index_of_spin": -1,
+        "number_of_file": 27,
+        "path_to_folder": [
+            46,
+            47
+        ],
+        "path_to_sconfiguration_file": [
+            46,
+            47,
+            115,
+            99,
+            111,
+            110,
+            102,
+            105,
+            103,
+            117,
+            114,
+            97,
+            116,
+            105,
+            111,
+            110,
+            45,
+            48,
+            48,
+            48,
+            48,
+            48,
+            48,
+            50,
+            55,
+            46,
+            118,
+            118,
+            105,
+            115
+        ],
+        "shape": 99,
+        "shape_str": [
+            99,
+            111,
+            110,
+            101
+        ],
+        "using_color": true
+    },
+    "vis": {
+        "camera_changes": {
+            "x": 0.5,
+            "y": 0.5,
+            "z": 0.5
+        },
+        "estrangement_changes": 0.03,
+        "scaling_parameters_changes": {
+            "x": 0.3,
+            "y": 0.3,
+            "z": 0.3
+        },
+        "translation_changes": {
+            "x": 0.5,
+            "y": 0.5,
+            "z": 0.5
+        }
+    }
+}

@@ -42,7 +42,10 @@ vvis::visualization::app_freeglut::app_freeglut(std::vector<vvis::creator::Verte
 	this->background = background;
 
 	this->path_to_folder = _path_to_folder; // должен быть всегда инициализирован
-	this->path_to_settings_file = (_path_to_settings_file == INTERPETATOR_PATH_PLUG_WSTR) ? this->path_to_folder + L"/" + VISUALIS_SETTINGS_JSON : _path_to_settings_file;
+
+	std::wstring wrong_path = INTERPETATOR_PATH_PLUG_WSTR; wrong_path += L"/" VISUALIS_SETTINGS_JSON;
+	this->path_to_settings_file = (_path_to_settings_file == INTERPETATOR_PATH_PLUG_WSTR || _path_to_settings_file == wrong_path) ? this->path_to_folder + L"/" + VISUALIS_SETTINGS_JSON : _path_to_settings_file;
+
 }
 
 vvis::visualization::app_freeglut* glob_app;

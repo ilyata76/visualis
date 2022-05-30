@@ -65,7 +65,7 @@
 
 
 #define INTERPETATOR_PATH_PLUG_WSTR L"<nothing>"
-#define INTERPETATOR_NUMBER_PLUG_INT 0
+#define INTERPETATOR_NUMBER_PLUG_INT -1
 
 #define VISUALIS_SETTINGS_JSON L"visualis-settings.json"
 

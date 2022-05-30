@@ -78,7 +78,7 @@
 			out << L"\t Path to sconfiguration file\t\t (c): " << SET.path_to_sconfiguration_file << L"\n";
 			out << L"\t Path to folder with .json settings\t (c): " << SET.path_to_settings_file_folder << L"\n";
 			out << L"\t Using color?\t\t\t\t (c): " << std::boolalpha << SET.using_color << L"\n";
-			out << L"\t Number of file\t\t\t\t (c): " << SET.number_of_file << L"\n";
+			out << L"\t Number of file\t\t\t\t (c): " << (SET.number_of_file == INTERPETATOR_NUMBER_PLUG_INT? L"<nothing>": std::to_wstring(SET.number_of_file)) << L"\n";
 			out << L"\t Shape for drawing\t\t\t (u): " << SET.shape << L" - " << SET.shape_str << L"\n";
 			out << L"\t Index of spin\t\t\t\t (u): " << (SET.index_of_spin == DRAW_ALL ? L"DRAW ALL" : std::to_wstring(SET.index_of_spin)) << L"\n";
 			out << L"\t Background color (RGB)\t\t\t (c): " << SET.background.red * 255 << L"/255 " << SET.background.green * 255 << L"/255 " << SET.background.blue * 255 << L"/255 ";
@@ -88,7 +88,7 @@
 		// https://github.com/nlohmann/json
 
 		void save_settings() {
-			if (this->path_to_settings_file_folder == INTERPETATOR_PATH_PLUG_WSTR) this->path_to_settings_file_folder = this->path_to_folder + L"/" + VISUALIS_SETTINGS_JSON;
+			if (this->path_to_settings_file_folder == INTERPETATOR_PATH_PLUG_WSTR) this->path_to_settings_file_folder = this->path_to_folder;
 			if (this->path_to_settings_file_folder == INTERPETATOR_PATH_PLUG_WSTR) return;
 
 			std::fstream file; json _json;
@@ -122,7 +122,7 @@
 
 
 		void get_settings() {
-			if (this->path_to_settings_file_folder == INTERPETATOR_PATH_PLUG_WSTR) this->path_to_settings_file_folder = this->path_to_folder + L"/" + VISUALIS_SETTINGS_JSON;
+			if (this->path_to_settings_file_folder == INTERPETATOR_PATH_PLUG_WSTR) this->path_to_settings_file_folder = this->path_to_folder;
 			if (this->path_to_settings_file_folder == INTERPETATOR_PATH_PLUG_WSTR) return;
 			
 			std::fstream file;
