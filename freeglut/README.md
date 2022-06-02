@@ -136,6 +136,10 @@ vis >
 Следующие операции меняют ориентацию объекта в пространстве, поворачивая его вместе с локальными осями:  
 + Повернуть вокруг оси X : `I`/`K`  
 + Повернуть вокруг оси Y : `J`/`L`  
+
+Приблизить или отдалить:
++ Приблизить: `L_CTRL` или `L_SHIFT`
++ Отдалить: `SPACEBAR`
   
 ### Клавиши мыши
   
@@ -152,5 +156,5 @@ vis >
 - [issues/Оптимизация](https://github.com/ilyata76/visualis/issues/12)
 
 ## Examples
-![colorful_vertex](https://github.com/ilyata76/visualis/blob/master/freeglut/guide/colorful_vertex.png)
-![colorful_vertex](https://github.com/ilyata76/visualis/blob/master/freeglut/guide/Curie_Ni_colorful.png)
+![colorful_vertex](https://github.com/ilyata76/visualis/blob/master/freeglut/pics/colorful_vertex.png)
+![curie_ni](https://github.com/ilyata76/visualis/blob/master/freeglut/pics/Curie_Ni_colorful.png)
