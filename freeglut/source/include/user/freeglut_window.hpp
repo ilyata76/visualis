@@ -9,12 +9,15 @@
 	#include "../sample/color_class.hpp"
 	#include "../../libraries/json/single_include/nlohmann/json.hpp"
 	#include "../sample/vec.hpp"
-	#include "./console_application.hpp"
 	#include "../sample/creator_of_vertex_arr.hpp"
 
 	namespace vvis {
 
 		namespace visualization {
+
+			inline bool file_exist(const std::wstring& s);
+
+			nlohmann::json get_settings_json(const std::wstring& _path_to_file);
 
 			struct Freeglut_settings {
 				public:
@@ -37,12 +40,12 @@
 
 					friend std::wostream& operator<<(std::wostream& _out, const Freeglut_settings& _settings);
 					
-					bool save_settings(const nlohmann::json& _json);
-					bool get_settings(const nlohmann::json& _json);
+					bool save_settings();
+					bool get_settings_by_json(const nlohmann::json& _json);
+					bool get_settings();
 
 			};
 
-			bool get_settings_json(const std::wstring& _path_to_file);
 
 		}
 

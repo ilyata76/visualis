@@ -4,7 +4,7 @@ Interpretator::Interpretator() {
 	this->prompt = ex_prompt;
 }
 
-Interpretator::Interpretator(const std::wstring& _PROMPT, const Settings& settings) {
+Interpretator::Interpretator(const std::wstring& _PROMPT, const vvis::console::Console_app_settings& settings) {
 	this->prompt = _PROMPT;
 	this->settings = settings;
 }
