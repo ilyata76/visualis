@@ -49,6 +49,8 @@ set (HEADERS_VISUALIS
 	source/include/user/settings.hpp
 	source/include/user/freeglut_window.hpp
 
+	source/include/sample/vec.hpp
+
 )
 
 set (SOURCES_VISUALIS
@@ -64,7 +66,7 @@ set (SOURCES_VISUALIS
 	source/console_application.cpp
 	source/settings.cpp
 	source/freeglut_window.cpp
-
+	source/vec.cpp
 
 )
 

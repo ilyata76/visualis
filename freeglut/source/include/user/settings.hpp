@@ -11,23 +11,23 @@
 
 	namespace vvis {
 
-		class settings {
-
-			private:
-				console::console_app_settings	console_settings;
-				visualization::window_settings	window_settings;
+		struct Settings {
 			public:
-				settings();
-				settings(console::console_app_settings console_settings);
-				settings(visualization::window_settings window_settings);
-				settings(console::console_app_settings console_settings, 
-						visualization::window_settings window_settings);
+				
+				console::Console_app_settings		console_settings;
+				visualization::Freeglut_settings	window_settings;
+
+				Settings();
+				Settings(const console::Console_app_settings& _console_settings);
+				Settings(const visualization::Freeglut_settings& _window_settings);
+				Settings(const console::Console_app_settings& _console_settings, 
+						const visualization::Freeglut_settings& _window_settings);
 				
 
-				console::console_app_settings	get_console_settings();
-				visualization::window_settings	get_window_settings();
+				console::Console_app_settings		get_console_settings();
+				visualization::Freeglut_settings	get_window_settings();
 
-
+				
 
 		};
 
