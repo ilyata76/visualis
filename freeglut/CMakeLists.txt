@@ -44,6 +44,11 @@ set (HEADERS_VISUALIS
 	source/include/sample/color_class.hpp
 	source/include/sample/drawing_shape_opengl.hpp
 	source/include/main_inter.hpp
+
+	source/include/user/console_application.hpp
+	source/include/user/settings.hpp
+	source/include/user/freeglut_window.hpp
+
 )
 
 set (SOURCES_VISUALIS
@@ -55,6 +60,12 @@ set (SOURCES_VISUALIS
 	source/color_class.cpp
 	source/drawing_shape_opengl.cpp
 	source/main_inter.cpp
+
+	source/console_application.cpp
+	source/settings.cpp
+	source/freeglut_window.cpp
+
+
 )
 
 # ----------- | SUBDIRECTORIES | ----------- 
