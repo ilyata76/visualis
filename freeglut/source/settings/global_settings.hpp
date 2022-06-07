@@ -8,7 +8,7 @@
 	#include <ostream>
 	#include "../helpful/global_defines.hpp"
 
-	struct Console_app_settings {
+	struct Global_settings {
 		
 		public:
 			
@@ -24,7 +24,7 @@
 			
 			//VvisColor_3f background = { 1, 1, 1 };
 
-			friend std::wostream& operator<<(std::wostream& _out, const Console_app_settings& _settings) {
+			friend std::wostream& operator<<(std::wostream& _out, const Global_settings& _settings) {
 				_out << L"\t Path to folder with files\t\t (c): " << _settings.path_to_folder << L"\n";
 				_out << L"\t Path to sconfiguration file\t\t (c): " << _settings.path_to_sconfiguration_file << L"\n";
 				_out << L"\t Path settings file\t\t\t (u): " << _settings.path_to_settings_file << L"\n";

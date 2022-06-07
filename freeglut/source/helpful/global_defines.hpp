@@ -24,4 +24,8 @@
 #define VVIS_DRAW_ALL -1
 #define VVIS_USING_COLOR false
 
+/// 
+
+#define COUNTERCLOCKWISE 1 // use 0 for not
+
 #endif

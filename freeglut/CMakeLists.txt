@@ -38,6 +38,7 @@ set (HEADERS_VISUALIS
 	source/helpful/global_defines.hpp
 	source/helpful/useful_functions.hpp
 
+	source/color/RGB.hpp
 
 	source/settings/global_settings.hpp
 	source/settings/freeglut_settings.hpp
