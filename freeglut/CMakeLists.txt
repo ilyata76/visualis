@@ -52,7 +52,18 @@ set (HEADERS_VISUALIS
 )
 
 set (SOURCES_VISUALIS
+
+source/helpful/useful_classes.cpp
+source/helpful/useful_functions.cpp
+source/color/RGB.cpp
+
+source/settings/global_settings.cpp
+source/settings/freeglut_settings.cpp
+source/settings/settings.cpp
+
 	source/console/console_interpretator.cpp
+
+	
 )
 
 # ----------- | SUBDIRECTORIES | ----------- 

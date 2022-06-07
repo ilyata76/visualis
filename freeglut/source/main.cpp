@@ -1,7 +1,8 @@
 ﻿
-#include "./color/RGB.hpp"
 #include "./settings/settings.hpp"
 #include <iostream>
+
+#include "./libraries/freeglut/include/GL/freeglut.h"
 
 int main(int argc, char** argv) {
 	Global_settings a;
@@ -12,5 +13,6 @@ int main(int argc, char** argv) {
 	AA.print_only_freeglut(std::wcout);
 	AA.print_only_global(std::wcout);
 	system("pause");
+	 
 	return 0;
 }
