@@ -45,10 +45,10 @@ set (HEADERS_VISUALIS
 	source/include/sample/drawing_shape_opengl.hpp
 	source/include/main_inter.hpp
 
-	source/include/user/console_application.hpp
+	source/include/user/console_application_settings.hpp
 	source/include/user/settings.hpp
-	source/include/user/freeglut_window.hpp
-
+	source/include/user/freeglut_window_settings.hpp
+	source/include/user/console_interpreter.hpp
 	source/include/sample/vec.hpp
 
 )
@@ -63,10 +63,11 @@ set (SOURCES_VISUALIS
 	source/drawing_shape_opengl.cpp
 	source/main_inter.cpp
 
-	source/console_application.cpp
+	source/console_application_settings.cpp
 	source/settings.cpp
-	source/freeglut_window.cpp
+	source/freeglut_window_settings.cpp
 	source/vec.cpp
+	source/console_interpreter.cpp
 
 )
 

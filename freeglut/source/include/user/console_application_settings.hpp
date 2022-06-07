@@ -1,8 +1,8 @@
 ﻿#pragma once
 
 
-#ifndef CONSOLE_APPLICATION_HPP
-#define CONSOLE_APPLICATION_HPP
+#ifndef CONSOLE_APPLICATION_SETTINGS_HPP
+#define CONSOLE_APPLICATION_SETTINGS_HPP
 
 	#include <ostream>
 	#include <fstream>
@@ -11,9 +11,9 @@
 
 	namespace vvis {
 
-		namespace console {
+		extern inline bool file_exist(const std::wstring& s);
 
-			inline bool file_exist(const std::wstring& s);
+		namespace console {
 
 			nlohmann::json get_settings_json(const std::wstring& _path_to_file);
 
@@ -34,14 +34,6 @@
 					
 					friend std::wostream& operator<<(std::wostream& _out, const Console_app_settings& _settings); 
 
-					// должен существовать путь path_to_settings_file или path_to_folder, или path_to_settings_file_folder
-					bool save_settings();
-
-					// должен существовать json файл
-					bool get_settings_by_json(const nlohmann::json& _json);
-				
-					// должен существовать путь path_to_settings_file или path_to_folder, или path_to_settings_file_folder
-					bool get_settings();
 
 			};
 

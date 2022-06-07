@@ -1,8 +1,8 @@
 ﻿#pragma once
 
 
-#ifndef FREEGLUT_WINDOW_HPP
-#define FREEGLUT_WINDOW_HPP
+#ifndef FREEGLUT_WINDOW_SETTINGS_HPP
+#define FREEGLUT_WINDOW_SETTINGS_HPP
 
 	#include <ostream>
 	#include "../defines.hpp"
@@ -14,10 +14,6 @@
 	namespace vvis {
 
 		namespace visualization {
-
-			inline bool file_exist(const std::wstring& s);
-
-			nlohmann::json get_settings_json(const std::wstring& _path_to_file);
 
 			struct Freeglut_settings {
 				public:
@@ -38,11 +34,11 @@
 					double estrangement_changes					= ESTRAGNEMENT_CHANGES;
 
 
-					friend std::wostream& operator<<(std::wostream& _out, const Freeglut_settings& _settings);
+					//friend std::wostream& operator<<(std::wostream& _out, const Freeglut_settings& _settings);
 					
-					bool save_settings();
-					bool get_settings_by_json(const nlohmann::json& _json);
-					bool get_settings();
+					//bool save_settings(); это невозможно
+					//bool get_settings_by_json(const nlohmann::json& _json);
+					//bool get_settings();
 
 			};
 

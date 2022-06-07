@@ -4,17 +4,10 @@ Interpretator::Interpretator() {
 	this->prompt = ex_prompt;
 }
 
-Interpretator::Interpretator(const std::wstring& _PROMPT, const vvis::console::Console_app_settings& settings) {
+Interpretator::Interpretator(const std::wstring& _PROMPT, const vvis::app::Settings& settings) {
 	this->prompt = _PROMPT;
 	this->settings = settings;
 }
-
-// TODO: only windows
-//inline bool file_exist(const std::wstring& s) {
-//	struct _stat buf;
-//	return (_wstat(s.c_str(), &buf) != -1);
-//}
-
 
 void print_visualis_logo() {
 
@@ -59,7 +52,7 @@ int Interpretator::switch_code_of_operation(std::map<std::wstring, int> mapp, st
 
 void Interpretator::set_number_from_file_name(const std::wstring& _path) {
 	size_t a = _path.find(START_OF_OUR_FILE);
-	this->settings.number_of_file = std::stoi(_path.substr(a + 15, 8));
+	this->settings.global_settings.number_of_file = std::stoi(_path.substr(a + 15, 8));
 }
 
 std::wstring by_synonyms(const std::wstring& _value) {
@@ -111,26 +104,26 @@ void Interpretator::loop(int argc, char** argv) {
 					case SUBCOMMAND_SAVE_SETTINGS: {
 						line = L""; if (ss.eof()) ss.str(L""); else ss >> line;
 						
-						if (this->settings.path_to_folder == INTERPETATOR_PATH_PLUG_WSTR && this->settings.path_to_settings_file_folder == INTERPETATOR_PATH_PLUG_WSTR) {
+						if (this->settings.global_settings.path_to_folder == INTERPETATOR_PATH_PLUG_WSTR && this->settings.global_settings.path_to_settings_file_folder == INTERPETATOR_PATH_PLUG_WSTR) {
 							std::wcout << "\n\t ERROR: first initialize one of the paths (to settings or to folder)\n" << std::endl;
 							break;
 						}
 
 						this->settings.save_settings();
 						
-						if (this->settings.path_to_settings_file_folder != INTERPETATOR_PATH_PLUG_WSTR) std::wcout << "\n\tSuccsesful\n" << std::endl;
+						if (this->settings.global_settings.path_to_settings_file_folder != INTERPETATOR_PATH_PLUG_WSTR) std::wcout << "\n\tSuccsesful\n" << std::endl;
 						else std::wcout << "\n\tUnsuccsesful\n" << std::endl;
 					} break;
 					
 					case SUBCOMMAND_GET_SETTINGS: {
 						line = L""; if (ss.eof()) ss.str(L""); else ss >> line;
 						
-						bool Bol = file_exist(this->settings.path_to_settings_file_folder + L"/" + VISUALIS_SETTINGS_JSON);
+						bool Bol = file_exist(this->settings.global_settings.path_to_settings_file_folder + L"/" + VISUALIS_SETTINGS_JSON);
 						if (!Bol) { std::wcout << "\n\t ERROR: file doesnt exist\n" << std::endl; break; }
 						
 						this->settings.get_settings();
 						
-						if(this->settings.path_to_settings_file_folder != INTERPETATOR_PATH_PLUG_WSTR) std::wcout << "\n\tSuccsesful\n" << std::endl;
+						if(this->settings.global_settings.path_to_settings_file_folder != INTERPETATOR_PATH_PLUG_WSTR) std::wcout << "\n\tSuccsesful\n" << std::endl;
 						else std::wcout << "\n\tUnsuccsesful (settingspath has not been set up)\n" << std::endl;
 					} break;
 
@@ -169,12 +162,12 @@ void Interpretator::loop(int argc, char** argv) {
 					case SUBCOMMAND_SET_FOLDERPATH : {
 						line = L""; if (ss.eof()) ss.str(L""); else ss >> line;
 
-						this->settings.path_to_folder = (line == L"")? INTERPETATOR_PATH_PLUG_WSTR : line;
+						this->settings.global_settings.path_to_folder = (line == L"")? INTERPETATOR_PATH_PLUG_WSTR : line;
 						
-						remove_quotation(this->settings.path_to_folder);
+						remove_quotation(this->settings.global_settings.path_to_folder);
 
-						std::wcout << L"\n\tPath to folder : " << this->settings.path_to_folder << L" : has been set up\n";
-						if (this->settings.path_to_folder == INTERPETATOR_PATH_PLUG_WSTR) std::wcout << L"\tERROR: path was not entered\n";
+						std::wcout << L"\n\tPath to folder : " << this->settings.global_settings.path_to_folder << L" : has been set up\n";
+						if (this->settings.global_settings.path_to_folder == INTERPETATOR_PATH_PLUG_WSTR) std::wcout << L"\tERROR: path was not entered\n";
 						std::wcout<< std::endl;
 
 
@@ -183,10 +176,10 @@ void Interpretator::loop(int argc, char** argv) {
 					case SUBCOMMAND_SET_FILENUMBER: {
 						line = L""; if (ss.eof()) ss.str(L""); else ss >> line;
 
-						this->settings.number_of_file = (!is_number(line))? INTERPETATOR_NUMBER_PLUG_INT : std::stoi(line);
+						this->settings.global_settings.number_of_file = (!is_number(line))? INTERPETATOR_NUMBER_PLUG_INT : std::stoi(line);
 
-						std::wcout << L"\n\tNumber of file : " << this->settings.number_of_file << L" : has been set up\n";
-						if (this->settings.number_of_file == INTERPETATOR_NUMBER_PLUG_INT) std::wcout << L"\tERROR: not number\n";
+						std::wcout << L"\n\tNumber of file : " << this->settings.global_settings.number_of_file << L" : has been set up\n";
+						if (this->settings.global_settings.number_of_file == INTERPETATOR_NUMBER_PLUG_INT) std::wcout << L"\tERROR: not number\n";
 						std::wcout<< std::endl;
 
 
@@ -195,20 +188,20 @@ void Interpretator::loop(int argc, char** argv) {
 					case SUBCOMMAND_SET_FILEPATH: {
 						line = L""; if (ss.eof()) ss.str(L""); else ss >> line;
 						
-						this->settings.path_to_sconfiguration_file = (line.size() <= 10 || 
+						this->settings.global_settings.path_to_sconfiguration_file = (line.size() <= 10 ||
 							(line.find(FORMAT_OF_OUR_FILE) == std::wstring::npos || line.find(START_OF_OUR_FILE) == std::wstring::npos)) ?
 								 INTERPETATOR_PATH_PLUG_WSTR : line;
 						
-						remove_quotation(this->settings.path_to_sconfiguration_file);
+						remove_quotation(this->settings.global_settings.path_to_sconfiguration_file);
 
-						if (settings.path_to_sconfiguration_file != INTERPETATOR_PATH_PLUG_WSTR) {
-							std::wstring file = vvis::creator::get_file_name(this->settings.number_of_file) + FORMAT_OF_OUR_FILE;
-							std::wstring path = this->settings.path_to_sconfiguration_file;
-							path.erase(path.end() - file.size(), path.end()); this->settings.path_to_folder = path;
+						if (settings.global_settings.path_to_sconfiguration_file != INTERPETATOR_PATH_PLUG_WSTR) {
+							std::wstring file = vvis::creator::get_file_name(this->settings.global_settings.number_of_file) + FORMAT_OF_OUR_FILE;
+							std::wstring path = this->settings.global_settings.path_to_sconfiguration_file;
+							path.erase(path.end() - file.size(), path.end()); this->settings.global_settings.path_to_folder = path;
 						}
 
-						std::wcout << L"\n\tPath to sconfiguration file : " << this->settings.path_to_sconfiguration_file << L" : has been set up\n";
-						if (this->settings.path_to_sconfiguration_file == INTERPETATOR_PATH_PLUG_WSTR) std::wcout << L"\tERROR: path was not entered or incorrectly\n";
+						std::wcout << L"\n\tPath to sconfiguration file : " << this->settings.global_settings.path_to_sconfiguration_file << L" : has been set up\n";
+						if (this->settings.global_settings.path_to_sconfiguration_file == INTERPETATOR_PATH_PLUG_WSTR) std::wcout << L"\tERROR: path was not entered or incorrectly\n";
 						std::wcout << std::endl;
 
 
@@ -217,10 +210,10 @@ void Interpretator::loop(int argc, char** argv) {
 					case SUBCOMMAND_SET_COLORING: {
 						line = L""; if (ss.eof()) ss.str(L""); else ss >> line;
 
-						if (L"yes" == by_synonyms(line)) this->settings.using_color = true;
-						else if (L"no" == by_synonyms(line)) this->settings.using_color = false;
+						if (L"yes" == by_synonyms(line)) this->settings.global_settings.using_color = true;
+						else if (L"no" == by_synonyms(line)) this->settings.global_settings.using_color = false;
 
-						std::wcout << L"\n\tColoring mode : " << std::boolalpha << this->settings.using_color << L" : has been set up\n";
+						std::wcout << L"\n\tColoring mode : " << std::boolalpha << this->settings.global_settings.using_color << L" : has been set up\n";
 						std::wcout << std::endl;
 					} break;
 
@@ -228,25 +221,25 @@ void Interpretator::loop(int argc, char** argv) {
 					case SUBCOMMAND_SET_BACKGROUNDCOLOR: {
 						for (int j = 0; j < 3; ++j) {
 							line = L""; if (ss.eof()) { ss.str(L""); break; } else ss >> line;
-							if (j == 0) this->settings.background.red = (!is_number(line) || std::stoi(line) >= 255) ? 1 : std::stoi(line)/255.;
-							if (j == 1) this->settings.background.green = (!is_number(line) || std::stoi(line) >= 255) ? 1 : std::stoi(line)/255.;
-							if (j == 2) this->settings.background.blue = (!is_number(line) || std::stoi(line) >= 255) ? 1 : std::stoi(line)/255.;
+							if (j == 0) this->settings.global_settings.background.red = (!is_number(line) || std::stoi(line) >= 255) ? 1 : std::stoi(line)/255.;
+							if (j == 1) this->settings.global_settings.background.green = (!is_number(line) || std::stoi(line) >= 255) ? 1 : std::stoi(line)/255.;
+							if (j == 2) this->settings.global_settings.background.blue = (!is_number(line) || std::stoi(line) >= 255) ? 1 : std::stoi(line)/255.;
 						}
 
-						std::wcout << L"\n\tColoring background : " << this->settings.background.red << L"*255 " << this->settings.background.green << L"*255 "
-							<< this->settings.background.blue << L"*255 : has been set up\n";
+						std::wcout << L"\n\tColoring background : " << this->settings.global_settings.background.red << L"*255 " << this->settings.global_settings.background.green << L"*255 "
+							<< this->settings.global_settings.background.blue << L"*255 : has been set up\n";
 						std::wcout << std::endl;
 					} break;
 
 					case SUBCOMMAND_SET_SETTINGS_PATH: {
 						line = L""; if (ss.eof()) ss.str(L""); else ss >> line;
 
-						this->settings.path_to_settings_file_folder = (line == L"") ? INTERPETATOR_PATH_PLUG_WSTR : line;
+						this->settings.global_settings.path_to_settings_file_folder = (line == L"") ? INTERPETATOR_PATH_PLUG_WSTR : line;
 
-						remove_quotation(this->settings.path_to_settings_file_folder);
+						remove_quotation(this->settings.global_settings.path_to_settings_file_folder);
 
-						std::wcout << L"\n\tPath to settings file folder : " << this->settings.path_to_settings_file_folder << L" : has been set up\n";
-						if (this->settings.path_to_settings_file_folder == INTERPETATOR_PATH_PLUG_WSTR) std::wcout << L"\tERROR: path was not entered or incorrectly\n";
+						std::wcout << L"\n\tPath to settings file folder : " << this->settings.global_settings.path_to_settings_file_folder << L" : has been set up\n";
+						if (this->settings.global_settings.path_to_settings_file_folder == INTERPETATOR_PATH_PLUG_WSTR) std::wcout << L"\tERROR: path was not entered or incorrectly\n";
 						std::wcout << std::endl;
 
 					} break;
@@ -273,45 +266,45 @@ void Interpretator::loop(int argc, char** argv) {
 				switch (switch_code_of_operation(this->subSet_command, line)) {
 
 					case SUBCOMMAND_SET_FOLDERPATH: {
-						this->settings.path_to_folder = INTERPETATOR_PATH_PLUG_WSTR;
+						this->settings.global_settings.path_to_folder = INTERPETATOR_PATH_PLUG_WSTR;
 
-						std::wcout << L"\n\tPath to folder : " << this->settings.path_to_folder << L" : has been set up\n";
+						std::wcout << L"\n\tPath to folder : " << this->settings.global_settings.path_to_folder << L" : has been set up\n";
 						std::wcout << std::endl;
 					} break;
 
 					case SUBCOMMAND_SET_FILEPATH: {
-						this->settings.path_to_sconfiguration_file = INTERPETATOR_PATH_PLUG_WSTR;
+						this->settings.global_settings.path_to_sconfiguration_file = INTERPETATOR_PATH_PLUG_WSTR;
 
-						std::wcout << L"\n\tPath to sconfiguration file : " << this->settings.path_to_sconfiguration_file << L" : has been set up\n";
+						std::wcout << L"\n\tPath to sconfiguration file : " << this->settings.global_settings.path_to_sconfiguration_file << L" : has been set up\n";
 						std::wcout << std::endl;
 					} break;
 
 					case SUBCOMMAND_SET_FILENUMBER: {
-						this->settings.number_of_file = INTERPETATOR_NUMBER_PLUG_INT;
+						this->settings.global_settings.number_of_file = INTERPETATOR_NUMBER_PLUG_INT;
 
-						std::wcout << L"\n\tNumber of file : " << this->settings.number_of_file << L" : has been set up\n";
+						std::wcout << L"\n\tNumber of file : " << this->settings.global_settings.number_of_file << L" : has been set up\n";
 						std::wcout << std::endl;
 					} break;
 
 					case SUBCOMMAND_SET_COLORING: {
-						this->settings.using_color = false;
+						this->settings.global_settings.using_color = false;
 
-						std::wcout << L"\n\tColoring mode : " << std::boolalpha << this->settings.using_color << L" : has been set up\n";
+						std::wcout << L"\n\tColoring mode : " << std::boolalpha << this->settings.global_settings.using_color << L" : has been set up\n";
 						std::wcout << std::endl;
 					} break;
 
 					case SUBCOMMAND_SET_BACKGROUNDCOLOR: {
-						this->settings.background = vvis::visualization::VvisColor_3f(1, 1, 1);
+						this->settings.global_settings.background = vvis::visualization::VvisColor_3f(1, 1, 1);
 
-						std::wcout << L"\n\tColoring background : " << this->settings.background.red << L"*255 " << this->settings.background.green << L"*255 "
-							<< this->settings.background.blue << L"*255 : has been set up\n";
+						std::wcout << L"\n\tColoring background : " << this->settings.global_settings.background.red << L"*255 " << this->settings.global_settings.background.green << L"*255 "
+							<< this->settings.global_settings.background.blue << L"*255 : has been set up\n";
 						std::wcout << std::endl;
 					} break;
 
 					case SUBCOMMAND_SET_SETTINGS_PATH: {
-						this->settings.path_to_settings_file_folder = INTERPETATOR_PATH_PLUG_WSTR;
+						this->settings.global_settings.path_to_settings_file_folder = INTERPETATOR_PATH_PLUG_WSTR;
 
-						std::wcout << L"\n\tPath to settings file : " << this->settings.path_to_settings_file_folder << L" : has been set up\n";
+						std::wcout << L"\n\tPath to settings file : " << this->settings.global_settings.path_to_settings_file_folder << L" : has been set up\n";
 						std::wcout << std::endl;
 					} break;
 
@@ -339,29 +332,29 @@ void Interpretator::loop(int argc, char** argv) {
 						//TODO: кроссплатформенность?
 						bool Bol = false;
 						std::wcout << L"\n";
-						std::wcout << L"\tPath to folder : " << this->settings.path_to_folder << L"\n";
-						std::wcout << L"\tFile number : " << this->settings.number_of_file << L"\n";
+						std::wcout << L"\tPath to folder : " << this->settings.global_settings.path_to_folder << L"\n";
+						std::wcout << L"\tFile number : " << this->settings.global_settings.number_of_file << L"\n";
 
-						Bol = file_exist(this->settings.path_to_folder + L"/" + NAME_OF_ATOMS_FILE_V5 + FORMAT_OF_ATOMS_FILE_V5);
+						Bol = file_exist(this->settings.global_settings.path_to_folder + L"/" + NAME_OF_ATOMS_FILE_V5 + FORMAT_OF_ATOMS_FILE_V5);
 						std::wcout << L"\tFile " << NAME_OF_ATOMS_FILE_V5 << FORMAT_OF_ATOMS_FILE_V5 << " exists : "
 
 							<< std::boolalpha << Bol << "\n";
 						
-						Bol = file_exist(this->settings.path_to_folder + L"/" + vampire5::parser::get_spin_file_name(this->settings.number_of_file) + FORMAT_OF_SPINS_FILE_V5);
-						std::wcout << L"\tFile " << vampire5::parser::get_spin_file_name(this->settings.number_of_file) << FORMAT_OF_SPINS_FILE_V5 << " exists : "
+						Bol = file_exist(this->settings.global_settings.path_to_folder + L"/" + vampire5::parser::get_spin_file_name(this->settings.global_settings.number_of_file) + FORMAT_OF_SPINS_FILE_V5);
+						std::wcout << L"\tFile " << vampire5::parser::get_spin_file_name(this->settings.global_settings.number_of_file) << FORMAT_OF_SPINS_FILE_V5 << " exists : "
 
 							<< std::boolalpha << Bol << L"\n";
 
 						if (!Bol) { std::wcout << std::endl; break; }
 
 						std::wcout << L"\tParsing... : ";
-							std::wstring fstr = vampire5::parser::get_string(this->settings.path_to_folder)(this->settings.number_of_file);
+							std::wstring fstr = vampire5::parser::get_string(this->settings.global_settings.path_to_folder)(this->settings.global_settings.number_of_file);
 						std::wcout << (fstr.size() != 0 ? L"Succsesfully\n" : L"Unsuccessfully\n");
 
 						if (fstr.size() == 0) { std::wcout << std::endl; break; }
 
 						std::wcout << L"\tConverting... : ";
-						std::wcout << (vampire5::converter::convert(fstr, this->settings.path_to_folder) ? L"Succsesfully\n" : L"Unsuccessfully\n");
+						std::wcout << (vampire5::converter::convert(fstr, this->settings.global_settings.path_to_folder) ? L"Succsesfully\n" : L"Unsuccessfully\n");
 
 						std::wcout << std::endl;
 					} break;
@@ -392,13 +385,13 @@ void Interpretator::loop(int argc, char** argv) {
 						bool Bol = false;
 
 						std::wcout << L"\n";
-						std::wcout << L"\tPath to file : " << this->settings.path_to_sconfiguration_file << L"\n";
+						std::wcout << L"\tPath to file : " << this->settings.global_settings.path_to_sconfiguration_file << L"\n";
 
-						Bol = file_exist(this->settings.path_to_sconfiguration_file);
+						Bol = file_exist(this->settings.global_settings.path_to_sconfiguration_file);
 
-						this->set_number_from_file_name(this->settings.path_to_sconfiguration_file);
+						this->set_number_from_file_name(this->settings.global_settings.path_to_sconfiguration_file);
 
-						std::wstring file = vvis::creator::get_file_name(this->settings.number_of_file) + FORMAT_OF_OUR_FILE;
+						std::wstring file = vvis::creator::get_file_name(this->settings.global_settings.number_of_file) + FORMAT_OF_OUR_FILE;
 
 						std::wcout << L"\tFile " << file << L" exists : "
 							<< std::boolalpha << Bol << "\n";
@@ -410,10 +403,10 @@ void Interpretator::loop(int argc, char** argv) {
 						//path.erase(path.end() - file.size(), path.end()); this->settings.path_to_folder = path;
 
 						std::wcout << L"\tParsing... : ";
-							std::vector <vvis::creator::Vertex> vect = vvis::creator::create_arry(this->settings.path_to_folder)(this->settings.number_of_file);
+							std::vector <vvis::creator::Vertex> vect = vvis::creator::create_arry(this->settings.global_settings.path_to_folder)(this->settings.global_settings.number_of_file);
 						std::wcout << (vect.size() != 0 ? L"Succsesfully\n" : L"Unsuccessfully\n");
 						std::wcout << L"\tLoaded " << vect.size() << L" spins\n";
-							vvis::visualization::app_freeglut app(vect, this->settings.shape, this->settings.using_color, this->settings.background, this->settings.index_of_spin, this->settings.path_to_folder, this->settings.path_to_settings_file_folder + L"/" + VISUALIS_SETTINGS_JSON);
+							vvis::visualization::app_freeglut app(vect, this->settings.global_settings.shape, this->settings.global_settings.using_color, this->settings.global_settings.background, this->settings.global_settings.index_of_spin, this->settings.global_settings.path_to_folder, this->settings.global_settings.path_to_settings_file_folder + L"/" + VISUALIS_SETTINGS_JSON);
 
 						std::wcout << L"\tDrawing... \n";
 							vvis::visualization::draw_sample(app, argc, argv);
@@ -431,10 +424,10 @@ void Interpretator::loop(int argc, char** argv) {
 						bool Bol = false;
 
 						std::wcout << L"\n";
-						std::wcout << L"\tPath to folder : " << this->settings.path_to_folder << L"\n";
-						std::wstring file = vvis::creator::get_file_name(this->settings.number_of_file) + FORMAT_OF_OUR_FILE;
+						std::wcout << L"\tPath to folder : " << this->settings.global_settings.path_to_folder << L"\n";
+						std::wstring file = vvis::creator::get_file_name(this->settings.global_settings.number_of_file) + FORMAT_OF_OUR_FILE;
 
-						Bol = file_exist(this->settings.path_to_folder + L"/" + file);
+						Bol = file_exist(this->settings.global_settings.path_to_folder + L"/" + file);
 
 						std::wcout << L"\tFile " << file << L" exists : "
 							<< std::boolalpha << Bol << "\n";
@@ -442,10 +435,10 @@ void Interpretator::loop(int argc, char** argv) {
 						if (!Bol) { std::wcout << std::endl; break; }
 						
 						std::wcout << L"\tParsing... : ";
-							std::vector <vvis::creator::Vertex> vect = vvis::creator::create_arry(this->settings.path_to_folder)(this->settings.number_of_file);
+							std::vector <vvis::creator::Vertex> vect = vvis::creator::create_arry(this->settings.global_settings.path_to_folder)(this->settings.global_settings.number_of_file);
 						std::wcout << (vect.size() != 0 ? L"Succsesfully\n" : L"Unsuccessfully\n");
 						std::wcout << L"\tLoaded " << vect.size() << L" spins\n";
-							vvis::visualization::app_freeglut app(vect, this->settings.shape, this->settings.using_color, this->settings.background, this->settings.index_of_spin, this->settings.path_to_folder, this->settings.path_to_settings_file_folder + L"/" + VISUALIS_SETTINGS_JSON);
+							vvis::visualization::app_freeglut app(vect, this->settings.global_settings.shape, this->settings.global_settings.using_color, this->settings.global_settings.background, this->settings.global_settings.index_of_spin, this->settings.global_settings.path_to_folder, this->settings.global_settings.path_to_settings_file_folder + L"/" + VISUALIS_SETTINGS_JSON);
 
 						std::wcout << L"\tDrawing... \n";
 							vvis::visualization::draw_sample(app, argc, argv);
@@ -482,33 +475,33 @@ void Interpretator::loop(int argc, char** argv) {
 
 
 			case COMMAND_RESTART :{
-				this->settings.number_of_file = INTERPETATOR_NUMBER_PLUG_INT;
-				this->settings.path_to_folder = INTERPETATOR_PATH_PLUG_WSTR;
-				this->settings.path_to_sconfiguration_file = INTERPETATOR_PATH_PLUG_WSTR;
-				this->settings.using_color = false;
-				this->settings.shape = SHAPE_CONE;
-				this->settings.shape_str = SHAPE_CONE_STR;
-				this->settings.index_of_spin = DRAW_ALL;
-				this->settings.background = vvis::visualization::VvisColor_3f(1, 1, 1);
-				this->settings.path_to_settings_file_folder = INTERPETATOR_PATH_PLUG_WSTR;
+				this->settings.global_settings.number_of_file = INTERPETATOR_NUMBER_PLUG_INT;
+				this->settings.global_settings.path_to_folder = INTERPETATOR_PATH_PLUG_WSTR;
+				this->settings.global_settings.path_to_sconfiguration_file = INTERPETATOR_PATH_PLUG_WSTR;
+				this->settings.global_settings.using_color = false;
+				this->settings.global_settings.shape = SHAPE_CONE;
+				this->settings.global_settings.shape_str = SHAPE_CONE_STR;
+				this->settings.global_settings.index_of_spin = DRAW_ALL;
+				this->settings.global_settings.background = vvis::visualization::VvisColor_3f(1, 1, 1);
+				this->settings.global_settings.path_to_settings_file_folder = INTERPETATOR_PATH_PLUG_WSTR;
 				Assert(false, L"Restarting the program", L"The settings have been reset ");
 			} break;
 
 			case COMMAND_RESET: {
-				this->settings.number_of_file = INTERPETATOR_NUMBER_PLUG_INT;
-				this->settings.path_to_folder = INTERPETATOR_PATH_PLUG_WSTR;
-				this->settings.path_to_sconfiguration_file = INTERPETATOR_PATH_PLUG_WSTR;
-				this->settings.using_color = false;
-				this->settings.shape = SHAPE_CONE;
-				this->settings.shape_str = SHAPE_CONE_STR;
-				this->settings.index_of_spin = DRAW_ALL;
-				this->settings.background = vvis::visualization::VvisColor_3f(1, 1, 1);
-				this->settings.path_to_settings_file_folder = INTERPETATOR_PATH_PLUG_WSTR;
+				this->settings.global_settings.number_of_file = INTERPETATOR_NUMBER_PLUG_INT;
+				this->settings.global_settings.path_to_folder = INTERPETATOR_PATH_PLUG_WSTR;
+				this->settings.global_settings.path_to_sconfiguration_file = INTERPETATOR_PATH_PLUG_WSTR;
+				this->settings.global_settings.using_color = false;
+				this->settings.global_settings.shape = SHAPE_CONE;
+				this->settings.global_settings.shape_str = SHAPE_CONE_STR;
+				this->settings.global_settings.index_of_spin = DRAW_ALL;
+				this->settings.global_settings.background = vvis::visualization::VvisColor_3f(1, 1, 1);
+				this->settings.global_settings.path_to_settings_file_folder = INTERPETATOR_PATH_PLUG_WSTR;
 				std::wcout << "\n\tSuccessful!\n" << std::endl;
 			} break;
 			
 			case COMMAND_SHOW_SETTINGS: {
-				std::wcout << L"\n" << this->settings << L"\n" << std::endl;
+				std::wcout << L"\n" << this->settings.global_settings << L"\n" << std::endl;
 			} break;
 
 

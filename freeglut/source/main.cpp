@@ -10,7 +10,7 @@ int main(int argc, char** argv) {
 		
 		print_visualis_logo();
 		
-		Interpretator i(ex_prompt, vvis::console::Console_app_settings());
+		Interpretator i(ex_prompt, vvis::app::Settings());
 		i.loop(argc, argv);
 
 	}
