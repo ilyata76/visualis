@@ -5,6 +5,8 @@
 #define USEFUL_FUNCTIONS
 
 	#include <math.h>
+	#include <sys/stat.h>
+	#include <string>
 	#include "./global_defines.hpp"
 
 	float get_euler_phi(const double& sx, const double& sy, const double& sz) {
@@ -35,6 +37,11 @@
 
 
 		return (sign * 0.0f);
+	}
+
+	bool file_exist(std::wstring& _path) {
+		struct _stat buf;
+		return (_wstat(_path.c_str(), &buf) != -1);
 	}
 
 #endif // !USEFUL_FUNCTIONS

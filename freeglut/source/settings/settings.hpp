@@ -4,9 +4,121 @@
 #ifndef SETTINGS_HPP
 #define SETTINGS_HPP
 
+	#include "./freeglut_settings.hpp"
+	#include "./global_settings.hpp"
+
+	#include "../libraries/json/single_include/nlohmann/json.hpp"
+
+	#include "../helpful/useful_functions.hpp"
+
+	#include <fstream>
+
+	class Settings {
+
+		public:
+			Global_settings global_settings;
+			Freeglut_settings freeglut_settings;
+
+			Settings() {};
+			Settings(const Global_settings& _g_s, const Freeglut_settings& _f_s) : global_settings(_g_s), freeglut_settings(_f_s) {};
+
+			friend std::wostream& operator<<(std::wostream& _out, const Settings& _settings) {
+				_out << _settings.global_settings << _settings.freeglut_settings;
+				return _out;
+			};
+
+			std::wostream& print_only_global(std::wostream& _out) {
+				return operator<<(_out, this->global_settings);
+			}
+
+			std::wostream& print_only_freeglut(std::wostream& _out) {
+				return operator<<(_out, this->freeglut_settings);
+			}
+
+			// flag: g - only global, f - only freeglut, a - all
+			bool save(wchar_t flag) {
+				std::fstream file; nlohmann::json _json;
+	
+				if (this->global_settings.path_to_settings_file == VVIS_PATH_PLUG_WSTR) {
+					if (this->global_settings.path_to_settings_file_folder == VVIS_PATH_PLUG_WSTR) {
+						if (this->global_settings.path_to_folder == VVIS_PATH_PLUG_WSTR) {
+							return false;
+						}
+						this->global_settings.path_to_settings_file_folder = this->global_settings.path_to_folder;
+					}
+					this->global_settings.path_to_settings_file = this->global_settings.path_to_settings_file_folder + L"/" + VVIS_SETTINGS_FILE_NAME_WSTR;
+				}
+	
+				if (file_exist(this->global_settings.path_to_settings_file)) {
+					file.open(this->global_settings.path_to_settings_file, std::ios_base::in);
+					_json << file;
+					file.close();
+				}
+
+				file.open(this->global_settings.path_to_settings_file, std::ios_base::out | std::ios_base::trunc);
+	
+				if (flag == L'g' || flag == L'a') {
+					_json[VVIS_GLOBAL_SETTINGS]["path_to_folder"] = this->global_settings.path_to_folder;
+					_json[VVIS_GLOBAL_SETTINGS]["path_to_sconfiguration_file"] = this->global_settings.path_to_sconfiguration_file;
+					_json[VVIS_GLOBAL_SETTINGS]["number_of_file"] = this->global_settings.number_of_file;
+					_json[VVIS_GLOBAL_SETTINGS]["index_of_spin"] = this->global_settings.index_of_spin;
+				}
+				///
+				
+				if (flag == L'f' || flag == L'a') {
+					_json[VVIS_FREEGLUT_SETTINGS]["background"]["red"] = this->freeglut_settings.backgroundcolor.red;
+					_json[VVIS_FREEGLUT_SETTINGS]["background"]["green"] = this->freeglut_settings.backgroundcolor.green;
+					_json[VVIS_FREEGLUT_SETTINGS]["background"]["blue"] = this->freeglut_settings.backgroundcolor.blue;
+					_json[VVIS_FREEGLUT_SETTINGS]["coloring_sample"] = this->freeglut_settings.coloring_sample;
+					_json[VVIS_FREEGLUT_SETTINGS]["shape"] = this->freeglut_settings.shape;
+					_json[VVIS_FREEGLUT_SETTINGS]["shape_str"] = this->freeglut_settings.shape_wstr;
+					_json[VVIS_FREEGLUT_SETTINGS]["additional_rotation"]["phi"] = this->freeglut_settings.additional_rotation.phi;
+					_json[VVIS_FREEGLUT_SETTINGS]["additional_rotation"]["theta"] = this->freeglut_settings.additional_rotation.theta;
+					_json[VVIS_FREEGLUT_SETTINGS]["estrangement"] = this->freeglut_settings.estrangement;
+					_json[VVIS_FREEGLUT_SETTINGS]["global_translation"]["x"] = this->freeglut_settings.global_translation.x;
+					_json[VVIS_FREEGLUT_SETTINGS]["global_translation"]["y"] = this->freeglut_settings.global_translation.y;
+					_json[VVIS_FREEGLUT_SETTINGS]["global_translation"]["z"] = this->freeglut_settings.global_translation.z;
+					_json[VVIS_FREEGLUT_SETTINGS]["scaling_parameters"]["x"] = this->freeglut_settings.scaling_parameters.x;
+					_json[VVIS_FREEGLUT_SETTINGS]["scaling_parameters"]["y"] = this->freeglut_settings.scaling_parameters.y;
+					_json[VVIS_FREEGLUT_SETTINGS]["scaling_parameters"]["z"] = this->freeglut_settings.scaling_parameters.z;
+					_json[VVIS_FREEGLUT_SETTINGS]["scaling_translation"]["x"] = this->freeglut_settings.scaling_translation.x;
+					_json[VVIS_FREEGLUT_SETTINGS]["scaling_translation"]["y"] = this->freeglut_settings.scaling_translation.y;
+					_json[VVIS_FREEGLUT_SETTINGS]["scaling_translation"]["z"] = this->freeglut_settings.scaling_translation.z;
+					_json[VVIS_FREEGLUT_SETTINGS]["position_of_camera"]["x"] = this->freeglut_settings.position_of_camera.x;
+					_json[VVIS_FREEGLUT_SETTINGS]["position_of_camera"]["y"] = this->freeglut_settings.position_of_camera.y;
+					_json[VVIS_FREEGLUT_SETTINGS]["position_of_camera"]["z"] = this->freeglut_settings.position_of_camera.z;
+					_json[VVIS_FREEGLUT_SETTINGS]["position_of_element"]["x"] = this->freeglut_settings.position_of_element.x;
+					_json[VVIS_FREEGLUT_SETTINGS]["position_of_element"]["y"] = this->freeglut_settings.position_of_element.y;
+					_json[VVIS_FREEGLUT_SETTINGS]["position_of_element"]["z"] = this->freeglut_settings.position_of_element.z;
+					_json[VVIS_FREEGLUT_SETTINGS]["scaling_parameters_changes"]["x"] = this->freeglut_settings.scaling_parameters_changes.x;
+					_json[VVIS_FREEGLUT_SETTINGS]["scaling_parameters_changes"]["y"] = this->freeglut_settings.scaling_parameters_changes.y;
+					_json[VVIS_FREEGLUT_SETTINGS]["scaling_parameters_changes"]["z"] = this->freeglut_settings.scaling_parameters_changes.z;
+					_json[VVIS_FREEGLUT_SETTINGS]["translation_changes"]["x"] = this->freeglut_settings.translation_changes.x;
+					_json[VVIS_FREEGLUT_SETTINGS]["translation_changes"]["y"] = this->freeglut_settings.translation_changes.y;
+					_json[VVIS_FREEGLUT_SETTINGS]["translation_changes"]["z"] = this->freeglut_settings.translation_changes.z;
+					_json[VVIS_FREEGLUT_SETTINGS]["camera_changes"]["x"] = this->freeglut_settings.camera_changes.x;
+					_json[VVIS_FREEGLUT_SETTINGS]["camera_changes"]["y"] = this->freeglut_settings.camera_changes.y;
+					_json[VVIS_FREEGLUT_SETTINGS]["camera_changes"]["z"] = this->freeglut_settings.camera_changes.z;
+					_json[VVIS_FREEGLUT_SETTINGS]["translation_by_element"] = this->freeglut_settings.translation_by_element;
+					_json[VVIS_FREEGLUT_SETTINGS]["fullscreen"] = this->freeglut_settings.fullscreen;
+					_json[VVIS_FREEGLUT_SETTINGS]["main_window"]["height"] = this->freeglut_settings.main_window.height;
+					_json[VVIS_FREEGLUT_SETTINGS]["main_window"]["width"] = this->freeglut_settings.main_window.width;
+					_json[VVIS_FREEGLUT_SETTINGS]["estrangement_changes"] = this->freeglut_settings.estrangement_changes;
+				}
+
+				file << _json.dump(4);
+				file.close();
+	
+				return true;
+			}
+
+
+			bool get();
 
 
 
+
+	};
 
 
 #endif // !SETTINGS_HPP
