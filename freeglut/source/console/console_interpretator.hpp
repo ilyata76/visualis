@@ -1,0 +1,16 @@
+#pragma once
+
+
+#ifndef CONSOLE_INTERPRETATOR_HPP
+#define CONSOLE_INTERPRETATOR_HPP
+
+
+
+
+
+
+
+
+
+
+#endif // !CONSOLE_INTERPRETATOR_HPP

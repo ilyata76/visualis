@@ -1,0 +1,9 @@
+#pragma once
+
+
+#ifndef FREEGLUT_SETTINGS_HPP
+#define FREEGLUT_SETTINGS_HPP
+
+
+
+#endif // !FREEGLUT_SETTINGS_HPP
