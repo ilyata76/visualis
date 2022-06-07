@@ -18,7 +18,7 @@ VvisColor_3f vvis::visualization::get_color_by_direction(const double& x, const 
 	double h = ( hue / 60 );
 	double intermediate_X = ( chroma * (1 - fabs(fmod(h, 2.0) - 1)) );
 	
-	double R1 = 0, G1 = 0, B1 = 0;
+	double R1 = 0, G1 = 0, B1 = 0;;
 
 	if		(h >= 0 && h < 1)	{ R1 = chroma; G1 = intermediate_X; B1 = 0; }
 	else if (h >= 1 && h < 2)	{ R1 = intermediate_X; G1 = chroma; B1 = 0; }
