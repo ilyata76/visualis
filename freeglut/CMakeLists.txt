@@ -35,39 +35,10 @@ set (ENTRYPOINT_VISUALIS
 ) 
 
 set (HEADERS_VISUALIS
-	source/include/defines.hpp
-	source/include/parser-converter/parser-v5.hpp
-	source/include/parser-converter/converter-v5.hpp
-	source/include/sample/creator_of_vertex_arr.hpp
-	source/include/sample/point-spin.hpp
-	source/include/sample/shape.hpp
-	source/include/sample/color_class.hpp
-	source/include/sample/drawing_shape_opengl.hpp
-	source/include/main_inter.hpp
-
-	source/include/user/console_application_settings.hpp
-	source/include/user/settings.hpp
-	source/include/user/freeglut_window_settings.hpp
-	source/include/user/console_interpreter.hpp
-	source/include/sample/vec.hpp
 
 )
 
 set (SOURCES_VISUALIS
-	source/parser-v5.cpp
-	source/converter-v5.cpp
-	source/point-spin.cpp
-	source/creator_of_vertex_arr.cpp
-	source/shape.cpp
-	source/color_class.cpp
-	source/drawing_shape_opengl.cpp
-	source/main_inter.cpp
-
-	source/console_application_settings.cpp
-	source/settings.cpp
-	source/freeglut_window_settings.cpp
-	source/vec.cpp
-	source/console_interpreter.cpp
 
 )
 
