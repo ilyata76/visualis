@@ -8,7 +8,7 @@
 /// INTERPRETATOR
 
 #define VVIS_PATH_PLUG_WSTR L"<nothing>"
-#define VVIS_INT_PLUG_WSTR -1
+#define VVIS_INT_PLUG_WSTR	-1
 
 /// FILE NAMES
 
@@ -16,16 +16,35 @@
 
 /// DRAWER SHAPES
 
-#define VVIS_SHAPE_CONE L'c'
-#define VVIS_SHAPE_CONE_WSTR L"cone"
+#define VVIS_SHAPE_CONE			L'c'
+#define VVIS_SHAPE_CONE_WSTR	L"cone"
+#define VVIS_SHAPE_NOTHING		L'n'
 
 /// DRAWER OPTIONS
 
-#define VVIS_DRAW_ALL -1
-#define VVIS_USING_COLOR false
+#define VVIS_DRAW_ALL			-1
+#define VVIS_USING_COLOR		false
+#define VVIS_COUNTERCLOCKWISE	1 // use 0 for not
 
-/// 
+#define VVIS_SCALING_PARAMETERS_CHANGES_X 0.3
+#define VVIS_SCALING_PARAMETERS_CHANGES_Y 0.3
+#define VVIS_SCALING_PARAMETERS_CHANGES_Z 0.3
 
-#define COUNTERCLOCKWISE 1 // use 0 for not
+#define VVIS_TRANSLATION_CHANGES_X 0.5
+#define VVIS_TRANSLATION_CHANGES_Y 0.5
+#define VVIS_TRANSLATION_CHANGES_Z 0.5
+
+#define VVIS_CAMERA_CHANGES_X 0.5
+#define VVIS_CAMERA_CHANGES_Y 0.5
+#define VVIS_CAMERA_CHANGES_Z 0.5
+
+#define VVIS_ESTRAGNEMENT_CHANGES 0.03
+
+#define VVIS_TRANSLATION_BY_ELEMENT -1.0 // 1 if left-left; -1 left-right <- translation by head
+
+/// BLOCKS VISUALIS-SETTINGS.JSON
+
+#define VVIS_GLOBAL_SETTINGS	"global"
+#define VVIS_FREEGLUT_SETTINGS	"drawer"
 
 #endif

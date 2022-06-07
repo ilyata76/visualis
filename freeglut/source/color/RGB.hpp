@@ -6,7 +6,7 @@
 
 	#include "../helpful/useful_functions.hpp"
 
-	// red green blue from 0.0 to 1.0
+	// red green blue from values 0.0 to 1.0
 	class RGB {
 		public:
 			double red, green, blue;
@@ -16,12 +16,12 @@
 	};
 
 	RGB get_color_by_direction(const double& _x, const double& _y, const double& _z) {
-		// https://en.wikipedia.org/wiki/HSL_and_HSV
+		//https://en.wikipedia.org/wiki/HSL_and_HSV
 
-		// HSL
+		//HSL
 		//https://galactic.ink/sphere/
-		// HUE 0-360 - будет нашем углом arctg 0-360
-		// Luminance 0-100 - от оси Z 0-180
+		//HUE 0-360 - будет нашем углом arctg 0-360
+		//Luminance 0-100 - от оси Z 0-180
 
 		double hue = get_euler_phi(_x, _y, _z); //Given a color with hue H ∈ [0°, 360°], saturation SL ∈ [0, 1], and lightness L ∈ [0, 1], we first find chroma:
 		double lightness = (get_euler_theta(_x, _y, _z) * 1 / 180);

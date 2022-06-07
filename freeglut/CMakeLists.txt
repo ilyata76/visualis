@@ -37,6 +37,7 @@ set (ENTRYPOINT_VISUALIS
 set (HEADERS_VISUALIS
 	source/helpful/global_defines.hpp
 	source/helpful/useful_functions.hpp
+	source/helpful/useful_classes.hpp
 
 	source/color/RGB.hpp
 

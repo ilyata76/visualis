@@ -9,7 +9,7 @@
 
 	float get_euler_phi(const double& sx, const double& sy, const double& sz) {
 		int sign = -1;
-		if (COUNTERCLOCKWISE) sign = 1;
+		if (VVIS_COUNTERCLOCKWISE) sign = 1;
 		if (sx > 0 && sy > 0) {
 			return (sign * atan(fabs(sy / sx)) * 180.0 / 3.1415);
 		} else if (sx < 0 && sy > 0) {
@@ -26,7 +26,7 @@
 
 	float get_euler_theta(const double& sx, const double& sy, const double& sz) {
 		int sign = -1;
-		if (COUNTERCLOCKWISE) sign = 1;
+		if (VVIS_COUNTERCLOCKWISE) sign = 1;
 	
 		if (sz == 0) return (sign * 90.0f);
 	
