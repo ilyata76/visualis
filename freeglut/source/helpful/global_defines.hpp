@@ -47,4 +47,8 @@
 #define VVIS_GLOBAL_SETTINGS	"global"
 #define VVIS_FREEGLUT_SETTINGS	"drawer"
 
+/// UNKNOW_MAP_SECOND
+
+#define VVIS_UNKNOWW_MAP_SECOND 9911
+
 #endif

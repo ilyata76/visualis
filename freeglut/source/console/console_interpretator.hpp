@@ -7,6 +7,9 @@
 	#include "../settings/settings.hpp"
 	#include "./defines_commands_codes.hpp"
 	#include <map>
+	#include <iostream>
+
+	
 
 	class Interpretator {
 		private:
@@ -17,16 +20,21 @@
 
 		public:
 			Interpretator();
-			Interpretator(std::wstring& _prompt) : prompt(_prompt) {};
-			Interpretator(std::wstring& _prompt, Settings& _app_settings) : prompt(_prompt), app_settings(_app_settings) {};
+			Interpretator(std::wstring& _prompt) : prompt(_prompt) { set_command_maps(*this); };
+			Interpretator(Settings& _app_settings) : app_settings(_app_settings) { this->prompt = L"vvis > "; set_command_maps(*this); };
+			Interpretator(std::wstring& _prompt, Settings& _app_settings) : prompt(_prompt), app_settings(_app_settings) { set_command_maps(*this); };
 
-			// 0 - error; 1 - okay; 2 - restart
+			// 0 - okay; 1 - error; 2 - restart
 			unsigned char loop(int argc, char** argv);
 
 		protected:
 
+			friend bool set_command_maps(Interpretator& _inter);
+
 			bool settings_handler();
 			bool help_handler();
+
+			
 
 	};
 
