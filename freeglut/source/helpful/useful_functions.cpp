@@ -52,7 +52,7 @@ std::vector<std::wstring> line_to_vector(const std::wstring& _str) {
 	
 	while (wss.good()) {
 		wss >> str;
-		result.push_back(str);
+		if (str != L"") result.push_back(str);
 		str = L"\0";
 	}
 

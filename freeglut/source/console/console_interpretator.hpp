@@ -17,6 +17,9 @@
 			std::wstring prompt;
 
 			std::map<std::wstring, int> main_command;
+				std::map<std::wstring, int> settings_sub_command;
+					std::map<std::wstring, int> settings_show_sub_command;
+				// help_sub_command
 
 		public:
 			Interpretator();
@@ -25,14 +28,14 @@
 			Interpretator(std::wstring& _prompt, Settings& _app_settings) : prompt(_prompt), app_settings(_app_settings) { set_command_maps(*this); };
 
 			// 0 - okay; 1 - error; 2 - restart
-			unsigned char loop(int argc, char** argv);
+			unsigned char loop(int argc, char** argv, std::vector<std::wstring> _commands = {});
 
 		protected:
 
 			friend bool set_command_maps(Interpretator& _inter);
 
-			bool settings_handler();
-			bool help_handler();
+			bool settings_handler(std::vector<std::wstring> _commands);
+			bool help_handler(std::vector<std::wstring> _commands);
 
 			
 
