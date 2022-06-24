@@ -18,7 +18,7 @@ int main(int argc, char** argv) {
 	enum interpreter_state { ok, error, restart };
 
 	switch (I.loop(argc, argv)) {
-		case ok: std::wcout << L"ok\n"; print_logo(std::wcout); AA.print_only_global(std::wcout); AA.print_only_freeglut(std::wcout);  break;
+		case ok: std::wcout << L"ok\n"; break;
 		case error: std::wcout << L"error\n"; break;
 		case restart: std::wcout << L"restart\n"; break;
 	};

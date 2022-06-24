@@ -30,4 +30,8 @@
 
 	int get_second_from_map(std::map<std::wstring, int>& _map, std::wstring& _value);
 
+	std::wstring remove_quotations(std::wstring& _str);
+
+	bool is_number(const std::wstring& _str);
+
 #endif // !USEFUL_FUNCTIONS

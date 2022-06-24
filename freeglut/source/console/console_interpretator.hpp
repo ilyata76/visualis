@@ -20,6 +20,8 @@
 				std::map<std::wstring, int> settings_sub_command;
 					std::map<std::wstring, int> settings_show_sub_command;
 				// help_sub_command
+				std::map<std::wstring, int> set_sub_command;
+
 
 		public:
 			Interpretator();
@@ -36,6 +38,10 @@
 
 			bool settings_handler(std::vector<std::wstring> _commands);
 			bool help_handler(std::vector<std::wstring> _commands);
+			bool reset_handler(std::vector<std::wstring> _commands);
+			bool restart_handler(std::vector<std::wstring> _commands);
+			bool set_handler(std::vector<std::wstring> _commands);
+			bool unset_handler(std::vector<std::wstring> _commands);
 
 			
 

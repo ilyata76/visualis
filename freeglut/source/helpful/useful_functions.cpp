@@ -70,6 +70,15 @@ int get_second_from_map(std::map<std::wstring, int>& _map, std::wstring& _value)
 	return it == _map.end() ? VVIS_UNKNOWW_MAP_SECOND : it->second;
 }
 
+std::wstring remove_quotations(std::wstring& _str) {
+	if (_str.size() > 1) {
+		if ((_str[0] == L'\"' && _str[_str.size() - 1] == L'\"') ||
+			(_str[0] == L'\'' && _str[_str.size() - 1] == L'\'')) {
+			_str.pop_back(); _str = _str.substr(1);
+		}
+	}; return _str;
+}
+
 std::wostream& print_vector(std::wostream& _out, std::vector<std::wstring>& _vector, std::wstring separator) {
 	
 	for (const std::vector<std::wstring>::iterator::value_type& a : _vector) {
@@ -77,4 +86,9 @@ std::wostream& print_vector(std::wostream& _out, std::vector<std::wstring>& _vec
 	}
 	
 	return _out;
+}
+
+bool is_number(const std::wstring& _str) {
+	return !_str.empty() && std::find_if(_str.begin(),
+		_str.end(), [](wchar_t c) { return !(std::isdigit(c) || c == L'0'); }) == _str.end();
 }
