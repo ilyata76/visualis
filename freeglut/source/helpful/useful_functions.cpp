@@ -96,3 +96,25 @@ bool is_number(const std::wstring& _str) {
 bool contains_subwstr(const std::wstring& _str, const std::wstring& _substr) {
 	return _str.find(_substr) != _str.npos;
 }
+
+// yes no exit
+std::wstring by_synonyms(const std::wstring& _value) {
+	std::wstring copy_value = _value; to_lower_wstr(copy_value);
+
+	std::vector<std::wstring> exit = { L"exit", L"(exit)", L"exit.", L"end" };
+	std::vector<std::wstring> yes = { L"y", L"yes", L"yes.", L"yep", L"1", L"true" };
+	std::vector<std::wstring> no = { L"n", L"no", L"not.", L"nope", L"0", L"false" };
+
+
+	std::vector<std::wstring>::iterator it = std::find(exit.begin(), exit.end(), copy_value);
+	if (it != exit.end()) return L"exit";
+
+	it = std::find(yes.begin(), yes.end(), copy_value);
+	if (it != yes.end()) return L"yes";
+
+	it = std::find(no.begin(), no.end(), copy_value);
+	if (it != no.end()) return L"no";
+
+	return _value;
+
+}

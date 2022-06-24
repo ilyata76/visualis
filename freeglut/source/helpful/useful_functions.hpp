@@ -36,4 +36,6 @@
 
 	bool contains_subwstr(const std::wstring& _str, const std::wstring& _substr);
 
+	std::wstring by_synonyms(const std::wstring& _value);
+
 #endif // !USEFUL_FUNCTIONS

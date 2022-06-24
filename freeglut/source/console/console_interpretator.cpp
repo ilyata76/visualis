@@ -19,7 +19,7 @@ unsigned char Interpretator::loop(int argc, char** argv, std::vector<std::wstrin
 			command_vector = _commands; _commands = {};
 		}
 
-		if (str == L"exit") break;
+		if (by_synonyms(str) == L"exit") break;
 
 		if (command_vector.size() < 1) continue;
 
@@ -36,7 +36,7 @@ unsigned char Interpretator::loop(int argc, char** argv, std::vector<std::wstrin
 		};
 
 
-	} while (str != L"exit");
+	} while (by_synonyms(str) != L"exit");
 	
 
 
@@ -69,7 +69,7 @@ bool Interpretator::settings_handler(std::vector<std::wstring> _commands) {
 	
 		case INTER_COMMAND_SETTINGS_SAVE:	if(this->app_settings.save(L'a')) std::wcout << "\tSettings has been saved\n"; else std::wcout << "\tSettings NOT has been saved\n"; 	break;
 	
-		case INTER_COMMAND_SETTINGS_GET:	if (this->app_settings.get(L'a')) std::wcout << "\tSettings has been loaded\n"; else std::wcout << "\tSettings NOT has been loaded\n"; break;
+		case INTER_COMMAND_SETTINGS_GET:	if(this->app_settings.get(L'a')) std::wcout << "\tSettings has been loaded\n"; else std::wcout << "\tSettings NOT has been loaded\n";	break;
 
 		case VVIS_UNKNOWW_MAP_SECOND: std::wcout << L"\tUnknow subcommand: " << _commands[1] << L'\n'; return false; break;
 		default: break;
@@ -153,6 +153,29 @@ bool Interpretator::set_handler(std::vector<std::wstring> _commands) {
 			} else std::wcout << L"\n\tEmpty path\n";
 		} break;
 
+
+		case INTER_COMMAND_SET_COLORING: if (_commands.size() < 3) { std::wcout << L"\tEmpty instruction\n"; return false; } 
+									   this->app_settings.freeglut_settings.coloring_sample = by_synonyms(_commands[2]) == L"yes" ? true : false;
+									   std::wcout << L"\tColoring setting \"" << this->app_settings.freeglut_settings.coloring_sample << L"\" has been set up\n";
+									   break;
+
+
+		case INTER_COMMAND_SET_BACKGROUNDCOLOR: if (_commands.size() < 5 || !is_number(_commands[2]) || !is_number(_commands[3])
+											|| !is_number(_commands[4]) || std::stod(_commands[2]) > 255 || std::stod(_commands[3]) > 255
+											|| std::stod(_commands[4]) > 255) { std::wcout << L"\tIncorrect format\n"; return false; } 
+											  
+											  this->app_settings.freeglut_settings.backgroundcolor.red = std::stod(_commands[2]) / 255.0;
+											  this->app_settings.freeglut_settings.backgroundcolor.green = std::stod(_commands[3]) / 255.0;
+											  this->app_settings.freeglut_settings.backgroundcolor.blue = std::stod(_commands[4]) / 255.0;
+											  
+											  std::wcout << L"\tColoring background (" 
+												  << this->app_settings.freeglut_settings.backgroundcolor.red * 255.0 << ", "
+												  << this->app_settings.freeglut_settings.backgroundcolor.green * 255.0 << ", "
+												  << this->app_settings.freeglut_settings.backgroundcolor.blue * 255.0
+												  << L") has been set up\n";
+											  
+											  break;
+
 		case VVIS_UNKNOWW_MAP_SECOND: std::wcout << L"\tUnknow subcommand: " << _commands[1] << L'\n'; return false; break;
 		default: break;
 
@@ -179,6 +202,10 @@ bool Interpretator::unset_handler(std::vector<std::wstring> _commands) {
 		case INTER_COMMAND_SET_SETTINGSFILE: std::wcout << L"\tSuccessful\n"; this->app_settings.global_settings.path_to_settings_file = VVIS_PATH_PLUG_WSTR; break;
 
 		case INTER_COMMAND_SET_SETTINGSFOLDER: std::wcout << L"\tSuccessful\n"; this->app_settings.global_settings.path_to_settings_file_folder = VVIS_PATH_PLUG_WSTR; break;
+
+		case INTER_COMMAND_SET_COLORING: std::wcout << L"\tSuccessful\n"; this->app_settings.freeglut_settings.coloring_sample = false; break;
+
+		case INTER_COMMAND_SET_BACKGROUNDCOLOR: std::wcout << L"\tSuccessful\n"; this->app_settings.freeglut_settings.backgroundcolor = RGB(1.0, 1.0, 1.0); break;
 
 		case VVIS_UNKNOWW_MAP_SECOND: std::wcout << L"\tUnknow subcommand: " << _commands[1] << L'\n'; return false; break;
 		default: break;
@@ -222,6 +249,8 @@ bool set_command_maps(Interpretator& _inter) {
 		{L"spinindex", INTER_COMMAND_SET_SPININDEX},
 		{L"settingsfolder", INTER_COMMAND_SET_SETTINGSFOLDER},
 		{L"settingsfile", INTER_COMMAND_SET_SETTINGSFILE},
+		{L"coloring", INTER_COMMAND_SET_COLORING},
+		{L"backgroundcolor", INTER_COMMAND_SET_BACKGROUNDCOLOR}
 	};
 
 	return true;
