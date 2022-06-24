@@ -92,3 +92,7 @@ bool is_number(const std::wstring& _str) {
 	return !_str.empty() && std::find_if(_str.begin(),
 		_str.end(), [](wchar_t c) { return !(std::isdigit(c) || c == L'0'); }) == _str.end();
 }
+
+bool contains_subwstr(const std::wstring& _str, const std::wstring& _substr) {
+	return _str.find(_substr) != _str.npos;
+}

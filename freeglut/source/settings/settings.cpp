@@ -90,7 +90,7 @@ bool Settings::save(wchar_t _flag) {
 }
 
 bool Settings::get_by_json(const nlohmann::json& _json, wchar_t _flag) {
-
+	if (_json == nullptr) return false;
 	if (_flag == L'g' || _flag == L'a') {
 		if (_json[VVIS_GLOBAL_SETTINGS] == nullptr) return false;
 
@@ -151,7 +151,7 @@ bool Settings::get_by_json(const nlohmann::json& _json, wchar_t _flag) {
 
 	return true;
 }
-
+#include <iostream>
 bool Settings::get(wchar_t _flag) {
 	std::fstream file; nlohmann::json _json;
 
@@ -170,6 +170,7 @@ bool Settings::get(wchar_t _flag) {
 		_json << file;
 		file.close();
 	}
+	
 
 	return this->get_by_json(_json, _flag);
 

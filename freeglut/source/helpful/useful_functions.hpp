@@ -34,4 +34,6 @@
 
 	bool is_number(const std::wstring& _str);
 
+	bool contains_subwstr(const std::wstring& _str, const std::wstring& _substr);
+
 #endif // !USEFUL_FUNCTIONS

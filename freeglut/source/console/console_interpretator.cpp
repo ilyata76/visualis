@@ -67,9 +67,9 @@ bool Interpretator::settings_handler(std::vector<std::wstring> _commands) {
 
 		} break;
 	
-		case INTER_COMMAND_SETTINGS_SAVE:	this->app_settings.save(L'a'); std::wcout << "\tSettings has been saved\n";	break;
+		case INTER_COMMAND_SETTINGS_SAVE:	if(this->app_settings.save(L'a')) std::wcout << "\tSettings has been saved\n"; else std::wcout << "\tSettings NOT has been saved\n"; 	break;
 	
-		case INTER_COMMAND_SETTINGS_GET:	this->app_settings.get(L'a'); std::wcout << "\tSettings has been loaded\n"; break;
+		case INTER_COMMAND_SETTINGS_GET:	if (this->app_settings.get(L'a')) std::wcout << "\tSettings has been loaded\n"; else std::wcout << "\tSettings NOT has been loaded\n"; break;
 
 		case VVIS_UNKNOWW_MAP_SECOND: std::wcout << L"\tUnknow subcommand: " << _commands[1] << L'\n'; return false; break;
 		default: break;
@@ -118,6 +118,7 @@ bool Interpretator::set_handler(std::vector<std::wstring> _commands) {
 		
 		case INTER_COMMAND_SET_FILEPATH: {
 			if (_commands.size() < 3) { std::wcout << L"\tEmpty path\n"; return false; }
+			if (!contains_subwstr(_commands[2], VVIS_VVIS_FILE_FORMAT) || !contains_subwstr(_commands[2], VVIS_VVIS_FILE_NAME_STR)) { std::wcout << L"\tWrong file name\n"; return false; }
 			if (_commands[2].size() > 0) {
 				remove_quotations(_commands[2]);
 				this->app_settings.global_settings.path_to_sconfiguration_file = _commands[2];
@@ -129,7 +130,30 @@ bool Interpretator::set_handler(std::vector<std::wstring> _commands) {
 							else { this->app_settings.global_settings.number_of_file = std::stoi(_commands[2]);
 						std::wcout << L"\tFile number \"" << this->app_settings.global_settings.number_of_file << L"\" has been set up\n"; } break;
 
-		case VVIS_UNKNOWW_MAP_SECOND: std::wcout << L"\tUnknow subcommand: " << _commands[2] << L'\n'; return false; break;
+		case INTER_COMMAND_SET_SPININDEX: if (!is_number(_commands[2])) { std::wcout << L"\tNot number\n"; return false; }
+							else { this->app_settings.global_settings.index_of_spin = std::stoi(_commands[2]);
+						std::wcout << L"\tSpin index \"" << this->app_settings.global_settings.index_of_spin << L"\" has been set up\n"; } break;
+
+		case INTER_COMMAND_SET_SETTINGSFOLDER : {
+			if (_commands.size() < 3) { std::wcout << L"\tEmpty path\n"; return false; }
+			if (_commands[2].size() > 0) {
+				remove_quotations(_commands[2]);
+				this->app_settings.global_settings.path_to_settings_file_folder = _commands[2];
+				std::wcout << L"\tPath to settings folder \"" << this->app_settings.global_settings.path_to_settings_file_folder << L"\" has been set up\n";
+			} else std::wcout << L"\n\tEmpty path\n";
+		} break;
+
+		case INTER_COMMAND_SET_SETTINGSFILE: {
+			if (_commands.size() < 3) { std::wcout << L"\tEmpty path\n"; return false; }
+			if (!contains_subwstr(_commands[2], VVIS_SETTINGS_FILE_NAME_WSTR)) { std::wcout << L"\tWrong file name\n"; return false; }
+			if (_commands[2].size() > 0) {
+				remove_quotations(_commands[2]);
+				this->app_settings.global_settings.path_to_settings_file = _commands[2];
+				std::wcout << L"\tPath to settings file \"" << this->app_settings.global_settings.path_to_settings_file << L"\" has been set up\n";
+			} else std::wcout << L"\n\tEmpty path\n";
+		} break;
+
+		case VVIS_UNKNOWW_MAP_SECOND: std::wcout << L"\tUnknow subcommand: " << _commands[1] << L'\n'; return false; break;
 		default: break;
 
 	}
@@ -150,7 +174,13 @@ bool Interpretator::unset_handler(std::vector<std::wstring> _commands) {
 
 		case INTER_COMMAND_SET_FILENUMBER: std::wcout << L"\tSuccessful\n"; this->app_settings.global_settings.number_of_file = VVIS_INT_PLUG_WSTR; break;
 
-		case VVIS_UNKNOWW_MAP_SECOND: std::wcout << L"\tUnknow subcommand: " << _commands[2] << L'\n'; return false; break;
+		case INTER_COMMAND_SET_SPININDEX: std::wcout << L"\tSuccessful\n"; this->app_settings.global_settings.index_of_spin = VVIS_DRAW_ALL; break;
+
+		case INTER_COMMAND_SET_SETTINGSFILE: std::wcout << L"\tSuccessful\n"; this->app_settings.global_settings.path_to_settings_file = VVIS_PATH_PLUG_WSTR; break;
+
+		case INTER_COMMAND_SET_SETTINGSFOLDER: std::wcout << L"\tSuccessful\n"; this->app_settings.global_settings.path_to_settings_file_folder = VVIS_PATH_PLUG_WSTR; break;
+
+		case VVIS_UNKNOWW_MAP_SECOND: std::wcout << L"\tUnknow subcommand: " << _commands[1] << L'\n'; return false; break;
 		default: break;
 
 	}
@@ -189,6 +219,9 @@ bool set_command_maps(Interpretator& _inter) {
 		{L"folderpath", INTER_COMMAND_SET_FOLDERPATH},
 		{L"filepath", INTER_COMMAND_SET_FILEPATH},
 		{L"filenumber", INTER_COMMAND_SET_FILENUMBER},
+		{L"spinindex", INTER_COMMAND_SET_SPININDEX},
+		{L"settingsfolder", INTER_COMMAND_SET_SETTINGSFOLDER},
+		{L"settingsfile", INTER_COMMAND_SET_SETTINGSFILE},
 	};
 
 	return true;

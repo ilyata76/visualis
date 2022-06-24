@@ -13,6 +13,8 @@
 /// FILE NAMES
 
 #define VVIS_SETTINGS_FILE_NAME_WSTR L"visualis-settings.json"
+#define VVIS_VVIS_FILE_NAME_STR L"sconfiguration-"
+#define VVIS_VVIS_FILE_FORMAT L".vvis"
 
 /// DRAWER SHAPES
 
