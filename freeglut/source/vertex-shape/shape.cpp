@@ -9,7 +9,7 @@ bool Cone::set_draw_configuration() {
     return true;
 }
 
-bool Cone::draw(RGB color, double* args) {
+bool Cone::draw(Rgb color, double* args) {
 	glColor3f(color.red, color.green, color.blue);
 	// повернули
 	glRotatef(this->euler_phi, 0, 0, 1);

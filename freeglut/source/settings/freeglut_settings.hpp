@@ -15,7 +15,7 @@
 		
 		public:
 			
-			RGB backgroundcolor;
+			Rgb backgroundcolor;
 			bool coloring_sample;
 			wchar_t shape;
 			std::wstring shape_wstr;

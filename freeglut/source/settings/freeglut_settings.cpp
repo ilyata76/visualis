@@ -1,7 +1,7 @@
 #include "./freeglut_settings.hpp"
 
 Freeglut_settings::Freeglut_settings() {
-				this->backgroundcolor					= RGB(1.0, 1.0, 1.0);
+				this->backgroundcolor					= Rgb(1.0, 1.0, 1.0);
 				this->coloring_sample					= VVIS_USING_COLOR;
 				this->shape								= VVIS_SHAPE_CONE;
 				this->shape_wstr						= VVIS_SHAPE_CONE_WSTR;

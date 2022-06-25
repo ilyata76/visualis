@@ -1,6 +1,6 @@
 ﻿#include "./RGB.hpp"
 
-RGB get_color_by_direction(const double& _x, const double& _y, const double& _z) {
+Rgb get_color_by_direction(const double& _x, const double& _y, const double& _z) {
 		//https://en.wikipedia.org/wiki/HSL_and_HSV
 
 		//HSL
@@ -27,5 +27,5 @@ RGB get_color_by_direction(const double& _x, const double& _y, const double& _z)
 	
 		double m = lightness - chroma / 2;
 
-		return RGB(R1 + m, G1 + m, B1 + m);
+		return Rgb(R1 + m, G1 + m, B1 + m);
 }

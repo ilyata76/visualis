@@ -15,7 +15,7 @@
 			Shape(Vertex& _vrt) : vrt(_vrt) {};
 
 			virtual bool set_draw_configuration() = 0;
-			virtual bool draw(RGB color, double* argc) = 0;
+			virtual bool draw(Rgb color, double* argc) = 0;
 			virtual wchar_t info() = 0;
 	};
 
@@ -29,7 +29,7 @@
 			bool set_draw_configuration();
 			
 			// 4 argc
-			bool draw(RGB color, double* argc);
+			bool draw(Rgb color, double* argc);
 			wchar_t info();
 	};
 
