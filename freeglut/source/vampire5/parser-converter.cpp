@@ -27,7 +27,7 @@ bool v5_parser_converter(const std::wstring& _path_to_folder, int _number_of_fil
     sconfiguration_file << VVIS_VVIS_COMMENT << L"M" << VVIS_VVIS_SEPARATOR << L"L" << VVIS_VVIS_SEPARATOR << L"X" << VVIS_VVIS_SEPARATOR << L"Y" << VVIS_VVIS_SEPARATOR << L"Z" << VVIS_VVIS_SEPARATOR
         << L"SX" << VVIS_VVIS_SEPARATOR << L"SY" << VVIS_VVIS_SEPARATOR << L"SZ" << L'\n';
 
-    while (!spins_file.eof()) {
+    for (int index = 0; !spins_file.eof() && index != std::stoi(size1); ++index) {
         
         atoms_file >> m; while (m[0] == VVIS_VAMPIRE5_DATA_COMMENT) { std::getline(atoms_file, strk); atoms_file >> m; }
         atoms_file >> l; while (l[0] == VVIS_VAMPIRE5_DATA_COMMENT) { std::getline(atoms_file, strk); atoms_file >> l; }

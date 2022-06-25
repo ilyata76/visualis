@@ -2,7 +2,6 @@
 
 // TODO: Asserts на пустые параметры
 
-// std::vector<Vertex> a = sconfiguration_parsing(this->app_settings.global_settings.path_to_folder + L"\\" + VVIS_VVIS_FILE_START_NAME_WSTR + v5_get_file_number(std::to_wstring(this->app_settings.global_settings.number_of_file)) + VVIS_VVIS_FILE_FORMAT_WSTR);
 
 Interpretator::Interpretator() {
 	this->prompt = L"vvis > ";
@@ -34,6 +33,7 @@ unsigned char Interpretator::loop(int argc, char** argv, std::vector<std::wstrin
 			case INTER_COMMAND_SET:			std::wcout << L'\n'; if (!this->set_handler(command_vector)) std::wcout << "\tUnsuccessfully\n"; std::wcout << std::endl;		break;
 			case INTER_COMMAND_UNSET:		std::wcout << L'\n'; if (!this->unset_handler(command_vector)) std::wcout << "\tUnsuccessfully\n"; std::wcout << std::endl;		break;
 			case INTER_COMMAND_CONVERT:		std::wcout << L'\n'; if (!this->convert_handler(command_vector)) std::wcout << "\tUnsuccessfully\n"; std::wcout << std::endl;		break;
+			case INTER_COMMAND_VISUALIZE:	std::wcout << L'\n'; if (!this->visualize_handler(command_vector)) std::wcout << "\tUnsuccessfully\n"; std::wcout << std::endl;		break;
 
 			case VVIS_UNKNOWW_MAP_SECOND: std::wcout << L"\n\tUnknow command: " << command_vector[0] << L'\n' << std::endl; break;
 			default: break;
@@ -257,6 +257,53 @@ bool Interpretator::convert_handler(std::vector<std::wstring> _commands) {
 	return true;
 }
 
+bool Interpretator::visualize_handler(std::vector<std::wstring> _commands) {
+
+	if (_commands.size() < 2) { return visualize_handler({ L"visualize", L"folder" }); };
+
+	switch (get_second_from_map(this->visualize_sub_command, to_lower_wstr(_commands[1]))) {
+		
+		case INTER_COMMAND_VISUALIZE_FOLDER: { 
+			bool boolean = false;
+			
+			boolean = file_exist(this->app_settings.global_settings.path_to_folder + L"\\" + VVIS_VVIS_FILE_START_NAME_WSTR + v5_get_file_number(std::to_wstring(this->app_settings.global_settings.number_of_file)) + VVIS_VVIS_FILE_FORMAT_WSTR);
+			std::wcout << L"\tsconfiguration file exists? : " << std::boolalpha << boolean << L'\n';
+
+			if (!boolean) return false;
+
+			std::wcout << L"\tloading... : ";
+			std::vector<Vertex> vct = sconfiguration_parsing(this->app_settings.global_settings.path_to_folder + L"\\" + VVIS_VVIS_FILE_START_NAME_WSTR + v5_get_file_number(std::to_wstring(this->app_settings.global_settings.number_of_file)) + VVIS_VVIS_FILE_FORMAT_WSTR);
+			std::wcout << vct.size() << L" vertexes has been loaded\n";
+			std::wcout << L"\tvisualizing... : " << L'\n';
+
+			// TODO
+		} break;
+
+		case INTER_COMMAND_VISUALIZE_FILE: {
+			bool boolean = false;
+			
+			boolean = file_exist(this->app_settings.global_settings.path_to_sconfiguration_file);
+			std::wcout << L"\tsconfiguration file exists? : " << std::boolalpha << boolean << L'\n';
+
+			if (!boolean) return false;
+
+			std::wcout << L"\tloading... : ";
+			std::vector<Vertex> vct = sconfiguration_parsing(this->app_settings.global_settings.path_to_sconfiguration_file);
+			std::wcout << vct.size() << L" vertexes has been loaded\n";
+			std::wcout << L"\tvisualizing... : " << L'\n';
+
+			// TODO
+		} break;
+
+		case VVIS_UNKNOWW_MAP_SECOND: std::wcout << L"\tUnknow subcommand: " << _commands[1] << L'\n'; return false; break;
+		default: break;
+	}
+
+
+
+	return true;
+}
+
 bool set_command_maps(Interpretator& _inter) {
 	
 	_inter.main_command = {
@@ -296,6 +343,11 @@ bool set_command_maps(Interpretator& _inter) {
 
 	_inter.convert_sub_command = {
 		{L"v5", INTER_COMMAND_CONVERT_VAMPIRE5}
+	};
+
+	_inter.visualize_sub_command = {
+		{L"folder", INTER_COMMAND_VISUALIZE_FOLDER},
+		{L"file", INTER_COMMAND_VISUALIZE_FILE},
 	};
 
 	return true;

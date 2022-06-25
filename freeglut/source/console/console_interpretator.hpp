@@ -24,6 +24,7 @@
 				// help_sub_command
 				std::map<std::wstring, int> set_sub_command;
 				std::map<std::wstring, int> convert_sub_command;
+				std::map<std::wstring, int> visualize_sub_command;
 
 
 		public:
@@ -46,6 +47,7 @@
 			bool set_handler(std::vector<std::wstring> _commands);
 			bool unset_handler(std::vector<std::wstring> _commands);
 			bool convert_handler(std::vector<std::wstring> _commands);
+			bool visualize_handler(std::vector<std::wstring> _commands);
 			
 
 	};

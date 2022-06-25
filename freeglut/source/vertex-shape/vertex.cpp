@@ -1,6 +1,9 @@
 #include "./vertex.hpp"
 
 std::vector<Vertex> sconfiguration_parsing(const std::wstring& _path_to_file) {
+    Assert(_path_to_file != VVIS_PATH_PLUG_WSTR);
+    Assert(_path_to_file != L"\0" && _path_to_file != L"\n");
+    
     std::vector<Vertex> result;
     
     std::wfstream sconfiguration_file;
@@ -17,7 +20,7 @@ std::vector<Vertex> sconfiguration_parsing(const std::wstring& _path_to_file) {
 
     std::wstring l, m; std::wstring x, y, z, sx, sy, sz;
 
-    for (int index = 0; !sconfiguration_file.eof() && index != count; ++index) {
+    for (int index = 0; !sconfiguration_file.eof() && index < count - 1.0; ++index) {
         sconfiguration_file >> m; while (m[0] == VVIS_VAMPIRE5_DATA_COMMENT) { std::getline(sconfiguration_file, strk); sconfiguration_file >> m; }
         sconfiguration_file >> l; while (l[0] == VVIS_VAMPIRE5_DATA_COMMENT) { std::getline(sconfiguration_file, strk); sconfiguration_file >> l; }
         sconfiguration_file >> x; while (x[0] == VVIS_VAMPIRE5_DATA_COMMENT) { std::getline(sconfiguration_file, strk); sconfiguration_file >> x; }
