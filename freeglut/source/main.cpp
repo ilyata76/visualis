@@ -11,8 +11,8 @@ int main(int argc, char** argv) {
 	Settings AA (a, b);
 	AA.global_settings.path_to_folder = L".";
 	AA.get(L'a');
-	AA.global_settings.path_to_folder = L"D:\\CPP_2022\\opengl-visualis\\freeglut\\temp\\a";
-	AA.global_settings.number_of_file = 0;
+	AA.global_settings.path_to_folder = L"D:\\CPP_2022\\opengl-visualis\\freeglut\\temp\\b";
+	AA.global_settings.number_of_file = 30;
 	Interpretator I(AA);
 	//AA.print_only_freeglut(std::wcout);
 	//AA.print_only_global(std::wcout);

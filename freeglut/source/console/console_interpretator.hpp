@@ -5,6 +5,7 @@
 #define CONSOLE_INTERPRETATOR_HPP
 
 	#include "../settings/settings.hpp"
+	#include "./freeglut_drawer.hpp"
 	#include "./defines_commands_codes.hpp"
 	#include "../vampire5/parser-converter.hpp"
 	#include "../vertex-shape/vertex.hpp"
@@ -17,6 +18,9 @@
 		private:
 			Settings app_settings;
 			std::wstring prompt;
+			
+			int argc = 0;
+			char** argv = {};
 
 			std::map<std::wstring, int> main_command;
 				std::map<std::wstring, int> settings_sub_command;

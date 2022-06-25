@@ -13,6 +13,8 @@ unsigned char Interpretator::loop(int argc, char** argv, std::vector<std::wstrin
 	std::wstring str;
 	std::vector<std::wstring> command_vector;
 
+	this->argc = argc; this->argv = argv;
+
 	do {
 		if (_commands.empty()) {
 			std::wcout << this->prompt; std::getline(std::wcin, str);
@@ -275,8 +277,11 @@ bool Interpretator::visualize_handler(std::vector<std::wstring> _commands) {
 			std::vector<Vertex> vct = sconfiguration_parsing(this->app_settings.global_settings.path_to_folder + L"\\" + VVIS_VVIS_FILE_START_NAME_WSTR + v5_get_file_number(std::to_wstring(this->app_settings.global_settings.number_of_file)) + VVIS_VVIS_FILE_FORMAT_WSTR);
 			std::wcout << vct.size() << L" vertexes has been loaded\n";
 			std::wcout << L"\tvisualizing... : " << L'\n';
+			
+			this->app_settings.global_settings.path_to_sconfiguration_file = this->app_settings.global_settings.path_to_folder + L"\\" + VVIS_VVIS_FILE_START_NAME_WSTR + v5_get_file_number(std::to_wstring(this->app_settings.global_settings.number_of_file)) + VVIS_VVIS_FILE_FORMAT_WSTR;
 
-			// TODO
+			draw_sample(this->app_settings, vct, this->argc, this->argv);
+
 		} break;
 
 		case INTER_COMMAND_VISUALIZE_FILE: {
