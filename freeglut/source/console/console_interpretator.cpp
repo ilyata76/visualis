@@ -77,7 +77,7 @@ bool Interpretator::settings_handler(std::vector<std::wstring> _commands) {
 	
 		case INTER_COMMAND_SETTINGS_GET:	if(this->app_settings.get(L'a')) std::wcout << "\tSettings has been loaded\n"; else std::wcout << "\tSettings NOT has been loaded\n";	break;
 
-		case INTER_COMMAND_SETTINGS_RESET:	this->app_settings = Settings(); std::wcout << L"\t Successful\n"; break;
+		case INTER_COMMAND_SETTINGS_RESET:	this->app_settings = Settings(); std::wcout << L"\tSuccessful\n"; break;
 
 		case VVIS_UNKNOWW_MAP_SECOND: std::wcout << L"\tUnknow subcommand: " << _commands[1] << L'\n'; return false; break;
 		default: break;
@@ -99,13 +99,13 @@ bool Interpretator::help_handler(std::vector<std::wstring> _commands) {
 
 bool Interpretator::reset_handler(std::vector<std::wstring> _commands) {
 	this->app_settings = Settings();
-	std::wcout << L"\t Successful\n";
+	std::wcout << L"\tSuccessful\n";
 	return true;
 }
 
 bool Interpretator::restart_handler(std::vector<std::wstring> _commands) {
 	this->app_settings = Settings();
-	std::wcout << L"\t Successful\n";
+	std::wcout << L"\tSuccessful\n";
 	return true;
 }
 
@@ -278,7 +278,7 @@ bool Interpretator::visualize_handler(std::vector<std::wstring> _commands) {
 			std::wcout << L"\tloading... : ";
 			std::vector<Vertex> vct = sconfiguration_parsing(this->app_settings.global_settings.path_to_folder + L"\\" + VVIS_VVIS_FILE_START_NAME_WSTR + v5_get_file_number(std::to_wstring(this->app_settings.global_settings.number_of_file)) + VVIS_VVIS_FILE_FORMAT_WSTR);
 			std::wcout << vct.size() << L" vertexes has been loaded\n";
-			std::wcout << L"\tvisualizing... : " << L'\n';
+			std::wcout << L"\tvisualizing..." << L'\n';
 			
 			this->app_settings.global_settings.path_to_sconfiguration_file = this->app_settings.global_settings.path_to_folder + L"\\" + VVIS_VVIS_FILE_START_NAME_WSTR + v5_get_file_number(std::to_wstring(this->app_settings.global_settings.number_of_file)) + VVIS_VVIS_FILE_FORMAT_WSTR;
 
@@ -294,12 +294,23 @@ bool Interpretator::visualize_handler(std::vector<std::wstring> _commands) {
 
 			if (!boolean) return false;
 
-			std::wcout << L"\tloading... : ";
+			if (this->app_settings.global_settings.path_to_settings_file == VVIS_PATH_PLUG_WSTR && 
+				this->app_settings.global_settings.path_to_folder == VVIS_PATH_PLUG_WSTR &&
+				this->app_settings.global_settings.path_to_settings_file_folder == VVIS_PATH_PLUG_WSTR) {
+
+				std::wstring filename = VVIS_VVIS_FILE_START_NAME_WSTR + v5_get_file_number(std::to_wstring(this->app_settings.global_settings.number_of_file)) + VVIS_VVIS_FILE_FORMAT_WSTR;
+				std::wstring path = this->app_settings.global_settings.path_to_sconfiguration_file;
+				path.erase(path.end() - filename.size(), path.end()); this->app_settings.global_settings.path_to_settings_file_folder = path;
+				std::wcout << L"\tfolder path to settings file : " << this->app_settings.global_settings.path_to_settings_file_folder << L" has been set up\n";
+
+			}
+
+			std::wcout << L"\tloading...";
 			std::vector<Vertex> vct = sconfiguration_parsing(this->app_settings.global_settings.path_to_sconfiguration_file);
-			std::wcout << vct.size() << L" vertexes has been loaded\n";
+			std::wcout << L" : " << vct.size() << L" vertexes has been loaded\n";
 			std::wcout << L"\tvisualizing... : " << L'\n';
 
-			// TODO
+			draw_sample(this->app_settings, vct, this->argc, this->argv);
 		} break;
 
 		case VVIS_UNKNOWW_MAP_SECOND: std::wcout << L"\tUnknow subcommand: " << _commands[1] << L'\n'; return false; break;

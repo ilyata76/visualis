@@ -1,9 +1,5 @@
-﻿
-#include "./settings/settings.hpp"
-#include "./console/console_interpretator.hpp"
-#include <iostream>
+﻿#include "./console/console_interpretator.hpp"
 
-#include "./libraries/freeglut/include/GL/freeglut.h"
 
 int main(int argc, char** argv) {
 	Interpretator I;
@@ -11,12 +7,10 @@ int main(int argc, char** argv) {
 	enum interpreter_state { ok, error, restart };
 
 	switch (I.loop(argc, argv)) {
-		case ok: std::wcout << L"ok\n"; break;
-		case error: std::wcout << L"error\n"; break;
-		case restart: std::wcout << L"restart\n"; break;
+		case ok: break;
+		case error: std::wcout << L"\terror!\n"; break;
+		case restart: std::wcout << L"\trestarting\n"; return main(argc, argv); break;
 	};
-
-	system("pause");
 	 
 	return 0;
 }
