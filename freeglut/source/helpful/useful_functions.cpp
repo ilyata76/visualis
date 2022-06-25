@@ -1,5 +1,6 @@
 #include "./useful_functions.hpp"
 
+// TODO: Asserts на пустые параметры
 
 float get_euler_phi(const double& sx, const double& sy, const double& sz) {
 	int sign = -1;
@@ -117,4 +118,16 @@ std::wstring by_synonyms(const std::wstring& _value) {
 
 	return _value;
 
+}
+
+std::wstring v5_get_file_number(const std::wstring& _number) {
+	std::wstring num = _number;
+	std::wstring base = VVIS_VAMPIRE5_BASE_WSTR;
+
+	size_t num_lenght = num.length(); size_t base_lenght = base.length();
+	for (int i = 0; num_lenght != 0; ++i, num.pop_back(), num_lenght = num.length()) {
+		base[base_lenght - 1 - i] = num[num_lenght - 1];
+	};
+
+	return std::wstring(base);
 }

@@ -36,9 +36,9 @@ set (ENTRYPOINT_VISUALIS
 
 set (HEADERS_VISUALIS
 	source/helpful/global_defines.hpp
+	
 	source/helpful/useful_functions.hpp
 	source/helpful/useful_classes.hpp
-
 	source/color/RGB.hpp
 
 	source/settings/global_settings.hpp
@@ -47,23 +47,25 @@ set (HEADERS_VISUALIS
 
 	
 	source/console/defines_commands_codes.hpp
-
 	source/console/console_interpretator.hpp
+
+	source/vampire5/parser-converter.hpp
+
+
 )
 
 set (SOURCES_VISUALIS
+	source/helpful/useful_classes.cpp
+	source/helpful/useful_functions.cpp
+	source/color/RGB.cpp
 
-source/helpful/useful_classes.cpp
-source/helpful/useful_functions.cpp
-source/color/RGB.cpp
-
-source/settings/global_settings.cpp
-source/settings/freeglut_settings.cpp
-source/settings/settings.cpp
+	source/settings/global_settings.cpp
+	source/settings/freeglut_settings.cpp
+	source/settings/settings.cpp
 
 	source/console/console_interpretator.cpp
 
-	
+	source/vampire5/parser-converter.cpp
 )
 
 # ----------- | SUBDIRECTORIES | ----------- 

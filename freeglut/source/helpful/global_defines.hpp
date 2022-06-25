@@ -8,13 +8,22 @@
 /// INTERPRETATOR
 
 #define VVIS_PATH_PLUG_WSTR L"<nothing>"
-#define VVIS_INT_PLUG_WSTR	-1
+#define VVIS_INT_PLUG	-1
 
-/// FILE NAMES
+/// FILE NAMES AND FILES
 
 #define VVIS_SETTINGS_FILE_NAME_WSTR L"visualis-settings.json"
-#define VVIS_VVIS_FILE_NAME_STR L"sconfiguration-"
-#define VVIS_VVIS_FILE_FORMAT L".vvis"
+#define VVIS_VVIS_FILE_START_NAME_WSTR L"sconfiguration-"
+#define VVIS_VVIS_FILE_FORMAT_WSTR L".vvis"
+
+#define VVIS_VAMPIRE5_BASE_WSTR L"00000000"
+#define VVIS_VAMPIRE5_ATOMS_NAME_WSTR L"atoms-coords"
+#define VVIS_VAMPIRE5_SPINS_START_NAME_WSTR L"spins-"
+#define VVIS_VAMPIRE5_ATOMS_FORMAT_WSTR L".data"
+#define VVIS_VAMPIRE5_SPINS_FORMAT_WSTR L".data"
+
+#define VVIS_VVIS_COMMENT L'#'
+#define VVIS_VAMPIRE5_DATA_COMMENT L'#'
 
 /// DRAWER SHAPES
 

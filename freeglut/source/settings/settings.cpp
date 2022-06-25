@@ -151,7 +151,7 @@ bool Settings::get_by_json(const nlohmann::json& _json, wchar_t _flag) {
 
 	return true;
 }
-#include <iostream>
+
 bool Settings::get(wchar_t _flag) {
 	std::fstream file; nlohmann::json _json;
 

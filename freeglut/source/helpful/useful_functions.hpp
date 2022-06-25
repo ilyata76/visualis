@@ -38,4 +38,6 @@
 
 	std::wstring by_synonyms(const std::wstring& _value);
 
+	std::wstring v5_get_file_number(const std::wstring& _number);
+
 #endif // !USEFUL_FUNCTIONS
