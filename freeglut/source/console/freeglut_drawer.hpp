@@ -12,5 +12,8 @@
 	void display_mainwindow();
 	void draw_shape(int index);
 	void reshape_mainwindow(int w, int h);
+	
+	void normal_keys(unsigned char key, int x, int y);
+	void special_keys(int key, int x, int y);
 
 #endif // !FREEGLUT_DRAWER_HPP

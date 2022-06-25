@@ -21,6 +21,8 @@ void draw_sample(Settings& _settings, std::vector<Vertex>& _vct, int argc, char*
 
 		glutDisplayFunc(display_mainwindow);
 		glutReshapeFunc(reshape_mainwindow);
+		glutKeyboardFunc(normal_keys);
+		glutSpecialFunc(special_keys);
 	
 	glutSetOption(GLUT_ACTION_ON_WINDOW_CLOSE, GLUT_ACTION_CONTINUE_EXECUTION);
 	glutMainLoop();
@@ -125,13 +127,13 @@ void draw_shape(int index) {
 
 	glTranslated(0, 0, glob_settings.freeglut_settings.position_of_element.z);
 
-	glTranslated(glob_settings.freeglut_settings.global_translation.x, glob_settings.freeglut_settings.global_translation.y, glob_settings.freeglut_settings.global_translation.z); // делает возможным движение вверх-вниз и вправо-влево
-	glTranslated(-glob_settings.freeglut_settings.position_of_camera.x, -glob_settings.freeglut_settings.position_of_camera.y, -glob_settings.freeglut_settings.position_of_camera.z); // делает возможным прокрутку камеры
+	glTranslated(glob_settings.freeglut_settings.global_translation.x, glob_settings.freeglut_settings.global_translation.y, glob_settings.freeglut_settings.global_translation.z); 
+	glTranslated(-glob_settings.freeglut_settings.position_of_camera.x, -glob_settings.freeglut_settings.position_of_camera.y, -glob_settings.freeglut_settings.position_of_camera.z);
 
 
-	shape->set_draw_configuration(); // настроили нашу фигуру
+	shape->set_draw_configuration(); 
 
-	glRotated(glob_settings.freeglut_settings.additional_rotation.phi, 0, 1, 0); // позволяет вращать фигуру саму по себе вместе с осями
+	glRotated(glob_settings.freeglut_settings.additional_rotation.phi, 0, 1, 0); 
 	glRotatef(glob_settings.freeglut_settings.additional_rotation.theta, 1, 0, 0);
 
 	glTranslated(
@@ -161,4 +163,119 @@ void reshape_mainwindow(int w, int h) {
 
 	glob_settings.freeglut_settings.main_window.width = w;
 	glob_settings.freeglut_settings.main_window.height= h;
+}
+
+void normal_keys(unsigned char key, int x, int y) {
+
+	double t_b_e = glob_settings.freeglut_settings.translation_by_element;
+
+	switch (key) {
+	
+		case 'ц':
+		case 'w':	glob_settings.freeglut_settings.position_of_camera.y -= t_b_e * glob_settings.freeglut_settings.camera_changes.y; 
+					glob_settings.freeglut_settings.position_of_element.y += t_b_e * glob_settings.freeglut_settings.camera_changes.y;
+					glutPostRedisplay();
+					break;
+
+		case 'ы':
+		case 's':	glob_settings.freeglut_settings.position_of_camera.y += t_b_e * glob_settings.freeglut_settings.camera_changes.y;
+					glob_settings.freeglut_settings.position_of_element.y -= t_b_e * glob_settings.freeglut_settings.camera_changes.y;
+					glutPostRedisplay();
+					break;
+
+		case 'ф':
+		case 'a':	glob_settings.freeglut_settings.position_of_camera.x += t_b_e * glob_settings.freeglut_settings.camera_changes.x;
+					glob_settings.freeglut_settings.position_of_element.x -= t_b_e * glob_settings.freeglut_settings.camera_changes.x;
+					glutPostRedisplay();
+					break;
+
+		case 'в':
+		case 'd':	glob_settings.freeglut_settings.position_of_camera.x -= t_b_e * glob_settings.freeglut_settings.camera_changes.x;
+					glob_settings.freeglut_settings.position_of_element.x += t_b_e * glob_settings.freeglut_settings.camera_changes.x;
+					glutPostRedisplay();
+					break;
+
+		case 'ш':
+		case 'i':	glob_settings.freeglut_settings.additional_rotation.theta -= t_b_e * glob_settings.freeglut_settings.camera_changes.y;
+					glutPostRedisplay();
+					break;
+
+		case 'л':
+		case 'k':	glob_settings.freeglut_settings.additional_rotation.theta += t_b_e * glob_settings.freeglut_settings.camera_changes.y;
+					glutPostRedisplay();
+					break;
+		
+		case 'о':
+		case 'j':	glob_settings.freeglut_settings.additional_rotation.phi -= t_b_e * glob_settings.freeglut_settings.camera_changes.x;
+					glutPostRedisplay();
+					break;
+		
+		case 'д':
+		case 'l':	glob_settings.freeglut_settings.additional_rotation.phi += t_b_e * glob_settings.freeglut_settings.camera_changes.x;
+					glutPostRedisplay();
+					break;
+		
+		case ' ':	glob_settings.freeglut_settings.estrangement += glob_settings.freeglut_settings.estrangement_changes;
+					glutPostRedisplay();
+					break;
+		
+		case 27:	glutLeaveMainLoop(); 
+					break;
+
+		default: 
+					break;
+	
+	}
+
+
+}
+
+void special_keys(int key, int x, int y) {
+	
+	double t_b_e = glob_settings.freeglut_settings.translation_by_element;
+
+	switch (key) {
+
+		case GLUT_KEY_PAGE_UP:		glob_settings.freeglut_settings.scaling_parameters.x += glob_settings.freeglut_settings.scaling_parameters_changes.x;
+									glob_settings.freeglut_settings.scaling_parameters.y += glob_settings.freeglut_settings.scaling_parameters_changes.y;
+									glob_settings.freeglut_settings.scaling_parameters.z += glob_settings.freeglut_settings.scaling_parameters_changes.z;
+									glutPostRedisplay();
+									break;
+
+		case GLUT_KEY_PAGE_DOWN:	glob_settings.freeglut_settings.scaling_parameters.x -= glob_settings.freeglut_settings.scaling_parameters_changes.x;
+									glob_settings.freeglut_settings.scaling_parameters.y -= glob_settings.freeglut_settings.scaling_parameters_changes.y;
+									glob_settings.freeglut_settings.scaling_parameters.z -= glob_settings.freeglut_settings.scaling_parameters_changes.z;
+									glutPostRedisplay();
+									break;
+									
+		case GLUT_KEY_LEFT:			glob_settings.freeglut_settings.global_translation.x -= t_b_e * glob_settings.freeglut_settings.translation_changes.x;
+									glutPostRedisplay();
+									break;									
+
+		case GLUT_KEY_RIGHT:		glob_settings.freeglut_settings.global_translation.x += t_b_e * glob_settings.freeglut_settings.translation_changes.x;
+									glutPostRedisplay();
+									break;							
+
+		case GLUT_KEY_UP:			glob_settings.freeglut_settings.global_translation.y += t_b_e * glob_settings.freeglut_settings.translation_changes.y;
+									glutPostRedisplay();
+									break;		
+
+		case GLUT_KEY_DOWN:			glob_settings.freeglut_settings.global_translation.y -= t_b_e * glob_settings.freeglut_settings.translation_changes.y;
+									glutPostRedisplay();
+									break;
+
+		case GLUT_KEY_CTRL_L:
+		case GLUT_KEY_SHIFT_L:		glob_settings.freeglut_settings.estrangement -= glob_settings.freeglut_settings.estrangement_changes;
+									glutPostRedisplay();
+									break;
+
+		case GLUT_KEY_F11:			if (!glob_settings.freeglut_settings.fullscreen) { glutFullScreen(); glob_settings.freeglut_settings.fullscreen = true; }
+									else { glutPositionWindow(0, 0); glob_settings.freeglut_settings.fullscreen = false; };
+									break;
+
+		default:					
+									break;
+
+	}
+
 }

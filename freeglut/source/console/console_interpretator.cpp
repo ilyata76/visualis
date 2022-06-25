@@ -77,6 +77,8 @@ bool Interpretator::settings_handler(std::vector<std::wstring> _commands) {
 	
 		case INTER_COMMAND_SETTINGS_GET:	if(this->app_settings.get(L'a')) std::wcout << "\tSettings has been loaded\n"; else std::wcout << "\tSettings NOT has been loaded\n";	break;
 
+		case INTER_COMMAND_SETTINGS_RESET:	this->app_settings = Settings(); std::wcout << L"\t Successful\n"; break;
+
 		case VVIS_UNKNOWW_MAP_SECOND: std::wcout << L"\tUnknow subcommand: " << _commands[1] << L'\n'; return false; break;
 		default: break;
 
@@ -325,7 +327,8 @@ bool set_command_maps(Interpretator& _inter) {
 	_inter.settings_sub_command = {
 		{L"show", INTER_COMMAND_SETTINGS_SHOW},
 		{L"save", INTER_COMMAND_SETTINGS_SAVE},
-		{L"get", INTER_COMMAND_SETTINGS_GET}
+		{L"get", INTER_COMMAND_SETTINGS_GET},
+		{L"reset", INTER_COMMAND_SETTINGS_RESET}
 	};
 
 	_inter.settings_show_sub_command = {
