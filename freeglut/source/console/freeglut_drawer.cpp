@@ -7,6 +7,7 @@ void draw_sample(Settings& _settings, std::vector<Vertex>& _vct, int argc, char*
 
 	glob_settings = _settings;
 	glob_vct = _vct;
+	// настройки будут переходить из окна к окну только в случае сохранения их здесь и восстановления из файла в консоли
 
 	glutInit(&argc, argv);
 
@@ -23,6 +24,7 @@ void draw_sample(Settings& _settings, std::vector<Vertex>& _vct, int argc, char*
 		glutReshapeFunc(reshape_mainwindow);
 		glutKeyboardFunc(normal_keys);
 		glutSpecialFunc(special_keys);
+		main_menu_init();
 	
 	glutSetOption(GLUT_ACTION_ON_WINDOW_CLOSE, GLUT_ACTION_CONTINUE_EXECUTION);
 	glutMainLoop();
@@ -276,6 +278,200 @@ void special_keys(int key, int x, int y) {
 		default:					
 									break;
 
+	}
+
+}
+
+void main_menu_init() {
+	int _main_menu_render = glutCreateMenu(main_menu_render);
+
+	int _menu_movements_by_arrows = glutCreateMenu(menu_movements_by_arrows);
+	int _menu_movements_by_wasd = glutCreateMenu(menu_movements_by_wasd);
+	int _menu_movements_by_shiftspace = glutCreateMenu(menu_movements_by_shiftspace);
+	int _menu_scaling = glutCreateMenu(menu_scaling);
+	int _menu_color = glutCreateMenu(menu_color);
+	int _menu_settings = glutCreateMenu(menu_settings);
+
+	glutSetMenu(_menu_movements_by_arrows);
+		glutAddMenuEntry("Inrease sensivity", MENU_RENDER_MOVEMENTS_BY_ARROWS_INCREASE_SENSIVITY);
+		glutAddMenuEntry("Decrease sensivity", MENU_RENDER_MOVEMENTS_BY_ARROWS_DECREASE_SENSIVITY);
+
+	glutSetMenu(_menu_movements_by_wasd);
+		glutAddMenuEntry("Inrease sensivity", MENU_RENDER_MOVEMENTS_BY_WASD_INCREASE_SENSIVITY);
+		glutAddMenuEntry("Decrease sensivity", MENU_RENDER_MOVEMENTS_BY_WASD_DECREASE_SENSIVITY);
+
+	glutSetMenu(_menu_movements_by_shiftspace);
+		glutAddMenuEntry("Inrease sensivity", MENU_RENDER_MOVEMENTS_BY_SHIFTSPACE_INCREASE_SENSIVITY);
+		glutAddMenuEntry("Decrease sensivity", MENU_RENDER_MOVEMENTS_BY_SHIFTSPACE_DECREASE_SENSIVITY);
+
+	glutSetMenu(_menu_scaling);
+		glutAddMenuEntry("Inrease sensivity", MENU_RENDER_SCALING_INCREASE_SENSIVITY);
+		glutAddMenuEntry("Decrease sensivity", MENU_RENDER_SCALING_DECREASE_SENSIVITY);
+
+	glutSetMenu(_menu_color);
+		glutAddMenuEntry("ON", MENU_COLOR_OO_ON);
+		glutAddMenuEntry("OFF", MENU_COLOR_OO_OFF);
+
+	glutSetMenu(_menu_settings);
+		glutAddMenuEntry("SAVE", MENU_SETTINGS_GS_SAVE);
+		glutAddMenuEntry("GET", MENU_SETTINGS_GS_GET);
+		glutAddMenuEntry("RESET", MENU_SETTINGS_GS_RESET);
+		glutAddMenuEntry("RESET FILE", MENU_SETTINGS_GS_RESET_FILE);
+
+	glutSetMenu(_main_menu_render);
+		glutAddSubMenu("Movements by arrows", _menu_movements_by_arrows);
+		glutAddSubMenu("Movements by wasd/ijkl", _menu_movements_by_wasd);
+		glutAddSubMenu("Movements by shift(lctrl)/space", _menu_movements_by_shiftspace);
+		glutAddSubMenu("Scaling parameters by pageup/pagedown", _menu_scaling);
+		glutAddSubMenu("Coloring", _menu_color);
+		glutAddSubMenu("Settings", _menu_settings);
+
+	glutAttachMenu(GLUT_RIGHT_BUTTON);
+	glutDetachMenu(GLUT_LEFT_BUTTON);
+
+}
+
+void main_menu_render(int code) {
+	
+	switch (code) {
+		default:
+			break;
+	}
+
+}
+
+void menu_movements_by_arrows(int code) {
+	
+	switch (code) {
+
+		case MENU_RENDER_MOVEMENTS_BY_ARROWS_INCREASE_SENSIVITY: 
+			glob_settings.freeglut_settings.translation_changes.x *= MOVEMENTS_BY_ARROWS_MULTIPLY_SENSIVITY;
+			glob_settings.freeglut_settings.translation_changes.y *= MOVEMENTS_BY_ARROWS_MULTIPLY_SENSIVITY;
+			glob_settings.freeglut_settings.translation_changes.z *= MOVEMENTS_BY_ARROWS_MULTIPLY_SENSIVITY;
+			break;
+
+		case MENU_RENDER_MOVEMENTS_BY_ARROWS_DECREASE_SENSIVITY:
+			glob_settings.freeglut_settings.translation_changes.x /= MOVEMENTS_BY_ARROWS_MULTIPLY_SENSIVITY;
+			glob_settings.freeglut_settings.translation_changes.y /= MOVEMENTS_BY_ARROWS_MULTIPLY_SENSIVITY;
+			glob_settings.freeglut_settings.translation_changes.z /= MOVEMENTS_BY_ARROWS_MULTIPLY_SENSIVITY;
+			break;
+
+		default:
+			break;
+	}
+
+}
+
+void menu_movements_by_wasd(int code) {
+
+}
+
+void menu_movements_by_ijkl(int code) {
+
+	switch (code) {
+
+		case MENU_RENDER_MOVEMENTS_BY_WASD_INCREASE_SENSIVITY: 
+			glob_settings.freeglut_settings.camera_changes.x *= MOVEMENTS_BY_WASD_MULTIPLY_SENSIVITY;
+			glob_settings.freeglut_settings.camera_changes.y *= MOVEMENTS_BY_WASD_MULTIPLY_SENSIVITY;
+			glob_settings.freeglut_settings.camera_changes.z *= MOVEMENTS_BY_WASD_MULTIPLY_SENSIVITY;
+			break;
+
+		case MENU_RENDER_MOVEMENTS_BY_WASD_DECREASE_SENSIVITY: 
+			glob_settings.freeglut_settings.camera_changes.x /= MOVEMENTS_BY_WASD_MULTIPLY_SENSIVITY;
+			glob_settings.freeglut_settings.camera_changes.y /= MOVEMENTS_BY_WASD_MULTIPLY_SENSIVITY;
+			glob_settings.freeglut_settings.camera_changes.z /= MOVEMENTS_BY_WASD_MULTIPLY_SENSIVITY;
+			break;
+
+		default:
+			break;
+
+	}
+
+}
+
+void menu_movements_by_shiftspace(int code) {
+
+	switch (code) {
+
+		case MENU_RENDER_MOVEMENTS_BY_SHIFTSPACE_INCREASE_SENSIVITY: 
+			glob_settings.freeglut_settings.estrangement_changes *= MOVEMENTS_BY_SHIFTSPACE_MULTIPLY_SENSIVITY;
+			break;
+
+		case MENU_RENDER_MOVEMENTS_BY_SHIFTSPACE_DECREASE_SENSIVITY: 
+			glob_settings.freeglut_settings.estrangement_changes /= MOVEMENTS_BY_SHIFTSPACE_MULTIPLY_SENSIVITY;
+			break;
+
+		default:
+			break;
+
+	}
+
+}
+
+void menu_scaling(int code) {
+
+	switch (code) {
+
+		case MENU_RENDER_SCALING_INCREASE_SENSIVITY:
+			glob_settings.freeglut_settings.scaling_parameters_changes.x *= SCALING_MULTIPLY_SENSIVITY_X;
+			glob_settings.freeglut_settings.scaling_parameters_changes.y *= SCALING_MULTIPLY_SENSIVITY_Y;
+			glob_settings.freeglut_settings.scaling_parameters_changes.z *= SCALING_MULTIPLY_SENSIVITY_Z;
+			break;
+
+		case MENU_RENDER_SCALING_DECREASE_SENSIVITY:
+			glob_settings.freeglut_settings.scaling_parameters_changes.x /= SCALING_MULTIPLY_SENSIVITY_X;
+			glob_settings.freeglut_settings.scaling_parameters_changes.y /= SCALING_MULTIPLY_SENSIVITY_Y;
+			glob_settings.freeglut_settings.scaling_parameters_changes.z /= SCALING_MULTIPLY_SENSIVITY_Z;
+			break;
+
+		default:
+			break;
+
+	}
+
+}
+
+void menu_color(int code) {
+
+	switch (code) {
+
+		case MENU_COLOR_OO_OFF:
+			glob_settings.freeglut_settings.coloring_sample = false;
+			glutPostRedisplay();
+			break;
+
+		case MENU_COLOR_OO_ON:
+			glob_settings.freeglut_settings.coloring_sample = true;
+			glutPostRedisplay();
+			break;
+
+		default:
+			break;
+	}
+
+}
+
+void menu_settings(int code) {
+
+	switch (code) {
+
+		case MENU_SETTINGS_GS_SAVE:
+			glob_settings.save(L'a');
+			break;
+
+		case MENU_SETTINGS_GS_GET:
+			glob_settings.get(L'f');
+			glutPostRedisplay();
+			break;
+
+		case MENU_SETTINGS_GS_RESET:
+			glob_settings = Settings(glob_settings.global_settings, Freeglut_settings());
+			break;
+
+		case MENU_SETTINGS_GS_RESET_FILE:
+			Settings reseted_settings = Settings(glob_settings.global_settings, Freeglut_settings());
+			reseted_settings.save(L'a');
+			break;
 	}
 
 }
