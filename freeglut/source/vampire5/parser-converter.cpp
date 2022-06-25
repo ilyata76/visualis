@@ -30,16 +30,16 @@ bool v5_parser_converter(const std::wstring& _path_to_folder, int _number_of_fil
 
     while (!spins_file.eof()) {
         
-        atoms_file >> m; if (m[0] == VVIS_VAMPIRE5_DATA_COMMENT) { std::getline(atoms_file, strk); atoms_file >> m; }
-        atoms_file >> l; if (l[0] == VVIS_VAMPIRE5_DATA_COMMENT) { std::getline(atoms_file, strk); atoms_file >> l; }
-        atoms_file >> x; if (x[0] == VVIS_VAMPIRE5_DATA_COMMENT) { std::getline(atoms_file, strk); atoms_file >> x; }
-        atoms_file >> y; if (y[0] == VVIS_VAMPIRE5_DATA_COMMENT) { std::getline(atoms_file, strk); atoms_file >> y; }
-        atoms_file >> z; if (z[0] == VVIS_VAMPIRE5_DATA_COMMENT) { std::getline(atoms_file, strk); atoms_file >> z; }
-        spins_file >> sx; if (sx[0] == VVIS_VAMPIRE5_DATA_COMMENT) { std::getline(spins_file, strk); atoms_file >> sx; }
-        spins_file >> sy; if (sy[0] == VVIS_VAMPIRE5_DATA_COMMENT) { std::getline(spins_file, strk); atoms_file >> sy; }
-        spins_file >> sz; if (sz[0] == VVIS_VAMPIRE5_DATA_COMMENT) { std::getline(spins_file, strk); atoms_file >> sz; }
+        atoms_file >> m; while (m[0] == VVIS_VAMPIRE5_DATA_COMMENT) { std::getline(atoms_file, strk); atoms_file >> m; }
+        atoms_file >> l; while (l[0] == VVIS_VAMPIRE5_DATA_COMMENT) { std::getline(atoms_file, strk); atoms_file >> l; }
+        atoms_file >> x; while (x[0] == VVIS_VAMPIRE5_DATA_COMMENT) { std::getline(atoms_file, strk); atoms_file >> x; }
+        atoms_file >> y; while (y[0] == VVIS_VAMPIRE5_DATA_COMMENT) { std::getline(atoms_file, strk); atoms_file >> y; }
+        atoms_file >> z; while (z[0] == VVIS_VAMPIRE5_DATA_COMMENT) { std::getline(atoms_file, strk); atoms_file >> z; }
+        spins_file >> sx; while (sx[0] == VVIS_VAMPIRE5_DATA_COMMENT) { std::getline(spins_file, strk); atoms_file >> sx; }
+        spins_file >> sy; while (sy[0] == VVIS_VAMPIRE5_DATA_COMMENT) { std::getline(spins_file, strk); atoms_file >> sy; }
+        spins_file >> sz; while (sz[0] == VVIS_VAMPIRE5_DATA_COMMENT) { std::getline(spins_file, strk); atoms_file >> sz; }
         
-        sconfiguration_file << l << L'\t' << m << L'\t' << x << L'\t' << y << L'\t' << z << L'\t' << sx << L'\t' << sy << L'\t' << sz << L'\t' << L'\n';
+        sconfiguration_file << m << L'\t' << l << L'\t' << x << L'\t' << y << L'\t' << z << L'\t' << sx << L'\t' << sy << L'\t' << sz << L'\t' << L'\n';
 
     }
     
