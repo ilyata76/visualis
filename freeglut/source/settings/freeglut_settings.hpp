@@ -38,7 +38,7 @@
 
 			friend std::wostream& operator<<(std::wostream& _out, const Freeglut_settings& _settings);
 
-
+			~Freeglut_settings() {};
 	};
 
 #endif // !FREEGLUT_SETTINGS_HPP

@@ -10,6 +10,7 @@
 
 		Vec3f() : x(0), y(0), z(0) {};
 		Vec3f(double _x, double _y, double _z) : x(_x), y(_y), z(_z) {};
+		~Vec3f() {};
 	};
 
 	typedef Vec3f Point3f;
@@ -22,6 +23,7 @@
 
 		Angle2f() : phi(0), theta(0) {};
 		Angle2f(double _phi, double _theta) : phi(_phi), theta(_theta) {};
+		~Angle2f() {};
 	};
 
 	struct WindowParameters {
@@ -30,6 +32,7 @@
 
 		WindowParameters() : width(0), height(0) {};
 		WindowParameters(double _width, double _height) : width(_width), height(_height) {};
+		~WindowParameters() {};
 	};
 
 

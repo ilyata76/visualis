@@ -13,6 +13,7 @@
 
 			RGB() : red(1.0), green(1.0), blue(1.0) {};
 			RGB(const double& _red, const double& _green, const double& _blue) : red(_red), green(_green), blue(_blue) {};
+			~RGB() {};
 	};
 
 	RGB get_color_by_direction(const double& _x, const double& _y, const double& _z);

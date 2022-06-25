@@ -2,6 +2,8 @@
 
 // TODO: Asserts на пустые параметры
 
+// std::vector<Vertex> a = sconfiguration_parsing(this->app_settings.global_settings.path_to_folder + L"\\" + VVIS_VVIS_FILE_START_NAME_WSTR + v5_get_file_number(std::to_wstring(this->app_settings.global_settings.number_of_file)) + VVIS_VVIS_FILE_FORMAT_WSTR);
+
 Interpretator::Interpretator() {
 	this->prompt = L"vvis > ";
 	set_command_maps(*this);

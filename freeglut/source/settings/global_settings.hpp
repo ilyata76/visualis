@@ -24,7 +24,7 @@
 
 			friend std::wostream& operator<<(std::wostream& _out, const Global_settings& _settings);
 
-
+			~Global_settings() {};
 	};
 
 

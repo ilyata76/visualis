@@ -9,8 +9,6 @@ bool v5_parser_converter(const std::wstring& _path_to_folder, int _number_of_fil
     std::wfstream spins_file;
     std::wfstream sconfiguration_file;
 
-    std::stringstream ssm;
-
     std::wstring size1, size2, strk;
     std::wstring m, l, x, y, z;
     std::wstring sx, sy, sz;
@@ -26,7 +24,8 @@ bool v5_parser_converter(const std::wstring& _path_to_folder, int _number_of_fil
 
     sconfiguration_file << VVIS_VVIS_COMMENT << L"count" << L'\n';
     sconfiguration_file << size1            << L'\n';
-    sconfiguration_file << VVIS_VVIS_COMMENT << L"M" << L'\t' << L"L" << L'\t' << L"X" << L'\t' << L"Y" << L'\t' << L"Z" << L'\t' << L"SX" << L'\t' << L"SY" << L'\t' << L"SZ" << L'\n';
+    sconfiguration_file << VVIS_VVIS_COMMENT << L"M" << VVIS_VVIS_SEPARATOR << L"L" << VVIS_VVIS_SEPARATOR << L"X" << VVIS_VVIS_SEPARATOR << L"Y" << VVIS_VVIS_SEPARATOR << L"Z" << VVIS_VVIS_SEPARATOR
+        << L"SX" << VVIS_VVIS_SEPARATOR << L"SY" << VVIS_VVIS_SEPARATOR << L"SZ" << L'\n';
 
     while (!spins_file.eof()) {
         
@@ -39,9 +38,14 @@ bool v5_parser_converter(const std::wstring& _path_to_folder, int _number_of_fil
         spins_file >> sy; while (sy[0] == VVIS_VAMPIRE5_DATA_COMMENT) { std::getline(spins_file, strk); atoms_file >> sy; }
         spins_file >> sz; while (sz[0] == VVIS_VAMPIRE5_DATA_COMMENT) { std::getline(spins_file, strk); atoms_file >> sz; }
         
-        sconfiguration_file << m << L'\t' << l << L'\t' << x << L'\t' << y << L'\t' << z << L'\t' << sx << L'\t' << sy << L'\t' << sz << L'\t' << L'\n';
+        sconfiguration_file << m << VVIS_VVIS_SEPARATOR << l << VVIS_VVIS_SEPARATOR << x << VVIS_VVIS_SEPARATOR << y << VVIS_VVIS_SEPARATOR << z << VVIS_VVIS_SEPARATOR 
+            << sx << VVIS_VVIS_SEPARATOR << sy << VVIS_VVIS_SEPARATOR << sz << L'\n';
 
     }
     
+    atoms_file.close();
+    spins_file.close();
+    sconfiguration_file.close();
+
     return true;
 }

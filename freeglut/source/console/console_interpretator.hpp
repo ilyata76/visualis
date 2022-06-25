@@ -7,6 +7,7 @@
 	#include "../settings/settings.hpp"
 	#include "./defines_commands_codes.hpp"
 	#include "../vampire5/parser-converter.hpp"
+	#include "../vertex-shape/vertex.hpp"
 	#include <map>
 	#include <iostream>
 
@@ -30,7 +31,7 @@
 			Interpretator(std::wstring& _prompt) : prompt(_prompt) { set_command_maps(*this); };
 			Interpretator(Settings& _app_settings) : app_settings(_app_settings) { this->prompt = L"vvis > "; set_command_maps(*this); };
 			Interpretator(std::wstring& _prompt, Settings& _app_settings) : prompt(_prompt), app_settings(_app_settings) { set_command_maps(*this); };
-
+			~Interpretator() {};
 			// 0 - okay; 1 - error; 2 - restart
 			unsigned char loop(int argc, char** argv, std::vector<std::wstring> _commands = {});
 

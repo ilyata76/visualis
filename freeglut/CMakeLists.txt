@@ -51,6 +51,10 @@ set (HEADERS_VISUALIS
 
 	source/vampire5/parser-converter.hpp
 
+	source/vertex-shape/point.hpp
+	source/vertex-shape/spin.hpp
+	source/vertex-shape/vertex.hpp
+	source/vertex-shape/shape.hpp
 
 )
 
@@ -66,6 +70,10 @@ set (SOURCES_VISUALIS
 	source/console/console_interpretator.cpp
 
 	source/vampire5/parser-converter.cpp
+
+	source/vertex-shape/vertex.cpp
+	source/vertex-shape/shape.cpp
+
 )
 
 # ----------- | SUBDIRECTORIES | ----------- 

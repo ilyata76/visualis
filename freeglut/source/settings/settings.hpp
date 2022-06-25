@@ -37,7 +37,7 @@
 			// flag: g - only global, f - only freeglut, a - all
 			bool get(wchar_t _flag);
 
-
+			~Settings() {};
 	};
 
 
