@@ -56,6 +56,8 @@ set (HEADERS_VISUALIS
 	source/vertex-shape/vertex.hpp
 	source/vertex-shape/shape.hpp
 
+	source/console/freeglut_drawer.hpp
+
 )
 
 set (SOURCES_VISUALIS
@@ -73,6 +75,8 @@ set (SOURCES_VISUALIS
 
 	source/vertex-shape/vertex.cpp
 	source/vertex-shape/shape.cpp
+
+	source/console/freeglut_drawer.cpp
 
 )
 
