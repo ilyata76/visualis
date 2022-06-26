@@ -23,6 +23,8 @@
 
 			Settings() {};
 			Settings(const Global_settings& _g_s, const Freeglut_settings& _f_s) : global_settings(_g_s), freeglut_settings(_f_s) {};
+			Settings(const Global_settings& _g_s, const Freeglut_settings& _f_s, const Window& _main_window, std::vector<Window> _subwindows) 
+				: global_settings(_g_s), freeglut_settings(_f_s), main_window(_main_window), subwindows(_subwindows) {};
 
 			friend std::wostream& operator<<(std::wostream& _out, const Settings& _settings);
 

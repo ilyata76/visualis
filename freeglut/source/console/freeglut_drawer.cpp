@@ -338,7 +338,7 @@ void mouse_pressed(int button, int state, int x, int y) {
 		glob_settings.freeglut_settings.scaling_parameters.z += glob_settings.freeglut_settings.scaling_parameters_changes.z;
 		postRedisplay();
 	} else if (button == 3) {
-		glob_settings.freeglut_settings.estrangement -= 2.0 * glob_settings.freeglut_settings.estrangement_changes;
+		glob_settings.freeglut_settings.estrangement -= 0.5 * glob_settings.freeglut_settings.estrangement_changes;
 		postRedisplay();
 	}
 	
@@ -349,7 +349,7 @@ void mouse_pressed(int button, int state, int x, int y) {
 		glob_settings.freeglut_settings.scaling_parameters.z -= glob_settings.freeglut_settings.scaling_parameters_changes.z;
 		postRedisplay();
 	} else if (button == 4) {
-		glob_settings.freeglut_settings.estrangement += 2.0 * glob_settings.freeglut_settings.estrangement_changes;
+		glob_settings.freeglut_settings.estrangement += 0.5 * glob_settings.freeglut_settings.estrangement_changes;
 		postRedisplay();
 	}
 
@@ -699,11 +699,12 @@ void menu_settings(int code) {
 			} break;
 
 		case MENU_SETTINGS_GS_RESET:	
-			glob_settings = Settings(glob_settings.global_settings, Freeglut_settings());
+			glob_settings = Settings(glob_settings.global_settings, Freeglut_settings(), glob_settings.main_window, glob_settings.subwindows);
+			postRedisplay();
 			break;
 
 		case MENU_SETTINGS_GS_RESET_FILE: {
-			Settings reseted_settings = Settings(glob_settings.global_settings, Freeglut_settings());
+			Settings reseted_settings = Settings(glob_settings.global_settings, Freeglut_settings(), glob_settings.main_window, glob_settings.subwindows);
 			reseted_settings.save(L'a');
 			} break;
 	}
@@ -728,7 +729,9 @@ void display_subwindow_0() {
 
 	glMatrixMode(GL_PROJECTION);
 		glLoadIdentity();
+
 		double estrangement = 0.7;
+		if (glob_settings.freeglut_settings.estrangement < 0) estrangement = -estrangement;
 
 		glOrtho(
 			-(double(glob_settings.subwindows[0].wh.width) / 2.) * estrangement, (double(glob_settings.subwindows[0].wh.width) / 2.) * estrangement,
@@ -746,8 +749,10 @@ void display_subwindow_0() {
 	
 	if (axis_by_cones) {
 
-		glColor3f(1.0, 0.0, 0.0);
 		estrangement = glob_settings.subwindows[0].wh.width / 50.0;
+
+		glColor3f(1.0, 0.0, 0.0);
+
 		glRotated(90.0, 0, 1, 0);
 			glutSolidCylinder(3.0 * estrangement, 6.0 * estrangement, 10.0, 10.0);
 			glTranslated(0.0, 0.0, 6.0 * estrangement);

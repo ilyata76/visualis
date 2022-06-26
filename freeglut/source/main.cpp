@@ -1,15 +1,22 @@
 ﻿#include "./console/console_interpretator.hpp"
 
 int main(int argc, char** argv) {
-	Interpretator I;
+	try {
+		Interpretator I;
 
-	enum interpreter_state { ok, error, restart };
+		enum interpreter_state { ok, error, restart };
 
-	switch (I.loop(argc, argv)) {
-		case ok: break;
-		case error: std::wcout << L"\terror!\n"; break;
-		case restart: std::wcout << L"\trestarting\n"; return main(argc, argv); break;
-	};
-	 
+		switch (I.loop(argc, argv)) {
+			case ok: break;
+			case error: std::wcout << L"\terror!\n"; break;
+			case restart: std::wcout << L"\trestarting\n"; return main(argc, argv); break;
+		};
+
+	} catch (Exceptio& E) {
+		return E.get_index();
+	} catch(int &E) {
+		return E;
+	}
+
 	return 0;
 }
