@@ -1,4 +1,4 @@
-#include "./vertex.hpp"
+﻿#include "./vertex.hpp"
 
 std::vector<Vertex> sconfiguration_parsing(const std::wstring& _path_to_file) {
     Assert(_path_to_file != VVIS_PATH_PLUG_WSTR);

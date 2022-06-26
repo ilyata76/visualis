@@ -1,4 +1,4 @@
-#include "./parser-converter.hpp"
+﻿#include "./parser-converter.hpp"
 
 bool v5_parser_converter(const std::wstring& _path_to_folder, int _number_of_file) {    
     Assert(_path_to_folder != VVIS_PATH_PLUG_WSTR);

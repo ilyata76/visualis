@@ -1,6 +1,6 @@
-#include "./console_interpretator.hpp"
+п»ї#include "./console_interpretator.hpp"
 
-// TODO: Asserts на пустые параметры
+// TODO: Asserts РЅР° РїСѓСЃС‚С‹Рµ РїР°СЂР°РјРµС‚СЂС‹
 
 
 Interpretator::Interpretator() {

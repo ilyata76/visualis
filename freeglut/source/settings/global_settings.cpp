@@ -1,4 +1,4 @@
-#include "./global_settings.hpp"
+﻿#include "./global_settings.hpp"
 
 Global_settings::Global_settings() {
 	this->path_to_folder				= VVIS_PATH_PLUG_WSTR;

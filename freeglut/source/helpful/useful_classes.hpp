@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #ifndef USEFUL_CLASSES_HPP
 #define USEFUL_CLASSES_HPP

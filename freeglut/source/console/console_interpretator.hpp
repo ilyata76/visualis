@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 
 #ifndef CONSOLE_INTERPRETATOR_HPP

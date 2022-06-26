@@ -1,6 +1,6 @@
-#include "./useful_functions.hpp"
+п»ї#include "./useful_functions.hpp"
 
-// TODO: Asserts на пустые параметры
+// TODO: Asserts РЅР° РїСѓСЃС‚С‹Рµ РїР°СЂР°РјРµС‚СЂС‹
 
 float get_euler_phi(const double& sx, const double& sy, const double& sz) {
 	int sign = -1;

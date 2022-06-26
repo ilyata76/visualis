@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 
 #ifndef FREEGLUT_DRAWER_HPP

@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 
 #ifndef SPIN_HPP

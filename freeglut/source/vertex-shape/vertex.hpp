@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 
 #ifndef VERTEX_HPP

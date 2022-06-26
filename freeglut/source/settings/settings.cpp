@@ -1,4 +1,4 @@
-#include "./settings.hpp"
+﻿#include "./settings.hpp"
 
 std::wostream& operator<<(std::wostream& _out, const Settings& _settings) {
 	_out << _settings.global_settings << _settings.freeglut_settings;

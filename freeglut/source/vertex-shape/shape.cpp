@@ -1,4 +1,4 @@
-#include "./shape.hpp"
+п»ї#include "./shape.hpp"
 
 bool Cone::set_draw_configuration() {
     Assert(!(this->vrt.spin.x == 0.0 && this->vrt.spin.y == 0.0 && this->vrt.spin.z == 0.0));
@@ -11,12 +11,12 @@ bool Cone::set_draw_configuration() {
 
 bool Cone::draw(Rgb color, double* args) {
 	glColor3f(color.red, color.green, color.blue);
-	// повернули
+	// РїРѕРІРµСЂРЅСѓР»Рё
 	glRotatef(this->euler_phi, 0, 0, 1);
 	glRotatef(this->euler_theta, 0, 1, 0);
-	// нарисовали
+	// РЅР°СЂРёСЃРѕРІР°Р»Рё
 	glutSolidCone(args[0], args[1], args[2], args[3]);
-	// отвернули
+	// РѕС‚РІРµСЂРЅСѓР»Рё
 	glRotatef(-this->euler_theta, 0, 1, 0);
 	glRotatef(-this->euler_phi, 0, 0, 1);
 

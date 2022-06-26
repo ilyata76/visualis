@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 
 #ifndef PARSER_CONVERTER_VAMPIRE5_HPP

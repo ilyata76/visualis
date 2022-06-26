@@ -1,4 +1,4 @@
-#include "./freeglut_settings.hpp"
+﻿#include "./freeglut_settings.hpp"
 
 Freeglut_settings::Freeglut_settings() {
 				//this->backgroundcolor					= Rgb(1.0, 1.0, 1.0);
