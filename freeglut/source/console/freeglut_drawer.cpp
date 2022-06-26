@@ -6,20 +6,24 @@ std::vector<Vertex> glob_vct;
 // set filepath ../temp/b/sconfiguration-00000030.vvis
 // visualize file
 
-//int w, h;
+//int w, h; int subwindow;
 //
 //void display() {
 //	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); glEnable(GL_BLEND);
 //	glClearColor(1.0, 0.0, 1.0, 0.0);
 //	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+//	printf("DISPLAY");
+//	
 //	glutSwapBuffers();
 //}
-//
+
 //void reshape(int w, int h) {
 //	if (h == 0) h = 1;
 //	if (w == 0) w = 1;
-//
+//	printf("RESHAPE\n");
 //	glViewport(0, 0, w, h);
+//	::w = w; ::h = h;
+//
 //}
 
 void draw_sample(Settings& _settings, std::vector<Vertex>& _vct, int argc, char** argv) {
@@ -30,23 +34,25 @@ void draw_sample(Settings& _settings, std::vector<Vertex>& _vct, int argc, char*
 
 	glutInit(&argc, argv);
 
-	glutInitWindowSize(glob_settings.freeglut_settings.main_window.width,
-						glob_settings.freeglut_settings.main_window.height);
+	glutInitWindowSize(glob_settings.main_window.wh.width,
+						glob_settings.main_window.wh.height);
 
 	glutInitWindowPosition(0, 0);
 
 	glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE);
 
-	int MAINWINDOW = glutCreateWindow("main_window"); glutSetWindowTitle("VISUALIS");
+	glob_settings.main_window.descriptor = glutCreateWindow("main_window"); glutSetWindowTitle("VISUALIS");
 		glutDisplayFunc(display_mainwindow);
 		glutReshapeFunc(reshape_mainwindow);
 		glutKeyboardFunc(normal_keys);
 		glutSpecialFunc(special_keys);
 		main_menu_init();
 
-	/*int subwindow = glutCreateSubWindow(MAINWINDOW, 0, 0, glob_settings.freeglut_settings.main_window.width / 5.0, glob_settings.freeglut_settings.main_window.height / 5.0);
-		glutDisplayFunc(display);
-		glutReshapeFunc(reshape);*/
+	//	w = glob_settings.freeglut_settings.main_window.width / 5.0;
+	//	h = glob_settings.freeglut_settings.main_window.height / 5.0;
+	//subwindow = glutCreateSubWindow(MAINWINDOW, 0, 0, w, h);
+	//	glutDisplayFunc(display);
+	//	glutReshapeFunc(reshape);
 
 	glutSetOption(GLUT_ACTION_ON_WINDOW_CLOSE, GLUT_ACTION_CONTINUE_EXECUTION);
 	glutMainLoop();
@@ -55,21 +61,21 @@ void draw_sample(Settings& _settings, std::vector<Vertex>& _vct, int argc, char*
 
 void display_mainwindow() {
 
-	glClearColor(glob_settings.freeglut_settings.backgroundcolor.red, glob_settings.freeglut_settings.backgroundcolor.green, glob_settings.freeglut_settings.backgroundcolor.blue, 0.0);
+	glClearColor(glob_settings.main_window.backgroundcolor.red, glob_settings.main_window.backgroundcolor.green, glob_settings.main_window.backgroundcolor.blue, 0.0);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	if (glob_settings.freeglut_settings.shape == VVIS_SHAPE_NOTHING || glob_vct.size() == 0) {
 		
 		glMatrixMode(GL_PROJECTION);
 			glLoadIdentity();
-			gluOrtho2D(0.0, glob_settings.freeglut_settings.main_window.width, 0.0, glob_settings.freeglut_settings.main_window.height);
+			gluOrtho2D(0.0, glob_settings.main_window.wh.width, 0.0, glob_settings.main_window.wh.height);
 			glColor3f(0.0, 0.0, 0.0);
 
 		glMatrixMode(GL_MODELVIEW);
 			glPushMatrix();
 			glColor3f(0.0, 0.0, 0.0);
 			glLoadIdentity();
-			glRasterPos2i(0.0, glob_settings.freeglut_settings.main_window.height / 2);
+			glRasterPos2i(0.0, glob_settings.main_window.wh.height / 2);
 				[](std::string text) {int len = text.length(); for (int i = 0; i < len; ++i) glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, text[i]); }("NOTHING TO DISPLAY");
 		glPopMatrix();
 
@@ -91,8 +97,8 @@ void display_mainwindow() {
 			glLoadIdentity();
 			
 			glOrtho(
-				-(double(glob_settings.freeglut_settings.main_window.width) / 2.) * double(glob_settings.freeglut_settings.estrangement), (double(glob_settings.freeglut_settings.main_window.width) / 2.) * double(glob_settings.freeglut_settings.estrangement),
-				-(double(glob_settings.freeglut_settings.main_window.height) / 2.) * double(glob_settings.freeglut_settings.estrangement), (double(glob_settings.freeglut_settings.main_window.height) / 2.) * double(glob_settings.freeglut_settings.estrangement),
+				-(double(glob_settings.main_window.wh.width) / 2.) * double(glob_settings.freeglut_settings.estrangement), (double(glob_settings.main_window.wh.width) / 2.) * double(glob_settings.freeglut_settings.estrangement),
+				-(double(glob_settings.main_window.wh.height) / 2.) * double(glob_settings.freeglut_settings.estrangement), (double(glob_settings.main_window.wh.height) / 2.) * double(glob_settings.freeglut_settings.estrangement),
 				1., 1000.
 			);
 			
@@ -184,9 +190,12 @@ void reshape_mainwindow(int w, int h) {
 	if (w == 0) w = 1;
 
 	glViewport(0, 0, w, h);
+	
+	glob_settings.main_window.wh.width = w;
+	glob_settings.main_window.wh.height= h;
 
-	glob_settings.freeglut_settings.main_window.width = w;
-	glob_settings.freeglut_settings.main_window.height= h;
+	//glutSetWindow(subwindow);
+	//glutReshapeWindow(glob_settings.freeglut_settings.main_window.width / 5.0, glob_settings.freeglut_settings.main_window.height / 5.0);
 }
 
 void normal_keys(unsigned char key, int x, int y) {
@@ -500,9 +509,9 @@ void menu_settings(int code) {
 			break;
 
 		case MENU_SETTINGS_GS_GET: {
-				int width = glob_settings.freeglut_settings.main_window.width, height = glob_settings.freeglut_settings.main_window.height;
+				int width = glob_settings.main_window.wh.width, height = glob_settings.main_window.wh.height;
 				glob_settings.get(L'f');
-				glob_settings.freeglut_settings.main_window.width = width; glob_settings.freeglut_settings.main_window.height = height;
+				glob_settings.main_window.wh.width = width; glob_settings.main_window.wh.height = height;
 				glutPostRedisplay();
 			} break;
 

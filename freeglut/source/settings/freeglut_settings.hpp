@@ -15,7 +15,7 @@
 		
 		public:
 			
-			Rgb backgroundcolor;
+			//Rgb backgroundcolor;
 			bool coloring_sample;
 			wchar_t shape;
 			std::wstring shape_wstr;
@@ -31,7 +31,7 @@
 			Parameters3f camera_changes;
 			double translation_by_element;
 			bool fullscreen;
-			WindowParameters main_window;
+			//WindowParameters main_window;
 			double estrangement_changes;
 			
 			Freeglut_settings();

@@ -1,7 +1,7 @@
 #include "./freeglut_settings.hpp"
 
 Freeglut_settings::Freeglut_settings() {
-				this->backgroundcolor					= Rgb(1.0, 1.0, 1.0);
+				//this->backgroundcolor					= Rgb(1.0, 1.0, 1.0);
 				this->coloring_sample					= VVIS_USING_COLOR;
 				this->shape								= VVIS_SHAPE_CONE;
 				this->shape_wstr						= VVIS_SHAPE_CONE_WSTR;
@@ -17,12 +17,12 @@ Freeglut_settings::Freeglut_settings() {
 				this->camera_changes					= Parameters3f(VVIS_CAMERA_CHANGES_X, VVIS_CAMERA_CHANGES_Y, VVIS_CAMERA_CHANGES_Z);
 				this->translation_by_element			= VVIS_TRANSLATION_BY_ELEMENT;
 				this->fullscreen						= false;
-				this->main_window						= WindowParameters(200.0, 200.0);
+				//this->main_window						= WindowParameters(200.0, 200.0);
 				this->estrangement_changes				= VVIS_ESTRAGNEMENT_CHANGES;
 };
 
 std::wostream& operator<<(std::wostream& _out, const Freeglut_settings& _settings) {
-	_out << L"\t Background color\t\t\t [C]: " << _settings.backgroundcolor.red * 255.0 << L"/255 " << _settings.backgroundcolor.green * 255.0 << L"/255 " << _settings.backgroundcolor.blue * 255.0 << L"/255\n";
+	//_out << L"\t Background color\t\t\t [C]: " << _settings.backgroundcolor.red * 255.0 << L"/255 " << _settings.backgroundcolor.green * 255.0 << L"/255 " << _settings.backgroundcolor.blue * 255.0 << L"/255\n";
 	_out << L"\t Coloring sample\t\t\t [C]: " << std::boolalpha << _settings.coloring_sample << L"\n";
 	_out << L"\t Shape\t\t\t\t\t [C]: " << _settings.shape << "/" << _settings.shape_wstr << L"\n";
 	_out << L"\t Additional rotation\t\t\t (X): " << _settings.additional_rotation.phi << "(phi), " << _settings.additional_rotation.theta << L"(theta)\n";
@@ -37,7 +37,7 @@ std::wostream& operator<<(std::wostream& _out, const Freeglut_settings& _setting
 	_out << L"\t Camera changes\t\t\t\t [C]: (" << _settings.camera_changes.x << L", " << _settings.camera_changes.y << L", " << _settings.camera_changes.z << L")\n";
 	_out << L"\t Translation by element\t\t\t [C]: " << std::boolalpha << (_settings.translation_by_element == -1 ? false : true) << L"\n";
 	_out << L"\t Fullscreen\t\t\t\t [C]: " << std::boolalpha << _settings.fullscreen << L"\n";
-	_out << L"\t Window\t\t\t\t\t (X): (" << _settings.main_window.height << L", " << _settings.main_window.width << L")\n";
+	//_out << L"\t Window\t\t\t\t\t (X): (" << _settings.main_window.height << L", " << _settings.main_window.width << L")\n";
 	_out << L"\t Estrangement changes\t\t\t [C]: " << std::boolalpha << _settings.estrangement_changes << L"\n";
 	return _out;
 }

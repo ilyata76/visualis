@@ -18,6 +18,8 @@
 		public:
 			Global_settings global_settings;
 			Freeglut_settings freeglut_settings;
+			Window main_window;
+			std::vector<Window> subwindows;
 
 			Settings() {};
 			Settings(const Global_settings& _g_s, const Freeglut_settings& _f_s) : global_settings(_g_s), freeglut_settings(_f_s) {};

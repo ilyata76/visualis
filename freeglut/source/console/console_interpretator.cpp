@@ -172,14 +172,14 @@ bool Interpretator::set_handler(std::vector<std::wstring> _commands) {
 											|| !is_number(_commands[4]) || std::stod(_commands[2]) > 255 || std::stod(_commands[3]) > 255
 											|| std::stod(_commands[4]) > 255) { std::wcout << L"\tIncorrect format\n"; return false; } 
 											  
-											  this->app_settings.freeglut_settings.backgroundcolor.red = std::stod(_commands[2]) / 255.0;
-											  this->app_settings.freeglut_settings.backgroundcolor.green = std::stod(_commands[3]) / 255.0;
-											  this->app_settings.freeglut_settings.backgroundcolor.blue = std::stod(_commands[4]) / 255.0;
+											  this->app_settings.main_window.backgroundcolor.red = std::stod(_commands[2]) / 255.0;
+											  this->app_settings.main_window.backgroundcolor.green = std::stod(_commands[3]) / 255.0;
+											  this->app_settings.main_window.backgroundcolor.blue = std::stod(_commands[4]) / 255.0;
 											  
 											  std::wcout << L"\tColoring background (" 
-												  << this->app_settings.freeglut_settings.backgroundcolor.red * 255.0 << ", "
-												  << this->app_settings.freeglut_settings.backgroundcolor.green * 255.0 << ", "
-												  << this->app_settings.freeglut_settings.backgroundcolor.blue * 255.0
+												  << this->app_settings.main_window.backgroundcolor.red * 255.0 << ", "
+												  << this->app_settings.main_window.backgroundcolor.green * 255.0 << ", "
+												  << this->app_settings.main_window.backgroundcolor.blue * 255.0
 												  << L") has been set up\n";
 											  
 											  break;
@@ -269,7 +269,7 @@ bool Interpretator::unset_handler(std::vector<std::wstring> _commands) {
 
 		case INTER_COMMAND_SET_COLORING: std::wcout << L"\tSuccessful\n"; this->app_settings.freeglut_settings.coloring_sample = false; break;
 
-		case INTER_COMMAND_SET_BACKGROUNDCOLOR: std::wcout << L"\tSuccessful\n"; this->app_settings.freeglut_settings.backgroundcolor = Rgb(1.0, 1.0, 1.0); break;
+		case INTER_COMMAND_SET_BACKGROUNDCOLOR: std::wcout << L"\tSuccessful\n"; this->app_settings.main_window.backgroundcolor = Rgb(1.0, 1.0, 1.0); break;
 
 		case INTER_COMMAND_SET_FULLSCREEN: std::wcout << L"\tSuccessful\n"; this->app_settings.freeglut_settings.fullscreen = false; break;
 

@@ -3,6 +3,8 @@
 #ifndef USEFUL_CLASSES_HPP
 #define USEFUL_CLASSES_HPP
 
+	#include "../color/RGB.hpp"
+
 	struct Vec3f {
 		double x;
 		double y;
@@ -33,6 +35,18 @@
 		WindowParameters() : width(0), height(0) {};
 		WindowParameters(double _width, double _height) : width(_width), height(_height) {};
 		~WindowParameters() {};
+	};
+
+	class Window {
+		public:
+
+			int descriptor;
+			WindowParameters wh;
+			Rgb backgroundcolor;
+
+			Window() : descriptor(0), wh(WindowParameters(200.0, 200.0)), backgroundcolor(Rgb(1.0, 1.0, 1.0)) {};
+			Window(int _descriptor, WindowParameters _wh, Rgb _background) : descriptor(_descriptor), wh(_wh), backgroundcolor(_background) {};
+			~Window() {};
 	};
 
 
