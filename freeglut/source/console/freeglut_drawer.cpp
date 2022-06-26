@@ -31,7 +31,7 @@ void draw_sample(Settings& _settings, std::vector<Vertex>& _vct, int argc, char*
 	// subwindow
 
 	glob_settings.subwindows.push_back(
-		Window(0, WindowParameters(glob_settings.main_window.wh.height / 7.0, glob_settings.main_window.wh.height / 7.0),
+		Window(0, WindowParameters(glob_settings.main_window.wh.height / 7.0, glob_settings.main_window.wh.height),
 			Rgb(glob_settings.main_window.backgroundcolor.red, glob_settings.main_window.backgroundcolor.green, glob_settings.main_window.backgroundcolor.blue))
 	);
 
@@ -188,7 +188,7 @@ void reshape_mainwindow(int w, int h) {
 
 	// reshape subwindows
 	glutSetWindow(glob_settings.subwindows[0].descriptor);
-		glutReshapeWindow(glob_settings.main_window.wh.height / 7.0, glob_settings.main_window.wh.height / 7.0);
+		glutReshapeWindow(glob_settings.main_window.wh.height / 7.0, glob_settings.main_window.wh.height);
 	
 	glutSetWindow(glob_settings.main_window.descriptor);
 }
@@ -313,6 +313,7 @@ void main_menu_init() {
 
 	int _menu_movements_by_arrows = glutCreateMenu(menu_movements_by_arrows);
 	int _menu_movements_by_wasd = glutCreateMenu(menu_movements_by_wasd);
+	int _menu_movements_by_ijkl = glutCreateMenu(menu_movements_by_ijkl);
 	int _menu_movements_by_shiftspace = glutCreateMenu(menu_movements_by_shiftspace);
 	int _menu_scaling = glutCreateMenu(menu_scaling);
 	int _menu_color = glutCreateMenu(menu_color);
@@ -321,18 +322,38 @@ void main_menu_init() {
 	glutSetMenu(_menu_movements_by_arrows);
 		glutAddMenuEntry("Inrease sensivity", MENU_RENDER_MOVEMENTS_BY_ARROWS_INCREASE_SENSIVITY);
 		glutAddMenuEntry("Decrease sensivity", MENU_RENDER_MOVEMENTS_BY_ARROWS_DECREASE_SENSIVITY);
+		glutAddMenuEntry("Press UP", MENU_RENDER_MOVEMENTS_BY_ARROWS_PRESS_UP);
+		glutAddMenuEntry("Press DOWN", MENU_RENDER_MOVEMENTS_BY_ARROWS_PRESS_DOWN);
+		glutAddMenuEntry("Press LEFT", MENU_RENDER_MOVEMENTS_BY_ARROWS_PRESS_LEFT);
+		glutAddMenuEntry("Press RIGHT", MENU_RENDER_MOVEMENTS_BY_ARROWS_PRESS_RIGHT);
 
 	glutSetMenu(_menu_movements_by_wasd);
 		glutAddMenuEntry("Inrease sensivity", MENU_RENDER_MOVEMENTS_BY_WASD_INCREASE_SENSIVITY);
 		glutAddMenuEntry("Decrease sensivity", MENU_RENDER_MOVEMENTS_BY_WASD_DECREASE_SENSIVITY);
+		glutAddMenuEntry("Press W", MENU_RENDER_MOVEMENTS_BY_WASD_PRESS_W);
+		glutAddMenuEntry("Press A", MENU_RENDER_MOVEMENTS_BY_WASD_PRESS_A);
+		glutAddMenuEntry("Press S", MENU_RENDER_MOVEMENTS_BY_WASD_PRESS_S);
+		glutAddMenuEntry("Press D", MENU_RENDER_MOVEMENTS_BY_WASD_PRESS_D);
+
+	glutSetMenu(_menu_movements_by_ijkl);
+		glutAddMenuEntry("Inrease sensivity", MENU_RENDER_MOVEMENTS_BY_IJKL_INCREASE_SENSIVITY);
+		glutAddMenuEntry("Decrease sensivity", MENU_RENDER_MOVEMENTS_BY_IJKL_DECREASE_SENSIVITY);
+		glutAddMenuEntry("Press I", MENU_RENDER_MOVEMENTS_BY_IJKL_PRESS_I);
+		glutAddMenuEntry("Press J", MENU_RENDER_MOVEMENTS_BY_IJKL_PRESS_J);
+		glutAddMenuEntry("Press K", MENU_RENDER_MOVEMENTS_BY_IJKL_PRESS_K);
+		glutAddMenuEntry("Press L", MENU_RENDER_MOVEMENTS_BY_IJKL_PRESS_L);
 
 	glutSetMenu(_menu_movements_by_shiftspace);
 		glutAddMenuEntry("Inrease sensivity", MENU_RENDER_MOVEMENTS_BY_SHIFTSPACE_INCREASE_SENSIVITY);
 		glutAddMenuEntry("Decrease sensivity", MENU_RENDER_MOVEMENTS_BY_SHIFTSPACE_DECREASE_SENSIVITY);
+		glutAddMenuEntry("Press SHIFT", MENU_RENDER_MOVEMENTS_BY_SHIFTSPACE_PRESS_SHIFT);
+		glutAddMenuEntry("Press SPACE", MENU_RENDER_MOVEMENTS_BY_SHIFTSPACE_PRESS_SPACE);
 
 	glutSetMenu(_menu_scaling);
 		glutAddMenuEntry("Inrease sensivity", MENU_RENDER_SCALING_INCREASE_SENSIVITY);
 		glutAddMenuEntry("Decrease sensivity", MENU_RENDER_SCALING_DECREASE_SENSIVITY);
+		glutAddMenuEntry("Press PAGE UP", MENU_RENDER_SCALING_PRESS_PAGE_UP);
+		glutAddMenuEntry("Press PAGE DOWN", MENU_RENDER_SCALING_PRESS_PAGE_DOWN);
 
 	glutSetMenu(_menu_color);
 		glutAddMenuEntry("ON", MENU_COLOR_OO_ON);
@@ -346,11 +367,13 @@ void main_menu_init() {
 
 	glutSetMenu(_main_menu_render);
 		glutAddSubMenu("Movements by arrows", _menu_movements_by_arrows);
-		glutAddSubMenu("Movements by wasd/ijkl", _menu_movements_by_wasd);
+		glutAddSubMenu("Movements by wasd", _menu_movements_by_wasd);
+		glutAddSubMenu("Movements by ijkl", _menu_movements_by_ijkl);
 		glutAddSubMenu("Movements by shift(lctrl)/space", _menu_movements_by_shiftspace);
 		glutAddSubMenu("Scaling parameters by pageup/pagedown", _menu_scaling);
 		glutAddSubMenu("Coloring", _menu_color);
 		glutAddSubMenu("Settings", _menu_settings);
+		glutAddMenuEntry("Invert control", MENU_RENDER_INVERT_CONTROL);
 
 	glutAttachMenu(GLUT_RIGHT_BUTTON);
 	glutDetachMenu(GLUT_LEFT_BUTTON);
@@ -360,6 +383,9 @@ void main_menu_init() {
 void main_menu_render(int code) {
 	
 	switch (code) {
+
+		case MENU_RENDER_INVERT_CONTROL: glob_settings.freeglut_settings.translation_by_element *= -1; break;
+
 		default:
 			break;
 	}
@@ -380,6 +406,22 @@ void menu_movements_by_arrows(int code) {
 			glob_settings.freeglut_settings.translation_changes.x /= MOVEMENTS_BY_ARROWS_MULTIPLY_SENSIVITY;
 			glob_settings.freeglut_settings.translation_changes.y /= MOVEMENTS_BY_ARROWS_MULTIPLY_SENSIVITY;
 			glob_settings.freeglut_settings.translation_changes.z /= MOVEMENTS_BY_ARROWS_MULTIPLY_SENSIVITY;
+			break;
+
+		case MENU_RENDER_MOVEMENTS_BY_ARROWS_PRESS_UP: 
+			special_keys(GLUT_KEY_UP, 0, 0);
+			break;
+
+		case MENU_RENDER_MOVEMENTS_BY_ARROWS_PRESS_DOWN: 
+			special_keys(GLUT_KEY_DOWN, 0, 0);
+			break;
+
+		case MENU_RENDER_MOVEMENTS_BY_ARROWS_PRESS_LEFT: 
+			special_keys(GLUT_KEY_LEFT, 0, 0);
+			break;
+
+		case MENU_RENDER_MOVEMENTS_BY_ARROWS_PRESS_RIGHT: 
+			special_keys(GLUT_KEY_RIGHT, 0, 0);
 			break;
 
 		default:
@@ -404,6 +446,22 @@ void menu_movements_by_wasd(int code) {
 			glob_settings.freeglut_settings.camera_changes.z /= MOVEMENTS_BY_WASD_MULTIPLY_SENSIVITY;
 			break;
 
+		case MENU_RENDER_MOVEMENTS_BY_WASD_PRESS_W:
+			normal_keys('w', 0, 0);
+			break;
+
+		case MENU_RENDER_MOVEMENTS_BY_WASD_PRESS_A:
+			normal_keys('a', 0, 0);
+			break;
+
+		case MENU_RENDER_MOVEMENTS_BY_WASD_PRESS_S:
+			normal_keys('s', 0, 0);
+			break;
+
+		case MENU_RENDER_MOVEMENTS_BY_WASD_PRESS_D:
+			normal_keys('d', 0, 0);
+			break;
+
 		default:
 			break;
 
@@ -414,17 +472,34 @@ void menu_movements_by_ijkl(int code) {
 
 	switch (code) {
 
-		case MENU_RENDER_MOVEMENTS_BY_WASD_INCREASE_SENSIVITY: 
+		case MENU_RENDER_MOVEMENTS_BY_IJKL_INCREASE_SENSIVITY: 
 			glob_settings.freeglut_settings.camera_changes.x *= MOVEMENTS_BY_WASD_MULTIPLY_SENSIVITY;
 			glob_settings.freeglut_settings.camera_changes.y *= MOVEMENTS_BY_WASD_MULTIPLY_SENSIVITY;
 			glob_settings.freeglut_settings.camera_changes.z *= MOVEMENTS_BY_WASD_MULTIPLY_SENSIVITY;
 			break;
 
-		case MENU_RENDER_MOVEMENTS_BY_WASD_DECREASE_SENSIVITY: 
+		case MENU_RENDER_MOVEMENTS_BY_IJKL_DECREASE_SENSIVITY: 
 			glob_settings.freeglut_settings.camera_changes.x /= MOVEMENTS_BY_WASD_MULTIPLY_SENSIVITY;
 			glob_settings.freeglut_settings.camera_changes.y /= MOVEMENTS_BY_WASD_MULTIPLY_SENSIVITY;
 			glob_settings.freeglut_settings.camera_changes.z /= MOVEMENTS_BY_WASD_MULTIPLY_SENSIVITY;
 			break;
+
+		case MENU_RENDER_MOVEMENTS_BY_IJKL_PRESS_I: 
+			normal_keys('i', 0, 0);
+			break;
+
+		case MENU_RENDER_MOVEMENTS_BY_IJKL_PRESS_J: 
+			normal_keys('j', 0, 0);
+			break;
+
+		case MENU_RENDER_MOVEMENTS_BY_IJKL_PRESS_K: 
+			normal_keys('k', 0, 0);
+			break;
+
+		case MENU_RENDER_MOVEMENTS_BY_IJKL_PRESS_L: 
+			normal_keys('l', 0, 0);
+			break;
+
 
 		default:
 			break;
@@ -443,6 +518,14 @@ void menu_movements_by_shiftspace(int code) {
 
 		case MENU_RENDER_MOVEMENTS_BY_SHIFTSPACE_DECREASE_SENSIVITY: 
 			glob_settings.freeglut_settings.estrangement_changes /= MOVEMENTS_BY_SHIFTSPACE_MULTIPLY_SENSIVITY;
+			break;
+
+		case MENU_RENDER_MOVEMENTS_BY_SHIFTSPACE_PRESS_SHIFT: 
+			special_keys(GLUT_KEY_SHIFT_L, 0, 0);
+			break;
+
+		case MENU_RENDER_MOVEMENTS_BY_SHIFTSPACE_PRESS_SPACE: 
+			normal_keys(' ', 0, 0);
 			break;
 
 		default:
@@ -466,6 +549,15 @@ void menu_scaling(int code) {
 			glob_settings.freeglut_settings.scaling_parameters_changes.x /= SCALING_MULTIPLY_SENSIVITY_X;
 			glob_settings.freeglut_settings.scaling_parameters_changes.y /= SCALING_MULTIPLY_SENSIVITY_Y;
 			glob_settings.freeglut_settings.scaling_parameters_changes.z /= SCALING_MULTIPLY_SENSIVITY_Z;
+			break;
+
+		case MENU_RENDER_SCALING_PRESS_PAGE_UP: 
+			special_keys(GLUT_KEY_PAGE_UP, 0, 0);
+			break;
+			
+
+		case MENU_RENDER_SCALING_PRESS_PAGE_DOWN: 
+			special_keys(GLUT_KEY_PAGE_DOWN, 0, 0);
 			break;
 
 		default:
@@ -524,7 +616,7 @@ void menu_settings(int code) {
 
 void display_subwindow_0() {
 	
-	glClearColor(glob_settings.subwindows[0].backgroundcolor.red, glob_settings.subwindows[0].backgroundcolor.green, glob_settings.subwindows[0].backgroundcolor.blue, 0.0);
+	glClearColor(glob_settings.main_window.backgroundcolor.red, glob_settings.main_window.backgroundcolor.green, glob_settings.main_window.backgroundcolor.blue, 1.0);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 
@@ -558,7 +650,7 @@ void display_subwindow_0() {
 	if (axis_by_cones) {
 
 		glColor3f(1.0, 0.0, 0.0);
-		estrangement = glob_settings.subwindows[0].wh.height / 50.0;
+		estrangement = glob_settings.subwindows[0].wh.width / 50.0;
 		glRotated(90.0, 0, 1, 0);
 			glutSolidCylinder(3.0 * estrangement, 6.0 * estrangement, 10.0, 10.0);
 			glTranslated(0.0, 0.0, 6.0 * estrangement);
@@ -611,6 +703,10 @@ void display_subwindow_0() {
 
 	glutSwapBuffers();
 
+}
+
+void display_subwindow_1()
+{
 }
 
 void reshape_subwindow_0(int w, int h) {
