@@ -44,7 +44,7 @@
 			WindowParameters wh;
 			Rgb backgroundcolor;
 
-			Window() : descriptor(0), wh(WindowParameters(200.0, 200.0)), backgroundcolor(Rgb(1.0, 1.0, 1.0)) {};
+			Window() : descriptor(0), wh(WindowParameters(500.0, 350.0)), backgroundcolor(Rgb(1.0, 1.0, 1.0)) {};
 			Window(int _descriptor, WindowParameters _wh, Rgb _background) : descriptor(_descriptor), wh(_wh), backgroundcolor(_background) {};
 			~Window() {};
 	};

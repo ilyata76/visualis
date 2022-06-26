@@ -616,7 +616,8 @@ void menu_settings(int code) {
 
 void display_subwindow_0() {
 	
-	glClearColor(glob_settings.main_window.backgroundcolor.red, glob_settings.main_window.backgroundcolor.green, glob_settings.main_window.backgroundcolor.blue, 1.0);
+	//glClearColor(glob_settings.main_window.backgroundcolor.red, glob_settings.main_window.backgroundcolor.green, glob_settings.main_window.backgroundcolor.blue, 1.0);
+	glClearColor(230.0/255.0, 230.0/255.0, 230.0/255.0, 1.0);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 
