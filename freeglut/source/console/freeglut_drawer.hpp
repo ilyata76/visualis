@@ -47,6 +47,8 @@
 	#define MENU_SETTINGS_GS_RESET_FILE 1074
 	#define MENU_SETTINGS_GS_SHOW 1075
 
+	#define SUBWINDOW0_MENU_USE_CONES 2001
+	#define SUBWINDOW0_MENU_USE_LINES 2002
 
 	void draw_sample(Settings& _settings, std::vector<Vertex>& _vct, int argc, char** argv);
 	void display_mainwindow();
@@ -68,7 +70,16 @@
 
 	//void just_mouse_motion();
 
-	
+
+	// SUBWINDOWS
+
+	void display_subwindow_0();
+	void reshape_subwindow_0(int w, int h);
+
+	void subwindow_0_menu_init();
+	void subwindow_0_menu(int code);
+
+	void postRedisplay();
 
 
 #endif // !FREEGLUT_DRAWER_HPP
