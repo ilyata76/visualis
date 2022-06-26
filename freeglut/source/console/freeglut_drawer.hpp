@@ -84,6 +84,11 @@
 	void normal_keys(unsigned char key, int x, int y);
 	void special_keys(int key, int x, int y);
 
+	void mouse_pressed(int button, int state, int x, int y);
+	void passive_mouse_motion(int x, int y);
+	void pressed_mouse_motion(int x, int y);
+	
+
 	void main_menu_init();
 	void main_menu_render(int code);
 	void menu_movements_by_arrows(int code);

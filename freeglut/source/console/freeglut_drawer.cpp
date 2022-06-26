@@ -37,13 +37,14 @@ void draw_sample(Settings& _settings, std::vector<Vertex>& _vct, int argc, char*
 
 	glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE);
 
-	
-
 	glob_settings.main_window.descriptor = glutCreateWindow("main_window"); glutSetWindowTitle("VISUALIS");
 		glutDisplayFunc(display_mainwindow);
 		glutReshapeFunc(reshape_mainwindow);
 		glutKeyboardFunc(normal_keys);
 		glutSpecialFunc(special_keys);
+		glutPassiveMotionFunc(passive_mouse_motion);
+		glutMotionFunc(pressed_mouse_motion);
+		glutMouseFunc(mouse_pressed);
 		main_menu_init();
 
 	if (glob_settings.freeglut_settings.fullscreen) glutFullScreen();
@@ -326,6 +327,81 @@ void special_keys(int key, int x, int y) {
 
 	}
 
+}
+
+void mouse_pressed(int button, int state, int x, int y) {
+
+	// scroll up
+	if (button == 3 && glutGetModifiers() == GLUT_ACTIVE_ALT) {
+		glob_settings.freeglut_settings.scaling_parameters.x += glob_settings.freeglut_settings.scaling_parameters_changes.x;
+		glob_settings.freeglut_settings.scaling_parameters.y += glob_settings.freeglut_settings.scaling_parameters_changes.y;
+		glob_settings.freeglut_settings.scaling_parameters.z += glob_settings.freeglut_settings.scaling_parameters_changes.z;
+		postRedisplay();
+	} else if (button == 3) {
+		glob_settings.freeglut_settings.estrangement -= 2.0 * glob_settings.freeglut_settings.estrangement_changes;
+		postRedisplay();
+	}
+	
+	// scroll down
+	if (button == 4 && glutGetModifiers() == GLUT_ACTIVE_ALT) { 
+		glob_settings.freeglut_settings.scaling_parameters.x -= glob_settings.freeglut_settings.scaling_parameters_changes.x;
+		glob_settings.freeglut_settings.scaling_parameters.y -= glob_settings.freeglut_settings.scaling_parameters_changes.y;
+		glob_settings.freeglut_settings.scaling_parameters.z -= glob_settings.freeglut_settings.scaling_parameters_changes.z;
+		postRedisplay();
+	} else if (button == 4) {
+		glob_settings.freeglut_settings.estrangement += 2.0 * glob_settings.freeglut_settings.estrangement_changes;
+		postRedisplay();
+	}
+
+	glob_settings.main_window.arrow.pressed_position_x = x;
+	glob_settings.main_window.arrow.pressed_position_y = y;
+}
+
+void passive_mouse_motion(int x, int y) {
+	glob_settings.main_window.arrow.x = x;
+	glob_settings.main_window.arrow.y = y;
+}
+
+void pressed_mouse_motion(int x, int y) {
+
+	double t_b_e = glob_settings.freeglut_settings.translation_by_element;
+
+	if (x > glob_settings.main_window.arrow.x && glutGetModifiers() == GLUT_ACTIVE_ALT) {
+		glob_settings.freeglut_settings.additional_rotation.phi -= t_b_e * 2.0 * glob_settings.freeglut_settings.camera_changes.x;
+		postRedisplay();
+	} else if (x > glob_settings.main_window.arrow.x) {
+		glob_settings.freeglut_settings.global_translation.x -= t_b_e * 2.0 * glob_settings.freeglut_settings.translation_changes.x;
+		postRedisplay();
+	}
+
+	if (x < glob_settings.main_window.arrow.x && glutGetModifiers() == GLUT_ACTIVE_ALT) {
+		glob_settings.freeglut_settings.additional_rotation.phi += t_b_e * 2.0 * glob_settings.freeglut_settings.camera_changes.x;
+		postRedisplay();
+	} else if (x < glob_settings.main_window.arrow.x) {
+		glob_settings.freeglut_settings.global_translation.x += t_b_e * 2.0 * glob_settings.freeglut_settings.translation_changes.x;
+		postRedisplay();
+	}
+
+	if (y > glob_settings.main_window.arrow.y && glutGetModifiers() == GLUT_ACTIVE_ALT) {
+		glob_settings.freeglut_settings.additional_rotation.theta -= t_b_e * 2.0 * glob_settings.freeglut_settings.camera_changes.y;
+		postRedisplay();
+	} else if (y > glob_settings.main_window.arrow.y) {
+		glob_settings.freeglut_settings.global_translation.y += t_b_e * 2.0 * glob_settings.freeglut_settings.translation_changes.y;
+		postRedisplay();
+	}
+
+	if (y < glob_settings.main_window.arrow.y && glutGetModifiers() == GLUT_ACTIVE_ALT) {
+		glob_settings.freeglut_settings.additional_rotation.theta += t_b_e * 2.0 * glob_settings.freeglut_settings.camera_changes.y;
+		postRedisplay();
+	} else if (y < glob_settings.main_window.arrow.y) {
+		glob_settings.freeglut_settings.global_translation.y -= t_b_e * 2.0 * glob_settings.freeglut_settings.translation_changes.y;
+		postRedisplay();
+	}
+
+
+
+	glob_settings.main_window.arrow.x = x;
+	glob_settings.main_window.arrow.y = y;
 }
 
 void main_menu_init() {
