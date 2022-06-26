@@ -4,6 +4,23 @@ Settings glob_settings;
 std::vector<Vertex> glob_vct;
 
 bool axis_by_cones = false;
+bool show_axis_names = true;
+
+void print_text_3f(double _x, double _y, double _z, std::wstring text) {
+	glRasterPos3i(_x, _y, _z);
+	int len = text.length(); 
+
+	for (int i = 0; i < len; ++i) 
+		glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, text[i]);
+}
+
+void print_text_2f(double _x, double _y, std::wstring text) {
+	glRasterPos2i(_x, _y);
+	int len = text.length(); 
+
+	for (int i = 0; i < len; ++i) 
+		glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, text[i]);
+}
 
 void draw_sample(Settings& _settings, std::vector<Vertex>& _vct, int argc, char** argv) {
 
@@ -20,6 +37,8 @@ void draw_sample(Settings& _settings, std::vector<Vertex>& _vct, int argc, char*
 
 	glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE);
 
+	
+
 	glob_settings.main_window.descriptor = glutCreateWindow("main_window"); glutSetWindowTitle("VISUALIS");
 		glutDisplayFunc(display_mainwindow);
 		glutReshapeFunc(reshape_mainwindow);
@@ -27,6 +46,7 @@ void draw_sample(Settings& _settings, std::vector<Vertex>& _vct, int argc, char*
 		glutSpecialFunc(special_keys);
 		main_menu_init();
 
+	if (glob_settings.freeglut_settings.fullscreen) glutFullScreen();
 
 	// subwindow
 
@@ -659,7 +679,14 @@ void display_subwindow_0() {
 			glTranslated(0.0, 0.0, -5.0 * estrangement);
 		glRotated(-90.0, 0, 1, 0);
 
-		glColor3f(0.0, 1.0, 0.0);
+		if (show_axis_names) {
+			glColor3f(0.0, 0.0, 0.0);
+			print_text_3f(35.0, 10.0, 5.0, L"X");
+		}
+
+		
+		
+		glColor3f(0.0, 154.0 / 255.0, 99.0 / 255.0);
 
 		glRotated(-90.0, 1, 0, 0);
 			glutSolidCylinder(3.0 * estrangement, 6.0 * estrangement, 10.0, 10.0);
@@ -668,11 +695,25 @@ void display_subwindow_0() {
 			glTranslated(0.0, 0.0, -5.0 * estrangement);
 		glRotated(90.0, 1, 0, 0);
 
+		
+		if (show_axis_names) {
+			glColor3f(0.0, 0.0, 0.0);
+			print_text_3f(5.0, 35.0, 5.0, L"Y");
+		}
+		
+		
 		glColor3f(0.0, 0.0, 1.0);
+			
 			glutSolidCylinder(3.0 * estrangement, 6.0 * estrangement, 10.0, 10.0);
 			glTranslated(0.0, 0.0, 6.0 * estrangement);
 			glutSolidCone(3.0 * estrangement, 17.0 * estrangement, 10.0, 10.0);
 			glTranslated(0.0, 0.0, -5.0 * estrangement);
+		
+		if (show_axis_names) {
+			glColor3f(0.0, 0.0, 0.0);
+			print_text_3f(5.0, 10.0, 35.0, L"Z");
+		}
+
 		glPopMatrix();
 
 	} else {
@@ -683,23 +724,40 @@ void display_subwindow_0() {
 
 		glBegin(GL_LINES);
 			glVertex3f(0.0, 0.0, 0.0);
-			glVertex3f(50.0, 0.0, 0.0);
+			glVertex3f(30.0, 0.0, 0.0);
 		glEnd();	
-	
-	
-		glColor3f(0.0, 1.0, 0.0);
+		
+		if (show_axis_names) {
+			glColor3f(0.0, 0.0, 0.0);
+			print_text_3f(35.0, 10.0, 5.0, L"X");
+		}
+
+		glColor3f(0.0, 154.0 / 255.0, 99.0 / 255.0);
+		
 
 		glBegin(GL_LINES);
 			glVertex3f(0.0, 0.0, 0.0);
-			glVertex3f(0.0, 50.0, 0.0);
+			glVertex3f(0.0, 30.0, 0.0);
 		glEnd();
-	
+		
+		if (show_axis_names) {
+			glColor3f(0.0, 0.0, 0.0);
+			print_text_3f(5.0, 35.0, 5.0, L"Y");
+		}
+
 		glColor3f(0.0, 0.0, 1.0);
 
 		glBegin(GL_LINES);
 			glVertex3f(0.0, 0.0, 0.0);
-			glVertex3f(0.0, 0.0, 50.0);
+			glVertex3f(0.0, 0.0, 30.0);
 		glEnd();
+
+		if (show_axis_names) {
+			glColor3f(0.0, 0.0, 0.0);
+			print_text_3f(5.0, 10.0, 35.0, L"Z");
+		}
+
+
 	}
 
 	glutSwapBuffers();
@@ -726,8 +784,10 @@ void subwindow_0_menu_init() {
 	int _subwindow0_menu = glutCreateMenu(subwindow_0_menu);
 	
 	glutSetMenu(_subwindow0_menu);
-		glutAddMenuEntry("Use lines", SUBWINDOW0_MENU_USE_LINES);
-		glutAddMenuEntry("Use cones", SUBWINDOW0_MENU_USE_CONES);
+		glutAddMenuEntry("Use lines", SUBWINDOW_AXIS_MENU_USE_LINES);
+		glutAddMenuEntry("Use cones", SUBWINDOW_AXIS_MENU_USE_CONES);
+		glutAddMenuEntry("Show axis names", SUBWINDOW_AXIS_MENU_SHOW_NAMES);
+		glutAddMenuEntry("Hide axis names", SUBWINDOW_AXIS_MENU_HIDE_NAMES);
 	
 	glutAttachMenu(GLUT_RIGHT_BUTTON);
 	glutDetachMenu(GLUT_LEFT_BUTTON);
@@ -736,8 +796,10 @@ void subwindow_0_menu_init() {
 void subwindow_0_menu(int code) {
 	
 	switch (code) {
-		case SUBWINDOW0_MENU_USE_CONES: axis_by_cones = true; glutPostRedisplay();break;
-		case SUBWINDOW0_MENU_USE_LINES: axis_by_cones = false; glutPostRedisplay(); break;
+		case SUBWINDOW_AXIS_MENU_USE_CONES: axis_by_cones = true; glutPostRedisplay();break;
+		case SUBWINDOW_AXIS_MENU_USE_LINES: axis_by_cones = false; glutPostRedisplay(); break;
+		case SUBWINDOW_AXIS_MENU_SHOW_NAMES: show_axis_names = true; glutPostRedisplay(); break;
+		case SUBWINDOW_AXIS_MENU_HIDE_NAMES: show_axis_names = false; glutPostRedisplay(); break;
 		default: break;
 	}
 
