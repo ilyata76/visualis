@@ -4,9 +4,9 @@
 #ifndef SHAPE_HPP
 #define SHAPE_HPP
 
-#include "../libraries/freeglut/include/GL/freeglut.h"
-#include "./vertex.hpp"
-#include "../color/RGB.hpp"
+	#include "../libraries/freeglut/include/GL/freeglut.h"
+	#include "./vertex.hpp"
+	#include "../color/RGB.hpp"
 
 	class Shape {
 		public:

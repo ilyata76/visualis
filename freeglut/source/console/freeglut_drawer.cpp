@@ -3,6 +3,25 @@
 Settings glob_settings;
 std::vector<Vertex> glob_vct;
 
+// set filepath ../temp/b/sconfiguration-00000030.vvis
+// visualize file
+
+//int w, h;
+//
+//void display() {
+//	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); glEnable(GL_BLEND);
+//	glClearColor(1.0, 0.0, 1.0, 0.0);
+//	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+//	glutSwapBuffers();
+//}
+//
+//void reshape(int w, int h) {
+//	if (h == 0) h = 1;
+//	if (w == 0) w = 1;
+//
+//	glViewport(0, 0, w, h);
+//}
+
 void draw_sample(Settings& _settings, std::vector<Vertex>& _vct, int argc, char** argv) {
 
 	glob_settings = _settings;
@@ -11,21 +30,24 @@ void draw_sample(Settings& _settings, std::vector<Vertex>& _vct, int argc, char*
 
 	glutInit(&argc, argv);
 
-	glutInitWindowSize(glob_settings.freeglut_settings.main_window.height,
-						glob_settings.freeglut_settings.main_window.width);
+	glutInitWindowSize(glob_settings.freeglut_settings.main_window.width,
+						glob_settings.freeglut_settings.main_window.height);
 
 	glutInitWindowPosition(0, 0);
 
 	glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE);
 
 	int MAINWINDOW = glutCreateWindow("main_window"); glutSetWindowTitle("VISUALIS");
-
 		glutDisplayFunc(display_mainwindow);
 		glutReshapeFunc(reshape_mainwindow);
 		glutKeyboardFunc(normal_keys);
 		glutSpecialFunc(special_keys);
 		main_menu_init();
-	
+
+	/*int subwindow = glutCreateSubWindow(MAINWINDOW, 0, 0, glob_settings.freeglut_settings.main_window.width / 5.0, glob_settings.freeglut_settings.main_window.height / 5.0);
+		glutDisplayFunc(display);
+		glutReshapeFunc(reshape);*/
+
 	glutSetOption(GLUT_ACTION_ON_WINDOW_CLOSE, GLUT_ACTION_CONTINUE_EXECUTION);
 	glutMainLoop();
 
@@ -364,6 +386,24 @@ void menu_movements_by_arrows(int code) {
 
 void menu_movements_by_wasd(int code) {
 
+	switch (code) {
+
+		case MENU_RENDER_MOVEMENTS_BY_WASD_INCREASE_SENSIVITY: 
+			glob_settings.freeglut_settings.camera_changes.x *= MOVEMENTS_BY_WASD_MULTIPLY_SENSIVITY;
+			glob_settings.freeglut_settings.camera_changes.y *= MOVEMENTS_BY_WASD_MULTIPLY_SENSIVITY;
+			glob_settings.freeglut_settings.camera_changes.z *= MOVEMENTS_BY_WASD_MULTIPLY_SENSIVITY;
+			break;
+
+		case MENU_RENDER_MOVEMENTS_BY_WASD_DECREASE_SENSIVITY: 
+			glob_settings.freeglut_settings.camera_changes.x /= MOVEMENTS_BY_WASD_MULTIPLY_SENSIVITY;
+			glob_settings.freeglut_settings.camera_changes.y /= MOVEMENTS_BY_WASD_MULTIPLY_SENSIVITY;
+			glob_settings.freeglut_settings.camera_changes.z /= MOVEMENTS_BY_WASD_MULTIPLY_SENSIVITY;
+			break;
+
+		default:
+			break;
+
+	}
 }
 
 void menu_movements_by_ijkl(int code) {
@@ -459,19 +499,21 @@ void menu_settings(int code) {
 			glob_settings.save(L'a');
 			break;
 
-		case MENU_SETTINGS_GS_GET:
-			glob_settings.get(L'f');
-			glutPostRedisplay();
-			break;
+		case MENU_SETTINGS_GS_GET: {
+				int width = glob_settings.freeglut_settings.main_window.width, height = glob_settings.freeglut_settings.main_window.height;
+				glob_settings.get(L'f');
+				glob_settings.freeglut_settings.main_window.width = width; glob_settings.freeglut_settings.main_window.height = height;
+				glutPostRedisplay();
+			} break;
 
-		case MENU_SETTINGS_GS_RESET:
+		case MENU_SETTINGS_GS_RESET:	
 			glob_settings = Settings(glob_settings.global_settings, Freeglut_settings());
 			break;
 
-		case MENU_SETTINGS_GS_RESET_FILE:
+		case MENU_SETTINGS_GS_RESET_FILE: {
 			Settings reseted_settings = Settings(glob_settings.global_settings, Freeglut_settings());
 			reseted_settings.save(L'a');
-			break;
+			} break;
 	}
 
 }

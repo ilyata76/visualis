@@ -164,7 +164,7 @@ bool Interpretator::set_handler(std::vector<std::wstring> _commands) {
 
 		case INTER_COMMAND_SET_COLORING: if (_commands.size() < 3) { std::wcout << L"\tEmpty instruction\n"; return false; } 
 									   this->app_settings.freeglut_settings.coloring_sample = by_synonyms(_commands[2]) == L"yes" ? true : false;
-									   std::wcout << L"\tColoring setting \"" << this->app_settings.freeglut_settings.coloring_sample << L"\" has been set up\n";
+									   std::wcout << L"\tColoring setting \"" << std::boolalpha << this->app_settings.freeglut_settings.coloring_sample << L"\" has been set up\n";
 									   break;
 
 
@@ -183,6 +183,62 @@ bool Interpretator::set_handler(std::vector<std::wstring> _commands) {
 												  << L") has been set up\n";
 											  
 											  break;
+
+		case INTER_COMMAND_SET_FULLSCREEN: if (_commands.size() < 3) { std::wcout << L"\tEmpty instruction\n"; return false; }
+										 this->app_settings.freeglut_settings.fullscreen = by_synonyms(_commands[2]) == L"yes" ? true : false;
+										 std::wcout << L"\tFullscreen setting \"" << std::boolalpha << this->app_settings.freeglut_settings.fullscreen << L"\" has been set up\n";
+										 break;
+
+		case INTER_COMMAND_SET_SHAPE:	if (_commands.size() < 3) { std::wcout << L"\tEmpty instruction\n"; return false; }
+										if (_commands[2] == VVIS_SHAPE_CONE_WSTR || _commands[2] == L"c") {
+											this->app_settings.freeglut_settings.shape = VVIS_SHAPE_CONE; 
+											this->app_settings.freeglut_settings.shape_wstr = VVIS_SHAPE_CONE_WSTR; 
+										} else if (_commands[2] == VVIS_SHAPE_NOTHING_WSTR || _commands[2] == L"n") {
+											this->app_settings.freeglut_settings.shape = VVIS_SHAPE_NOTHING;
+											this->app_settings.freeglut_settings.shape_wstr = VVIS_SHAPE_NOTHING_WSTR;
+										}
+										std::wcout << L"\tShape \"" << this->app_settings.freeglut_settings.shape << "/" << this->app_settings.freeglut_settings.shape_wstr << L"\" has been set up\n";
+										break;
+
+		case INTER_COMMAND_SET_TRANSLATION_BY_ELEMENT:	if (_commands.size() < 3) { std::wcout << L"\tEmpty instruction\n"; return false; }
+														this->app_settings.freeglut_settings.translation_by_element = by_synonyms(_commands[2]) == L"yes" ? 1 : -1;
+														std::wcout << L"\tTranslation by element setting \"" << std::boolalpha << (this->app_settings.freeglut_settings.translation_by_element == -1 ? false : true) << L"\" has been set up\n";
+														break;
+
+		case INTER_COMMAND_SET_ESTRANGEMENT_CHANGES:	if (_commands.size() < 3) { std::wcout << L"\tIncorrect format\n"; return false; }
+														this->app_settings.freeglut_settings.estrangement_changes = std::stod(_commands[2]);
+														std::wcout << L"\tEstrangement changes: \"" << this->app_settings.freeglut_settings.estrangement_changes << "\" has been set up\n";
+														break;
+
+		case INTER_COMMAND_SET_SCALING_CHANGES: if (_commands.size() < 5) { std::wcout << L"\tIncorrect format\n"; return false; }
+											  this->app_settings.freeglut_settings.scaling_parameters_changes.x = std::stod(_commands[2]);
+											  this->app_settings.freeglut_settings.scaling_parameters_changes.y = std::stod(_commands[3]);
+											  this->app_settings.freeglut_settings.scaling_parameters_changes.z = std::stod(_commands[4]);
+											  std::wcout << L"\tScaling parameters changes: \"(" << this->app_settings.freeglut_settings.scaling_parameters_changes.x << ", "
+												  << this->app_settings.freeglut_settings.scaling_parameters_changes.y << ", "
+												  << this->app_settings.freeglut_settings.scaling_parameters_changes.z
+												  << ")\" has been set up\n";
+											  break;
+
+		case INTER_COMMAND_SET_TRANSLATION_CHANGES: if (_commands.size() < 5) { std::wcout << L"\tIncorrect format\n"; return false; }
+											  this->app_settings.freeglut_settings.translation_changes.x = std::stod(_commands[2]);
+											  this->app_settings.freeglut_settings.translation_changes.y = std::stod(_commands[3]);
+											  this->app_settings.freeglut_settings.translation_changes.z = std::stod(_commands[4]);
+											  std::wcout << L"\tTranslation changes: \"(" << this->app_settings.freeglut_settings.translation_changes.x << ", "
+												  << this->app_settings.freeglut_settings.translation_changes.y << ", "
+												  << this->app_settings.freeglut_settings.translation_changes.z
+												  << ")\" has been set up\n";
+											  break;
+
+		case INTER_COMMAND_SET_CAMERA_CHANGES: if (_commands.size() < 5) { std::wcout << L"\tIncorrect format\n"; return false; }
+											 this->app_settings.freeglut_settings.camera_changes.x = std::stod(_commands[2]);
+											 this->app_settings.freeglut_settings.camera_changes.y = std::stod(_commands[3]);
+											 this->app_settings.freeglut_settings.camera_changes.z = std::stod(_commands[4]);
+											 std::wcout << L"\tCamera changes: \"(" << this->app_settings.freeglut_settings.camera_changes.x << ", "
+												 << this->app_settings.freeglut_settings.camera_changes.y << ", "
+												 << this->app_settings.freeglut_settings.camera_changes.z
+												 << ")\" has been set up\n";
+											 break;
 
 		case VVIS_UNKNOWW_MAP_SECOND: std::wcout << L"\tUnknow subcommand: " << _commands[1] << L'\n'; return false; break;
 		default: break;
@@ -214,6 +270,34 @@ bool Interpretator::unset_handler(std::vector<std::wstring> _commands) {
 		case INTER_COMMAND_SET_COLORING: std::wcout << L"\tSuccessful\n"; this->app_settings.freeglut_settings.coloring_sample = false; break;
 
 		case INTER_COMMAND_SET_BACKGROUNDCOLOR: std::wcout << L"\tSuccessful\n"; this->app_settings.freeglut_settings.backgroundcolor = Rgb(1.0, 1.0, 1.0); break;
+
+		case INTER_COMMAND_SET_FULLSCREEN: std::wcout << L"\tSuccessful\n"; this->app_settings.freeglut_settings.fullscreen = false; break;
+
+		case INTER_COMMAND_SET_SHAPE:	std::wcout << L"\tSuccessful\n"; this->app_settings.freeglut_settings.shape = VVIS_SHAPE_CONE;
+										this->app_settings.freeglut_settings.shape_wstr = VVIS_SHAPE_CONE_WSTR;
+										break;
+
+		case INTER_COMMAND_SET_TRANSLATION_BY_ELEMENT: std::wcout << L"\tSuccessful\n"; this->app_settings.freeglut_settings.translation_by_element = -1; break;
+
+		case INTER_COMMAND_SET_ESTRANGEMENT_CHANGES: std::wcout << L"\tSuccessful\n"; this->app_settings.freeglut_settings.estrangement_changes = VVIS_ESTRAGNEMENT_CHANGES; break;
+
+		case INTER_COMMAND_SET_SCALING_CHANGES:		std::wcout << L"\tSuccessful\n"; 
+													this->app_settings.freeglut_settings.scaling_parameters_changes.x = VVIS_SCALING_PARAMETERS_CHANGES_X; 
+													this->app_settings.freeglut_settings.scaling_parameters_changes.y = VVIS_SCALING_PARAMETERS_CHANGES_Y; 
+													this->app_settings.freeglut_settings.scaling_parameters_changes.z = VVIS_SCALING_PARAMETERS_CHANGES_Z; 
+													break;
+
+		case INTER_COMMAND_SET_TRANSLATION_CHANGES:		std::wcout << L"\tSuccessful\n";
+														this->app_settings.freeglut_settings.translation_changes.x = VVIS_TRANSLATION_CHANGES_X;
+														this->app_settings.freeglut_settings.translation_changes.y = VVIS_TRANSLATION_CHANGES_Y;
+														this->app_settings.freeglut_settings.translation_changes.z = VVIS_TRANSLATION_CHANGES_Z;
+														break;
+
+		case INTER_COMMAND_SET_CAMERA_CHANGES:	std::wcout << L"\tSuccessful\n";
+												this->app_settings.freeglut_settings.camera_changes.x = VVIS_CAMERA_CHANGES_X;
+												this->app_settings.freeglut_settings.camera_changes.y = VVIS_CAMERA_CHANGES_Y;
+												this->app_settings.freeglut_settings.camera_changes.z = VVIS_CAMERA_CHANGES_Z;
+												break;
 
 		case VVIS_UNKNOWW_MAP_SECOND: std::wcout << L"\tUnknow subcommand: " << _commands[1] << L'\n'; return false; break;
 		default: break;
@@ -357,7 +441,14 @@ bool set_command_maps(Interpretator& _inter) {
 		{L"settingsfolder", INTER_COMMAND_SET_SETTINGSFOLDER},
 		{L"settingsfile", INTER_COMMAND_SET_SETTINGSFILE},
 		{L"coloring", INTER_COMMAND_SET_COLORING},
-		{L"backgroundcolor", INTER_COMMAND_SET_BACKGROUNDCOLOR}
+		{L"backgroundcolor", INTER_COMMAND_SET_BACKGROUNDCOLOR},
+		{L"fullscreen", INTER_COMMAND_SET_FULLSCREEN},
+		{L"shape",	INTER_COMMAND_SET_SHAPE},
+		{L"translationbyelement", INTER_COMMAND_SET_TRANSLATION_BY_ELEMENT},
+		{L"estrangementchanges", INTER_COMMAND_SET_ESTRANGEMENT_CHANGES},
+		{L"scalingchanges", INTER_COMMAND_SET_SCALING_CHANGES},
+		{L"translationchanges", INTER_COMMAND_SET_TRANSLATION_CHANGES},
+		{L"camerachanges", INTER_COMMAND_SET_CAMERA_CHANGES}
 	};
 
 	_inter.convert_sub_command = {

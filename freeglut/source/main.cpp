@@ -1,6 +1,5 @@
 ﻿#include "./console/console_interpretator.hpp"
 
-
 int main(int argc, char** argv) {
 	Interpretator I;
 

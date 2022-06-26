@@ -66,5 +66,9 @@
 	void menu_color(int code);
 	void menu_settings(int code);
 
+	//void just_mouse_motion();
+
+	
+
 
 #endif // !FREEGLUT_DRAWER_HPP

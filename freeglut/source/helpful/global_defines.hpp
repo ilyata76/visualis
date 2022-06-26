@@ -31,6 +31,7 @@
 #define VVIS_SHAPE_CONE			L'c'
 #define VVIS_SHAPE_CONE_WSTR	L"cone"
 #define VVIS_SHAPE_NOTHING		L'n'
+#define VVIS_SHAPE_NOTHING_WSTR	L"nothing"
 
 /// DRAWER OPTIONS
 

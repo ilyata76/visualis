@@ -24,7 +24,7 @@ Freeglut_settings::Freeglut_settings() {
 std::wostream& operator<<(std::wostream& _out, const Freeglut_settings& _settings) {
 	_out << L"\t Background color\t\t\t [C]: " << _settings.backgroundcolor.red * 255.0 << L"/255 " << _settings.backgroundcolor.green * 255.0 << L"/255 " << _settings.backgroundcolor.blue * 255.0 << L"/255\n";
 	_out << L"\t Coloring sample\t\t\t [C]: " << std::boolalpha << _settings.coloring_sample << L"\n";
-	_out << L"\t Shape\t\t\t\t\t (X): " << _settings.shape << "/" << _settings.shape_wstr << L"\n";
+	_out << L"\t Shape\t\t\t\t\t [C]: " << _settings.shape << "/" << _settings.shape_wstr << L"\n";
 	_out << L"\t Additional rotation\t\t\t (X): " << _settings.additional_rotation.phi << "(phi), " << _settings.additional_rotation.theta << L"(theta)\n";
 	_out << L"\t Estrangement\t\t\t\t (X): " << _settings.estrangement << L"\n";
 	_out << L"\t Global translation\t\t\t (X): (" << _settings.global_translation.x << L", " << _settings.global_translation.y << L", " << _settings.global_translation.z << L")\n";
@@ -35,8 +35,8 @@ std::wostream& operator<<(std::wostream& _out, const Freeglut_settings& _setting
 	_out << L"\t Scaling parameters changes\t\t (X): (" << _settings.scaling_parameters_changes.x << L", " << _settings.scaling_parameters_changes.y << L", " << _settings.scaling_parameters_changes.z << L")\n";
 	_out << L"\t Translation changes\t\t\t (X): (" << _settings.translation_changes.x << L", " << _settings.translation_changes.y << L", " << _settings.translation_changes.z << L")\n";
 	_out << L"\t Camera changes\t\t\t\t (X): (" << _settings.camera_changes.x << L", " << _settings.camera_changes.y << L", " << _settings.camera_changes.z << L")\n";
-	_out << L"\t Translation by element\t\t\t (X): " << _settings.translation_by_element << L"\n";
-	_out << L"\t Fullscreen\t\t\t\t (X): " << std::boolalpha << _settings.fullscreen << L"\n";
+	_out << L"\t Translation by element\t\t\t [C]: " << std::boolalpha << (_settings.translation_by_element == -1 ? false : true) << L"\n";
+	_out << L"\t Fullscreen\t\t\t\t [C]: " << std::boolalpha << _settings.fullscreen << L"\n";
 	_out << L"\t Window\t\t\t\t\t (X): (" << _settings.main_window.height << L", " << _settings.main_window.width << L")\n";
 	_out << L"\t Estrangement changes\t\t\t (X): " << std::boolalpha << _settings.estrangement_changes << L"\n";
 	return _out;
