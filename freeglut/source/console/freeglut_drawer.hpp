@@ -94,6 +94,8 @@
 	#define SUBWINDOW_AXIS_MENU_USE_LINES 2002
 	#define SUBWINDOW_AXIS_MENU_SHOW_NAMES 2003
 	#define SUBWINDOW_AXIS_MENU_HIDE_NAMES 2004
+	#define SUBWINDOW_AXIS_MENU_BACGROUND_MAIN 2005
+	#define SUBWINDOW_AXIS_MENU_BACGROUND_GREY 2006
 
 	void print_text_3f(double _x, double _y, double _z, std::wstring text);
 	void print_text_2f(double _x, double _y, std::wstring text);

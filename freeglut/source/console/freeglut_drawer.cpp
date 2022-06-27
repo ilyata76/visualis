@@ -50,10 +50,9 @@ void draw_sample(Settings& _settings, std::vector<Vertex>& _vct, int argc, char*
 	if (glob_settings.freeglut_settings.fullscreen) glutFullScreen();
 
 	// subwindow
-
 	glob_settings.subwindows.push_back(
 		Window(0, WindowParameters(glob_settings.main_window.wh.height / 7.0, glob_settings.main_window.wh.height),
-			Rgb(glob_settings.main_window.backgroundcolor.red, glob_settings.main_window.backgroundcolor.green, glob_settings.main_window.backgroundcolor.blue))
+			Rgb(230.0 / 255.0, 230.0 / 255.0, 230.0 / 255.0))
 	);
 
 	glob_settings.subwindows[0].descriptor = glutCreateSubWindow(
@@ -767,8 +766,8 @@ void menu_spinrate(int code) {
 
 void display_subwindow_0() {
 	
-	//glClearColor(glob_settings.main_window.backgroundcolor.red, glob_settings.main_window.backgroundcolor.green, glob_settings.main_window.backgroundcolor.blue, 1.0);
-	glClearColor(230.0/255.0, 230.0/255.0, 230.0/255.0, 1.0);
+	glClearColor(glob_settings.subwindows[0].backgroundcolor.red, glob_settings.subwindows[0].backgroundcolor.green, glob_settings.subwindows[0].backgroundcolor.blue, 1.0);
+	
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 
@@ -923,6 +922,8 @@ void subwindow_0_menu_init() {
 		glutAddMenuEntry("Use cones", SUBWINDOW_AXIS_MENU_USE_CONES);
 		glutAddMenuEntry("Show axis names", SUBWINDOW_AXIS_MENU_SHOW_NAMES);
 		glutAddMenuEntry("Hide axis names", SUBWINDOW_AXIS_MENU_HIDE_NAMES);
+		glutAddMenuEntry("Use main background", SUBWINDOW_AXIS_MENU_BACGROUND_MAIN);
+		glutAddMenuEntry("Use grey background", SUBWINDOW_AXIS_MENU_BACGROUND_GREY);
 	
 	glutAttachMenu(GLUT_RIGHT_BUTTON);
 	glutDetachMenu(GLUT_LEFT_BUTTON);
@@ -935,6 +936,8 @@ void subwindow_0_menu(int code) {
 		case SUBWINDOW_AXIS_MENU_USE_LINES: axis_by_cones = false; glutPostRedisplay(); break;
 		case SUBWINDOW_AXIS_MENU_SHOW_NAMES: show_axis_names = true; glutPostRedisplay(); break;
 		case SUBWINDOW_AXIS_MENU_HIDE_NAMES: show_axis_names = false; glutPostRedisplay(); break;
+		case SUBWINDOW_AXIS_MENU_BACGROUND_MAIN: glob_settings.subwindows[0].backgroundcolor = glob_settings.main_window.backgroundcolor; glutPostRedisplay(); break;
+		case SUBWINDOW_AXIS_MENU_BACGROUND_GREY: glob_settings.subwindows[0].backgroundcolor = Rgb(230.0 / 255.0, 230.0 / 255.0, 230.0 / 255.0); glutPostRedisplay(); break;
 		default: break;
 	}
 
