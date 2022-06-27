@@ -111,7 +111,7 @@ void display_mainwindow() {
 			
 			glOrtho(
 				-(double(glob_settings.main_window.wh.width) / 2.) * double(glob_settings.freeglut_settings.estrangement), (double(glob_settings.main_window.wh.width) / 2.) * double(glob_settings.freeglut_settings.estrangement),
-				-(double(glob_settings.main_window.wh.height) / 2.) * double(glob_settings.freeglut_settings.estrangement), (double(glob_settings.main_window.wh.height) / 2.) * double(glob_settings.freeglut_settings.estrangement),
+				-(double(glob_settings.main_window.wh.height) / 2.) * abs(double(glob_settings.freeglut_settings.estrangement)), (double(glob_settings.main_window.wh.height) / 2.) * abs(double(glob_settings.freeglut_settings.estrangement)),
 				0.1, 100000.0
 			);
 			
@@ -789,7 +789,7 @@ void display_subwindow_0() {
 
 		glOrtho(
 			-(double(glob_settings.subwindows[0].wh.width) / 2.) * estrangement, (double(glob_settings.subwindows[0].wh.width) / 2.) * estrangement,
-			-(double(glob_settings.subwindows[0].wh.height) / 2.) * estrangement, (double(glob_settings.subwindows[0].wh.height) / 2.) * estrangement,
+			-(double(glob_settings.subwindows[0].wh.height) / 2.) * abs(estrangement), (double(glob_settings.subwindows[0].wh.height) / 2.) * abs(estrangement),
 			0.1, 10000.
 		);
 
