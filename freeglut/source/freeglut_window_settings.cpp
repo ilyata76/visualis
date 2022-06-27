@@ -1,1 +1,0 @@
-﻿#include "./include/user/freeglut_window_settings.hpp"

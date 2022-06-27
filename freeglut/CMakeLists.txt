@@ -2,7 +2,7 @@
 
 set (VISUALIS vvis) 
 
-project (${VISUALIS})
+project (${VISUALIS} VERSION 0.2.0)
 
 # ----------- | VISUALIS PROJECT : OPTIONS | ----------- 
 
@@ -35,39 +35,48 @@ set (ENTRYPOINT_VISUALIS
 ) 
 
 set (HEADERS_VISUALIS
-	source/include/defines.hpp
-	source/include/parser-converter/parser-v5.hpp
-	source/include/parser-converter/converter-v5.hpp
-	source/include/sample/creator_of_vertex_arr.hpp
-	source/include/sample/point-spin.hpp
-	source/include/sample/shape.hpp
-	source/include/sample/color_class.hpp
-	source/include/sample/drawing_shape_opengl.hpp
-	source/include/main_inter.hpp
+	source/helpful/global_defines.hpp
+	
+	source/helpful/useful_functions.hpp
+	source/helpful/useful_classes.hpp
+	source/color/RGB.hpp
 
-	source/include/user/console_application_settings.hpp
-	source/include/user/settings.hpp
-	source/include/user/freeglut_window_settings.hpp
-	source/include/user/console_interpreter.hpp
-	source/include/sample/vec.hpp
+	source/settings/global_settings.hpp
+	source/settings/freeglut_settings.hpp
+	source/settings/settings.hpp
+
+	
+	source/console/defines_commands_codes.hpp
+	source/console/console_interpretator.hpp
+
+	source/vampire5/parser-converter.hpp
+
+	source/vertex-shape/point.hpp
+	source/vertex-shape/spin.hpp
+	source/vertex-shape/vertex.hpp
+	source/vertex-shape/shape.hpp
+
+	source/console/freeglut_drawer.hpp
 
 )
 
 set (SOURCES_VISUALIS
-	source/parser-v5.cpp
-	source/converter-v5.cpp
-	source/point-spin.cpp
-	source/creator_of_vertex_arr.cpp
-	source/shape.cpp
-	source/color_class.cpp
-	source/drawing_shape_opengl.cpp
-	source/main_inter.cpp
+	source/helpful/useful_classes.cpp
+	source/helpful/useful_functions.cpp
+	source/color/RGB.cpp
 
-	source/console_application_settings.cpp
-	source/settings.cpp
-	source/freeglut_window_settings.cpp
-	source/vec.cpp
-	source/console_interpreter.cpp
+	source/settings/global_settings.cpp
+	source/settings/freeglut_settings.cpp
+	source/settings/settings.cpp
+
+	source/console/console_interpretator.cpp
+
+	source/vampire5/parser-converter.cpp
+
+	source/vertex-shape/vertex.cpp
+	source/vertex-shape/shape.cpp
+
+	source/console/freeglut_drawer.cpp
 
 )
 
@@ -113,35 +122,3 @@ else()
 		freeglut
 	)
 endif()
-
-
-# ----| CONVERTER |----
-
-set (CONVERTER_VAMPIRE5 vvis_converter_v5) 
-
-set (ENTRYPOINT_CONVERTER_VAMPIRE5
-	source/main_converter_vampire5.cpp
-) 
-
-set (HEADERS_CONVERTER_VAMPIRE5
-	source/include/parser-converter/parser-v5.hpp
-	source/include/parser-converter/converter-v5.hpp
-	source/include/defines.hpp
-)
-
-set (SOURCES_CONVERTER_VAMPIRE5
-	source/parser-v5.cpp
-	source/converter-v5.cpp
-)
-
-message("[visualis] : CREATING AN EXECUTABLE VISUALIS_CONVERTER_V5 FILE")
-
-add_executable (${CONVERTER_VAMPIRE5}
-	${ENTRYPOINT_CONVERTER_VAMPIRE5}
-	${HEADERS_CONVERTER_VAMPIRE5} 
-	${SOURCES_CONVERTER_VAMPIRE5}
-)
-
-target_link_libraries(${CONVERTER_VAMPIRE5} 
-	EXCEPTIO_CPP_LIBRARY
-)
