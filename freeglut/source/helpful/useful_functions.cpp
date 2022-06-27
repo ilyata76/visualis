@@ -131,3 +131,13 @@ std::wstring v5_get_file_number(const std::wstring& _number) {
 
 	return std::wstring(base);
 }
+
+bool is_double(std::wstring& _value) {
+	try {
+		std::stod(_value);
+		return true;
+	}
+	catch (std::invalid_argument& e) {
+		return false;
+	};
+}

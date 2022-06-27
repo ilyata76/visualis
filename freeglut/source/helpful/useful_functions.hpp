@@ -41,4 +41,6 @@
 
 	std::wstring v5_get_file_number(const std::wstring& _number);
 
+	bool is_double(std::wstring& _value);
+
 #endif // !USEFUL_FUNCTIONS

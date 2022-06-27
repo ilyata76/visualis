@@ -88,7 +88,6 @@ bool Interpretator::settings_handler(std::vector<std::wstring> _commands) {
 }
 
 bool Interpretator::help_handler(std::vector<std::wstring> _commands) {
-	// TODO: help
 
 	if (_commands.size() < 2) { 
 		std::wcout << L"\tUsage : help <subcommand: {settings, set, unset, convert, visualize, reset, restart}>\n";
@@ -366,7 +365,8 @@ bool Interpretator::set_handler(std::vector<std::wstring> _commands) {
 
 
 		case INTER_COMMAND_SET_BACKGROUNDCOLOR: if (_commands.size() < 5 || !is_number(_commands[2]) || !is_number(_commands[3])
-											|| !is_number(_commands[4]) || std::stod(_commands[2]) > 255 || std::stod(_commands[3]) > 255
+											|| !is_number(_commands[4]) || !is_double(_commands[2]) || !is_double(_commands[3]) || !is_double(_commands[4]) 
+											|| std::stod(_commands[2]) > 255 || std::stod(_commands[3]) > 255
 											|| std::stod(_commands[4]) > 255) { std::wcout << L"\tIncorrect format\n"; return false; } 
 											  
 											  this->app_settings.main_window.backgroundcolor.red = std::stod(_commands[2]) / 255.0;
@@ -402,12 +402,14 @@ bool Interpretator::set_handler(std::vector<std::wstring> _commands) {
 														std::wcout << L"\tTranslation by element setting \"" << std::boolalpha << (this->app_settings.freeglut_settings.translation_by_element == -1 ? false : true) << L"\" has been set up\n";
 														break;
 
-		case INTER_COMMAND_SET_ESTRANGEMENT_CHANGES:	if (_commands.size() < 3) { std::wcout << L"\tIncorrect format\n"; return false; }
+		case INTER_COMMAND_SET_ESTRANGEMENT_CHANGES:	if (_commands.size() < 3 || !is_double(_commands[2])) { std::wcout << L"\tIncorrect format\n"; return false; }
 														this->app_settings.freeglut_settings.estrangement_changes = std::stod(_commands[2]);
 														std::wcout << L"\tEstrangement changes: \"" << this->app_settings.freeglut_settings.estrangement_changes << "\" has been set up\n";
 														break;
 
-		case INTER_COMMAND_SET_SCALING_CHANGES: if (_commands.size() < 5) { std::wcout << L"\tIncorrect format\n"; return false; }
+		case INTER_COMMAND_SET_SCALING_CHANGES: if (_commands.size() < 5 ||
+												!is_double(_commands[2]) || !is_double(_commands[3]) || !is_double(_commands[4])) 
+												{ std::wcout << L"\tIncorrect format\n"; return false; }
 											  this->app_settings.freeglut_settings.scaling_parameters_changes.x = std::stod(_commands[2]);
 											  this->app_settings.freeglut_settings.scaling_parameters_changes.y = std::stod(_commands[3]);
 											  this->app_settings.freeglut_settings.scaling_parameters_changes.z = std::stod(_commands[4]);
@@ -417,7 +419,9 @@ bool Interpretator::set_handler(std::vector<std::wstring> _commands) {
 												  << ")\" has been set up\n";
 											  break;
 
-		case INTER_COMMAND_SET_TRANSLATION_CHANGES: if (_commands.size() < 5) { std::wcout << L"\tIncorrect format\n"; return false; }
+		case INTER_COMMAND_SET_TRANSLATION_CHANGES: if (_commands.size() < 5
+													|| !is_double(_commands[2]) || !is_double(_commands[3]) || !is_double(_commands[4])) 
+													{ std::wcout << L"\tIncorrect format\n"; return false; }
 											  this->app_settings.freeglut_settings.translation_changes.x = std::stod(_commands[2]);
 											  this->app_settings.freeglut_settings.translation_changes.y = std::stod(_commands[3]);
 											  this->app_settings.freeglut_settings.translation_changes.z = std::stod(_commands[4]);
@@ -427,7 +431,9 @@ bool Interpretator::set_handler(std::vector<std::wstring> _commands) {
 												  << ")\" has been set up\n";
 											  break;
 
-		case INTER_COMMAND_SET_CAMERA_CHANGES: if (_commands.size() < 5) { std::wcout << L"\tIncorrect format\n"; return false; }
+		case INTER_COMMAND_SET_CAMERA_CHANGES:		if (_commands.size() < 5
+													|| !is_double(_commands[2]) || !is_double(_commands[3]) || !is_double(_commands[4])) 
+													{ std::wcout << L"\tIncorrect format\n"; return false; }
 											 this->app_settings.freeglut_settings.camera_changes.x = std::stod(_commands[2]);
 											 this->app_settings.freeglut_settings.camera_changes.y = std::stod(_commands[3]);
 											 this->app_settings.freeglut_settings.camera_changes.z = std::stod(_commands[4]);
