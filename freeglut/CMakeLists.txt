@@ -2,7 +2,7 @@
 
 set (VISUALIS vvis) 
 
-project (${VISUALIS})
+project (${VISUALIS} VERSION 0.2.0)
 
 # ----------- | VISUALIS PROJECT : OPTIONS | ----------- 
 
@@ -122,35 +122,3 @@ else()
 		freeglut
 	)
 endif()
-
-
-# ----| CONVERTER |----
-
-# set (CONVERTER_VAMPIRE5 vvis_converter_v5) 
-
-# set (ENTRYPOINT_CONVERTER_VAMPIRE5
-# 	source/main_converter_vampire5.cpp
-# ) 
-
-# set (HEADERS_CONVERTER_VAMPIRE5
-# 	source/include/parser-converter/parser-v5.hpp
-# 	source/include/parser-converter/converter-v5.hpp
-# 	source/include/defines.hpp
-# )
-
-# set (SOURCES_CONVERTER_VAMPIRE5
-# 	source/parser-v5.cpp
-# 	source/converter-v5.cpp
-# )
-
-# message("[visualis] : CREATING AN EXECUTABLE VISUALIS_CONVERTER_V5 FILE")
-
-# add_executable (${CONVERTER_VAMPIRE5}
-# 	${ENTRYPOINT_CONVERTER_VAMPIRE5}
-# 	${HEADERS_CONVERTER_VAMPIRE5} 
-# 	${SOURCES_CONVERTER_VAMPIRE5}
-# )
-
-target_link_libraries(${CONVERTER_VAMPIRE5} 
-	EXCEPTIO_CPP_LIBRARY
-)

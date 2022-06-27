@@ -23,9 +23,11 @@
 			char** argv = {};
 
 			std::map<std::wstring, int> main_command;
+				std::map<std::wstring, int> help_sub_command;
+
 				std::map<std::wstring, int> settings_sub_command;
 					std::map<std::wstring, int> settings_show_sub_command;
-				// help_sub_command
+				
 				std::map<std::wstring, int> set_sub_command;
 				std::map<std::wstring, int> convert_sub_command;
 				std::map<std::wstring, int> visualize_sub_command;

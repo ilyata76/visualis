@@ -89,11 +89,206 @@ bool Interpretator::settings_handler(std::vector<std::wstring> _commands) {
 
 bool Interpretator::help_handler(std::vector<std::wstring> _commands) {
 	// TODO: help
-	std::wcout << "\tWIP settings show {all, console, window, <nothing>} / save / get" << L'\n';
-	std::wcout << "\tWIP reset" << L'\n';
-	std::wcout << "\tWIP restart" << L'\n';
-	std::wcout << "\tWIP set" << L'\n';
-	std::wcout << "\tWIP unset" << L'\n';
+
+	if (_commands.size() < 2) { 
+		std::wcout << L"\tUsage : help <subcommand: {settings, set, unset, convert, visualize, reset, restart}>\n";
+		std::wcout << L"\tExit  : exit\n";
+		return true;
+	}
+
+	switch (get_second_from_map(this->help_sub_command, to_lower_wstr(_commands[1]))) {
+
+		case INTER_COMMAND_HELP_SETTINGS:	
+
+			std::wcout << L"\tsettings show\n";
+				std::wcout << L"\t  -- <nothing> : shows CONSOLE settings (paths, filenumber etc.)\n";
+				std::wcout << L"\t  -- all       : shows ALL settings (including spinrate, main_window, console_settings, window(freeglut)_settings)\n";
+				std::wcout << L"\t  -- console   : shows only CONSOLE settings (paths, filenumber etc.)\n";
+				std::wcout << L"\t  -- window    : shows only WINDOW(freeglut)_settings (coloring, positions etc.)\n";
+
+			std::wcout << L"\n";
+			std::wcout << L"\tsettings save\n";
+				std::wcout << L"\t  -- <nothing> : saves ALL settings in visualis-settings.json file by path (in order of importance):\n";
+				std::wcout << L"\t               : path to settings file, path to settings folder, path to folder\n";
+
+			std::wcout << L"\n";
+			std::wcout << L"\tsettings get\n";
+				std::wcout << L"\t  -- <nothing> : restores ALL settings from visualis-settings.json file by path (in order of importance):\n";
+				std::wcout << L"\t               : path to settings file, path to settings folder, path to folder\n";
+			
+			std::wcout << L"\n";
+			std::wcout << L"\tsettings reset\n";
+				std::wcout << L"\t  -- <nothing> : resets ALL settings in console (not file)\n";
+				std::wcout << L"\t               : also command \"reset\" does the same \n";
+
+			std::wcout << L"\n";
+			std::wcout << L"\tAliases: settings, setting, setgs, setg, sgs\n";
+			break;
+
+		case INTER_COMMAND_HELP_SET:		
+
+			std::wcout << L"\tset folderpath\n";
+				std::wcout << L"\t -- <path>/<\"path\">             : sets path to folder with sconfiguration file or convertible files\n";
+				std::wcout << L"\t                                : Example: set folderpath ../temp/b\n";
+				std::wcout << L"\t                                : Aliases: folderpath, folpath, folp, folderp\n";
+			
+			std::wcout << L"\n";
+			std::wcout << L"\tset filenumber\n";
+				std::wcout << L"\t -- <int>                       : sets number of sconfiguration file or spins-file for v6\n";
+				std::wcout << L"\t                                : Example: set filenumber 30\n";
+				std::wcout << L"\t                                : Aliases: filenumber, fnumber, fn, filen\n";
+			
+			std::wcout << L"\n";
+			std::wcout << L"\tset filepath\n";
+				std::wcout << L"\t -- <path>/<\"path\">             : sets path to sconfiguration-xxx.vvis file\n";
+				std::wcout << L"\t                                : Example: set filepath ../temp/b/sconfiguration-00000030.vvis\n";
+				std::wcout << L"\t                                : Aliases: filepath, fpath, fp, filep\n";
+			
+			std::wcout << L"\n";
+			std::wcout << L"\tset spinindex\n";
+				std::wcout << L"\t -- <int>                       : sets which spin will be drawn\n";
+				std::wcout << L"\t                                : Example: set spinindex 10\n";
+				std::wcout << L"\t                                : Aliases: spinindex, sindex, si, spini\n";
+			
+			std::wcout << L"\n";
+			std::wcout << L"\tset settingsfolder\n";
+				std::wcout << L"\t -- <path>/<\"path\">             : sets path to folder with visualis-settings.json file\n";
+				std::wcout << L"\t                                : Example: set settingsfolder ../temp/b\n";
+				std::wcout << L"\t                                : Aliases: settingsfolder, sgsfolder, sgsfol\n";
+			
+			std::wcout << L"\n";
+			std::wcout << L"\tset settingsfile\n";
+				std::wcout << L"\t -- <path>/<\"path\">             : sets path to visualis-settings.json file\n";
+				std::wcout << L"\t                                : Example: set settingsfile D:/global_settings/visualis-settings.json\n";
+				std::wcout << L"\t                                : Aliases: settingsfile, sgsfile, sgsf\n";
+			
+			std::wcout << L"\n";
+			std::wcout << L"\tset coloring\n";
+				std::wcout << L"\t -- <y/n>                       : sets coloring of sample\n";
+				std::wcout << L"\t                                : Example: set coloring true\n";
+				std::wcout << L"\t                                : Aliases: cg\n";
+			
+			std::wcout << L"\n";
+			std::wcout << L"\tset backgroundcolor\n";
+				std::wcout << L"\t -- <int> <int> <int>           : sets coloring RGB mode of background\n";
+				std::wcout << L"\t                                : Note: int between 0 and 255 is expected\n";
+				std::wcout << L"\t                                : Example: set backgroundcolor 200 250 100\n";
+				std::wcout << L"\t                                : Aliases: bgc\n";
+			
+			std::wcout << L"\n";
+			std::wcout << L"\tset fullscreen\n";
+				std::wcout << L"\t -- <y/n>                       : sets fullscreen mode of window\n";
+				std::wcout << L"\t                                : Example: set fullscreen yes\n";
+				std::wcout << L"\t                                : Aliases: fullscreen\n";
+			
+			std::wcout << L"\n";
+			std::wcout << L"\tset shape\n";
+				std::wcout << L"\t -- <char>                      : sets a shape with which the sample will be built\n";
+				std::wcout << L"\t                                : Note: c - cone, n - nothing\n";
+				std::wcout << L"\t                                : Example: set shape c\n";
+				std::wcout << L"\t                                : Aliases: shape\n";
+			
+			std::wcout << L"\n";
+			std::wcout << L"\tset translationbyelement\n";
+				std::wcout << L"\t -- <y/n>                       : if true: left-left; false: left-right\n";
+				std::wcout << L"\t                                : Example: set translationbyelement no\n";
+				std::wcout << L"\t                                : Aliases: translationbyelement, tbe\n";
+			
+			std::wcout << L"\n";
+			std::wcout << L"\tset estrangementchanges\n";
+				std::wcout << L"\t -- <double>                    : changing by shift/space buttons\n";
+				std::wcout << L"\t                                : Example: set estrangementchanges 0.4\n";
+				std::wcout << L"\t                                : Aliases: estrangementchanges, echanges, ech\n";
+
+			std::wcout << L"\n";
+			std::wcout << L"\tset scalingchanges\n";
+				std::wcout << L"\t -- <double> <double> <double>  : changing by page up/down buttons\n";
+				std::wcout << L"\t                                : Note: x, y, z\n";
+				std::wcout << L"\t                                : Example: set scalingchanges 0.3 0.3 0.3\n";
+				std::wcout << L"\t                                : Aliases: scalingchanges, schanges, sch\n";
+
+			std::wcout << L"\n";
+			std::wcout << L"\tset translationchanges\n";
+				std::wcout << L"\t -- <double> <double> <double>  : changing by arrow buttons\n";
+				std::wcout << L"\t                                : Note: x, y, z\n";
+				std::wcout << L"\t                                : Example: set translationchanges 1.0 1.0 1.5\n";
+				std::wcout << L"\t                                : Aliases: translationchanges, tchanges, tch\n";
+			
+			std::wcout << L"\n";
+			std::wcout << L"\tset camerachanges\n";
+				std::wcout << L"\t -- <double> <double> <double>  : changing by wasd/ijkl buttons\n";
+				std::wcout << L"\t                                : Note: x, y, z\n";
+				std::wcout << L"\t                                : Example: set camerachanges 0.5 0.5 0.5\n";
+				std::wcout << L"\t                                : Aliases: camerachanges, cchanges, cch\n";
+			
+			std::wcout << L"\n";
+			std::wcout << L"\tset spinrate\n";
+				std::wcout << L"\t -- <int>                       : sets each what spin will be built\n";
+				std::wcout << L"\t                                : Note: one in one, one in two, one in ten \n";
+				std::wcout << L"\t                                : Example: set spinrate 10\n";
+				std::wcout << L"\t                                : Aliases: spinrate, spinr, sr, srate\n";
+			
+
+			std::wcout << L"\n";
+			std::wcout << L"\tAliases: set\n";
+
+			break;
+
+		case INTER_COMMAND_HELP_UNSET:			
+
+			std::wcout << L"\tunset\n";
+				std::wcout << L"\t -- <set_subcommand>   : unsets (restoring to the initial) option (see <help set>)\n";
+			
+			std::wcout << L"\n";
+			std::wcout << L"\tAliases: unset, uset\n";
+			break;
+
+		case INTER_COMMAND_HELP_CONVERT:		
+			
+			std::wcout << L"\tconvert\n";
+				std::wcout << L"\t -- v6   : converting vampire6 data to sconfiguration file\n";
+				std::wcout << L"\t         : Note: expected: spins-xxx.data, atoms-coords.data \n";
+				std::wcout << L"\t         : Aliases: vampire6, v6, vampire5, v5\n";
+			
+			std::wcout << L"\n";
+			std::wcout << L"\tAliases: convert\n";
+			break;
+
+		case INTER_COMMAND_HELP_VISUALIZE:		
+			std::wcout << L"\tconvert file\n";
+				std::wcout << L"\t --  : starts visualization by file (filepath)\n";
+				std::wcout << L"\t     : Note: expected: sconfiguration file \n";
+
+			std::wcout << L"\tconvert folder\n";
+				std::wcout << L"\t --  : starts visualization by folder path (filefolder + filenumber)\n";
+				std::wcout << L"\t     : Note: expected: sconfiguration file with filenumber \n";
+			
+			std::wcout << L"\n";
+			std::wcout << L"\tAliases: visualize\n";
+			break;
+
+		case INTER_COMMAND_HELP_RESET:			
+			std::wcout << L"\treset\n";
+			std::wcout << L"\t --  : resets ALL settings here\n";
+
+			std::wcout << L"\n";
+			std::wcout << L"\tAliases: reset, settings reset\n";
+			break;
+
+		case INTER_COMMAND_HELP_RESTART:	
+			std::wcout << L"\trestart\n";
+			std::wcout << L"\t --  : fully restars the program\n";
+
+			std::wcout << L"\n";
+			std::wcout << L"\tAliases: restart\n";
+			break;
+
+		case VVIS_UNKNOWW_MAP_SECOND: std::wcout << L"\tUnknow subcommand: " << _commands[1] << L'\n'; return false; break;
+		default: break;
+
+	}
+
+
 	return true;
 }
 
@@ -421,13 +616,23 @@ bool set_command_maps(Interpretator& _inter) {
 	
 	_inter.main_command = {
 		{L"help", INTER_COMMAND_HELP},
-		{L"settings", INTER_COMMAND_SETTINGS},
+		{L"settings", INTER_COMMAND_SETTINGS}, {L"setting", INTER_COMMAND_SETTINGS}, {L"setgs", INTER_COMMAND_SETTINGS}, {L"setg", INTER_COMMAND_SETTINGS}, {L"sgs", INTER_COMMAND_SETTINGS},
 		{L"set", INTER_COMMAND_SET},
-		{L"unset", INTER_COMMAND_UNSET},
+		{L"unset", INTER_COMMAND_UNSET}, {L"uset", INTER_COMMAND_HELP_UNSET},
 		{L"convert", INTER_COMMAND_CONVERT},
 		{L"visualize", INTER_COMMAND_VISUALIZE},
 		{L"reset", INTER_COMMAND_RESET},
 		{L"restart", INTER_COMMAND_RESTART}
+	};
+
+	_inter.help_sub_command = {
+		{L"settings", INTER_COMMAND_HELP_SETTINGS},
+		{L"set", INTER_COMMAND_HELP_SET},
+		{L"unset", INTER_COMMAND_HELP_UNSET},
+		{L"convert", INTER_COMMAND_HELP_CONVERT},
+		{L"visualize", INTER_COMMAND_HELP_VISUALIZE},
+		{L"reset", INTER_COMMAND_HELP_RESET},
+		{L"restart", INTER_COMMAND_HELP_RESTART}
 	};
 
 	_inter.settings_sub_command = {
@@ -445,26 +650,26 @@ bool set_command_maps(Interpretator& _inter) {
 	};
 
 	_inter.set_sub_command = {
-		{L"folderpath", INTER_COMMAND_SET_FOLDERPATH},
-		{L"filepath", INTER_COMMAND_SET_FILEPATH},
-		{L"filenumber", INTER_COMMAND_SET_FILENUMBER},
-		{L"spinindex", INTER_COMMAND_SET_SPININDEX},
-		{L"settingsfolder", INTER_COMMAND_SET_SETTINGSFOLDER},
-		{L"settingsfile", INTER_COMMAND_SET_SETTINGSFILE},
-		{L"coloring", INTER_COMMAND_SET_COLORING},
-		{L"backgroundcolor", INTER_COMMAND_SET_BACKGROUNDCOLOR},
+		{L"folderpath", INTER_COMMAND_SET_FOLDERPATH}, {L"folpath", INTER_COMMAND_SET_FOLDERPATH}, {L"folp", INTER_COMMAND_SET_FOLDERPATH}, {L"folderp", INTER_COMMAND_SET_FOLDERPATH},
+		{L"filepath", INTER_COMMAND_SET_FILEPATH}, {L"fpath", INTER_COMMAND_SET_FILEPATH}, {L"fp", INTER_COMMAND_SET_FILEPATH}, {L"filep", INTER_COMMAND_SET_FILEPATH},
+		{L"filenumber", INTER_COMMAND_SET_FILENUMBER}, {L"fnumber", INTER_COMMAND_SET_FILENUMBER}, {L"fn", INTER_COMMAND_SET_FILENUMBER}, {L"filen", INTER_COMMAND_SET_FILENUMBER},
+		{L"spinindex", INTER_COMMAND_SET_SPININDEX}, {L"sindex", INTER_COMMAND_SET_SPININDEX}, {L"si", INTER_COMMAND_SET_SPININDEX}, {L"spini", INTER_COMMAND_SET_SPININDEX},
+		{L"settingsfolder", INTER_COMMAND_SET_SETTINGSFOLDER}, {L"sgsfolder", INTER_COMMAND_SET_SETTINGSFOLDER}, {L"sgsfol", INTER_COMMAND_SET_SETTINGSFOLDER},
+		{L"settingsfile", INTER_COMMAND_SET_SETTINGSFILE}, {L"sgsfile", INTER_COMMAND_SET_SETTINGSFILE}, {L"sgsf", INTER_COMMAND_SET_SETTINGSFILE},
+		{L"coloring", INTER_COMMAND_SET_COLORING}, {L"cg", INTER_COMMAND_SET_COLORING},
+		{L"backgroundcolor", INTER_COMMAND_SET_BACKGROUNDCOLOR}, {L"bgc", INTER_COMMAND_SET_BACKGROUNDCOLOR},
 		{L"fullscreen", INTER_COMMAND_SET_FULLSCREEN},
 		{L"shape",	INTER_COMMAND_SET_SHAPE},
-		{L"translationbyelement", INTER_COMMAND_SET_TRANSLATION_BY_ELEMENT},
-		{L"estrangementchanges", INTER_COMMAND_SET_ESTRANGEMENT_CHANGES},
-		{L"scalingchanges", INTER_COMMAND_SET_SCALING_CHANGES},
-		{L"translationchanges", INTER_COMMAND_SET_TRANSLATION_CHANGES},
-		{L"camerachanges", INTER_COMMAND_SET_CAMERA_CHANGES},
-		{L"spinrate", INTER_COMMAND_SET_SPINRATE}
+		{L"translationbyelement", INTER_COMMAND_SET_TRANSLATION_BY_ELEMENT}, {L"tbe", INTER_COMMAND_SET_TRANSLATION_BY_ELEMENT},
+		{L"estrangementchanges", INTER_COMMAND_SET_ESTRANGEMENT_CHANGES}, {L"echanges", INTER_COMMAND_SET_ESTRANGEMENT_CHANGES}, {L"ech", INTER_COMMAND_SET_ESTRANGEMENT_CHANGES},
+		{L"scalingchanges", INTER_COMMAND_SET_SCALING_CHANGES}, {L"schanges", INTER_COMMAND_SET_SCALING_CHANGES}, {L"sch", INTER_COMMAND_SET_SCALING_CHANGES},
+		{L"translationchanges", INTER_COMMAND_SET_TRANSLATION_CHANGES}, {L"tchanges", INTER_COMMAND_SET_TRANSLATION_CHANGES}, {L"tch", INTER_COMMAND_SET_TRANSLATION_CHANGES},
+		{L"camerachanges", INTER_COMMAND_SET_CAMERA_CHANGES}, {L"cchanges", INTER_COMMAND_SET_CAMERA_CHANGES}, {L"cch", INTER_COMMAND_SET_CAMERA_CHANGES},
+		{L"spinrate", INTER_COMMAND_SET_SPINRATE}, {L"spinr", INTER_COMMAND_SET_SPINRATE}, {L"sr", INTER_COMMAND_SET_SPINRATE}, {L"srate", INTER_COMMAND_SET_SPINRATE}
 	};
 
 	_inter.convert_sub_command = {
-		{L"v5", INTER_COMMAND_CONVERT_VAMPIRE5}
+		{L"vampire5", INTER_COMMAND_CONVERT_VAMPIRE5}, {L"v5", INTER_COMMAND_CONVERT_VAMPIRE5}, {L"v6", INTER_COMMAND_CONVERT_VAMPIRE5}, {L"vampire6", INTER_COMMAND_CONVERT_VAMPIRE5}
 	};
 
 	_inter.visualize_sub_command = {
