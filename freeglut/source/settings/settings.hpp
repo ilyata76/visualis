@@ -20,11 +20,12 @@
 			Freeglut_settings freeglut_settings;
 			Window main_window;
 			std::vector<Window> subwindows;
+			int spinrate;
 
-			Settings() {};
-			Settings(const Global_settings& _g_s, const Freeglut_settings& _f_s) : global_settings(_g_s), freeglut_settings(_f_s) {};
-			Settings(const Global_settings& _g_s, const Freeglut_settings& _f_s, const Window& _main_window, std::vector<Window> _subwindows) 
-				: global_settings(_g_s), freeglut_settings(_f_s), main_window(_main_window), subwindows(_subwindows) {};
+			Settings() : spinrate(1) {};
+			Settings(const Global_settings& _g_s, const Freeglut_settings& _f_s) : global_settings(_g_s), freeglut_settings(_f_s), spinrate(1) {};
+			Settings(const Global_settings& _g_s, const Freeglut_settings& _f_s, const Window& _main_window, std::vector<Window> _subwindows, int _spinrate) 
+				: global_settings(_g_s), freeglut_settings(_f_s), main_window(_main_window), subwindows(_subwindows), spinrate(_spinrate) {};
 
 			friend std::wostream& operator<<(std::wostream& _out, const Settings& _settings);
 

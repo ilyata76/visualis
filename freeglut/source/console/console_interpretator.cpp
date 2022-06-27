@@ -134,11 +134,13 @@ bool Interpretator::set_handler(std::vector<std::wstring> _commands) {
 			} else std::wcout << L"\n\tEmpty path\n";
 		} break;
 
-		case INTER_COMMAND_SET_FILENUMBER: if (!is_number(_commands[2])) { std::wcout << L"\tNot number\n"; return false; }
+		case INTER_COMMAND_SET_FILENUMBER: if (_commands.size() < 3) { std::wcout << L"\tEmpty instruction\n"; return false; }
+							if (!is_number(_commands[2])) { std::wcout << L"\tNot number\n"; return false; }
 							else { this->app_settings.global_settings.number_of_file = std::stoi(_commands[2]);
 						std::wcout << L"\tFile number \"" << this->app_settings.global_settings.number_of_file << L"\" has been set up\n"; } break;
 
-		case INTER_COMMAND_SET_SPININDEX: if (!is_number(_commands[2])) { std::wcout << L"\tNot number\n"; return false; }
+		case INTER_COMMAND_SET_SPININDEX: if (_commands.size() < 3) { std::wcout << L"\tEmpty instruction\n"; return false; }
+							if (!is_number(_commands[2])) { std::wcout << L"\tNot number\n"; return false; }
 							else { this->app_settings.global_settings.index_of_spin = std::stoi(_commands[2]);
 						std::wcout << L"\tSpin index \"" << this->app_settings.global_settings.index_of_spin << L"\" has been set up\n"; } break;
 
@@ -240,6 +242,13 @@ bool Interpretator::set_handler(std::vector<std::wstring> _commands) {
 												 << ")\" has been set up\n";
 											 break;
 
+
+		case INTER_COMMAND_SET_SPINRATE: if (_commands.size() < 3) { std::wcout << L"\tEmpty instruction\n"; return false; }
+									   if (!is_number(_commands[2])) { std::wcout << L"\tNot number\n"; return false; }
+									   this->app_settings.spinrate = std::stoi(_commands[2]);
+									   std::wcout << L"\tSpinrate \"" << this->app_settings.spinrate << L"\" has been set up\n";
+									   break;
+
 		case VVIS_UNKNOWW_MAP_SECOND: std::wcout << L"\tUnknow subcommand: " << _commands[1] << L'\n'; return false; break;
 		default: break;
 
@@ -298,6 +307,8 @@ bool Interpretator::unset_handler(std::vector<std::wstring> _commands) {
 												this->app_settings.freeglut_settings.camera_changes.y = VVIS_CAMERA_CHANGES_Y;
 												this->app_settings.freeglut_settings.camera_changes.z = VVIS_CAMERA_CHANGES_Z;
 												break;
+
+		case INTER_COMMAND_SET_SPINRATE: std::wcout << L"\tSuccessful\n"; this->app_settings.spinrate = 1; break;
 
 		case VVIS_UNKNOWW_MAP_SECOND: std::wcout << L"\tUnknow subcommand: " << _commands[1] << L'\n'; return false; break;
 		default: break;
@@ -448,7 +459,8 @@ bool set_command_maps(Interpretator& _inter) {
 		{L"estrangementchanges", INTER_COMMAND_SET_ESTRANGEMENT_CHANGES},
 		{L"scalingchanges", INTER_COMMAND_SET_SCALING_CHANGES},
 		{L"translationchanges", INTER_COMMAND_SET_TRANSLATION_CHANGES},
-		{L"camerachanges", INTER_COMMAND_SET_CAMERA_CHANGES}
+		{L"camerachanges", INTER_COMMAND_SET_CAMERA_CHANGES},
+		{L"spinrate", INTER_COMMAND_SET_SPINRATE}
 	};
 
 	_inter.convert_sub_command = {

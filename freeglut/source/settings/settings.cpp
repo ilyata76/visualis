@@ -4,6 +4,7 @@ std::wostream& operator<<(std::wostream& _out, const Settings& _settings) {
 	_out << _settings.global_settings << _settings.freeglut_settings;
 	_out << L"\t Background color\t\t\t [C]: " << _settings.main_window.backgroundcolor.red * 255.0 << L"/255 " << _settings.main_window.backgroundcolor.green * 255.0 << L"/255 " << _settings.main_window.backgroundcolor.blue * 255.0 << L"/255\n";
 	_out << L"\t Window\t\t\t\t\t (X): (" << _settings.main_window.wh.height << L", " << _settings.main_window.wh.width << L")\n";
+	_out << L"\t Spinrate\t\t\t\t [C]: " << _settings.spinrate << L"\n";
 	return _out;
 };
 
@@ -83,6 +84,7 @@ bool Settings::save(wchar_t _flag) {
 		_json[VVIS_FREEGLUT_SETTINGS]["main_window"]["height"] = this->main_window.wh.height; //
 		_json[VVIS_FREEGLUT_SETTINGS]["main_window"]["width"] = this->main_window.wh.width; //
 		_json[VVIS_FREEGLUT_SETTINGS]["estrangement_changes"] = this->freeglut_settings.estrangement_changes;
+		_json[VVIS_FREEGLUT_SETTINGS]["spinrate"] = this->spinrate; //
 	}
 
 	file << _json.dump(4);
@@ -145,6 +147,7 @@ bool Settings::get_by_json(const nlohmann::json& _json, wchar_t _flag) {
 		if (_json[VVIS_FREEGLUT_SETTINGS]["main_window"]["height"] == nullptr); else this->main_window.wh.height = _json[VVIS_FREEGLUT_SETTINGS]["main_window"]["height"].get<int>(); //
 		if (_json[VVIS_FREEGLUT_SETTINGS]["main_window"]["width"] == nullptr); else this->main_window.wh.width = _json[VVIS_FREEGLUT_SETTINGS]["main_window"]["width"].get<int>(); //
 		if (_json[VVIS_FREEGLUT_SETTINGS]["estrangement_changes"] == nullptr); else this->freeglut_settings.estrangement_changes = _json[VVIS_FREEGLUT_SETTINGS]["estrangement_changes"].get<double>();
+		if (_json[VVIS_FREEGLUT_SETTINGS]["spinrate"] == nullptr); else this->spinrate = _json[VVIS_FREEGLUT_SETTINGS]["spinrate"].get<int>(); //
 
 
 

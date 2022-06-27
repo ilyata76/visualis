@@ -112,7 +112,7 @@ void display_mainwindow() {
 			glOrtho(
 				-(double(glob_settings.main_window.wh.width) / 2.) * double(glob_settings.freeglut_settings.estrangement), (double(glob_settings.main_window.wh.width) / 2.) * double(glob_settings.freeglut_settings.estrangement),
 				-(double(glob_settings.main_window.wh.height) / 2.) * double(glob_settings.freeglut_settings.estrangement), (double(glob_settings.main_window.wh.height) / 2.) * double(glob_settings.freeglut_settings.estrangement),
-				1., 1000.
+				0.1, 100000.0
 			);
 			
 		glMatrixMode(GL_MODELVIEW);
@@ -122,7 +122,7 @@ void display_mainwindow() {
 			size_t size_of_vector = glob_vct.size();
 					
 			for (unsigned int i = 0; i < size_of_vector; ++i) {
-				draw_shape(i);
+				if (i % glob_settings.spinrate == 0) draw_shape(i);
 			}
 
 		} else {
@@ -414,6 +414,7 @@ void main_menu_init() {
 	int _menu_scaling = glutCreateMenu(menu_scaling);
 	int _menu_color = glutCreateMenu(menu_color);
 	int _menu_settings = glutCreateMenu(menu_settings);
+	int _menu_spinrate = glutCreateMenu(menu_spinrate);
 
 	glutSetMenu(_menu_movements_by_arrows);
 		glutAddMenuEntry("Inrease sensivity", MENU_RENDER_MOVEMENTS_BY_ARROWS_INCREASE_SENSIVITY);
@@ -461,6 +462,28 @@ void main_menu_init() {
 		glutAddMenuEntry("RESET", MENU_SETTINGS_GS_RESET);
 		glutAddMenuEntry("RESET FILE", MENU_SETTINGS_GS_RESET_FILE);
 
+	glutSetMenu(_menu_spinrate);
+		glutAddMenuEntry("1", MENU_RENDER_SPINRATE_1);
+		glutAddMenuEntry("2", MENU_RENDER_SPINRATE_2);
+		glutAddMenuEntry("3", MENU_RENDER_SPINRATE_3);
+		glutAddMenuEntry("4", MENU_RENDER_SPINRATE_4);
+		glutAddMenuEntry("5", MENU_RENDER_SPINRATE_5);
+		glutAddMenuEntry("6", MENU_RENDER_SPINRATE_6);
+		glutAddMenuEntry("7", MENU_RENDER_SPINRATE_7);
+		glutAddMenuEntry("8", MENU_RENDER_SPINRATE_8);
+		glutAddMenuEntry("9", MENU_RENDER_SPINRATE_9);
+		glutAddMenuEntry("10", MENU_RENDER_SPINRATE_10);
+		glutAddMenuEntry("11", MENU_RENDER_SPINRATE_11);
+		glutAddMenuEntry("12", MENU_RENDER_SPINRATE_12);
+		glutAddMenuEntry("13", MENU_RENDER_SPINRATE_13);
+		glutAddMenuEntry("14", MENU_RENDER_SPINRATE_14);
+		glutAddMenuEntry("15", MENU_RENDER_SPINRATE_15);
+		glutAddMenuEntry("16", MENU_RENDER_SPINRATE_16);
+		glutAddMenuEntry("17", MENU_RENDER_SPINRATE_17);
+		glutAddMenuEntry("18", MENU_RENDER_SPINRATE_18);
+		glutAddMenuEntry("19", MENU_RENDER_SPINRATE_19);
+		glutAddMenuEntry("20", MENU_RENDER_SPINRATE_20);
+
 	glutSetMenu(_main_menu_render);
 		glutAddSubMenu("Movements by arrows", _menu_movements_by_arrows);
 		glutAddSubMenu("Movements by wasd", _menu_movements_by_wasd);
@@ -469,6 +492,7 @@ void main_menu_init() {
 		glutAddSubMenu("Scaling parameters by pageup/pagedown", _menu_scaling);
 		glutAddSubMenu("Coloring", _menu_color);
 		glutAddSubMenu("Settings", _menu_settings);
+		glutAddSubMenu("Spinrate", _menu_spinrate);
 		glutAddMenuEntry("Invert control", MENU_RENDER_INVERT_CONTROL);
 
 	glutAttachMenu(GLUT_RIGHT_BUTTON);
@@ -699,14 +723,44 @@ void menu_settings(int code) {
 			} break;
 
 		case MENU_SETTINGS_GS_RESET:	
-			glob_settings = Settings(glob_settings.global_settings, Freeglut_settings(), glob_settings.main_window, glob_settings.subwindows);
+			glob_settings = Settings(glob_settings.global_settings, Freeglut_settings(), glob_settings.main_window, glob_settings.subwindows, 1.0);
 			postRedisplay();
 			break;
 
 		case MENU_SETTINGS_GS_RESET_FILE: {
-			Settings reseted_settings = Settings(glob_settings.global_settings, Freeglut_settings(), glob_settings.main_window, glob_settings.subwindows);
+			Settings reseted_settings = Settings(glob_settings.global_settings, Freeglut_settings(), glob_settings.main_window, glob_settings.subwindows, glob_settings.spinrate);
 			reseted_settings.save(L'a');
 			} break;
+	}
+
+}
+
+void menu_spinrate(int code) {
+
+	switch(code) {
+	
+		case MENU_RENDER_SPINRATE_1: glob_settings.spinrate = 1; glutPostRedisplay(); break;
+		case MENU_RENDER_SPINRATE_2: glob_settings.spinrate = 2; glutPostRedisplay(); break;
+		case MENU_RENDER_SPINRATE_3: glob_settings.spinrate = 3; glutPostRedisplay(); break;
+		case MENU_RENDER_SPINRATE_4: glob_settings.spinrate = 4; glutPostRedisplay(); break;
+		case MENU_RENDER_SPINRATE_5: glob_settings.spinrate = 5; glutPostRedisplay(); break;
+		case MENU_RENDER_SPINRATE_6: glob_settings.spinrate = 6; glutPostRedisplay(); break;
+		case MENU_RENDER_SPINRATE_7: glob_settings.spinrate = 7; glutPostRedisplay(); break;
+		case MENU_RENDER_SPINRATE_8: glob_settings.spinrate = 8; glutPostRedisplay(); break;
+		case MENU_RENDER_SPINRATE_9: glob_settings.spinrate = 9; glutPostRedisplay(); break;
+		case MENU_RENDER_SPINRATE_10: glob_settings.spinrate = 10; glutPostRedisplay(); break;
+		case MENU_RENDER_SPINRATE_11: glob_settings.spinrate = 11; glutPostRedisplay(); break;
+		case MENU_RENDER_SPINRATE_12: glob_settings.spinrate = 12; glutPostRedisplay(); break;
+		case MENU_RENDER_SPINRATE_13: glob_settings.spinrate = 13; glutPostRedisplay(); break;
+		case MENU_RENDER_SPINRATE_14: glob_settings.spinrate = 14; glutPostRedisplay(); break;
+		case MENU_RENDER_SPINRATE_15: glob_settings.spinrate = 15; glutPostRedisplay(); break;
+		case MENU_RENDER_SPINRATE_16: glob_settings.spinrate = 16; glutPostRedisplay(); break;
+		case MENU_RENDER_SPINRATE_17: glob_settings.spinrate = 17; glutPostRedisplay(); break;
+		case MENU_RENDER_SPINRATE_18: glob_settings.spinrate = 18; glutPostRedisplay(); break;
+		case MENU_RENDER_SPINRATE_19: glob_settings.spinrate = 19; glutPostRedisplay(); break;
+		case MENU_RENDER_SPINRATE_20: glob_settings.spinrate = 20; glutPostRedisplay(); break;
+	
+		default: break;
 	}
 
 }
