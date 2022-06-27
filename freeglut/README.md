@@ -1,60 +1,9 @@
 # visualis freeglut
+  alpha 0.2.0  
   
-## Roadmap
-- [x] .data vampire parser
-- [x] convertor to .vvis
-- [x] .vvis -> vertex(point, spin) array
-- [x] adding the freeglut library in project
-- [x] vertex -> shape::cone
-    - [x] printing simple cone
-    - [x] printing full sample
-- [x] picture -> camera and sample movements
-    - [x] colorful
-- [x] -> menu with settings
-- [x] interactive main-function with cmds interpetator
-- [x] запоминание настроек (json)
-- [ ] выборка отрисовки не всех конусов
-- [ ] движение мыши - поворот образца с контролом, а без ктрл - по плоскости движение
-- [ ] комбинации клавиш для разных задач (редисплей, закрытие окна и пр.)
-- [ ] флаги для запуска .\visualis_freeglut
-- [ ] новые фигуры для рисования (стрелки, например)
-- [ ] FLTK или что-то другое?
-- [ ] ИЛИ разделение окна на подокна
-- [ ] LINUX
-  
-## Compiling with CMake
-Можно склонировать репозиторий со всеми подмодулями  
-```s
-    git clone --recursive-submodules git@github.com:ilyata76/visualis.git
-```
-Или же без них, но в папки, находящиеся по пути `source/libraries/`, требуется разместить соответствующие библиотеки (см. зависимости)  
-```
-    cd ./freeglut/
-    mkdir build 
-    cd build
-    cmake ..
-    cmake --build .
-```
-Существующие опции
-```s
-    USE_STATIC "Use static freeglut library" ON
-    COMPILE_FREEGLUT_EXAMPLES "Compile freeglut examples?" OFF
-```
-Чтобы собрать проект с динамической freeglut библиотекой, достаточно:
-```
-    cmake -DUSE_STATIC=OFF ..
-    cmake --build .
-```
+# Консольное приложение
 
-
-## Зависимости
-+ **[Exceptio](https://github.com/ilyata76/tia-Exceptio.git)** для обработки исключений и ошибок
-+ **[freeglut](https://github.com/FreeGLUTProject/freeglut.git)** для рисования
-+ **[json](https://github.com/nlohmann/json.git)** для хранения настроек  
-  
-  При стандартных настройках и наличия их в требуемых директориях проект соберётся самостоятельно. Динамическую же библиотеку придётся искать
-  
-## Консольное приложение
+## Консольное начало
 ```
 
     ____   ____.___  _____________ ___  _____  .____    .___  _________
@@ -64,97 +13,164 @@
        \___/   |___/_______  /______/\____|__  /_______ \___/_______ /
                            \/                \/        \/          \/
 
-vis > show
+vvis > help
 
-         Path to folder with files               (c): <nothing>
-         Path to sconfiguration file             (c): <nothing>
-         Path to folder with .json settings      (c): <nothing>
-         Using color?                            (c): false
-         Number of file                          (c): 0
-         Shape for drawing                       (u): c - cone
-         Index of spin                           (u): DRAW ALL
-         Background color (RGB)                  (c): 255/255 255/255 255/255
+        Usage : help <subcommand: {settings, set, unset, convert, visualize, reset, restart}>
+        Exit  : exit
 
-vis > set sp ../temp/b
+vvis > help settings
 
-        Path to settings file folder : ../temp/b : has been set up
+        settings show
+          -- <nothing> : shows CONSOLE settings (paths, filenumber etc.)
+          -- all       : shows ALL settings (including spinrate, main_window, console_settings, window(freeglut)_settings)
+          -- console   : shows only CONSOLE settings (paths, filenumber etc.)
+          -- window    : shows only WINDOW(freeglut)_settings (coloring, positions etc.)
 
-vis > settings get
+        settings save
+          -- <nothing> : saves ALL settings in visualis-settings.json file by path (in order of importance):
+                       : path to settings file, path to settings folder, path to folder
 
-        Succsesful
+        settings get
+          -- <nothing> : restores ALL settings from visualis-settings.json file by path (in order of importance):
+                       : path to settings file, path to settings folder, path to folder
 
-vis > show
+        settings reset
+          -- <nothing> : resets ALL settings in console (not file)
+                       : also command "reset" does the same
 
-         Path to folder with files               (c): .
-         Path to sconfiguration file             (c): <nothing>
-         Path to folder with .json settings      (c): ../temp/b
-         Using color?                            (c): false
-         Number of file                          (c): 30
-         Shape for drawing                       (u): c - cone
-         Index of spin                           (u): DRAW ALL
-         Background color (RGB)                  (c): 255/255 200/255 150/255
+        Aliases: settings, setting, setgs, setg, sgs
 
-vis >
+vvis >
 ```
-Приглашение для ввода `vis > `. Ожидается введение некоторых управляющих команд (синонимы к ним прописаны в `help`):
-+ `help` выводит в консоль список команд и их краткое описание
-+ `show` показывает влияющие на работу программы переменные (изменяемые (c) и неизменяемые (u))
-+ `set` позволяет устанавливать значение для некоторых переменных
-    + `folderpath <path-to-folder>` позволяет устанавливать путь до папки с файлами, подлежащими конвертации и/или формата .vvis
-    + `filenumber <integer>` позволяет устанавливать, какой файл будет подлежать конвертации и/или визуализации .vvis 
-    + `filepath <path-to-file>` позволяет устанавливать пусть до файла sconfiguration-xxx.vvis
-    + `coloring <y/n>` позволяет устанавливать, будет ли использоваться цвет
-    + `backgroundcolor <red> <green> <blue>` в числах от 0 до 255 устанавливает цвет фона картинки
-    + `settingspath <path-to-folder>` указывает на директорию, в которой должен(или есть) находиться файл visualis-settings.json
-+ `unset` позволяет сбросить переменную до стандартного значения, принимает всё то же, что и set
-+ `convert` конвертирует файлы в формат .vvis
-    + `vampire6` конвертирует файлы [Vampire6](https://github.com/richard-evans/vampire), Vampire5
-+ `visualize` рисует спиновую систему
-    + `folder` позволяет рисовать спиновую систему, используя путь до папки (folderpath) и номер файла (filenumber)
-    + `file` позволяет рисовать спиную систему, используя путь до файла sconfiguration-xxx.vvis (filepath)
-+ `settings`
-    + `save` позволяет сохранить переменные в файле формата .json по пути settingspath/visualis-settings.json, если тот существует
-        + Если файла не существует, то он создастся по пути settingspath
-        + Если путь settingspath не был указан, файл создастся по пути folderpath, settingspath будет определён автоматически
-    + `get` позволяет получить переменные из файла формата .json, который был сохранён предыдущей подкомандой, по пути settingspath/visualis-settings.json
-+ `reset` обнуляет все переменные, но не перезапускает программу
-+ `restart` полностью обнуляет все переменные и перезапускает программу
+  Ожидается, что после приглашения ввода, `vvis >`, пользователем будут введены доступные команды (синонимичные им указаны в help)
++ `help` - позволяет получить справку по каждой из последующих комманд, а также пример их применения и синонимы
++ `settings` - позволяет работать с настройками как консольного приложения, так и отрисовки в окне. Позволяет их сохранять или восстанавливать из файла
+    + `show` - показывает текущие настройки (по умолчанию через *console*)
+        + `all` - показывает ВСЕ текущие настройки (не обязательно *console + window*)
+        + `console` - показывает настройки консольного начала, например, пути до папок и файлов
+        + `window` - показывает настройки, которые будут применятся при рисовании
+    + `save` - сохраняет текущие настройки по пути *settingsfile* или *settingsfolder*, или *folderpath* (в порядке уменьшения важности)
+    + `get` - восстанавливает текущие настройки из файла по тем же путям
+    + `reset` - сбрасывает в текущей консоли все настройки (не в файле)
++ `set` - позволяет устанавливать конкретную доступную для изменения (указано [C]) настройку 
+    + `folderpath` - позволяет установить путь до папки, в которой находятся файлы либо нуждающиеся в конвертировании, либо уже конвертированные. Используется в связке с *filenumber*
+    + `filenumber` - позволяет установить номер файла. Используется в связке с *folderpath*
+    + `filepath` - позволяет установить путь до файла sconfiguration-xxxxxxxx.vvis
+    + `spinindex` - устанавливает номер отрисовываемого спина (по умолчанию: все)
+    + `settingsfolder` - устанавливает путь до папки, в которой лежит файл visualis-settings.json. При визуализации может быть восстановлен через *folderpath*, *filepath*
+    + `settingsfolder` - устанавливает путь до файла visualis-settings.json
+    + `coloring` - устанавливает нужно ли использовать цветовую окраску образца (по умолчанию: нет)
+    + `backgroundcolor` - устанавливает цвет фона RGB (по умолчанию: белый фон)
+    + `fullscreen` - устанавливает инструкцию: нужен ли полный экран (по умолчанию: нет)
+    + `shape` - устанавливает фигуру, которой будет отрисовываться каждый спин (по умолчанию: конус)
+    + `translationbyelement` - устанавливает, нужно ли инвертировать нажатие клавиш
+    + `estrangementchanges` - устанавливает чувствительность изменения увеличения или уменьшения образца
+    + `scalingchanges` - устанавливает чувствительность изменения увеличения или уменьшения размеров каждого *shape*
+    + `translationchanges` - устанавливает чувствительность перемещения образца вдоль плоскости XY
+    + `camerachanges` - устанавливает чувствительность перемещения камеры
+    + `spinrate`- устанавливает количество отрисовываемых конусов (каждый *spinrate* конус будет отрисован)
++ `unset` - позволяет восстановить стандартную настройку
++ `convert` - конвертирует исходные файлы (по доступу через *filepath*) в sconfiguration-xxxxxxxx.vvis
+    + `v6` конвертирует файлы [Vampire6](https://github.com/richard-evans/vampire), Vampire5
++ `visualize` - визуализирует систему, находя sconfiguration-xxxxxxxx.vvis (по умолчанию через *folder*)
+    + `folder` - ищет sconfiguration-xxxxxxxx.vvis с номером *filenumber* по пути *folderpath*. Путь до папки настроек принимается за *folderpath*, если таковой не был указан
+    + `file` - ищет sconfiguration-xxxxxxxx.vvis по пути *filepath*. Путь до папки настроек принимается за папку, в которой этот файл находится, если таковой не был указан
++ `reset` сбрасывает текущие настройки до начальных (синонимичен к *settings reset*)
++ `restart` полностью перезагружает программу
 + `exit` выход из приложения
 
-## Манипуляции с образцом
+## Оконное продолжение
+  Слева от образца находится подокно с осями координат, изменяющимися вместе с главным окном, при нажатии ПКМ и выпадении меню:  
++ позволяет скрыть или показать названия осей
++ позволяет заменить линии на конусы
   
-### Клавиши
-  
-При настройке by_head в левую-правую сторону будет как бы поворачиваться голова, сама камера:  
+### Клавиши главного окна
+  При настройке by_head в левую-правую сторону будет как бы поворачиваться голова, сама камера:  
 + Поднять/опустить камеру: `W`/`S`  
 + Повернуть влево/вправо камеру: `A`/`D`  
-  
-Следующие операции меняют местоположение всего образца на полотне (by_head):  
+  Следующие операции меняют местоположение всего образца на полотне (by_head):  
 + Вверх/вниз: `KEY_ARROW_UP`/`KEY_ARROW_DOWN`  
 + Влево/вправо: `KEY_ARROW_LEF`/`KEY_ARROW_RIGHT`  
-  
-Следующие операции меняют ориентацию объекта в пространстве, поворачивая его вместе с локальными осями:  
+  Следующие операции меняют ориентацию объекта в пространстве, поворачивая его вместе с локальными осями:  
 + Повернуть вокруг оси X : `I`/`K`  
 + Повернуть вокруг оси Y : `J`/`L`  
-
-Приблизить или отдалить:
+  Приблизить или отдалить (а также при сверхбольшом приближении можно посмотреть "за спину"):
 + Приблизить: `L_CTRL` или `L_SHIFT`
 + Отдалить: `SPACEBAR`
+  Выйти: `esc`
   
-### Клавиши мыши
-  
+### Кнопки и движения мыши главного окна
+  Мышь чувствительнее клавиш при скролле в два раза. В два раза менее - при перемещении и повороте образца. При увеличении размеров фигур - такой же чувствительности.
+  При зажатой клавише мыши можно:  
++ перемещать образец вдоль плоскости XY
+При зажатой клавише мыши и кнопки `ALT_LEFT` можно:
++ вращать образец вдоль осей X или Y
+При прокручивании колеса можно:
++ приближать или отдалять образец, а также смотреть ему за спину
 При нажатии ПКМ открывается выпадающее меню, в котором можно:
 + включить/выключить цвет
-+ изменить чувствительность
-+ сохранить, восстановить, сбросить и сбросить в файле visualis-settings.json настройки, касающиеся поведения клавиш
-    + если файл visualis-settings.json существовал (был указан путь до папки с ним), он сохранит в него
-    + если путь был указан, но файла не существовало, будет создан файл в директории settingspath
-    + если пути указано не было, он создаст файл в директории по пути folderpath (если запущена визуализация по filepath, folderpath заполнится автоматически)
++ изменить чувствительность всех клавиш и движения мыши (неразделимо)
++ как бы нажать на каждую клавишу
++ сохранить, восстановить, сбросить и сбросить в файле visualis-settings.json настройки, касающиеся поведения клавиш. Восстанавливаемые настройки более полны, что позволяет восстановить и вид на образец (положение камеры и т.д.)
++ изменить количество отрисовываемых конусов *spinrate*
++ инвертировать управление
 
-  
+## Другое
++ Позволяет пропускать комментарии в .data файлах (v6), даже если те написаны не в начале строки
++ То же - в файлах .vvis
++ Переход к визуализации всегда инициализирует папку настроек, даже если тот не был указан, но это не значит, что будет создан файл (будет создан только при нажатии *save*)
+
+## Зависимости
++ **[Exceptio](https://github.com/ilyata76/tia-Exceptio.git)** для обработки исключений и ошибок
++ **[freeglut](https://github.com/FreeGLUTProject/freeglut.git)** для рисования
++ **[json](https://github.com/nlohmann/json.git)** для хранения настроек  
+
+## Текущие ограничения
++ C++17
++ only Windows
++ console only
+
+## Компиляция CMake
+  Можно склонировать репозиторий со всеми подмодулями  
+```s
+    git clone --recursive-submodules git@github.com:ilyata76/visualis.git
+```
+  Или же без них, но в папки, находящиеся по пути `source/libraries/`, требуется разместить соответствующие библиотеки (см. зависимости)  
+```
+    cd ./freeglut/
+    mkdir build 
+    cd build
+    cmake ..
+    cmake --build .
+```
+  Существующие опции
+```s
+    USE_STATIC "Use static freeglut library" ON
+    COMPILE_FREEGLUT_EXAMPLES "Compile freeglut examples?" OFF
+```
+  Чтобы собрать проект с динамической freeglut библиотекой, достаточно:
+```
+    cmake -DUSE_STATIC=OFF ..
+    cmake --build .
+```
+
 ## Текущее быстродействие
 - [issues/Оптимизация](https://github.com/ilyata76/visualis/issues/12)
 
 ## Examples
-![colorful_vertex](https://github.com/ilyata76/visualis/blob/master/freeglut/pics/colorful_vertex.png)
-![curie_ni](https://github.com/ilyata76/visualis/blob/master/freeglut/pics/Curie_Ni_colorful.png)
+### alpha 0.1.0
+  Зависимость цвета от направления:
+![colorful_vertex](https://github.com/ilyata76/visualis/blob/master/freeglut/pics/colorful_vertex_alpha_0_1_0.png)
+  Кубик через конусы и выпадающее меню:
+![curie_ni](https://github.com/ilyata76/visualis/blob/master/freeglut/pics/Curie_Ni_colorful_alpha_0_1_0.png)
+  Увеличенные конусы для кубика:
+![huge_cones](https://github.com/ilyata76/visualis/blob/master/freeglut/pics/cube_with_huge_cones_alpha_0_1_0.png)
+### alpha 0.2.0
+  Тот же кубик, но новый
+![curie_ni_a_0_2_0](https://github.com/ilyata76/visualis/blob/master/freeglut/pics/Curie_Ni_colorful_alpha_0_2_0.png)
+  Движение доменной стенки:
+![dw_many_a_0_2_0](https://github.com/ilyata76/visualis/blob/master/freeglut/pics/DW_alpha_0_2_0_fully_count.png)
+  Движение доменной стенки, если бы рисовался каждый десятый конус:
+![dw_a_0_2_0](https://github.com/ilyata76/visualis/blob/master/freeglut/pics/DW_alpha_0_2_0.png)
+
+
