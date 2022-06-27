@@ -250,7 +250,7 @@ bool Interpretator::help_handler(std::vector<std::wstring> _commands) {
 				std::wcout << L"\t         : Aliases: vampire6, v6, vampire5, v5\n";
 			
 			std::wcout << L"\n";
-			std::wcout << L"\tAliases: convert\n";
+			std::wcout << L"\tAliases: convert, con\n";
 			break;
 
 		case INTER_COMMAND_HELP_VISUALIZE:		
@@ -263,7 +263,7 @@ bool Interpretator::help_handler(std::vector<std::wstring> _commands) {
 				std::wcout << L"\t     : Note: expected: sconfiguration file with filenumber \n";
 			
 			std::wcout << L"\n";
-			std::wcout << L"\tAliases: visualize\n";
+			std::wcout << L"\tAliases: visualize, vis\n";
 			break;
 
 		case INTER_COMMAND_HELP_RESET:			
@@ -625,8 +625,8 @@ bool set_command_maps(Interpretator& _inter) {
 		{L"settings", INTER_COMMAND_SETTINGS}, {L"setting", INTER_COMMAND_SETTINGS}, {L"setgs", INTER_COMMAND_SETTINGS}, {L"setg", INTER_COMMAND_SETTINGS}, {L"sgs", INTER_COMMAND_SETTINGS},
 		{L"set", INTER_COMMAND_SET},
 		{L"unset", INTER_COMMAND_UNSET}, {L"uset", INTER_COMMAND_HELP_UNSET},
-		{L"convert", INTER_COMMAND_CONVERT},
-		{L"visualize", INTER_COMMAND_VISUALIZE},
+		{L"convert", INTER_COMMAND_CONVERT}, {L"con", INTER_COMMAND_CONVERT},
+		{L"visualize", INTER_COMMAND_VISUALIZE}, {L"vis", INTER_COMMAND_VISUALIZE},
 		{L"reset", INTER_COMMAND_RESET},
 		{L"restart", INTER_COMMAND_RESTART}
 	};
