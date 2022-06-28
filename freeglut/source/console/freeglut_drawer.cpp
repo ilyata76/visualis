@@ -111,7 +111,7 @@ void display_mainwindow() {
 			glOrtho(
 				-(double(glob_settings.main_window.wh.width) / 2.) * double(glob_settings.freeglut_settings.estrangement), (double(glob_settings.main_window.wh.width) / 2.) * double(glob_settings.freeglut_settings.estrangement),
 				-(double(glob_settings.main_window.wh.height) / 2.) * abs(double(glob_settings.freeglut_settings.estrangement)), (double(glob_settings.main_window.wh.height) / 2.) * abs(double(glob_settings.freeglut_settings.estrangement)),
-				0.1, 100000.0
+				-100000.0, 100000.0
 			);
 			
 		glMatrixMode(GL_MODELVIEW);
@@ -789,7 +789,7 @@ void display_subwindow_0() {
 		glOrtho(
 			-(double(glob_settings.subwindows[0].wh.width) / 2.) * estrangement, (double(glob_settings.subwindows[0].wh.width) / 2.) * estrangement,
 			-(double(glob_settings.subwindows[0].wh.height) / 2.) * abs(estrangement), (double(glob_settings.subwindows[0].wh.height) / 2.) * abs(estrangement),
-			0.1, 10000.
+			-100000.0, 100000.0
 		);
 
 	glMatrixMode(GL_MODELVIEW);
@@ -801,97 +801,9 @@ void display_subwindow_0() {
 	glRotatef(glob_settings.freeglut_settings.additional_rotation.theta, 1, 0, 0);
 	
 	if (axis_by_cones) {
-
-		estrangement = glob_settings.subwindows[0].wh.width / 50.0;
-
-		glColor3f(1.0, 0.0, 0.0);
-
-		glRotated(90.0, 0, 1, 0);
-			glutSolidCylinder(3.0 * estrangement, 6.0 * estrangement, 10.0, 10.0);
-			glTranslated(0.0, 0.0, 6.0 * estrangement);
-			glutSolidCone(3.0 * estrangement, 17.0 * estrangement, 10.0, 10.0);
-			glTranslated(0.0, 0.0, -5.0 * estrangement);
-		glRotated(-90.0, 0, 1, 0);
-
-		if (show_axis_names) {
-			glColor3f(0.0, 0.0, 0.0);
-			print_text_3f(35.0, 10.0, 5.0, L"X");
-		}
-
-		
-		
-		glColor3f(0.0, 154.0 / 255.0, 99.0 / 255.0);
-
-		glRotated(-90.0, 1, 0, 0);
-			glutSolidCylinder(3.0 * estrangement, 6.0 * estrangement, 10.0, 10.0);
-			glTranslated(0.0, 0.0, 6.0 * estrangement);
-			glutSolidCone(3.0 * estrangement, 17.0 * estrangement, 10.0, 10.0);
-			glTranslated(0.0, 0.0, -5.0 * estrangement);
-		glRotated(90.0, 1, 0, 0);
-
-		
-		if (show_axis_names) {
-			glColor3f(0.0, 0.0, 0.0);
-			print_text_3f(5.0, 35.0, 5.0, L"Y");
-		}
-		
-		
-		glColor3f(0.0, 0.0, 1.0);
-			
-			glutSolidCylinder(3.0 * estrangement, 6.0 * estrangement, 10.0, 10.0);
-			glTranslated(0.0, 0.0, 6.0 * estrangement);
-			glutSolidCone(3.0 * estrangement, 17.0 * estrangement, 10.0, 10.0);
-			glTranslated(0.0, 0.0, -5.0 * estrangement);
-		
-		if (show_axis_names) {
-			glColor3f(0.0, 0.0, 0.0);
-			print_text_3f(5.0, 10.0, 35.0, L"Z");
-		}
-
-		glPopMatrix();
-
+		draw_axis_by_cones();
 	} else {
-
-		glLineWidth(4);
-
-		glColor3f(1.0, 0.0, 0.0);
-
-		glBegin(GL_LINES);
-			glVertex3f(0.0, 0.0, 0.0);
-			glVertex3f(30.0, 0.0, 0.0);
-		glEnd();	
-		
-		if (show_axis_names) {
-			glColor3f(0.0, 0.0, 0.0);
-			print_text_3f(35.0, 10.0, 5.0, L"X");
-		}
-
-		glColor3f(0.0, 154.0 / 255.0, 99.0 / 255.0);
-		
-
-		glBegin(GL_LINES);
-			glVertex3f(0.0, 0.0, 0.0);
-			glVertex3f(0.0, 30.0, 0.0);
-		glEnd();
-		
-		if (show_axis_names) {
-			glColor3f(0.0, 0.0, 0.0);
-			print_text_3f(5.0, 35.0, 5.0, L"Y");
-		}
-
-		glColor3f(0.0, 0.0, 1.0);
-
-		glBegin(GL_LINES);
-			glVertex3f(0.0, 0.0, 0.0);
-			glVertex3f(0.0, 0.0, 30.0);
-		glEnd();
-
-		if (show_axis_names) {
-			glColor3f(0.0, 0.0, 0.0);
-			print_text_3f(5.0, 10.0, 35.0, L"Z");
-		}
-
-
+		draw_axis_by_lines();
 	}
 
 	glutSwapBuffers();
@@ -939,6 +851,99 @@ void subwindow_0_menu(int code) {
 		case SUBWINDOW_AXIS_MENU_BACGROUND_MAIN: glob_settings.subwindows[0].backgroundcolor = glob_settings.main_window.backgroundcolor; glutPostRedisplay(); break;
 		case SUBWINDOW_AXIS_MENU_BACGROUND_GREY: glob_settings.subwindows[0].backgroundcolor = Rgb(230.0 / 255.0, 230.0 / 255.0, 230.0 / 255.0); glutPostRedisplay(); break;
 		default: break;
+	}
+
+}
+
+void draw_axis_by_cones() {
+	double estrangement = glob_settings.subwindows[0].wh.width / 50.0;
+	
+	glColor3f(1.0, 0.0, 0.0);
+	
+	glRotated(90.0, 0, 1, 0);
+		glutSolidCylinder(3.0 * estrangement, 6.0 * estrangement, 10.0, 10.0);
+		glTranslated(0.0, 0.0, 6.0 * estrangement);
+		glutSolidCone(3.0 * estrangement, 17.0 * estrangement, 10.0, 10.0);
+		glTranslated(0.0, 0.0, -5.0 * estrangement);
+	glRotated(-90.0, 0, 1, 0);
+	
+	if (show_axis_names) {
+		glColor3f(0.0, 0.0, 0.0);
+		print_text_3f(35.0, 10.0, 5.0, L"X");
+	}
+	
+	
+	
+	glColor3f(0.0, 154.0 / 255.0, 99.0 / 255.0);
+	
+	glRotated(-90.0, 1, 0, 0);
+		glutSolidCylinder(3.0 * estrangement, 6.0 * estrangement, 10.0, 10.0);
+		glTranslated(0.0, 0.0, 6.0 * estrangement);
+		glutSolidCone(3.0 * estrangement, 17.0 * estrangement, 10.0, 10.0);
+		glTranslated(0.0, 0.0, -5.0 * estrangement);
+	glRotated(90.0, 1, 0, 0);
+	
+	
+	if (show_axis_names) {
+		glColor3f(0.0, 0.0, 0.0);
+		print_text_3f(5.0, 35.0, 5.0, L"Y");
+	}
+	
+	
+	glColor3f(0.0, 0.0, 1.0);
+		
+		glutSolidCylinder(3.0 * estrangement, 6.0 * estrangement, 10.0, 10.0);
+		glTranslated(0.0, 0.0, 6.0 * estrangement);
+		glutSolidCone(3.0 * estrangement, 17.0 * estrangement, 10.0, 10.0);
+		glTranslated(0.0, 0.0, -5.0 * estrangement);
+	
+	if (show_axis_names) {
+		glColor3f(0.0, 0.0, 0.0);
+		print_text_3f(5.0, 10.0, 35.0, L"Z");
+	}
+	
+	glPopMatrix();
+}
+
+void draw_axis_by_lines() {
+
+	glLineWidth(4);
+
+	glColor3f(1.0, 0.0, 0.0);
+
+	glBegin(GL_LINES);
+		glVertex3f(0.0, 0.0, 0.0);
+		glVertex3f(30.0, 0.0, 0.0);
+	glEnd();	
+	
+	if (show_axis_names) {
+		glColor3f(0.0, 0.0, 0.0);
+		print_text_3f(35.0, 10.0, 5.0, L"X");
+	}
+
+	glColor3f(0.0, 154.0 / 255.0, 99.0 / 255.0);
+	
+
+	glBegin(GL_LINES);
+		glVertex3f(0.0, 0.0, 0.0);
+		glVertex3f(0.0, 30.0, 0.0);
+	glEnd();
+	
+	if (show_axis_names) {
+		glColor3f(0.0, 0.0, 0.0);
+		print_text_3f(5.0, 35.0, 5.0, L"Y");
+	}
+
+	glColor3f(0.0, 0.0, 1.0);
+
+	glBegin(GL_LINES);
+		glVertex3f(0.0, 0.0, 0.0);
+		glVertex3f(0.0, 0.0, 30.0);
+	glEnd();
+
+	if (show_axis_names) {
+		glColor3f(0.0, 0.0, 0.0);
+		print_text_3f(5.0, 10.0, 35.0, L"Z");
 	}
 
 }

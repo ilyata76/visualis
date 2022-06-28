@@ -135,6 +135,9 @@
 	void subwindow_0_menu_init();
 	void subwindow_0_menu(int code);
 
+	void draw_axis_by_cones();
+	void draw_axis_by_lines();
+
 	void postRedisplay();
 
 
