@@ -776,7 +776,7 @@ void display_subwindow_0() {
 
 		gluLookAt(
 			glob_settings.freeglut_settings.position_of_camera.x, glob_settings.freeglut_settings.position_of_camera.y, glob_settings.freeglut_settings.position_of_camera.z,		//
-			glob_settings.freeglut_settings.position_of_element.x, glob_settings.freeglut_settings.position_of_element.y, glob_settings.freeglut_settings.position_of_element.z,		//
+			0., 0., -100.0,		//
 			0., 1., 0.
 		);
 
@@ -796,7 +796,7 @@ void display_subwindow_0() {
 
 	glPushMatrix();
 
-	glTranslated(glob_settings.freeglut_settings.position_of_element.x, glob_settings.freeglut_settings.position_of_element.y, glob_settings.freeglut_settings.position_of_element.z);
+	glTranslated(0., 0., -100.0);
 	glRotated(glob_settings.freeglut_settings.additional_rotation.phi, 0, 1, 0);
 	glRotatef(glob_settings.freeglut_settings.additional_rotation.theta, 1, 0, 0);
 	

@@ -11,7 +11,7 @@ Freeglut_settings::Freeglut_settings() {
 				this->scaling_parameters				= Parameters3f(20.0, 20.0, 20.0); //
 				this->scaling_translation				= Parameters3f(1.0, 1.0, 1.0);
 				this->position_of_camera				= Point3f(0.0, 0.0, 0.0);
-				this->position_of_element				= Point3f(0.0, 0.0, -100.0);
+				this->position_of_element				= Point3f(0.0, 0.0, -50000.0);
 				this->scaling_parameters_changes		= Parameters3f(VVIS_SCALING_PARAMETERS_CHANGES_X, VVIS_SCALING_PARAMETERS_CHANGES_Y, VVIS_SCALING_PARAMETERS_CHANGES_Z);
 				this->translation_changes				= Parameters3f(VVIS_TRANSLATION_CHANGES_X, VVIS_TRANSLATION_CHANGES_Y, VVIS_TRANSLATION_CHANGES_Z);
 				this->camera_changes					= Parameters3f(VVIS_CAMERA_CHANGES_X, VVIS_CAMERA_CHANGES_Y, VVIS_CAMERA_CHANGES_Z);
