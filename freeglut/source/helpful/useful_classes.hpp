@@ -37,6 +37,15 @@
 		~WindowParameters() {};
 	};
 
+	struct WindowPosition {
+		int x;
+		int y;
+
+		WindowPosition() : x(0), y(0) {};
+		WindowPosition(int _x, int _y) : x(_x), y(_y) {};
+		~WindowPosition() {};
+	};
+
 	struct Arrow {
 		double x;
 		double y;
@@ -52,11 +61,12 @@
 
 			int descriptor;
 			WindowParameters wh;
+			WindowPosition window_position;
 			Rgb backgroundcolor;
 			Arrow arrow;
 
-			Window() : descriptor(0), wh(WindowParameters(500.0, 350.0)), backgroundcolor(Rgb(1.0, 1.0, 1.0)) {};
-			Window(int _descriptor, WindowParameters _wh, Rgb _background) : descriptor(_descriptor), wh(_wh), backgroundcolor(_background) {};
+			Window() : descriptor(0), wh(WindowParameters(500.0, 350.0)), backgroundcolor(Rgb(1.0, 1.0, 1.0)), window_position(WindowPosition(0, 0)) {};
+			Window(int _descriptor, WindowParameters _wh, Rgb _background) : descriptor(_descriptor), wh(_wh), backgroundcolor(_background), window_position(WindowPosition(0, 0)) {};
 			~Window() {};
 	};
 
