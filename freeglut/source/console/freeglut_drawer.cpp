@@ -8,6 +8,21 @@ bool show_axis_names = true;
 
 bool have_additional_sub_windows = false;
 
+std::map<std::wstring, Rgb> colors = {
+	{L"white", Rgb(255.0 / 255.0, 255.0 / 255.0, 255.0 / 255.0)},
+	{L"red", Rgb(255.0 / 255.0, 0.0 / 255.0, 0.0 / 255.0)},
+	{L"green", Rgb(0.0 / 255.0, 255.0 / 255.0, 0.0 / 255.0)},
+	{L"blue", Rgb(0.0 / 255.0, 0.0 / 255.0, 255.0 / 255.0)},
+	{L"lightblue", Rgb(108.0 / 255.0, 146.0 / 255.0, 175.0 / 255.0)},
+	{L"black", Rgb(0.0 / 255.0, 0.0 / 255.0, 0.0 / 255.0)},
+	{L"lightgrey", Rgb(230.0 / 255.0, 230.0 / 255.0, 230.0 / 255.0)},
+	{L"main", Rgb(255.0 / 255.0, 255.0 / 255.0, 255.0 / 255.0)},
+	{L"sub0", Rgb(255.0 / 255.0, 255.0 / 255.0, 255.0 / 255.0)},
+	{L"sub1", Rgb(230.0 / 255.0, 230.0 / 255.0, 230.0 / 255.0)},
+	{L"sub2", Rgb(230.0 / 255.0, 230.0 / 255.0, 230.0 / 255.0)},
+	{L"sbu3", Rgb(230.0 / 255.0, 230.0 / 255.0, 230.0 / 255.0)},
+};
+
 int gap = 5;  // для подокон
 
 void print_text_3f(double _x, double _y, double _z, std::wstring text) {
@@ -15,7 +30,7 @@ void print_text_3f(double _x, double _y, double _z, std::wstring text) {
 	int len = text.length(); 
 
 	for (int i = 0; i < len; ++i) 
-		glutBitmapCharacter(GLUT_BITMAP_HELVETICA_10, text[i]);
+		glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, text[i]);
 }
 
 void print_text_2f(double _x, double _y, std::wstring text) {
@@ -23,7 +38,7 @@ void print_text_2f(double _x, double _y, std::wstring text) {
 	int len = text.length(); 
 
 	for (int i = 0; i < len; ++i) 
-		glutBitmapCharacter(GLUT_BITMAP_HELVETICA_10, text[i]);
+		glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, text[i]);
 }
 
 void draw_sample(Settings& _settings, std::vector<Vertex>& _vct, int argc, char** argv) {
@@ -32,6 +47,12 @@ void draw_sample(Settings& _settings, std::vector<Vertex>& _vct, int argc, char*
 	glob_vct = _vct;
 
 	if (!glob_settings.freeglut_settings.use_additional_subwindows) have_additional_sub_windows = false;
+
+	colors[L"main"] = glob_settings.main_window.backgroundcolor;
+	colors[L"sub0"] = glob_settings.subwindows[0].backgroundcolor;
+	colors[L"sub1"] = glob_settings.subwindows[1].backgroundcolor;
+	colors[L"sub2"] = glob_settings.subwindows[2].backgroundcolor;
+	colors[L"sub3"] = glob_settings.subwindows[3].backgroundcolor;
 
 	// настройки будут переходить из окна к окну только в случае сохранения их здесь и восстановления из файла в консоли
 
@@ -47,6 +68,7 @@ void draw_sample(Settings& _settings, std::vector<Vertex>& _vct, int argc, char*
 	glob_settings.main_window.descriptor = glutCreateWindow("main_window"); glutSetWindowTitle("VISUALIS");
 		glutDisplayFunc(display_mainwindow);
 		glutReshapeFunc(reshape_mainwindow);
+		main_menu_init();
 
 	recalculation_subwindows_wh();
 
@@ -135,6 +157,77 @@ void reshape_mainwindow(int w, int h) {
 	glutSetWindow(glob_settings.main_window.descriptor);
 }
 
+void main_menu_init() {
+	int _main_menu = glutCreateMenu(main_menu);
+	int _menu_main = glutCreateMenu(menu_background_main);
+
+	char buff[256]; 
+
+	glutSetMenu(_menu_main);
+		sprintf(buff, "White: (%g/255, %g/255, %g/255)", colors[L"white"].red * 255.0, colors[L"white"].green * 255.0, colors[L"white"].blue * 255.0);
+		glutAddMenuEntry(buff, MENU_COLORING_BACKGROUND_WHITE);
+		sprintf(buff, "Red: (%g/255, %g/255, %g/255)", colors[L"red"].red * 255.0, colors[L"red"].green * 255.0, colors[L"red"].blue * 255.0);
+		glutAddMenuEntry(buff, MENU_COLORING_BACKGROUND_RED);
+		sprintf(buff, "Green: (%g/255, %g/255, %g/255)", colors[L"green"].red * 255.0, colors[L"green"].green * 255.0, colors[L"green"].blue * 255.0);
+		glutAddMenuEntry(buff, MENU_COLORING_BACKGROUND_GREEN);
+		sprintf(buff, "Blue: (%g/255, %g/255, %g/255)", colors[L"blue"].red * 255.0, colors[L"blue"].green * 255.0, colors[L"blue"].blue * 255.0);
+		glutAddMenuEntry(buff, MENU_COLORING_BACKGROUND_BLUE);
+		sprintf(buff, "Light blue: (%g/255, %g/255, %g/255)", colors[L"lightblue"].red * 255.0, colors[L"lightblue"].green * 255.0, colors[L"lightblue"].blue * 255.0);
+		glutAddMenuEntry(buff, MENU_COLORING_BACKGROUND_LIGHTBLUE);
+		sprintf(buff, "Black: (%g/255, %g/255, %g/255)", colors[L"black"].red * 255.0, colors[L"black"].green * 255.0, colors[L"black"].blue * 255.0);
+		glutAddMenuEntry(buff, MENU_COLORING_BACKGROUND_BLACK);
+		sprintf(buff, "Light grey: (%g/255, %g/255, %g/255)", colors[L"lightgrey"].red * 255.0, colors[L"lightgrey"].green * 255.0, colors[L"lightgrey"].blue * 255.0);
+		glutAddMenuEntry(buff, MENU_COLORING_BACKGROUND_LIGHTGREY);
+		sprintf(buff, "As main was: (%g/255, %g/255, %g/255)", colors[L"main"].red * 255.0, colors[L"main"].green * 255.0, colors[L"main"].blue * 255.0);
+		glutAddMenuEntry(buff, MENU_COLORING_BACKGROUND_MAIN);
+		sprintf(buff, "As drawer area was: (%g/255, %g/255, %g/255)", colors[L"sub0"].red * 255.0, colors[L"sub0"].green * 255.0, colors[L"sub0"].blue * 255.0);
+		glutAddMenuEntry(buff, MENU_COLORING_BACKGROUND_SUB0);
+		sprintf(buff, "As axis area was: (%g/255, %g/255, %g/255)", colors[L"sub1"].red * 255.0, colors[L"sub1"].green * 255.0, colors[L"sub1"].blue * 255.0);
+		glutAddMenuEntry(buff, MENU_COLORING_BACKGROUND_SUB1);
+		sprintf(buff, "As stats area was: (%g/255, %g/255, %g/255)", colors[L"sub2"].red * 255.0, colors[L"sub2"].green * 255.0, colors[L"sub2"].blue * 255.0);
+		glutAddMenuEntry(buff, MENU_COLORING_BACKGROUND_SUB2);
+		sprintf(buff, "As log area was: (%g/255, %g/255, %g/255)", colors[L"sub3"].red * 255.0, colors[L"sub3"].green * 255.0, colors[L"sub3"].blue * 255.0);
+		glutAddMenuEntry(buff, MENU_COLORING_BACKGROUND_SUB3);
+
+	glutSetMenu(_main_menu);
+		glutAddSubMenu("Background", _menu_main);
+
+	glutAttachMenu(GLUT_RIGHT_BUTTON);
+	glutDetachMenu(GLUT_LEFT_BUTTON);
+
+}
+
+void main_menu(int code) {
+
+	switch (code) {
+		default: break;
+	}
+
+}
+
+void menu_background_main(int code) {
+
+	switch (code) {
+
+		case MENU_COLORING_BACKGROUND_WHITE: glob_settings.main_window.backgroundcolor = colors[L"white"]; postRedisplay(); break;
+		case MENU_COLORING_BACKGROUND_RED: glob_settings.main_window.backgroundcolor = colors[L"red"]; postRedisplay(); break;
+		case MENU_COLORING_BACKGROUND_GREEN: glob_settings.main_window.backgroundcolor = colors[L"green"]; postRedisplay(); break;
+		case MENU_COLORING_BACKGROUND_BLUE: glob_settings.main_window.backgroundcolor = colors[L"blue"]; postRedisplay(); break;
+		case MENU_COLORING_BACKGROUND_LIGHTBLUE: glob_settings.main_window.backgroundcolor = colors[L"lightblue"]; postRedisplay(); break;
+		case MENU_COLORING_BACKGROUND_BLACK: glob_settings.main_window.backgroundcolor = colors[L"black"]; postRedisplay(); break;
+		case MENU_COLORING_BACKGROUND_LIGHTGREY: glob_settings.main_window.backgroundcolor = colors[L"lightgrey"]; postRedisplay(); break;
+		case MENU_COLORING_BACKGROUND_MAIN: glob_settings.main_window.backgroundcolor = colors[L"main"]; postRedisplay(); break;
+		case MENU_COLORING_BACKGROUND_SUB0: glob_settings.main_window.backgroundcolor = colors[L"sub0"]; postRedisplay(); break;
+		case MENU_COLORING_BACKGROUND_SUB1: glob_settings.main_window.backgroundcolor = colors[L"sub1"]; postRedisplay(); break;
+		case MENU_COLORING_BACKGROUND_SUB2: glob_settings.main_window.backgroundcolor = colors[L"sub2"]; postRedisplay(); break;
+		case MENU_COLORING_BACKGROUND_SUB3: glob_settings.main_window.backgroundcolor = colors[L"sub3"]; postRedisplay(); break;
+		
+		default: break;
+
+	}
+
+}
+
 void create_additional_subwindows() {
 
 	if (glob_settings.freeglut_settings.use_additional_subwindows) {
@@ -154,6 +247,7 @@ void create_additional_subwindows() {
 		);
 			glutDisplayFunc(display_subwindow_2);
 			glutReshapeFunc(reshape_subwindow_2);
+			subwindow_2_menu_init();
 
 		glob_settings.subwindows[3].descriptor = glutCreateSubWindow(
 			glob_settings.main_window.descriptor,
@@ -162,6 +256,7 @@ void create_additional_subwindows() {
 		);
 			glutDisplayFunc(display_subwindow_3);
 			glutReshapeFunc(reshape_subwindow_3);
+			subwindow_3_menu_init();
 	}
 }
 
@@ -361,6 +456,9 @@ void subwindow_0_menu_init() {
 	int _menu_color = glutCreateMenu(menu_color);
 	int _menu_settings = glutCreateMenu(menu_settings);
 	int _menu_spinrate = glutCreateMenu(menu_spinrate);
+	int _menu_background = glutCreateMenu(menu_background_sub0);
+
+	char buff[256];
 
 	glutSetMenu(_menu_movements_by_arrows);
 		glutAddMenuEntry("Inrease sensivity", MENU_RENDER_MOVEMENTS_BY_ARROWS_INCREASE_SENSIVITY);
@@ -430,6 +528,32 @@ void subwindow_0_menu_init() {
 		glutAddMenuEntry("19", MENU_RENDER_SPINRATE_19);
 		glutAddMenuEntry("20", MENU_RENDER_SPINRATE_20);
 
+	glutSetMenu(_menu_background);
+		sprintf(buff, "White: (%g/255, %g/255, %g/255)", colors[L"white"].red * 255.0, colors[L"white"].green * 255.0, colors[L"white"].blue * 255.0);
+		glutAddMenuEntry(buff, MENU_COLORING_BACKGROUND_WHITE);
+		sprintf(buff, "Red: (%g/255, %g/255, %g/255)", colors[L"red"].red * 255.0, colors[L"red"].green * 255.0, colors[L"red"].blue * 255.0);
+		glutAddMenuEntry(buff, MENU_COLORING_BACKGROUND_RED);
+		sprintf(buff, "Green: (%g/255, %g/255, %g/255)", colors[L"green"].red * 255.0, colors[L"green"].green * 255.0, colors[L"green"].blue * 255.0);
+		glutAddMenuEntry(buff, MENU_COLORING_BACKGROUND_GREEN);
+		sprintf(buff, "Blue: (%g/255, %g/255, %g/255)", colors[L"blue"].red * 255.0, colors[L"blue"].green * 255.0, colors[L"blue"].blue * 255.0);
+		glutAddMenuEntry(buff, MENU_COLORING_BACKGROUND_BLUE);
+		sprintf(buff, "Light blue: (%g/255, %g/255, %g/255)", colors[L"lightblue"].red * 255.0, colors[L"lightblue"].green * 255.0, colors[L"lightblue"].blue * 255.0);
+		glutAddMenuEntry(buff, MENU_COLORING_BACKGROUND_LIGHTBLUE);
+		sprintf(buff, "Black: (%g/255, %g/255, %g/255)", colors[L"black"].red * 255.0, colors[L"black"].green * 255.0, colors[L"black"].blue * 255.0);
+		glutAddMenuEntry(buff, MENU_COLORING_BACKGROUND_BLACK);
+		sprintf(buff, "Light grey: (%g/255, %g/255, %g/255)", colors[L"lightgrey"].red * 255.0, colors[L"lightgrey"].green * 255.0, colors[L"lightgrey"].blue * 255.0);
+		glutAddMenuEntry(buff, MENU_COLORING_BACKGROUND_LIGHTGREY);
+		sprintf(buff, "As main was: (%g/255, %g/255, %g/255)", colors[L"main"].red * 255.0, colors[L"main"].green * 255.0, colors[L"main"].blue * 255.0);
+		glutAddMenuEntry(buff, MENU_COLORING_BACKGROUND_MAIN);
+		sprintf(buff, "As drawer area was: (%g/255, %g/255, %g/255)", colors[L"sub0"].red * 255.0, colors[L"sub0"].green * 255.0, colors[L"sub0"].blue * 255.0);
+		glutAddMenuEntry(buff, MENU_COLORING_BACKGROUND_SUB0);
+		sprintf(buff, "As axis area was: (%g/255, %g/255, %g/255)", colors[L"sub1"].red * 255.0, colors[L"sub1"].green * 255.0, colors[L"sub1"].blue * 255.0);
+		glutAddMenuEntry(buff, MENU_COLORING_BACKGROUND_SUB1);
+		sprintf(buff, "As stats area was: (%g/255, %g/255, %g/255)", colors[L"sub2"].red * 255.0, colors[L"sub2"].green * 255.0, colors[L"sub2"].blue * 255.0);
+		glutAddMenuEntry(buff, MENU_COLORING_BACKGROUND_SUB2);
+		sprintf(buff, "As log area was: (%g/255, %g/255, %g/255)", colors[L"sub3"].red * 255.0, colors[L"sub3"].green * 255.0, colors[L"sub3"].blue * 255.0);
+		glutAddMenuEntry(buff, MENU_COLORING_BACKGROUND_SUB3);
+
 	glutSetMenu(_main_menu_render);
 		glutAddSubMenu("Movements by arrows", _menu_movements_by_arrows);
 		glutAddSubMenu("Movements by wasd", _menu_movements_by_wasd);
@@ -440,6 +564,7 @@ void subwindow_0_menu_init() {
 		glutAddSubMenu("Settings", _menu_settings);
 		glutAddSubMenu("Spinrate", _menu_spinrate);
 		glutAddMenuEntry("Invert control", MENU_RENDER_INVERT_CONTROL);
+		glutAddSubMenu("Background color", _menu_background);
 
 	glutAttachMenu(GLUT_RIGHT_BUTTON);
 	glutDetachMenu(GLUT_LEFT_BUTTON);
@@ -707,6 +832,29 @@ void menu_spinrate(int code) {
 		case MENU_RENDER_SPINRATE_20: glob_settings.spinrate = 20; glutPostRedisplay(); break;
 	
 		default: break;
+	}
+
+}
+
+void menu_background_sub0(int code) {
+
+	switch (code) {
+
+		case MENU_COLORING_BACKGROUND_WHITE: glob_settings.subwindows[0].backgroundcolor = colors[L"white"]; postRedisplay(); break;
+		case MENU_COLORING_BACKGROUND_RED: glob_settings.subwindows[0].backgroundcolor = colors[L"red"]; postRedisplay(); break;
+		case MENU_COLORING_BACKGROUND_GREEN: glob_settings.subwindows[0].backgroundcolor = colors[L"green"]; postRedisplay(); break;
+		case MENU_COLORING_BACKGROUND_BLUE: glob_settings.subwindows[0].backgroundcolor = colors[L"blue"]; postRedisplay(); break;
+		case MENU_COLORING_BACKGROUND_LIGHTBLUE: glob_settings.subwindows[0].backgroundcolor = colors[L"lightblue"]; postRedisplay(); break;
+		case MENU_COLORING_BACKGROUND_BLACK: glob_settings.subwindows[0].backgroundcolor = colors[L"black"]; postRedisplay(); break;
+		case MENU_COLORING_BACKGROUND_LIGHTGREY: glob_settings.subwindows[0].backgroundcolor = colors[L"lightgrey"]; postRedisplay(); break;
+		case MENU_COLORING_BACKGROUND_MAIN: glob_settings.subwindows[0].backgroundcolor = colors[L"main"]; postRedisplay(); break;
+		case MENU_COLORING_BACKGROUND_SUB0: glob_settings.subwindows[0].backgroundcolor = colors[L"sub0"]; postRedisplay(); break;
+		case MENU_COLORING_BACKGROUND_SUB1: glob_settings.subwindows[0].backgroundcolor = colors[L"sub1"]; postRedisplay(); break;
+		case MENU_COLORING_BACKGROUND_SUB2: glob_settings.subwindows[0].backgroundcolor = colors[L"sub2"]; postRedisplay(); break;
+		case MENU_COLORING_BACKGROUND_SUB3: glob_settings.subwindows[0].backgroundcolor = colors[L"sub3"]; postRedisplay(); break;
+		
+		default: break;
+
 	}
 
 }
@@ -1042,6 +1190,35 @@ void draw_axis_by_lines() {
 
 void subwindow_1_menu_init() {
 	int _subwindow1_menu = glutCreateMenu(subwindow_1_menu);
+	int _menu_background = glutCreateMenu(menu_background_sub1);
+	
+	char buff[256];
+
+	glutSetMenu(_menu_background);
+		sprintf(buff, "White: (%g/255, %g/255, %g/255)", colors[L"white"].red * 255.0, colors[L"white"].green * 255.0, colors[L"white"].blue * 255.0);
+		glutAddMenuEntry(buff, MENU_COLORING_BACKGROUND_WHITE);
+		sprintf(buff, "Red: (%g/255, %g/255, %g/255)", colors[L"red"].red * 255.0, colors[L"red"].green * 255.0, colors[L"red"].blue * 255.0);
+		glutAddMenuEntry(buff, MENU_COLORING_BACKGROUND_RED);
+		sprintf(buff, "Green: (%g/255, %g/255, %g/255)", colors[L"green"].red * 255.0, colors[L"green"].green * 255.0, colors[L"green"].blue * 255.0);
+		glutAddMenuEntry(buff, MENU_COLORING_BACKGROUND_GREEN);
+		sprintf(buff, "Blue: (%g/255, %g/255, %g/255)", colors[L"blue"].red * 255.0, colors[L"blue"].green * 255.0, colors[L"blue"].blue * 255.0);
+		glutAddMenuEntry(buff, MENU_COLORING_BACKGROUND_BLUE);
+		sprintf(buff, "Light blue: (%g/255, %g/255, %g/255)", colors[L"lightblue"].red * 255.0, colors[L"lightblue"].green * 255.0, colors[L"lightblue"].blue * 255.0);
+		glutAddMenuEntry(buff, MENU_COLORING_BACKGROUND_LIGHTBLUE);
+		sprintf(buff, "Black: (%g/255, %g/255, %g/255)", colors[L"black"].red * 255.0, colors[L"black"].green * 255.0, colors[L"black"].blue * 255.0);
+		glutAddMenuEntry(buff, MENU_COLORING_BACKGROUND_BLACK);
+		sprintf(buff, "Light grey: (%g/255, %g/255, %g/255)", colors[L"lightgrey"].red * 255.0, colors[L"lightgrey"].green * 255.0, colors[L"lightgrey"].blue * 255.0);
+		glutAddMenuEntry(buff, MENU_COLORING_BACKGROUND_LIGHTGREY);
+		sprintf(buff, "As main was: (%g/255, %g/255, %g/255)", colors[L"main"].red * 255.0, colors[L"main"].green * 255.0, colors[L"main"].blue * 255.0);
+		glutAddMenuEntry(buff, MENU_COLORING_BACKGROUND_MAIN);
+		sprintf(buff, "As drawer area was: (%g/255, %g/255, %g/255)", colors[L"sub0"].red * 255.0, colors[L"sub0"].green * 255.0, colors[L"sub0"].blue * 255.0);
+		glutAddMenuEntry(buff, MENU_COLORING_BACKGROUND_SUB0);
+		sprintf(buff, "As axis area was: (%g/255, %g/255, %g/255)", colors[L"sub1"].red * 255.0, colors[L"sub1"].green * 255.0, colors[L"sub1"].blue * 255.0);
+		glutAddMenuEntry(buff, MENU_COLORING_BACKGROUND_SUB1);
+		sprintf(buff, "As stats area was: (%g/255, %g/255, %g/255)", colors[L"sub2"].red * 255.0, colors[L"sub2"].green * 255.0, colors[L"sub2"].blue * 255.0);
+		glutAddMenuEntry(buff, MENU_COLORING_BACKGROUND_SUB2);
+		sprintf(buff, "As log area was: (%g/255, %g/255, %g/255)", colors[L"sub3"].red * 255.0, colors[L"sub3"].green * 255.0, colors[L"sub3"].blue * 255.0);
+		glutAddMenuEntry(buff, MENU_COLORING_BACKGROUND_SUB3);
 	
 	glutSetMenu(_subwindow1_menu);
 		glutAddMenuEntry("Use lines", SUBWINDOW_AXIS_MENU_USE_LINES);
@@ -1050,22 +1227,44 @@ void subwindow_1_menu_init() {
 		glutAddMenuEntry("Hide axis names", SUBWINDOW_AXIS_MENU_HIDE_NAMES);
 		glutAddMenuEntry("Use main background", SUBWINDOW_AXIS_MENU_BACGROUND_MAIN);
 		glutAddMenuEntry("Use grey background", SUBWINDOW_AXIS_MENU_BACGROUND_GREY);
-	
+		glutAddSubMenu("Background color", _menu_background);
+
+
 	glutAttachMenu(GLUT_RIGHT_BUTTON);
 	glutDetachMenu(GLUT_LEFT_BUTTON);
 }
 
 void subwindow_1_menu(int code) {
-	// TODO: плохая смена цвета
 	
 	switch (code) {
 		case SUBWINDOW_AXIS_MENU_USE_CONES: axis_by_cones = true; glutPostRedisplay();break;
 		case SUBWINDOW_AXIS_MENU_USE_LINES: axis_by_cones = false; glutPostRedisplay(); break;
 		case SUBWINDOW_AXIS_MENU_SHOW_NAMES: show_axis_names = true; glutPostRedisplay(); break;
 		case SUBWINDOW_AXIS_MENU_HIDE_NAMES: show_axis_names = false; glutPostRedisplay(); break;
-		//case SUBWINDOW_AXIS_MENU_BACGROUND_MAIN: glob_settings.subwindows[1].backgroundcolor = glob_settings.main_window.backgroundcolor; glutPostRedisplay(); break;
-		//case SUBWINDOW_AXIS_MENU_BACGROUND_GREY: glob_settings.subwindows[1].backgroundcolor = Rgb(230.0 / 255.0, 230.0 / 255.0, 230.0 / 255.0); glutPostRedisplay(); break;
 		default: break;
+	}
+
+}
+
+void menu_background_sub1(int code) {
+
+	switch (code) {
+
+		case MENU_COLORING_BACKGROUND_WHITE: glob_settings.subwindows[1].backgroundcolor = colors[L"white"]; postRedisplay(); break;
+		case MENU_COLORING_BACKGROUND_RED: glob_settings.subwindows[1].backgroundcolor = colors[L"red"]; postRedisplay(); break;
+		case MENU_COLORING_BACKGROUND_GREEN: glob_settings.subwindows[1].backgroundcolor = colors[L"green"]; postRedisplay(); break;
+		case MENU_COLORING_BACKGROUND_BLUE: glob_settings.subwindows[1].backgroundcolor = colors[L"blue"]; postRedisplay(); break;
+		case MENU_COLORING_BACKGROUND_LIGHTBLUE: glob_settings.subwindows[1].backgroundcolor = colors[L"lightblue"]; postRedisplay(); break;
+		case MENU_COLORING_BACKGROUND_BLACK: glob_settings.subwindows[1].backgroundcolor = colors[L"black"]; postRedisplay(); break;
+		case MENU_COLORING_BACKGROUND_LIGHTGREY: glob_settings.subwindows[1].backgroundcolor = colors[L"lightgrey"]; postRedisplay(); break;
+		case MENU_COLORING_BACKGROUND_MAIN: glob_settings.subwindows[1].backgroundcolor = colors[L"main"]; postRedisplay(); break;
+		case MENU_COLORING_BACKGROUND_SUB0: glob_settings.subwindows[1].backgroundcolor = colors[L"sub0"]; postRedisplay(); break;
+		case MENU_COLORING_BACKGROUND_SUB1: glob_settings.subwindows[1].backgroundcolor = colors[L"sub1"]; postRedisplay(); break;
+		case MENU_COLORING_BACKGROUND_SUB2: glob_settings.subwindows[1].backgroundcolor = colors[L"sub2"]; postRedisplay(); break;
+		case MENU_COLORING_BACKGROUND_SUB3: glob_settings.subwindows[1].backgroundcolor = colors[L"sub3"]; postRedisplay(); break;
+
+		default: break;
+
 	}
 
 }
@@ -1083,11 +1282,154 @@ void display_subwindow_2() {
 	glutSwapBuffers();
 }
 
+void subwindow_2_menu_init() {
+	int _subwindow2_menu = glutCreateMenu(subwindow_2_menu);
+	int _menu_background = glutCreateMenu(menu_background_sub2);
+
+	char buff[256];
+
+	glutSetMenu(_menu_background);
+		sprintf(buff, "White: (%g/255, %g/255, %g/255)", colors[L"white"].red * 255.0, colors[L"white"].green * 255.0, colors[L"white"].blue * 255.0);
+		glutAddMenuEntry(buff, MENU_COLORING_BACKGROUND_WHITE);
+		sprintf(buff, "Red: (%g/255, %g/255, %g/255)", colors[L"red"].red * 255.0, colors[L"red"].green * 255.0, colors[L"red"].blue * 255.0);
+		glutAddMenuEntry(buff, MENU_COLORING_BACKGROUND_RED);
+		sprintf(buff, "Green: (%g/255, %g/255, %g/255)", colors[L"green"].red * 255.0, colors[L"green"].green * 255.0, colors[L"green"].blue * 255.0);
+		glutAddMenuEntry(buff, MENU_COLORING_BACKGROUND_GREEN);
+		sprintf(buff, "Blue: (%g/255, %g/255, %g/255)", colors[L"blue"].red * 255.0, colors[L"blue"].green * 255.0, colors[L"blue"].blue * 255.0);
+		glutAddMenuEntry(buff, MENU_COLORING_BACKGROUND_BLUE);
+		sprintf(buff, "Light blue: (%g/255, %g/255, %g/255)", colors[L"lightblue"].red * 255.0, colors[L"lightblue"].green * 255.0, colors[L"lightblue"].blue * 255.0);
+		glutAddMenuEntry(buff, MENU_COLORING_BACKGROUND_LIGHTBLUE);
+		sprintf(buff, "Black: (%g/255, %g/255, %g/255)", colors[L"black"].red * 255.0, colors[L"black"].green * 255.0, colors[L"black"].blue * 255.0);
+		glutAddMenuEntry(buff, MENU_COLORING_BACKGROUND_BLACK);
+		sprintf(buff, "Light grey: (%g/255, %g/255, %g/255)", colors[L"lightgrey"].red * 255.0, colors[L"lightgrey"].green * 255.0, colors[L"lightgrey"].blue * 255.0);
+		glutAddMenuEntry(buff, MENU_COLORING_BACKGROUND_LIGHTGREY);
+		sprintf(buff, "As main was: (%g/255, %g/255, %g/255)", colors[L"main"].red * 255.0, colors[L"main"].green * 255.0, colors[L"main"].blue * 255.0);
+		glutAddMenuEntry(buff, MENU_COLORING_BACKGROUND_MAIN);
+		sprintf(buff, "As drawer area was: (%g/255, %g/255, %g/255)", colors[L"sub0"].red * 255.0, colors[L"sub0"].green * 255.0, colors[L"sub0"].blue * 255.0);
+		glutAddMenuEntry(buff, MENU_COLORING_BACKGROUND_SUB0);
+		sprintf(buff, "As axis area was: (%g/255, %g/255, %g/255)", colors[L"sub1"].red * 255.0, colors[L"sub1"].green * 255.0, colors[L"sub1"].blue * 255.0);
+		glutAddMenuEntry(buff, MENU_COLORING_BACKGROUND_SUB1);
+		sprintf(buff, "As stats area was: (%g/255, %g/255, %g/255)", colors[L"sub2"].red * 255.0, colors[L"sub2"].green * 255.0, colors[L"sub2"].blue * 255.0);
+		glutAddMenuEntry(buff, MENU_COLORING_BACKGROUND_SUB2);
+		sprintf(buff, "As log area was: (%g/255, %g/255, %g/255)", colors[L"sub3"].red * 255.0, colors[L"sub3"].green * 255.0, colors[L"sub3"].blue * 255.0);
+		glutAddMenuEntry(buff, MENU_COLORING_BACKGROUND_SUB3);
+
+	glutSetMenu(_subwindow2_menu);
+		glutAddSubMenu("Background color", _menu_background);
+
+	glutAttachMenu(GLUT_RIGHT_BUTTON);
+	glutDetachMenu(GLUT_LEFT_BUTTON);
+}
+
+void subwindow_2_menu(int code) {
+
+	switch (code) {
+
+		default: break;
+
+	}
+
+}
+
+void menu_background_sub2(int code) {
+
+	switch (code) {
+
+		case MENU_COLORING_BACKGROUND_WHITE: glob_settings.subwindows[2].backgroundcolor = colors[L"white"]; postRedisplay(); break;
+		case MENU_COLORING_BACKGROUND_RED: glob_settings.subwindows[2].backgroundcolor = colors[L"red"]; postRedisplay(); break;
+		case MENU_COLORING_BACKGROUND_GREEN: glob_settings.subwindows[2].backgroundcolor = colors[L"green"]; postRedisplay(); break;
+		case MENU_COLORING_BACKGROUND_BLUE: glob_settings.subwindows[2].backgroundcolor = colors[L"blue"]; postRedisplay(); break;
+		case MENU_COLORING_BACKGROUND_LIGHTBLUE: glob_settings.subwindows[2].backgroundcolor = colors[L"lightblue"]; postRedisplay(); break;
+		case MENU_COLORING_BACKGROUND_BLACK: glob_settings.subwindows[2].backgroundcolor = colors[L"black"]; postRedisplay(); break;
+		case MENU_COLORING_BACKGROUND_LIGHTGREY: glob_settings.subwindows[2].backgroundcolor = colors[L"lightgrey"]; postRedisplay(); break;
+		case MENU_COLORING_BACKGROUND_MAIN: glob_settings.subwindows[2].backgroundcolor = colors[L"main"]; postRedisplay(); break;
+		case MENU_COLORING_BACKGROUND_SUB0: glob_settings.subwindows[2].backgroundcolor = colors[L"sub0"]; postRedisplay(); break;
+		case MENU_COLORING_BACKGROUND_SUB1: glob_settings.subwindows[2].backgroundcolor = colors[L"sub1"]; postRedisplay(); break;
+		case MENU_COLORING_BACKGROUND_SUB2: glob_settings.subwindows[2].backgroundcolor = colors[L"sub2"]; postRedisplay(); break;
+		case MENU_COLORING_BACKGROUND_SUB3: glob_settings.subwindows[2].backgroundcolor = colors[L"sub3"]; postRedisplay(); break;
+
+		default: break;
+
+	}
+
+}
+
 void display_subwindow_3() {
 	glClearColor(glob_settings.subwindows[3].backgroundcolor.red, glob_settings.subwindows[3].backgroundcolor.green, glob_settings.subwindows[3].backgroundcolor.blue, 0.0);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	glutSwapBuffers();
+}
+
+void subwindow_3_menu_init() {
+	int _subwindow3_menu = glutCreateMenu(subwindow_3_menu);
+	int _menu_background = glutCreateMenu(menu_background_sub3);
+
+	char buff[256];
+
+	glutSetMenu(_menu_background);
+		sprintf(buff, "White: (%g/255, %g/255, %g/255)", colors[L"white"].red * 255.0, colors[L"white"].green * 255.0, colors[L"white"].blue * 255.0);
+		glutAddMenuEntry(buff, MENU_COLORING_BACKGROUND_WHITE);
+		sprintf(buff, "Red: (%g/255, %g/255, %g/255)", colors[L"red"].red * 255.0, colors[L"red"].green * 255.0, colors[L"red"].blue * 255.0);
+		glutAddMenuEntry(buff, MENU_COLORING_BACKGROUND_RED);
+		sprintf(buff, "Green: (%g/255, %g/255, %g/255)", colors[L"green"].red * 255.0, colors[L"green"].green * 255.0, colors[L"green"].blue * 255.0);
+		glutAddMenuEntry(buff, MENU_COLORING_BACKGROUND_GREEN);
+		sprintf(buff, "Blue: (%g/255, %g/255, %g/255)", colors[L"blue"].red * 255.0, colors[L"blue"].green * 255.0, colors[L"blue"].blue * 255.0);
+		glutAddMenuEntry(buff, MENU_COLORING_BACKGROUND_BLUE);
+		sprintf(buff, "Light blue: (%g/255, %g/255, %g/255)", colors[L"lightblue"].red * 255.0, colors[L"lightblue"].green * 255.0, colors[L"lightblue"].blue * 255.0);
+		glutAddMenuEntry(buff, MENU_COLORING_BACKGROUND_LIGHTBLUE);
+		sprintf(buff, "Black: (%g/255, %g/255, %g/255)", colors[L"black"].red * 255.0, colors[L"black"].green * 255.0, colors[L"black"].blue * 255.0);
+		glutAddMenuEntry(buff, MENU_COLORING_BACKGROUND_BLACK);
+		sprintf(buff, "Light grey: (%g/255, %g/255, %g/255)", colors[L"lightgrey"].red * 255.0, colors[L"lightgrey"].green * 255.0, colors[L"lightgrey"].blue * 255.0);
+		glutAddMenuEntry(buff, MENU_COLORING_BACKGROUND_LIGHTGREY);
+		sprintf(buff, "As main was: (%g/255, %g/255, %g/255)", colors[L"main"].red * 255.0, colors[L"main"].green * 255.0, colors[L"main"].blue * 255.0);
+		glutAddMenuEntry(buff, MENU_COLORING_BACKGROUND_MAIN);
+		sprintf(buff, "As drawer area was: (%g/255, %g/255, %g/255)", colors[L"sub0"].red * 255.0, colors[L"sub0"].green * 255.0, colors[L"sub0"].blue * 255.0);
+		glutAddMenuEntry(buff, MENU_COLORING_BACKGROUND_SUB0);
+		sprintf(buff, "As axis area was: (%g/255, %g/255, %g/255)", colors[L"sub1"].red * 255.0, colors[L"sub1"].green * 255.0, colors[L"sub1"].blue * 255.0);
+		glutAddMenuEntry(buff, MENU_COLORING_BACKGROUND_SUB1);
+		sprintf(buff, "As stats area was: (%g/255, %g/255, %g/255)", colors[L"sub2"].red * 255.0, colors[L"sub2"].green * 255.0, colors[L"sub2"].blue * 255.0);
+		glutAddMenuEntry(buff, MENU_COLORING_BACKGROUND_SUB2);
+		sprintf(buff, "As log area was: (%g/255, %g/255, %g/255)", colors[L"sub3"].red * 255.0, colors[L"sub3"].green * 255.0, colors[L"sub3"].blue * 255.0);
+		glutAddMenuEntry(buff, MENU_COLORING_BACKGROUND_SUB3);
+
+	glutSetMenu(_subwindow3_menu);
+		glutAddSubMenu("Background color", _menu_background);
+
+	glutAttachMenu(GLUT_RIGHT_BUTTON);
+	glutDetachMenu(GLUT_LEFT_BUTTON);
+}
+
+void subwindow_3_menu(int code) {
+
+	switch (code) {
+
+		default: break;
+
+	}
+
+}
+
+void menu_background_sub3(int code) {
+	
+	switch (code) {
+
+		case MENU_COLORING_BACKGROUND_WHITE: glob_settings.subwindows[3].backgroundcolor = colors[L"white"]; postRedisplay(); break;
+		case MENU_COLORING_BACKGROUND_RED: glob_settings.subwindows[3].backgroundcolor = colors[L"red"]; postRedisplay(); break;
+		case MENU_COLORING_BACKGROUND_GREEN: glob_settings.subwindows[3].backgroundcolor = colors[L"green"]; postRedisplay(); break;
+		case MENU_COLORING_BACKGROUND_BLUE: glob_settings.subwindows[3].backgroundcolor = colors[L"blue"]; postRedisplay(); break;
+		case MENU_COLORING_BACKGROUND_LIGHTBLUE: glob_settings.subwindows[3].backgroundcolor = colors[L"lightblue"]; postRedisplay(); break;
+		case MENU_COLORING_BACKGROUND_BLACK: glob_settings.subwindows[3].backgroundcolor = colors[L"black"]; postRedisplay(); break;
+		case MENU_COLORING_BACKGROUND_LIGHTGREY: glob_settings.subwindows[3].backgroundcolor = colors[L"lightgrey"]; postRedisplay(); break;
+		case MENU_COLORING_BACKGROUND_MAIN: glob_settings.subwindows[3].backgroundcolor = colors[L"main"]; postRedisplay(); break;
+		case MENU_COLORING_BACKGROUND_SUB0: glob_settings.subwindows[3].backgroundcolor = colors[L"sub0"]; postRedisplay(); break;
+		case MENU_COLORING_BACKGROUND_SUB1: glob_settings.subwindows[3].backgroundcolor = colors[L"sub1"]; postRedisplay(); break;
+		case MENU_COLORING_BACKGROUND_SUB2: glob_settings.subwindows[3].backgroundcolor = colors[L"sub2"]; postRedisplay(); break;
+		case MENU_COLORING_BACKGROUND_SUB3: glob_settings.subwindows[3].backgroundcolor = colors[L"sub3"]; postRedisplay(); break;
+
+		default: break;
+
+	}
 }
 
 void reshape_subwindow_0(int w, int h) {
@@ -1130,3 +1472,5 @@ void reshape_subwindow_3(int w, int h) {
 	glob_settings.subwindows[3].wh.width = w;
 	glob_settings.subwindows[3].wh.height = h;
 }
+
+

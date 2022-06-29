@@ -89,6 +89,20 @@
 	#define MENU_RENDER_SPINRATE_19 10919
 	#define MENU_RENDER_SPINRATE_20 10920
 
+	#define MENU_COLORING_BACKGROUND 1100
+	#define MENU_COLORING_BACKGROUND_WHITE 1101
+	#define MENU_COLORING_BACKGROUND_RED 1102
+	#define MENU_COLORING_BACKGROUND_GREEN 1103
+	#define MENU_COLORING_BACKGROUND_BLUE 1104
+	#define MENU_COLORING_BACKGROUND_LIGHTBLUE 1105
+	#define MENU_COLORING_BACKGROUND_BLACK 1106
+	#define MENU_COLORING_BACKGROUND_LIGHTGREY 1107
+	#define MENU_COLORING_BACKGROUND_MAIN 1108
+	#define MENU_COLORING_BACKGROUND_SUB0 1109
+	#define MENU_COLORING_BACKGROUND_SUB1 1110
+	#define MENU_COLORING_BACKGROUND_SUB2 1111
+	#define MENU_COLORING_BACKGROUND_SUB3 1112
+
 
 	#define SUBWINDOW_AXIS_MENU_USE_CONES 2001
 	#define SUBWINDOW_AXIS_MENU_USE_LINES 2002
@@ -137,6 +151,13 @@
 	void reshape_subwindow_3(int w, int h);
 
 	void main_menu_init();
+		void main_menu(int code);
+
+	void menu_background_sub0(int code);
+	void menu_background_sub1(int code);
+	void menu_background_sub2(int code);
+	void menu_background_sub3(int code);
+	void menu_background_main(int code);
 
 	void subwindow_0_menu_init();
 		void subwindow_0_menu(int code);
@@ -158,5 +179,7 @@
 
 	void subwindow_3_menu_init();
 		void subwindow_3_menu(int code);
+
+	void log(std::wstring _str);
 
 #endif // !FREEGLUT_DRAWER_HPP
