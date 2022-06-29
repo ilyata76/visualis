@@ -6,7 +6,6 @@ std::vector<Vertex> glob_vct;
 bool axis_by_cones = false;
 bool show_axis_names = true;
 
-bool use_additional_sub_windows = false;
 bool have_additional_sub_windows = false;
 
 int gap = 5;  // для подокон
@@ -31,6 +30,9 @@ void draw_sample(Settings& _settings, std::vector<Vertex>& _vct, int argc, char*
 
 	glob_settings = _settings;
 	glob_vct = _vct;
+
+	if (!glob_settings.freeglut_settings.use_additional_subwindows) have_additional_sub_windows = false;
+
 	// настройки будут переходить из окна к окну только в случае сохранения их здесь и восстановления из файла в консоли
 
 	glutInit(&argc, argv);
@@ -62,7 +64,7 @@ void draw_sample(Settings& _settings, std::vector<Vertex>& _vct, int argc, char*
 		glutMouseFunc(mouse_pressed);
 		subwindow_0_menu_init();
 
-	if (use_additional_sub_windows) {
+	if (glob_settings.freeglut_settings.use_additional_subwindows) {
 
 		create_additional_subwindows();
 		have_additional_sub_windows = true;
@@ -111,10 +113,10 @@ void reshape_mainwindow(int w, int h) {
 	
 		if (!have_additional_sub_windows) {
 			recalculation_subwindows_wh();
-			create_additional_subwindows();
+			if (glob_settings.freeglut_settings.use_additional_subwindows) create_additional_subwindows();
 		}
 
-		if (use_additional_sub_windows) have_additional_sub_windows = true;
+		if (glob_settings.freeglut_settings.use_additional_subwindows) have_additional_sub_windows = true;
 
 	}
 
@@ -135,7 +137,7 @@ void reshape_mainwindow(int w, int h) {
 
 void create_additional_subwindows() {
 
-	if (use_additional_sub_windows) {
+	if (glob_settings.freeglut_settings.use_additional_subwindows) {
 		glob_settings.subwindows[1].descriptor = glutCreateSubWindow(
 			glob_settings.main_window.descriptor,
 			glob_settings.subwindows[1].window_position.x, glob_settings.subwindows[1].window_position.y,
@@ -167,7 +169,7 @@ void recalculation_subwindows_wh() {
 	int x = glob_settings.main_window.wh.width;
 	int y = glob_settings.main_window.wh.height;
 
-	if (have_additional_sub_windows || use_additional_sub_windows) {
+	if (have_additional_sub_windows && glob_settings.freeglut_settings.use_additional_subwindows) {
 
 		glob_settings.subwindows[0].wh.width = x - 2 * gap;
 		glob_settings.subwindows[0].wh.height = int((y - 3 * gap) * 0.75);
