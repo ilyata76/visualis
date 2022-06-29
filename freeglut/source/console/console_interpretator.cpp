@@ -77,7 +77,7 @@ bool Interpretator::settings_handler(std::vector<std::wstring> _commands) {
 	
 		case INTER_COMMAND_SETTINGS_GET:	if(this->app_settings.get(L'a')) std::wcout << "\tSettings has been loaded\n"; else std::wcout << "\tSettings NOT has been loaded\n";	break;
 
-		case INTER_COMMAND_SETTINGS_RESET:	this->app_settings = Settings(); std::wcout << L"\tSuccessful\n"; break;
+		case INTER_COMMAND_SETTINGS_RESET: reset_handler({L"reset"}); break;
 
 		case VVIS_UNKNOWW_MAP_SECOND: std::wcout << L"\tUnknow subcommand: " << _commands[1] << L'\n'; return false; break;
 		default: break;
@@ -293,12 +293,14 @@ bool Interpretator::help_handler(std::vector<std::wstring> _commands) {
 
 bool Interpretator::reset_handler(std::vector<std::wstring> _commands) {
 	this->app_settings = Settings();
+	set_command_maps(*this);
 	std::wcout << L"\tSuccessful\n";
 	return true;
 }
 
 bool Interpretator::restart_handler(std::vector<std::wstring> _commands) {
 	this->app_settings = Settings();
+	set_command_maps(*this);
 	std::wcout << L"\tSuccessful\n";
 	return true;
 }
@@ -364,22 +366,69 @@ bool Interpretator::set_handler(std::vector<std::wstring> _commands) {
 									   break;
 
 
-		case INTER_COMMAND_SET_BACKGROUNDCOLOR: if (_commands.size() < 5 || !is_number(_commands[2]) || !is_number(_commands[3])
-											|| !is_number(_commands[4]) || !is_double(_commands[2]) || !is_double(_commands[3]) || !is_double(_commands[4]) 
-											|| std::stod(_commands[2]) > 255 || std::stod(_commands[3]) > 255
-											|| std::stod(_commands[4]) > 255) { std::wcout << L"\tIncorrect format\n"; return false; } 
+		case INTER_COMMAND_SET_BACKGROUNDCOLOR: 
+			
+			switch (_commands.size()) {
+
+				case 5 : 
+
+					if (_commands.size() < 5 || !is_number(_commands[2]) || !is_number(_commands[3])
+						|| !is_number(_commands[4]) || !is_double(_commands[2]) || !is_double(_commands[3]) || !is_double(_commands[4])
+						|| std::stod(_commands[2]) > 255 || std::stod(_commands[3]) > 255
+						|| std::stod(_commands[4]) > 255) {
+						std::wcout << L"\tIncorrect format\n"; return false;
+					}
+
+					this->app_settings.main_window.backgroundcolor.red = std::stod(_commands[2]) / 255.0;
+					this->app_settings.main_window.backgroundcolor.green = std::stod(_commands[3]) / 255.0;
+					this->app_settings.main_window.backgroundcolor.blue = std::stod(_commands[4]) / 255.0;
+
+					std::wcout << L"\tColoring background of main window ("
+						<< this->app_settings.main_window.backgroundcolor.red * 255.0 << ", "
+						<< this->app_settings.main_window.backgroundcolor.green * 255.0 << ", "
+						<< this->app_settings.main_window.backgroundcolor.blue * 255.0
+						<< L") has been set up\n";
+
+					break;
+
+
+				case 6: {
+
+					if (_commands.size() < 6 || !is_number(_commands[2]) || !is_number(_commands[3])
+						|| !is_number(_commands[4]) || !is_number(_commands[5])
+						|| !is_double(_commands[3]) || !is_double(_commands[4]) || !is_double(_commands[5])
+						|| std::stod(_commands[3]) > 255 || std::stod(_commands[4]) > 255
+						|| std::stod(_commands[5]) > 255) {
+						std::wcout << L"\tIncorrect format\n"; return false;
+					}
+
+					int number = std::stoi(_commands[2]);
+
+					if (this->app_settings.subwindows.size() <= number) { std::wcout << L"\tSubwindow " << number << "doesnt exists\n"; return false; }
+
+					this->app_settings.subwindows[number].backgroundcolor.red = std::stod(_commands[3]) / 255.0;
+					this->app_settings.subwindows[number].backgroundcolor.green = std::stod(_commands[4]) / 255.0;
+					this->app_settings.subwindows[number].backgroundcolor.blue = std::stod(_commands[5]) / 255.0;
+
+					std::wcout << L"\tColoring background subwindow " << number << " ("
+						<< this->app_settings.subwindows[number].backgroundcolor.red * 255.0 << ", "
+						<< this->app_settings.subwindows[number].backgroundcolor.green * 255.0 << ", "
+						<< this->app_settings.subwindows[number].backgroundcolor.blue * 255.0
+						<< L") has been set up\n";
+
+				}
+					break;
+
+
+
+				default: 
+					std::wcout << L"\tIncorrect format\n"; return false;
+					break;
+
+
+			}
 											  
-											  this->app_settings.main_window.backgroundcolor.red = std::stod(_commands[2]) / 255.0;
-											  this->app_settings.main_window.backgroundcolor.green = std::stod(_commands[3]) / 255.0;
-											  this->app_settings.main_window.backgroundcolor.blue = std::stod(_commands[4]) / 255.0;
-											  
-											  std::wcout << L"\tColoring background (" 
-												  << this->app_settings.main_window.backgroundcolor.red * 255.0 << ", "
-												  << this->app_settings.main_window.backgroundcolor.green * 255.0 << ", "
-												  << this->app_settings.main_window.backgroundcolor.blue * 255.0
-												  << L") has been set up\n";
-											  
-											  break;
+				break;
 
 		case INTER_COMMAND_SET_FULLSCREEN: if (_commands.size() < 3) { std::wcout << L"\tEmpty instruction\n"; return false; }
 										 this->app_settings.freeglut_settings.fullscreen = by_synonyms(_commands[2]) == L"yes" ? true : false;
@@ -479,7 +528,7 @@ bool Interpretator::unset_handler(std::vector<std::wstring> _commands) {
 
 		case INTER_COMMAND_SET_COLORING: std::wcout << L"\tSuccessful\n"; this->app_settings.freeglut_settings.coloring_sample = false; break;
 
-		case INTER_COMMAND_SET_BACKGROUNDCOLOR: std::wcout << L"\tSuccessful\n"; this->app_settings.main_window.backgroundcolor = Rgb(1.0, 1.0, 1.0); break;
+		case INTER_COMMAND_SET_BACKGROUNDCOLOR: std::wcout << L"\tSuccessful\n"; this->app_settings.subwindows[0].backgroundcolor = Rgb(1.0, 1.0, 1.0); break;
 
 		case INTER_COMMAND_SET_FULLSCREEN: std::wcout << L"\tSuccessful\n"; this->app_settings.freeglut_settings.fullscreen = false; break;
 
@@ -619,7 +668,23 @@ bool Interpretator::visualize_handler(std::vector<std::wstring> _commands) {
 }
 
 bool set_command_maps(Interpretator& _inter) {
-	
+
+	// subwindow_0 - drawer square
+	_inter.app_settings.subwindows.push_back(Window());
+	_inter.app_settings.subwindows[0].backgroundcolor = Rgb(230.0 / 255.0, 230.0 / 255.0, 230.0 / 255.0);
+
+	// s_1 - axis
+	_inter.app_settings.subwindows.push_back(Window());
+	_inter.app_settings.subwindows[1].backgroundcolor = Rgb(230.0 / 255.0, 230.0 / 255.0, 230.0 / 255.0);
+
+	// s_2 - stats
+	_inter.app_settings.subwindows.push_back(Window());
+	_inter.app_settings.subwindows[2].backgroundcolor = Rgb(230.0 / 255.0, 230.0 / 255.0, 230.0 / 255.0);
+
+	// s_3 - log
+	_inter.app_settings.subwindows.push_back(Window());
+	_inter.app_settings.subwindows[3].backgroundcolor = Rgb(230.0 / 255.0, 230.0 / 255.0, 230.0 / 255.0);
+
 	_inter.main_command = {
 		{L"help", INTER_COMMAND_HELP},
 		{L"settings", INTER_COMMAND_SETTINGS}, {L"setting", INTER_COMMAND_SETTINGS}, {L"setgs", INTER_COMMAND_SETTINGS}, {L"setg", INTER_COMMAND_SETTINGS}, {L"sgs", INTER_COMMAND_SETTINGS},

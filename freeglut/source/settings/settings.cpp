@@ -2,9 +2,16 @@
 
 std::wostream& operator<<(std::wostream& _out, const Settings& _settings) {
 	_out << _settings.global_settings << _settings.freeglut_settings;
-	_out << L"\t Background color\t\t\t [C]: " << _settings.main_window.backgroundcolor.red * 255.0 << L"/255 " << _settings.main_window.backgroundcolor.green * 255.0 << L"/255 " << _settings.main_window.backgroundcolor.blue * 255.0 << L"/255\n";
-	_out << L"\t Window\t\t\t\t\t (X): (" << _settings.main_window.wh.height << L", " << _settings.main_window.wh.width << L")\n";
-	_out << L"\t Spinrate\t\t\t\t [C]: " << _settings.spinrate << L"\n";
+	_out << L"\t Background of mainwindow color\t\t: " << _settings.main_window.backgroundcolor.red * 255.0 << L"/255 " << _settings.main_window.backgroundcolor.green * 255.0 << L"/255 " << _settings.main_window.backgroundcolor.blue * 255.0 << L"/255\n";
+	
+	int j = 0;
+	for (const auto& window : _settings.subwindows) {
+		_out << L"\t Background of subwindow" << j << " color\t\t: " << window.backgroundcolor.red * 255.0 << L"/255 " << window.backgroundcolor.green * 255.0 << L"/255 " << window.backgroundcolor.blue * 255.0 << L"/255\n";
+		++j;
+	}
+
+	_out << L"\t Window\t\t\t\t\t: (" << _settings.main_window.wh.height << L", " << _settings.main_window.wh.width << L")\n";
+	_out << L"\t Spinrate\t\t\t\t: " << _settings.spinrate << L"\n";
 	return _out;
 };
 
