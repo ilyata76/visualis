@@ -6,12 +6,21 @@ std::vector<Vertex> glob_vct;
 bool axis_by_cones = false;
 bool show_axis_names = true;
 
+bool use_sub_windows = true;
+bool have_sub_windows = false;
+
+int gap = 5;
+int x = 0;
+int y = 0;
+
+#include <iostream>
+
 void print_text_3f(double _x, double _y, double _z, std::wstring text) {
 	glRasterPos3i(_x, _y, _z);
 	int len = text.length(); 
 
 	for (int i = 0; i < len; ++i) 
-		glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, text[i]);
+		glutBitmapCharacter(GLUT_BITMAP_HELVETICA_10, text[i]);
 }
 
 void print_text_2f(double _x, double _y, std::wstring text) {
@@ -19,7 +28,7 @@ void print_text_2f(double _x, double _y, std::wstring text) {
 	int len = text.length(); 
 
 	for (int i = 0; i < len; ++i) 
-		glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, text[i]);
+		glutBitmapCharacter(GLUT_BITMAP_HELVETICA_10, text[i]);
 }
 
 void draw_sample(Settings& _settings, std::vector<Vertex>& _vct, int argc, char** argv) {
@@ -33,107 +42,141 @@ void draw_sample(Settings& _settings, std::vector<Vertex>& _vct, int argc, char*
 	glutInitWindowSize(glob_settings.main_window.wh.width,
 						glob_settings.main_window.wh.height);
 
-	glutInitWindowPosition(0, 0);
+	glutInitWindowPosition(glob_settings.main_window.window_position.x, glob_settings.main_window.window_position.y);
 
 	glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE);
 
 	glob_settings.main_window.descriptor = glutCreateWindow("main_window"); glutSetWindowTitle("VISUALIS");
 		glutDisplayFunc(display_mainwindow);
 		glutReshapeFunc(reshape_mainwindow);
-		glutKeyboardFunc(normal_keys);
-		glutSpecialFunc(special_keys);
-		glutPassiveMotionFunc(passive_mouse_motion);
-		glutMotionFunc(pressed_mouse_motion);
-		glutMouseFunc(mouse_pressed);
-		main_menu_init();
+		//glutReshapeFunc(reshape_mainwindow);
+		//glutKeyboardFunc(normal_keys);
+		//glutSpecialFunc(special_keys);
+		//glutPassiveMotionFunc(passive_mouse_motion);
+		//glutMotionFunc(pressed_mouse_motion);
+		//glutMouseFunc(mouse_pressed);
+		//main_menu_init();
+
+	recalculation_subwindows_wh();
+
+	if (use_sub_windows) {
+
+		glob_settings.subwindows[0].descriptor = glutCreateSubWindow(
+			glob_settings.main_window.descriptor,
+			glob_settings.subwindows[0].window_position.x, glob_settings.subwindows[0].window_position.y,
+			glob_settings.subwindows[0].wh.width, glob_settings.subwindows[0].wh.height
+		);
+			glutDisplayFunc(display_subwindow_0);
+			glutReshapeFunc(reshape_subwindow_0);
+
+		glob_settings.subwindows[1].descriptor = glutCreateSubWindow(
+			glob_settings.main_window.descriptor,
+			glob_settings.subwindows[1].window_position.x, glob_settings.subwindows[1].window_position.y,
+			glob_settings.subwindows[1].wh.width, glob_settings.subwindows[1].wh.height
+		);
+			glutDisplayFunc(display_subwindow_1);
+			glutReshapeFunc(reshape_subwindow_1);
+
+		glob_settings.subwindows[2].descriptor = glutCreateSubWindow(
+			glob_settings.main_window.descriptor,
+			glob_settings.subwindows[2].window_position.x, glob_settings.subwindows[2].window_position.y,
+			glob_settings.subwindows[2].wh.width, glob_settings.subwindows[2].wh.height
+		);
+			glutDisplayFunc(display_subwindow_2);
+			glutReshapeFunc(reshape_subwindow_2);
+
+		glob_settings.subwindows[3].descriptor = glutCreateSubWindow(
+			glob_settings.main_window.descriptor,
+			glob_settings.subwindows[3].window_position.x, glob_settings.subwindows[3].window_position.y,
+			glob_settings.subwindows[3].wh.width, glob_settings.subwindows[3].wh.height
+		);
+			glutDisplayFunc(display_subwindow_3);
+			glutReshapeFunc(reshape_subwindow_3);
+
+	}
+	
+	have_sub_windows = true;
 
 	if (glob_settings.freeglut_settings.fullscreen) glutFullScreen();
 
-	// subwindow
-	glob_settings.subwindows.push_back(
-		Window(0, WindowParameters(glob_settings.main_window.wh.height / 7.0, glob_settings.main_window.wh.height),
-			Rgb(230.0 / 255.0, 230.0 / 255.0, 230.0 / 255.0))
-	);
-
-	glob_settings.subwindows[0].descriptor = glutCreateSubWindow(
-		glob_settings.main_window.descriptor, 0, 0, glob_settings.subwindows[0].wh.width, glob_settings.subwindows[0].wh.height
-	);
-
-		glutDisplayFunc(display_subwindow_0);
-		glutReshapeFunc(reshape_subwindow_0);
-		subwindow_0_menu_init();
-
-
+	
 	// continue
-
 	glutSetOption(GLUT_ACTION_ON_WINDOW_CLOSE, GLUT_ACTION_CONTINUE_EXECUTION);
+	
 	glutMainLoop();
 
 }
 
 void display_mainwindow() {
-
 	glClearColor(glob_settings.main_window.backgroundcolor.red, glob_settings.main_window.backgroundcolor.green, glob_settings.main_window.backgroundcolor.blue, 0.0);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-	if (glob_settings.freeglut_settings.shape == VVIS_SHAPE_NOTHING || glob_vct.size() == 0) {
-		
-		glMatrixMode(GL_PROJECTION);
-			glLoadIdentity();
-			gluOrtho2D(0.0, glob_settings.main_window.wh.width, 0.0, glob_settings.main_window.wh.height);
-			glColor3f(0.0, 0.0, 0.0);
-
-		glMatrixMode(GL_MODELVIEW);
-			glPushMatrix();
-			glColor3f(0.0, 0.0, 0.0);
-			glLoadIdentity();
-			glRasterPos2i(0.0, glob_settings.main_window.wh.height / 2);
-				[](std::string text) {int len = text.length(); for (int i = 0; i < len; ++i) glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, text[i]); }("NOTHING TO DISPLAY");
-		glPopMatrix();
-
-		glFlush();
-		glutSwapBuffers();
 	
-	} else {
-		
-		glMatrixMode(GL_MODELVIEW);
-			glLoadIdentity();
-
-			gluLookAt(
-				glob_settings.freeglut_settings.position_of_camera.x, glob_settings.freeglut_settings.position_of_camera.y, glob_settings.freeglut_settings.position_of_camera.z,		//
-				glob_settings.freeglut_settings.position_of_element.x, glob_settings.freeglut_settings.position_of_element.y, glob_settings.freeglut_settings.position_of_element.z,		//
-				0., 1., 0.
-			);
-
-		glMatrixMode(GL_PROJECTION);
-			glLoadIdentity();
-			
-			glOrtho(
-				-(double(glob_settings.main_window.wh.width) / 2.) * double(glob_settings.freeglut_settings.estrangement), (double(glob_settings.main_window.wh.width) / 2.) * double(glob_settings.freeglut_settings.estrangement),
-				-(double(glob_settings.main_window.wh.height) / 2.) * abs(double(glob_settings.freeglut_settings.estrangement)), (double(glob_settings.main_window.wh.height) / 2.) * abs(double(glob_settings.freeglut_settings.estrangement)),
-				-100000.0, 100000.0
-			);
-			
-		glMatrixMode(GL_MODELVIEW);
-
-		if (glob_settings.global_settings.index_of_spin == VVIS_DRAW_ALL) {
-					
-			size_t size_of_vector = glob_vct.size();
-					
-			for (unsigned int i = 0; i < size_of_vector; ++i) {
-				if (i % glob_settings.spinrate == 0) draw_shape(i);
-			}
-
-		} else {
-			draw_shape(glob_settings.global_settings.index_of_spin);
-		}
-
-
-		glFlush();
-		glutSwapBuffers();
-
-	}
+	glutSwapBuffers();
 }
+
+//void display_mainwindow() {
+//
+//	glClearColor(glob_settings.main_window.backgroundcolor.red, glob_settings.main_window.backgroundcolor.green, glob_settings.main_window.backgroundcolor.blue, 0.0);
+//	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+//
+//	if (glob_settings.freeglut_settings.shape == VVIS_SHAPE_NOTHING || glob_vct.size() == 0) {
+//		
+//		glMatrixMode(GL_PROJECTION);
+//			glLoadIdentity();
+//			gluOrtho2D(0.0, glob_settings.main_window.wh.width, 0.0, glob_settings.main_window.wh.height);
+//			glColor3f(0.0, 0.0, 0.0);
+//
+//		glMatrixMode(GL_MODELVIEW);
+//			glPushMatrix();
+//			glColor3f(0.0, 0.0, 0.0);
+//			glLoadIdentity();
+//			glRasterPos2i(0.0, glob_settings.main_window.wh.height / 2);
+//				[](std::string text) {int len = text.length(); for (int i = 0; i < len; ++i) glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, text[i]); }("NOTHING TO DISPLAY");
+//		glPopMatrix();
+//
+//		glFlush();
+//		glutSwapBuffers();
+//	
+//	} else {
+//		
+//		glMatrixMode(GL_MODELVIEW);
+//			glLoadIdentity();
+//
+//			gluLookAt(
+//				glob_settings.freeglut_settings.position_of_camera.x, glob_settings.freeglut_settings.position_of_camera.y, glob_settings.freeglut_settings.position_of_camera.z,		//
+//				glob_settings.freeglut_settings.position_of_element.x, glob_settings.freeglut_settings.position_of_element.y, glob_settings.freeglut_settings.position_of_element.z,		//
+//				0., 1., 0.
+//			);
+//
+//		glMatrixMode(GL_PROJECTION);
+//			glLoadIdentity();
+//			
+//			glOrtho(
+//				-(double(glob_settings.main_window.wh.width) / 2.) * double(glob_settings.freeglut_settings.estrangement), (double(glob_settings.main_window.wh.width) / 2.) * double(glob_settings.freeglut_settings.estrangement),
+//				-(double(glob_settings.main_window.wh.height) / 2.) * abs(double(glob_settings.freeglut_settings.estrangement)), (double(glob_settings.main_window.wh.height) / 2.) * abs(double(glob_settings.freeglut_settings.estrangement)),
+//				-100000.0, 100000.0
+//			);
+//			
+//		glMatrixMode(GL_MODELVIEW);
+//
+//		if (glob_settings.global_settings.index_of_spin == VVIS_DRAW_ALL) {
+//					
+//			size_t size_of_vector = glob_vct.size();
+//					
+//			for (unsigned int i = 0; i < size_of_vector; ++i) {
+//				if (i % glob_settings.spinrate == 0) draw_shape(i);
+//			}
+//
+//		} else {
+//			draw_shape(glob_settings.global_settings.index_of_spin);
+//		}
+//
+//
+//		glFlush();
+//		glutSwapBuffers();
+//
+//	}
+//}
 
 void draw_shape(int index) {
 	Shape* shape = NULL; double args_for_draw[4];
@@ -207,9 +250,14 @@ void reshape_mainwindow(int w, int h) {
 	glob_settings.main_window.wh.height= h;
 
 	// reshape subwindows
-	glutSetWindow(glob_settings.subwindows[0].descriptor);
-		glutReshapeWindow(glob_settings.main_window.wh.height / 7.0, glob_settings.main_window.wh.height);
+	recalculation_subwindows_wh();
 	
+	for (const auto& subw : glob_settings.subwindows) {
+		glutSetWindow(subw.descriptor);
+			glutPositionWindow(subw.window_position.x, subw.window_position.y);
+			glutReshapeWindow(subw.wh.width, subw.wh.height);
+	}
+
 	glutSetWindow(glob_settings.main_window.descriptor);
 }
 
@@ -764,187 +812,219 @@ void menu_spinrate(int code) {
 
 }
 
-void display_subwindow_0() {
-	
-	glClearColor(glob_settings.subwindows[0].backgroundcolor.red, glob_settings.subwindows[0].backgroundcolor.green, glob_settings.subwindows[0].backgroundcolor.blue, 1.0);
-	
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+//void display_subwindow_0() {
+//	
+//	glClearColor(glob_settings.subwindows[0].backgroundcolor.red, glob_settings.subwindows[0].backgroundcolor.green, glob_settings.subwindows[0].backgroundcolor.blue, 1.0);
+//	
+//	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+//
+//
+//	glMatrixMode(GL_MODELVIEW);
+//		glLoadIdentity();
+//
+//		gluLookAt(
+//			glob_settings.freeglut_settings.position_of_camera.x, glob_settings.freeglut_settings.position_of_camera.y, glob_settings.freeglut_settings.position_of_camera.z,		//
+//			0., 0., -100.0,		//
+//			0., 1., 0.
+//		);
+//
+//	glMatrixMode(GL_PROJECTION);
+//		glLoadIdentity();
+//
+//		double estrangement = 0.7;
+//		if (glob_settings.freeglut_settings.estrangement < 0) estrangement = -estrangement;
+//
+//		glOrtho(
+//			-(double(glob_settings.subwindows[0].wh.width) / 2.) * estrangement, (double(glob_settings.subwindows[0].wh.width) / 2.) * estrangement,
+//			-(double(glob_settings.subwindows[0].wh.height) / 2.) * abs(estrangement), (double(glob_settings.subwindows[0].wh.height) / 2.) * abs(estrangement),
+//			-100000.0, 100000.0
+//		);
+//
+//	glMatrixMode(GL_MODELVIEW);
+//
+//	glPushMatrix();
+//
+//	glTranslated(0., 0., -100.0);
+//	glRotated(glob_settings.freeglut_settings.additional_rotation.phi, 0, 1, 0);
+//	glRotatef(glob_settings.freeglut_settings.additional_rotation.theta, 1, 0, 0);
+//	
+//	if (axis_by_cones) {
+//		draw_axis_by_cones();
+//	} else {
+//		draw_axis_by_lines();
+//	}
+//
+//	glutSwapBuffers();
+//
+//}
+
+//
+//void reshape_subwindow_0(int w, int h) {
+//
+//	if (h == 0) h = 1;
+//	if (w == 0) w = 1;
+//
+//	glViewport(0, 0, w, h);
+//	
+//	glob_settings.subwindows[0].wh.width = w;
+//	glob_settings.subwindows[0].wh.height = h;
+//
+//}
+//
+//void subwindow_0_menu_init() {
+//	int _subwindow0_menu = glutCreateMenu(subwindow_0_menu);
+//	
+//	glutSetMenu(_subwindow0_menu);
+//		glutAddMenuEntry("Use lines", SUBWINDOW_AXIS_MENU_USE_LINES);
+//		glutAddMenuEntry("Use cones", SUBWINDOW_AXIS_MENU_USE_CONES);
+//		glutAddMenuEntry("Show axis names", SUBWINDOW_AXIS_MENU_SHOW_NAMES);
+//		glutAddMenuEntry("Hide axis names", SUBWINDOW_AXIS_MENU_HIDE_NAMES);
+//		glutAddMenuEntry("Use main background", SUBWINDOW_AXIS_MENU_BACGROUND_MAIN);
+//		glutAddMenuEntry("Use grey background", SUBWINDOW_AXIS_MENU_BACGROUND_GREY);
+//	
+//	glutAttachMenu(GLUT_RIGHT_BUTTON);
+//	glutDetachMenu(GLUT_LEFT_BUTTON);
+//}
+//
+//void subwindow_0_menu(int code) {
+//	
+//	// TODO: плохая смена цвета
+//
+//	switch (code) {
+//		case SUBWINDOW_AXIS_MENU_USE_CONES: axis_by_cones = true; glutPostRedisplay();break;
+//		case SUBWINDOW_AXIS_MENU_USE_LINES: axis_by_cones = false; glutPostRedisplay(); break;
+//		case SUBWINDOW_AXIS_MENU_SHOW_NAMES: show_axis_names = true; glutPostRedisplay(); break;
+//		case SUBWINDOW_AXIS_MENU_HIDE_NAMES: show_axis_names = false; glutPostRedisplay(); break;
+//		case SUBWINDOW_AXIS_MENU_BACGROUND_MAIN: glob_settings.subwindows[0].backgroundcolor = glob_settings.main_window.backgroundcolor; glutPostRedisplay(); break;
+//		case SUBWINDOW_AXIS_MENU_BACGROUND_GREY: glob_settings.subwindows[0].backgroundcolor = Rgb(230.0 / 255.0, 230.0 / 255.0, 230.0 / 255.0); glutPostRedisplay(); break;
+//		default: break;
+//	}
+//
+//}
+
+//void draw_axis_by_cones() {
+//	double estrangement = glob_settings.subwindows[0].wh.width / 50.0;
+//	
+//	glColor3f(1.0, 0.0, 0.0);
+//	
+//	glRotated(90.0, 0, 1, 0);
+//		glutSolidCylinder(3.0 * estrangement, 6.0 * estrangement, 10.0, 10.0);
+//		glTranslated(0.0, 0.0, 6.0 * estrangement);
+//		glutSolidCone(3.0 * estrangement, 17.0 * estrangement, 10.0, 10.0);
+//		glTranslated(0.0, 0.0, -5.0 * estrangement);
+//	glRotated(-90.0, 0, 1, 0);
+//	
+//	if (show_axis_names) {
+//		glColor3f(0.0, 0.0, 0.0);
+//		print_text_3f(35.0, 10.0, 5.0, L"X");
+//	}
+//	
+//	
+//	
+//	glColor3f(0.0, 154.0 / 255.0, 99.0 / 255.0);
+//	
+//	glRotated(-90.0, 1, 0, 0);
+//		glutSolidCylinder(3.0 * estrangement, 6.0 * estrangement, 10.0, 10.0);
+//		glTranslated(0.0, 0.0, 6.0 * estrangement);
+//		glutSolidCone(3.0 * estrangement, 17.0 * estrangement, 10.0, 10.0);
+//		glTranslated(0.0, 0.0, -5.0 * estrangement);
+//	glRotated(90.0, 1, 0, 0);
+//	
+//	
+//	if (show_axis_names) {
+//		glColor3f(0.0, 0.0, 0.0);
+//		print_text_3f(5.0, 35.0, 5.0, L"Y");
+//	}
+//	
+//	
+//	glColor3f(0.0, 0.0, 1.0);
+//		
+//		glutSolidCylinder(3.0 * estrangement, 6.0 * estrangement, 10.0, 10.0);
+//		glTranslated(0.0, 0.0, 6.0 * estrangement);
+//		glutSolidCone(3.0 * estrangement, 17.0 * estrangement, 10.0, 10.0);
+//		glTranslated(0.0, 0.0, -5.0 * estrangement);
+//	
+//	if (show_axis_names) {
+//		glColor3f(0.0, 0.0, 0.0);
+//		print_text_3f(5.0, 10.0, 35.0, L"Z");
+//	}
+//	
+//	glPopMatrix();
+//}
+//
+//void draw_axis_by_lines() {
+//
+//	glLineWidth(4);
+//
+//	glColor3f(1.0, 0.0, 0.0);
+//
+//	glBegin(GL_LINES);
+//		glVertex3f(0.0, 0.0, 0.0);
+//		glVertex3f(30.0, 0.0, 0.0);
+//	glEnd();	
+//	
+//	if (show_axis_names) {
+//		glColor3f(0.0, 0.0, 0.0);
+//		print_text_3f(35.0, 10.0, 5.0, L"X");
+//	}
+//
+//	glColor3f(0.0, 154.0 / 255.0, 99.0 / 255.0);
+//	
+//
+//	glBegin(GL_LINES);
+//		glVertex3f(0.0, 0.0, 0.0);
+//		glVertex3f(0.0, 30.0, 0.0);
+//	glEnd();
+//	
+//	if (show_axis_names) {
+//		glColor3f(0.0, 0.0, 0.0);
+//		print_text_3f(5.0, 35.0, 5.0, L"Y");
+//	}
+//
+//	glColor3f(0.0, 0.0, 1.0);
+//
+//	glBegin(GL_LINES);
+//		glVertex3f(0.0, 0.0, 0.0);
+//		glVertex3f(0.0, 0.0, 30.0);
+//	glEnd();
+//
+//	if (show_axis_names) {
+//		glColor3f(0.0, 0.0, 0.0);
+//		print_text_3f(5.0, 10.0, 35.0, L"Z");
+//	}
+//
+//}
+
+void recalculation_subwindows_wh() {
+	x = glob_settings.main_window.wh.width;
+	y = glob_settings.main_window.wh.height;
+
+	glob_settings.subwindows[0].wh.width = x - 2 * gap;
+	glob_settings.subwindows[0].wh.height = int((y - 3 * gap) * 0.75) ;
+
+	glob_settings.subwindows[1].wh.width = int((y - 3 * gap) * 0.25);
+	glob_settings.subwindows[1].wh.height = int((y - 3 * gap) * 0.25);
 
 
-	glMatrixMode(GL_MODELVIEW);
-		glLoadIdentity();
+	int temp = x - glob_settings.subwindows[1].wh.width - gap - gap - gap - gap;
 
-		gluLookAt(
-			glob_settings.freeglut_settings.position_of_camera.x, glob_settings.freeglut_settings.position_of_camera.y, glob_settings.freeglut_settings.position_of_camera.z,		//
-			0., 0., -100.0,		//
-			0., 1., 0.
-		);
+	glob_settings.subwindows[2].wh.width = int(temp * 0.5);
+	glob_settings.subwindows[2].wh.height = int((y - 3 * gap) * 0.25);
 
-	glMatrixMode(GL_PROJECTION);
-		glLoadIdentity();
+	glob_settings.subwindows[3].wh.width = int(temp * 0.5);
+	glob_settings.subwindows[3].wh.height = int((y - 3 * gap) * 0.25);
 
-		double estrangement = 0.7;
-		if (glob_settings.freeglut_settings.estrangement < 0) estrangement = -estrangement;
+	glob_settings.subwindows[0].window_position.x = gap;
+	glob_settings.subwindows[0].window_position.y = gap;
 
-		glOrtho(
-			-(double(glob_settings.subwindows[0].wh.width) / 2.) * estrangement, (double(glob_settings.subwindows[0].wh.width) / 2.) * estrangement,
-			-(double(glob_settings.subwindows[0].wh.height) / 2.) * abs(estrangement), (double(glob_settings.subwindows[0].wh.height) / 2.) * abs(estrangement),
-			-100000.0, 100000.0
-		);
+	glob_settings.subwindows[1].window_position.x = gap;
+	glob_settings.subwindows[1].window_position.y = gap + glob_settings.subwindows[0].wh.height + gap;
 
-	glMatrixMode(GL_MODELVIEW);
+	glob_settings.subwindows[2].window_position.x = gap + glob_settings.subwindows[1].wh.width + gap;
+	glob_settings.subwindows[2].window_position.y = gap + glob_settings.subwindows[0].wh.height + gap;
 
-	glPushMatrix();
-
-	glTranslated(0., 0., -100.0);
-	glRotated(glob_settings.freeglut_settings.additional_rotation.phi, 0, 1, 0);
-	glRotatef(glob_settings.freeglut_settings.additional_rotation.theta, 1, 0, 0);
-	
-	if (axis_by_cones) {
-		draw_axis_by_cones();
-	} else {
-		draw_axis_by_lines();
-	}
-
-	glutSwapBuffers();
-
-}
-
-void display_subwindow_1()
-{
-}
-
-void reshape_subwindow_0(int w, int h) {
-
-	if (h == 0) h = 1;
-	if (w == 0) w = 1;
-
-	glViewport(0, 0, w, h);
-	
-	glob_settings.subwindows[0].wh.width = w;
-	glob_settings.subwindows[0].wh.height = h;
-
-}
-
-void subwindow_0_menu_init() {
-	int _subwindow0_menu = glutCreateMenu(subwindow_0_menu);
-	
-	glutSetMenu(_subwindow0_menu);
-		glutAddMenuEntry("Use lines", SUBWINDOW_AXIS_MENU_USE_LINES);
-		glutAddMenuEntry("Use cones", SUBWINDOW_AXIS_MENU_USE_CONES);
-		glutAddMenuEntry("Show axis names", SUBWINDOW_AXIS_MENU_SHOW_NAMES);
-		glutAddMenuEntry("Hide axis names", SUBWINDOW_AXIS_MENU_HIDE_NAMES);
-		glutAddMenuEntry("Use main background", SUBWINDOW_AXIS_MENU_BACGROUND_MAIN);
-		glutAddMenuEntry("Use grey background", SUBWINDOW_AXIS_MENU_BACGROUND_GREY);
-	
-	glutAttachMenu(GLUT_RIGHT_BUTTON);
-	glutDetachMenu(GLUT_LEFT_BUTTON);
-}
-
-void subwindow_0_menu(int code) {
-	
-	switch (code) {
-		case SUBWINDOW_AXIS_MENU_USE_CONES: axis_by_cones = true; glutPostRedisplay();break;
-		case SUBWINDOW_AXIS_MENU_USE_LINES: axis_by_cones = false; glutPostRedisplay(); break;
-		case SUBWINDOW_AXIS_MENU_SHOW_NAMES: show_axis_names = true; glutPostRedisplay(); break;
-		case SUBWINDOW_AXIS_MENU_HIDE_NAMES: show_axis_names = false; glutPostRedisplay(); break;
-		case SUBWINDOW_AXIS_MENU_BACGROUND_MAIN: glob_settings.subwindows[0].backgroundcolor = glob_settings.main_window.backgroundcolor; glutPostRedisplay(); break;
-		case SUBWINDOW_AXIS_MENU_BACGROUND_GREY: glob_settings.subwindows[0].backgroundcolor = Rgb(230.0 / 255.0, 230.0 / 255.0, 230.0 / 255.0); glutPostRedisplay(); break;
-		default: break;
-	}
-
-}
-
-void draw_axis_by_cones() {
-	double estrangement = glob_settings.subwindows[0].wh.width / 50.0;
-	
-	glColor3f(1.0, 0.0, 0.0);
-	
-	glRotated(90.0, 0, 1, 0);
-		glutSolidCylinder(3.0 * estrangement, 6.0 * estrangement, 10.0, 10.0);
-		glTranslated(0.0, 0.0, 6.0 * estrangement);
-		glutSolidCone(3.0 * estrangement, 17.0 * estrangement, 10.0, 10.0);
-		glTranslated(0.0, 0.0, -5.0 * estrangement);
-	glRotated(-90.0, 0, 1, 0);
-	
-	if (show_axis_names) {
-		glColor3f(0.0, 0.0, 0.0);
-		print_text_3f(35.0, 10.0, 5.0, L"X");
-	}
-	
-	
-	
-	glColor3f(0.0, 154.0 / 255.0, 99.0 / 255.0);
-	
-	glRotated(-90.0, 1, 0, 0);
-		glutSolidCylinder(3.0 * estrangement, 6.0 * estrangement, 10.0, 10.0);
-		glTranslated(0.0, 0.0, 6.0 * estrangement);
-		glutSolidCone(3.0 * estrangement, 17.0 * estrangement, 10.0, 10.0);
-		glTranslated(0.0, 0.0, -5.0 * estrangement);
-	glRotated(90.0, 1, 0, 0);
-	
-	
-	if (show_axis_names) {
-		glColor3f(0.0, 0.0, 0.0);
-		print_text_3f(5.0, 35.0, 5.0, L"Y");
-	}
-	
-	
-	glColor3f(0.0, 0.0, 1.0);
-		
-		glutSolidCylinder(3.0 * estrangement, 6.0 * estrangement, 10.0, 10.0);
-		glTranslated(0.0, 0.0, 6.0 * estrangement);
-		glutSolidCone(3.0 * estrangement, 17.0 * estrangement, 10.0, 10.0);
-		glTranslated(0.0, 0.0, -5.0 * estrangement);
-	
-	if (show_axis_names) {
-		glColor3f(0.0, 0.0, 0.0);
-		print_text_3f(5.0, 10.0, 35.0, L"Z");
-	}
-	
-	glPopMatrix();
-}
-
-void draw_axis_by_lines() {
-
-	glLineWidth(4);
-
-	glColor3f(1.0, 0.0, 0.0);
-
-	glBegin(GL_LINES);
-		glVertex3f(0.0, 0.0, 0.0);
-		glVertex3f(30.0, 0.0, 0.0);
-	glEnd();	
-	
-	if (show_axis_names) {
-		glColor3f(0.0, 0.0, 0.0);
-		print_text_3f(35.0, 10.0, 5.0, L"X");
-	}
-
-	glColor3f(0.0, 154.0 / 255.0, 99.0 / 255.0);
-	
-
-	glBegin(GL_LINES);
-		glVertex3f(0.0, 0.0, 0.0);
-		glVertex3f(0.0, 30.0, 0.0);
-	glEnd();
-	
-	if (show_axis_names) {
-		glColor3f(0.0, 0.0, 0.0);
-		print_text_3f(5.0, 35.0, 5.0, L"Y");
-	}
-
-	glColor3f(0.0, 0.0, 1.0);
-
-	glBegin(GL_LINES);
-		glVertex3f(0.0, 0.0, 0.0);
-		glVertex3f(0.0, 0.0, 30.0);
-	glEnd();
-
-	if (show_axis_names) {
-		glColor3f(0.0, 0.0, 0.0);
-		print_text_3f(5.0, 10.0, 35.0, L"Z");
-	}
+	glob_settings.subwindows[3].window_position.x = gap + glob_settings.subwindows[1].wh.width + gap + glob_settings.subwindows[2].wh.width + gap;
+	glob_settings.subwindows[3].window_position.y = gap + glob_settings.subwindows[0].wh.height + gap;
 
 }
 
@@ -958,4 +1038,79 @@ void postRedisplay() {
 	}
 
 	glutSetWindow(glob_settings.main_window.descriptor);
+}
+
+void display_subwindow_0() {
+	glClearColor(glob_settings.subwindows[0].backgroundcolor.red, glob_settings.subwindows[0].backgroundcolor.green, glob_settings.subwindows[0].backgroundcolor.blue, 0.0);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+	glutSwapBuffers();
+}
+
+void display_subwindow_1() {
+	glClearColor(glob_settings.subwindows[1].backgroundcolor.red, glob_settings.subwindows[1].backgroundcolor.green, glob_settings.subwindows[1].backgroundcolor.blue, 0.0);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+	glutSwapBuffers();
+}
+
+void display_subwindow_2() {
+	glClearColor(glob_settings.subwindows[2].backgroundcolor.red, glob_settings.subwindows[2].backgroundcolor.green, glob_settings.subwindows[2].backgroundcolor.blue, 0.0);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+	double x = 0.0 - double(glob_settings.subwindows[2].wh.width) + double(gap);
+	double y = 0.0 - double(glob_settings.subwindows[2].wh.height) + double(gap);
+
+	glColor3f(0, 0, 0);
+	print_text_2f(-1.0, 0.0, L"abvobus");
+
+	glutSwapBuffers();
+}
+
+void display_subwindow_3() {
+	glClearColor(glob_settings.subwindows[3].backgroundcolor.red, glob_settings.subwindows[3].backgroundcolor.green, glob_settings.subwindows[3].backgroundcolor.blue, 0.0);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+	glutSwapBuffers();
+}
+
+void reshape_subwindow_0(int w, int h) {
+	if (h == 0) h = 1;
+	if (w == 0) w = 1;
+
+	glViewport(0, 0, w, h);
+	
+	glob_settings.subwindows[0].wh.width = w;
+	glob_settings.subwindows[0].wh.height = h;
+}
+
+void reshape_subwindow_1(int w, int h) {
+	if (h == 0) h = 1;
+	if (w == 0) w = 1;
+
+	glViewport(0, 0, w, h);
+
+	glob_settings.subwindows[1].wh.width = w;
+	glob_settings.subwindows[1].wh.height = h;
+
+}
+
+void reshape_subwindow_2(int w, int h) {
+	if (h == 0) h = 1;
+	if (w == 0) w = 1;
+
+	glViewport(0, 0, w, h);
+
+	glob_settings.subwindows[2].wh.width = w;
+	glob_settings.subwindows[2].wh.height = h;
+}
+
+void reshape_subwindow_3(int w, int h) {
+	if (h == 0) h = 1;
+	if (w == 0) w = 1;
+
+	glViewport(0, 0, w, h);
+
+	glob_settings.subwindows[3].wh.width = w;
+	glob_settings.subwindows[3].wh.height = h;
 }

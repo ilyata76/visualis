@@ -130,14 +130,31 @@
 	// SUBWINDOWS
 
 	void display_subwindow_0();
+	void display_subwindow_1();
+	void display_subwindow_2();
+	void display_subwindow_3();
 	void reshape_subwindow_0(int w, int h);
+	void reshape_subwindow_1(int w, int h);
+	void reshape_subwindow_2(int w, int h);
+	void reshape_subwindow_3(int w, int h);
 
 	void subwindow_0_menu_init();
+	void subwindow_1_menu_init();
+	void subwindow_2_menu_init();
+	void subwindow_3_menu_init();
+
 	void subwindow_0_menu(int code);
+	void subwindow_1_menu(int code);
+	void subwindow_2_menu(int code);
+	void subwindow_3_menu(int code);
 
 	void draw_axis_by_cones();
 	void draw_axis_by_lines();
 
+
+
+
+	void recalculation_subwindows_wh();
 	void postRedisplay();
 
 
