@@ -88,6 +88,18 @@
 	#define MENU_RENDER_SPINRATE_18 10918
 	#define MENU_RENDER_SPINRATE_19 10919
 	#define MENU_RENDER_SPINRATE_20 10920
+	#define MENU_RENDER_INCREASE_SPINRATE_BY_1 10921
+	#define MENU_RENDER_DECREASE_SPINRATE_BY_1 10922
+	#define MENU_RENDER_SPINRATE_21 10923
+	#define MENU_RENDER_SPINRATE_22 10924
+	#define MENU_RENDER_SPINRATE_23 10925
+	#define MENU_RENDER_SPINRATE_24 10926
+	#define MENU_RENDER_SPINRATE_25 10927
+	#define MENU_RENDER_SPINRATE_26 10928
+	#define MENU_RENDER_SPINRATE_27 10929
+	#define MENU_RENDER_SPINRATE_28 10930
+	#define MENU_RENDER_SPINRATE_29 10931
+	#define MENU_RENDER_SPINRATE_30 10932
 
 	#define MENU_COLORING_BACKGROUND 1100
 	#define MENU_COLORING_BACKGROUND_WHITE 1101
@@ -169,6 +181,10 @@
 		void menu_color(int code);
 		void menu_settings(int code);
 		void menu_spinrate(int code);
+			void menu_spinrate_set(int code);
+				void menu_spinrate_set_1_10(int code);
+				void menu_spinrate_set_11_20(int code);
+				void menu_spinrate_set_21_30(int code);
 
 	void subwindow_1_menu_init();
 		void subwindow_1_menu(int code);

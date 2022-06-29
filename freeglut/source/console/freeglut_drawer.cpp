@@ -23,7 +23,7 @@ std::map<std::wstring, Rgb> colors = {
 	{L"sbu3", Rgb(230.0 / 255.0, 230.0 / 255.0, 230.0 / 255.0)},
 };
 
-int gap = 5;  // для подокон
+int gap = 10;  // для подокон
 
 void print_text_3f(double _x, double _y, double _z, std::wstring text) {
 	glRasterPos3i(_x, _y, _z);
@@ -456,6 +456,10 @@ void subwindow_0_menu_init() {
 	int _menu_color = glutCreateMenu(menu_color);
 	int _menu_settings = glutCreateMenu(menu_settings);
 	int _menu_spinrate = glutCreateMenu(menu_spinrate);
+	int _menu_spinrate_set = glutCreateMenu(menu_spinrate_set);
+	int _menu_spinrate_set_1_10 = glutCreateMenu(menu_spinrate_set_1_10);
+	int _menu_spinrate_set_11_20 = glutCreateMenu(menu_spinrate_set_11_20);
+	int _menu_spinrate_set_21_30 = glutCreateMenu(menu_spinrate_set_21_30);
 	int _menu_background = glutCreateMenu(menu_background_sub0);
 
 	char buff[256];
@@ -501,12 +505,12 @@ void subwindow_0_menu_init() {
 		glutAddMenuEntry("OFF", MENU_COLOR_OO_OFF);
 
 	glutSetMenu(_menu_settings);
-		glutAddMenuEntry("SAVE", MENU_SETTINGS_GS_SAVE);
-		glutAddMenuEntry("GET", MENU_SETTINGS_GS_GET);
-		glutAddMenuEntry("RESET", MENU_SETTINGS_GS_RESET);
-		glutAddMenuEntry("RESET FILE", MENU_SETTINGS_GS_RESET_FILE);
+		glutAddMenuEntry("Save", MENU_SETTINGS_GS_SAVE);
+		glutAddMenuEntry("Get", MENU_SETTINGS_GS_GET);
+		glutAddMenuEntry("Reset", MENU_SETTINGS_GS_RESET);
+		glutAddMenuEntry("Reset file", MENU_SETTINGS_GS_RESET_FILE);
 
-	glutSetMenu(_menu_spinrate);
+	glutSetMenu(_menu_spinrate_set_1_10);
 		glutAddMenuEntry("1", MENU_RENDER_SPINRATE_1);
 		glutAddMenuEntry("2", MENU_RENDER_SPINRATE_2);
 		glutAddMenuEntry("3", MENU_RENDER_SPINRATE_3);
@@ -517,6 +521,8 @@ void subwindow_0_menu_init() {
 		glutAddMenuEntry("8", MENU_RENDER_SPINRATE_8);
 		glutAddMenuEntry("9", MENU_RENDER_SPINRATE_9);
 		glutAddMenuEntry("10", MENU_RENDER_SPINRATE_10);
+
+	glutSetMenu(_menu_spinrate_set_11_20);
 		glutAddMenuEntry("11", MENU_RENDER_SPINRATE_11);
 		glutAddMenuEntry("12", MENU_RENDER_SPINRATE_12);
 		glutAddMenuEntry("13", MENU_RENDER_SPINRATE_13);
@@ -527,6 +533,28 @@ void subwindow_0_menu_init() {
 		glutAddMenuEntry("18", MENU_RENDER_SPINRATE_18);
 		glutAddMenuEntry("19", MENU_RENDER_SPINRATE_19);
 		glutAddMenuEntry("20", MENU_RENDER_SPINRATE_20);
+
+	glutSetMenu(_menu_spinrate_set_21_30);
+		glutAddMenuEntry("21", MENU_RENDER_SPINRATE_21);
+		glutAddMenuEntry("22", MENU_RENDER_SPINRATE_22);
+		glutAddMenuEntry("23", MENU_RENDER_SPINRATE_23);
+		glutAddMenuEntry("24", MENU_RENDER_SPINRATE_24);
+		glutAddMenuEntry("25", MENU_RENDER_SPINRATE_25);
+		glutAddMenuEntry("26", MENU_RENDER_SPINRATE_26);
+		glutAddMenuEntry("27", MENU_RENDER_SPINRATE_27);
+		glutAddMenuEntry("28", MENU_RENDER_SPINRATE_28);
+		glutAddMenuEntry("29", MENU_RENDER_SPINRATE_29);
+		glutAddMenuEntry("30", MENU_RENDER_SPINRATE_30);
+
+	glutSetMenu(_menu_spinrate_set);
+		glutAddSubMenu("1-10", _menu_spinrate_set_1_10);
+		glutAddSubMenu("11-20", _menu_spinrate_set_11_20);
+		glutAddSubMenu("21-30", _menu_spinrate_set_21_30);
+
+	glutSetMenu(_menu_spinrate);
+		glutAddMenuEntry("Increase by 1", MENU_RENDER_INCREASE_SPINRATE_BY_1);
+		glutAddMenuEntry("Decreasy by 1", MENU_RENDER_DECREASE_SPINRATE_BY_1);
+		glutAddSubMenu("SET", _menu_spinrate_set);
 
 	glutSetMenu(_menu_background);
 		sprintf(buff, "White: (%g/255, %g/255, %g/255)", colors[L"white"].red * 255.0, colors[L"white"].green * 255.0, colors[L"white"].blue * 255.0);
@@ -810,30 +838,102 @@ void menu_spinrate(int code) {
 
 	switch(code) {
 	
-		case MENU_RENDER_SPINRATE_1: glob_settings.spinrate = 1; glutPostRedisplay(); break;
-		case MENU_RENDER_SPINRATE_2: glob_settings.spinrate = 2; glutPostRedisplay(); break;
-		case MENU_RENDER_SPINRATE_3: glob_settings.spinrate = 3; glutPostRedisplay(); break;
-		case MENU_RENDER_SPINRATE_4: glob_settings.spinrate = 4; glutPostRedisplay(); break;
-		case MENU_RENDER_SPINRATE_5: glob_settings.spinrate = 5; glutPostRedisplay(); break;
-		case MENU_RENDER_SPINRATE_6: glob_settings.spinrate = 6; glutPostRedisplay(); break;
-		case MENU_RENDER_SPINRATE_7: glob_settings.spinrate = 7; glutPostRedisplay(); break;
-		case MENU_RENDER_SPINRATE_8: glob_settings.spinrate = 8; glutPostRedisplay(); break;
-		case MENU_RENDER_SPINRATE_9: glob_settings.spinrate = 9; glutPostRedisplay(); break;
-		case MENU_RENDER_SPINRATE_10: glob_settings.spinrate = 10; glutPostRedisplay(); break;
-		case MENU_RENDER_SPINRATE_11: glob_settings.spinrate = 11; glutPostRedisplay(); break;
-		case MENU_RENDER_SPINRATE_12: glob_settings.spinrate = 12; glutPostRedisplay(); break;
-		case MENU_RENDER_SPINRATE_13: glob_settings.spinrate = 13; glutPostRedisplay(); break;
-		case MENU_RENDER_SPINRATE_14: glob_settings.spinrate = 14; glutPostRedisplay(); break;
-		case MENU_RENDER_SPINRATE_15: glob_settings.spinrate = 15; glutPostRedisplay(); break;
-		case MENU_RENDER_SPINRATE_16: glob_settings.spinrate = 16; glutPostRedisplay(); break;
-		case MENU_RENDER_SPINRATE_17: glob_settings.spinrate = 17; glutPostRedisplay(); break;
-		case MENU_RENDER_SPINRATE_18: glob_settings.spinrate = 18; glutPostRedisplay(); break;
-		case MENU_RENDER_SPINRATE_19: glob_settings.spinrate = 19; glutPostRedisplay(); break;
-		case MENU_RENDER_SPINRATE_20: glob_settings.spinrate = 20; glutPostRedisplay(); break;
+		case MENU_RENDER_INCREASE_SPINRATE_BY_1: glob_settings.spinrate += 1; postRedisplay(); break;
+		case MENU_RENDER_DECREASE_SPINRATE_BY_1: glob_settings.spinrate = glob_settings.spinrate == 1 ? 1 : glob_settings.spinrate -= 1; postRedisplay(); break;
 	
 		default: break;
 	}
 
+}
+
+void menu_spinrate_set(int code) {
+
+	switch (code) {
+
+		case MENU_RENDER_SPINRATE_1: glob_settings.spinrate = 1; postRedisplay(); break;
+		case MENU_RENDER_SPINRATE_2: glob_settings.spinrate = 2; postRedisplay(); break;
+		case MENU_RENDER_SPINRATE_3: glob_settings.spinrate = 3; postRedisplay(); break;
+		case MENU_RENDER_SPINRATE_4: glob_settings.spinrate = 4; postRedisplay(); break;
+		case MENU_RENDER_SPINRATE_5: glob_settings.spinrate = 5; postRedisplay(); break;
+		case MENU_RENDER_SPINRATE_6: glob_settings.spinrate = 6; postRedisplay(); break;
+		case MENU_RENDER_SPINRATE_7: glob_settings.spinrate = 7; postRedisplay(); break;
+		case MENU_RENDER_SPINRATE_8: glob_settings.spinrate = 8; postRedisplay(); break;
+		case MENU_RENDER_SPINRATE_9: glob_settings.spinrate = 9; postRedisplay(); break;
+		case MENU_RENDER_SPINRATE_10: glob_settings.spinrate = 10; postRedisplay(); break;
+		case MENU_RENDER_SPINRATE_11: glob_settings.spinrate = 11; postRedisplay(); break;
+		case MENU_RENDER_SPINRATE_12: glob_settings.spinrate = 12; postRedisplay(); break;
+		case MENU_RENDER_SPINRATE_13: glob_settings.spinrate = 13; postRedisplay(); break;
+		case MENU_RENDER_SPINRATE_14: glob_settings.spinrate = 14; postRedisplay(); break;
+		case MENU_RENDER_SPINRATE_15: glob_settings.spinrate = 15; postRedisplay(); break;
+		case MENU_RENDER_SPINRATE_16: glob_settings.spinrate = 16; postRedisplay(); break;
+		case MENU_RENDER_SPINRATE_17: glob_settings.spinrate = 17; postRedisplay(); break;
+		case MENU_RENDER_SPINRATE_18: glob_settings.spinrate = 18; postRedisplay(); break;
+		case MENU_RENDER_SPINRATE_19: glob_settings.spinrate = 19; postRedisplay(); break;
+		case MENU_RENDER_SPINRATE_20: glob_settings.spinrate = 20; postRedisplay(); break;
+
+		default: break;
+
+	}
+}
+
+void menu_spinrate_set_1_10(int code) {
+	
+	switch (code) {
+
+		case MENU_RENDER_SPINRATE_1: glob_settings.spinrate = 1; postRedisplay(); break;
+		case MENU_RENDER_SPINRATE_2: glob_settings.spinrate = 2; postRedisplay(); break;
+		case MENU_RENDER_SPINRATE_3: glob_settings.spinrate = 3; postRedisplay(); break;
+		case MENU_RENDER_SPINRATE_4: glob_settings.spinrate = 4; postRedisplay(); break;
+		case MENU_RENDER_SPINRATE_5: glob_settings.spinrate = 5; postRedisplay(); break;
+		case MENU_RENDER_SPINRATE_6: glob_settings.spinrate = 6; postRedisplay(); break;
+		case MENU_RENDER_SPINRATE_7: glob_settings.spinrate = 7; postRedisplay(); break;
+		case MENU_RENDER_SPINRATE_8: glob_settings.spinrate = 8; postRedisplay(); break;
+		case MENU_RENDER_SPINRATE_9: glob_settings.spinrate = 9; postRedisplay(); break;
+		case MENU_RENDER_SPINRATE_10: glob_settings.spinrate = 10; postRedisplay(); break;
+
+		default: break;
+
+	}
+}
+
+void menu_spinrate_set_11_20(int code) {
+	
+	switch (code) {
+
+		case MENU_RENDER_SPINRATE_11: glob_settings.spinrate = 11; postRedisplay(); break;
+		case MENU_RENDER_SPINRATE_12: glob_settings.spinrate = 12; postRedisplay(); break;
+		case MENU_RENDER_SPINRATE_13: glob_settings.spinrate = 13; postRedisplay(); break;
+		case MENU_RENDER_SPINRATE_14: glob_settings.spinrate = 14; postRedisplay(); break;
+		case MENU_RENDER_SPINRATE_15: glob_settings.spinrate = 15; postRedisplay(); break;
+		case MENU_RENDER_SPINRATE_16: glob_settings.spinrate = 16; postRedisplay(); break;
+		case MENU_RENDER_SPINRATE_17: glob_settings.spinrate = 17; postRedisplay(); break;
+		case MENU_RENDER_SPINRATE_18: glob_settings.spinrate = 18; postRedisplay(); break;
+		case MENU_RENDER_SPINRATE_19: glob_settings.spinrate = 19; postRedisplay(); break;
+		case MENU_RENDER_SPINRATE_20: glob_settings.spinrate = 20; postRedisplay(); break;
+
+		default: break;
+
+	}
+}
+
+void menu_spinrate_set_21_30(int code) {
+		
+	switch (code) {
+
+		case MENU_RENDER_SPINRATE_21: glob_settings.spinrate = 21; postRedisplay(); break;
+		case MENU_RENDER_SPINRATE_22: glob_settings.spinrate = 22; postRedisplay(); break;
+		case MENU_RENDER_SPINRATE_23: glob_settings.spinrate = 23; postRedisplay(); break;
+		case MENU_RENDER_SPINRATE_24: glob_settings.spinrate = 24; postRedisplay(); break;
+		case MENU_RENDER_SPINRATE_25: glob_settings.spinrate = 25; postRedisplay(); break;
+		case MENU_RENDER_SPINRATE_26: glob_settings.spinrate = 26; postRedisplay(); break;
+		case MENU_RENDER_SPINRATE_27: glob_settings.spinrate = 27; postRedisplay(); break;
+		case MENU_RENDER_SPINRATE_28: glob_settings.spinrate = 28; postRedisplay(); break;
+		case MENU_RENDER_SPINRATE_29: glob_settings.spinrate = 29; postRedisplay(); break;
+		case MENU_RENDER_SPINRATE_30: glob_settings.spinrate = 30; postRedisplay(); break;
+
+		default: break;
+
+	}
 }
 
 void menu_background_sub0(int code) {
