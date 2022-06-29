@@ -9,7 +9,7 @@ bool show_axis_names = true;
 bool use_additional_sub_windows = false;
 bool have_additional_sub_windows = false;
 
-int gap = 5; 
+int gap = 5;  // для подокон
 
 void print_text_3f(double _x, double _y, double _z, std::wstring text) {
 	glRasterPos3i(_x, _y, _z);
@@ -167,7 +167,7 @@ void recalculation_subwindows_wh() {
 	int x = glob_settings.main_window.wh.width;
 	int y = glob_settings.main_window.wh.height;
 
-	if (have_additional_sub_windows) {
+	if (have_additional_sub_windows || use_additional_sub_windows) {
 
 		glob_settings.subwindows[0].wh.width = x - 2 * gap;
 		glob_settings.subwindows[0].wh.height = int((y - 3 * gap) * 0.75);
