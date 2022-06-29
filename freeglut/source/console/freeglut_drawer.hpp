@@ -100,62 +100,63 @@
 	void print_text_3f(double _x, double _y, double _z, std::wstring text);
 	void print_text_2f(double _x, double _y, std::wstring text);
 
+	void create_additional_subwindows();
+	void recalculation_subwindows_wh();
+	void postRedisplay();
+
 	void draw_sample(Settings& _settings, std::vector<Vertex>& _vct, int argc, char** argv);
+
+	// WINDOWS
+
 	void display_mainwindow();
-	void draw_shape(int index);
 	void reshape_mainwindow(int w, int h);
+
+
 	
-	void normal_keys(unsigned char key, int x, int y);
-	void special_keys(int key, int x, int y);
-
-	void mouse_pressed(int button, int state, int x, int y);
-	void passive_mouse_motion(int x, int y);
-	void pressed_mouse_motion(int x, int y);
-	
-
-	void main_menu_init();
-	void main_menu_render(int code);
-	void menu_movements_by_arrows(int code);
-	void menu_movements_by_wasd(int code);
-	void menu_movements_by_ijkl(int code);
-	void menu_movements_by_shiftspace(int code);
-	void menu_scaling(int code);
-	void menu_color(int code);
-	void menu_settings(int code);
-	void menu_spinrate(int code);
-
-	//void just_mouse_motion();
-
-
-	// SUBWINDOWS
-
 	void display_subwindow_0();
+		void draw_shape(int index);
+
+		void normal_keys(unsigned char key, int x, int y);
+		void special_keys(int key, int x, int y);
+		void mouse_pressed(int button, int state, int x, int y);
+		void passive_mouse_motion(int x, int y);
+		void pressed_mouse_motion(int x, int y);
+		
+	
 	void display_subwindow_1();
+		void draw_axis_by_cones();
+		void draw_axis_by_lines();
+	
 	void display_subwindow_2();
+	
 	void display_subwindow_3();
+	
 	void reshape_subwindow_0(int w, int h);
 	void reshape_subwindow_1(int w, int h);
 	void reshape_subwindow_2(int w, int h);
 	void reshape_subwindow_3(int w, int h);
 
+	void main_menu_init();
+
 	void subwindow_0_menu_init();
+		void subwindow_0_menu(int code);
+		void menu_movements_by_arrows(int code);
+		void menu_movements_by_wasd(int code);
+		void menu_movements_by_ijkl(int code);
+		void menu_movements_by_shiftspace(int code);
+		void menu_scaling(int code);
+		void menu_color(int code);
+		void menu_settings(int code);
+		void menu_spinrate(int code);
+
 	void subwindow_1_menu_init();
+		void subwindow_1_menu(int code);
+
+
 	void subwindow_2_menu_init();
+		void subwindow_2_menu(int code);
+
 	void subwindow_3_menu_init();
-
-	void subwindow_0_menu(int code);
-	void subwindow_1_menu(int code);
-	void subwindow_2_menu(int code);
-	void subwindow_3_menu(int code);
-
-	void draw_axis_by_cones();
-	void draw_axis_by_lines();
-
-
-
-
-	void recalculation_subwindows_wh();
-	void postRedisplay();
-
+		void subwindow_3_menu(int code);
 
 #endif // !FREEGLUT_DRAWER_HPP
