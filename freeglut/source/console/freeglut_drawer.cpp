@@ -21,11 +21,11 @@ std::vector<Rgb> vct_log_colorful;
 
 bool have_additional_sub_windows = false;
 
-#define RGB_RED Rgb(255.0 / 255.0, 0.0 / 255.0, 0.0 / 255.0)
-#define RGB_GREEN Rgb(0.0 / 255.0, 255.0 / 255.0, 0.0 / 255.0)
+#define RGB_RED Rgb(195.0 / 255.0, 21.0 / 255.0, 21.0 / 255.0)
+#define RGB_GREEN Rgb(0.0, 154.0 / 255.0, 99.0 / 255.0)
 #define RGB_BLACK Rgb(0.0 / 255.0, 0.0 / 255.0, 0.0 / 255.0)
 #define RGB_WHITE Rgb(255.0 / 255.0, 255.0 / 255.0, 255.0 / 255.0)
-#define RGB_BLUE Rgb(0.0 / 255.0, 0.0 / 255.0, 255.0 / 255.0)
+#define RGB_BLUE Rgb(19.0 / 255.0, 86.0 / 255.0, 201.0 / 255.0)
 
 std::map<std::wstring, Rgb> colors = {
 	{L"white", RGB_WHITE},
@@ -128,7 +128,7 @@ void draw_sample(Settings& _settings, std::vector<Vertex>& _vct, int argc, char*
 	inverted_black_text_log = false;
 	inverted_black_text_axis = false;
 
-	log("System initialized", RGB_BLACK);
+	log("System initialized", RGB_GREEN);
 
 	// настройки будут переходить из окна к окну только в случае сохранения их здесь и восстановления из файла в консоли
 
@@ -771,6 +771,7 @@ void subwindow_0_menu_init() {
 		glutAddSubMenu("1-10", _menu_spinrate_set_1_10);
 		glutAddSubMenu("11-20", _menu_spinrate_set_11_20);
 		glutAddSubMenu("21-30", _menu_spinrate_set_21_30);
+		glutAddMenuEntry("I want count of spins < 10 000", MENU_RENDER_SPINRATE);
 
 	glutSetMenu(_menu_spinrate);
 		glutAddMenuEntry("Increase by 1", MENU_RENDER_INCREASE_SPINRATE_BY_1);
@@ -1088,16 +1089,15 @@ void menu_settings(int code) {
 	switch (code) {
 
 		case MENU_SETTINGS_GS_SAVE:
-			log("Settings has been saved", RGB_BLUE);
-			glob_settings.save(L'a');
+			if (glob_settings.save(L'a')) log("Settings has been saved", RGB_GREEN); else log("Settings has NOT been saved", RGB_RED);
 			postRedisplay();
 			break;
 
 		case MENU_SETTINGS_GS_GET: {
 				int width = glob_settings.main_window.wh.width, height = glob_settings.main_window.wh.height;
-				glob_settings.get(L'a');
+				if (glob_settings.get(L'a')) log("Settings has been loaded", RGB_GREEN); else log("Settings has NOT been loaded", RGB_RED);
 				glob_settings.main_window.wh.width = width; glob_settings.main_window.wh.height = height;
-				log("Settings has been loaded", RGB_BLUE);
+				
 				recalculation_subwindows_wh(); 
 				reshape_reposition_subwindows();
 				postRedisplay();
@@ -1105,7 +1105,7 @@ void menu_settings(int code) {
 
 		case MENU_SETTINGS_GS_RESET:	
 			glob_settings = Settings(glob_settings.global_settings, Freeglut_settings(), glob_settings.main_window, glob_settings.subwindows, 1.0, glob_settings.gap);
-			log("Settings has been reseted", RGB_BLUE);
+			log("Settings has been reseted", RGB_GREEN);
 			recalculation_subwindows_wh();
 			reshape_reposition_subwindows();
 			postRedisplay();
@@ -1137,26 +1137,19 @@ void menu_spinrate_set(int code) {
 
 	switch (code) {
 
-		case MENU_RENDER_SPINRATE_1: glob_settings.spinrate = 1; log("Spinrate = " + std::to_string(glob_settings.spinrate), RGB_BLUE); postRedisplay(); break;
-		case MENU_RENDER_SPINRATE_2: glob_settings.spinrate = 2; log("Spinrate = " + std::to_string(glob_settings.spinrate), RGB_BLUE); postRedisplay(); break;
-		case MENU_RENDER_SPINRATE_3: glob_settings.spinrate = 3; log("Spinrate = " + std::to_string(glob_settings.spinrate), RGB_BLUE); postRedisplay(); break;
-		case MENU_RENDER_SPINRATE_4: glob_settings.spinrate = 4; log("Spinrate = " + std::to_string(glob_settings.spinrate), RGB_BLUE); postRedisplay(); break;
-		case MENU_RENDER_SPINRATE_5: glob_settings.spinrate = 5; log("Spinrate = " + std::to_string(glob_settings.spinrate), RGB_BLUE); postRedisplay(); break;
-		case MENU_RENDER_SPINRATE_6: glob_settings.spinrate = 6; log("Spinrate = " + std::to_string(glob_settings.spinrate), RGB_BLUE); postRedisplay(); break;
-		case MENU_RENDER_SPINRATE_7: glob_settings.spinrate = 7; log("Spinrate = " + std::to_string(glob_settings.spinrate), RGB_BLUE); postRedisplay(); break;
-		case MENU_RENDER_SPINRATE_8: glob_settings.spinrate = 8; log("Spinrate = " + std::to_string(glob_settings.spinrate), RGB_BLUE); postRedisplay(); break;
-		case MENU_RENDER_SPINRATE_9: glob_settings.spinrate = 9; log("Spinrate = " + std::to_string(glob_settings.spinrate), RGB_BLUE); postRedisplay(); break;
-		case MENU_RENDER_SPINRATE_10: glob_settings.spinrate = 10; log("Spinrate = " + std::to_string(glob_settings.spinrate), RGB_BLUE); postRedisplay(); break;
-		case MENU_RENDER_SPINRATE_11: glob_settings.spinrate = 11; log("Spinrate = " + std::to_string(glob_settings.spinrate), RGB_BLUE); postRedisplay(); break;
-		case MENU_RENDER_SPINRATE_12: glob_settings.spinrate = 12; log("Spinrate = " + std::to_string(glob_settings.spinrate), RGB_BLUE); postRedisplay(); break;
-		case MENU_RENDER_SPINRATE_13: glob_settings.spinrate = 13; log("Spinrate = " + std::to_string(glob_settings.spinrate), RGB_BLUE); postRedisplay(); break;
-		case MENU_RENDER_SPINRATE_14: glob_settings.spinrate = 14; log("Spinrate = " + std::to_string(glob_settings.spinrate), RGB_BLUE); postRedisplay(); break;
-		case MENU_RENDER_SPINRATE_15: glob_settings.spinrate = 15; log("Spinrate = " + std::to_string(glob_settings.spinrate), RGB_BLUE); postRedisplay(); break;
-		case MENU_RENDER_SPINRATE_16: glob_settings.spinrate = 16; log("Spinrate = " + std::to_string(glob_settings.spinrate), RGB_BLUE); postRedisplay(); break;
-		case MENU_RENDER_SPINRATE_17: glob_settings.spinrate = 17; log("Spinrate = " + std::to_string(glob_settings.spinrate), RGB_BLUE); postRedisplay(); break;
-		case MENU_RENDER_SPINRATE_18: glob_settings.spinrate = 18; log("Spinrate = " + std::to_string(glob_settings.spinrate), RGB_BLUE); postRedisplay(); break;
-		case MENU_RENDER_SPINRATE_19: glob_settings.spinrate = 19; log("Spinrate = " + std::to_string(glob_settings.spinrate), RGB_BLUE); postRedisplay(); break;
-		case MENU_RENDER_SPINRATE_20: glob_settings.spinrate = 20; log("Spinrate = " + std::to_string(glob_settings.spinrate), RGB_BLUE); postRedisplay(); break;
+		case MENU_RENDER_SPINRATE: {
+
+			int len = glob_vct.size(); int spinrate = 1;
+
+			while (len / spinrate > 10000) {
+				spinrate += 1;
+			}
+
+			glob_settings.spinrate = spinrate;
+
+			log("AUTO Spinrate = " + std::to_string(glob_settings.spinrate), RGB_GREEN); postRedisplay();
+
+		} break;
 
 		default: break;
 
@@ -1167,16 +1160,16 @@ void menu_spinrate_set_1_10(int code) {
 	
 	switch (code) {
 
-		case MENU_RENDER_SPINRATE_1: glob_settings.spinrate = 1; log("Spinrate = " + std::to_string(glob_settings.spinrate), RGB_BLUE); postRedisplay(); break;
-		case MENU_RENDER_SPINRATE_2: glob_settings.spinrate = 2; log("Spinrate = " + std::to_string(glob_settings.spinrate), RGB_BLUE); postRedisplay(); break;
-		case MENU_RENDER_SPINRATE_3: glob_settings.spinrate = 3; log("Spinrate = " + std::to_string(glob_settings.spinrate), RGB_BLUE); postRedisplay(); break;
-		case MENU_RENDER_SPINRATE_4: glob_settings.spinrate = 4; log("Spinrate = " + std::to_string(glob_settings.spinrate), RGB_BLUE); postRedisplay(); break;
-		case MENU_RENDER_SPINRATE_5: glob_settings.spinrate = 5; log("Spinrate = " + std::to_string(glob_settings.spinrate), RGB_BLUE); postRedisplay(); break;
-		case MENU_RENDER_SPINRATE_6: glob_settings.spinrate = 6; log("Spinrate = " + std::to_string(glob_settings.spinrate), RGB_BLUE); postRedisplay(); break;
-		case MENU_RENDER_SPINRATE_7: glob_settings.spinrate = 7; log("Spinrate = " + std::to_string(glob_settings.spinrate), RGB_BLUE); postRedisplay(); break;
-		case MENU_RENDER_SPINRATE_8: glob_settings.spinrate = 8; log("Spinrate = " + std::to_string(glob_settings.spinrate), RGB_BLUE); postRedisplay(); break;
-		case MENU_RENDER_SPINRATE_9: glob_settings.spinrate = 9; log("Spinrate = " + std::to_string(glob_settings.spinrate), RGB_BLUE); postRedisplay(); break;
-		case MENU_RENDER_SPINRATE_10: glob_settings.spinrate = 10; log("Spinrate = " + std::to_string(glob_settings.spinrate), RGB_BLUE); postRedisplay(); break;
+		case MENU_RENDER_SPINRATE_1: glob_settings.spinrate = 1; log("Spinrate = " + std::to_string(glob_settings.spinrate), RGB_GREEN); postRedisplay(); break;
+		case MENU_RENDER_SPINRATE_2: glob_settings.spinrate = 2; log("Spinrate = " + std::to_string(glob_settings.spinrate), RGB_GREEN); postRedisplay(); break;
+		case MENU_RENDER_SPINRATE_3: glob_settings.spinrate = 3; log("Spinrate = " + std::to_string(glob_settings.spinrate), RGB_GREEN); postRedisplay(); break;
+		case MENU_RENDER_SPINRATE_4: glob_settings.spinrate = 4; log("Spinrate = " + std::to_string(glob_settings.spinrate), RGB_GREEN); postRedisplay(); break;
+		case MENU_RENDER_SPINRATE_5: glob_settings.spinrate = 5; log("Spinrate = " + std::to_string(glob_settings.spinrate), RGB_GREEN); postRedisplay(); break;
+		case MENU_RENDER_SPINRATE_6: glob_settings.spinrate = 6; log("Spinrate = " + std::to_string(glob_settings.spinrate), RGB_GREEN); postRedisplay(); break;
+		case MENU_RENDER_SPINRATE_7: glob_settings.spinrate = 7; log("Spinrate = " + std::to_string(glob_settings.spinrate), RGB_GREEN); postRedisplay(); break;
+		case MENU_RENDER_SPINRATE_8: glob_settings.spinrate = 8; log("Spinrate = " + std::to_string(glob_settings.spinrate), RGB_GREEN); postRedisplay(); break;
+		case MENU_RENDER_SPINRATE_9: glob_settings.spinrate = 9; log("Spinrate = " + std::to_string(glob_settings.spinrate), RGB_GREEN); postRedisplay(); break;
+		case MENU_RENDER_SPINRATE_10: glob_settings.spinrate = 10; log("Spinrate = " + std::to_string(glob_settings.spinrate), RGB_GREEN); postRedisplay(); break;
 
 		default: break;
 
@@ -1187,16 +1180,16 @@ void menu_spinrate_set_11_20(int code) {
 	
 	switch (code) {
 
-		case MENU_RENDER_SPINRATE_11: glob_settings.spinrate = 11; log("Spinrate = " + std::to_string(glob_settings.spinrate), RGB_BLUE); postRedisplay(); break;
-		case MENU_RENDER_SPINRATE_12: glob_settings.spinrate = 12; log("Spinrate = " + std::to_string(glob_settings.spinrate), RGB_BLUE); postRedisplay(); break;
-		case MENU_RENDER_SPINRATE_13: glob_settings.spinrate = 13; log("Spinrate = " + std::to_string(glob_settings.spinrate), RGB_BLUE); postRedisplay(); break;
-		case MENU_RENDER_SPINRATE_14: glob_settings.spinrate = 14; log("Spinrate = " + std::to_string(glob_settings.spinrate), RGB_BLUE); postRedisplay(); break;
-		case MENU_RENDER_SPINRATE_15: glob_settings.spinrate = 15; log("Spinrate = " + std::to_string(glob_settings.spinrate), RGB_BLUE); postRedisplay(); break;
-		case MENU_RENDER_SPINRATE_16: glob_settings.spinrate = 16; log("Spinrate = " + std::to_string(glob_settings.spinrate), RGB_BLUE); postRedisplay(); break;
-		case MENU_RENDER_SPINRATE_17: glob_settings.spinrate = 17; log("Spinrate = " + std::to_string(glob_settings.spinrate), RGB_BLUE); postRedisplay(); break;
-		case MENU_RENDER_SPINRATE_18: glob_settings.spinrate = 18; log("Spinrate = " + std::to_string(glob_settings.spinrate), RGB_BLUE); postRedisplay(); break;
-		case MENU_RENDER_SPINRATE_19: glob_settings.spinrate = 19; log("Spinrate = " + std::to_string(glob_settings.spinrate), RGB_BLUE); postRedisplay(); break;
-		case MENU_RENDER_SPINRATE_20: glob_settings.spinrate = 20; log("Spinrate = " + std::to_string(glob_settings.spinrate), RGB_BLUE); postRedisplay(); break;
+		case MENU_RENDER_SPINRATE_11: glob_settings.spinrate = 11; log("Spinrate = " + std::to_string(glob_settings.spinrate), RGB_GREEN); postRedisplay(); break;
+		case MENU_RENDER_SPINRATE_12: glob_settings.spinrate = 12; log("Spinrate = " + std::to_string(glob_settings.spinrate), RGB_GREEN); postRedisplay(); break;
+		case MENU_RENDER_SPINRATE_13: glob_settings.spinrate = 13; log("Spinrate = " + std::to_string(glob_settings.spinrate), RGB_GREEN); postRedisplay(); break;
+		case MENU_RENDER_SPINRATE_14: glob_settings.spinrate = 14; log("Spinrate = " + std::to_string(glob_settings.spinrate), RGB_GREEN); postRedisplay(); break;
+		case MENU_RENDER_SPINRATE_15: glob_settings.spinrate = 15; log("Spinrate = " + std::to_string(glob_settings.spinrate), RGB_GREEN); postRedisplay(); break;
+		case MENU_RENDER_SPINRATE_16: glob_settings.spinrate = 16; log("Spinrate = " + std::to_string(glob_settings.spinrate), RGB_GREEN); postRedisplay(); break;
+		case MENU_RENDER_SPINRATE_17: glob_settings.spinrate = 17; log("Spinrate = " + std::to_string(glob_settings.spinrate), RGB_GREEN); postRedisplay(); break;
+		case MENU_RENDER_SPINRATE_18: glob_settings.spinrate = 18; log("Spinrate = " + std::to_string(glob_settings.spinrate), RGB_GREEN); postRedisplay(); break;
+		case MENU_RENDER_SPINRATE_19: glob_settings.spinrate = 19; log("Spinrate = " + std::to_string(glob_settings.spinrate), RGB_GREEN); postRedisplay(); break;
+		case MENU_RENDER_SPINRATE_20: glob_settings.spinrate = 20; log("Spinrate = " + std::to_string(glob_settings.spinrate), RGB_GREEN); postRedisplay(); break;
 
 		default: break;
 
@@ -1207,16 +1200,16 @@ void menu_spinrate_set_21_30(int code) {
 		
 	switch (code) {
 
-		case MENU_RENDER_SPINRATE_21: glob_settings.spinrate = 21; log("Spinrate = " + std::to_string(glob_settings.spinrate), RGB_BLUE); postRedisplay(); break;
-		case MENU_RENDER_SPINRATE_22: glob_settings.spinrate = 22; log("Spinrate = " + std::to_string(glob_settings.spinrate), RGB_BLUE); postRedisplay(); break;
-		case MENU_RENDER_SPINRATE_23: glob_settings.spinrate = 23; log("Spinrate = " + std::to_string(glob_settings.spinrate), RGB_BLUE); postRedisplay(); break;
-		case MENU_RENDER_SPINRATE_24: glob_settings.spinrate = 24; log("Spinrate = " + std::to_string(glob_settings.spinrate), RGB_BLUE); postRedisplay(); break;
-		case MENU_RENDER_SPINRATE_25: glob_settings.spinrate = 25; log("Spinrate = " + std::to_string(glob_settings.spinrate), RGB_BLUE); postRedisplay(); break;
-		case MENU_RENDER_SPINRATE_26: glob_settings.spinrate = 26; log("Spinrate = " + std::to_string(glob_settings.spinrate), RGB_BLUE); postRedisplay(); break;
-		case MENU_RENDER_SPINRATE_27: glob_settings.spinrate = 27; log("Spinrate = " + std::to_string(glob_settings.spinrate), RGB_BLUE); postRedisplay(); break;
-		case MENU_RENDER_SPINRATE_28: glob_settings.spinrate = 28; log("Spinrate = " + std::to_string(glob_settings.spinrate), RGB_BLUE); postRedisplay(); break;
-		case MENU_RENDER_SPINRATE_29: glob_settings.spinrate = 29; log("Spinrate = " + std::to_string(glob_settings.spinrate), RGB_BLUE); postRedisplay(); break;
-		case MENU_RENDER_SPINRATE_30: glob_settings.spinrate = 30; log("Spinrate = " + std::to_string(glob_settings.spinrate), RGB_BLUE); postRedisplay(); break;
+		case MENU_RENDER_SPINRATE_21: glob_settings.spinrate = 21; log("Spinrate = " + std::to_string(glob_settings.spinrate), RGB_GREEN); postRedisplay(); break;
+		case MENU_RENDER_SPINRATE_22: glob_settings.spinrate = 22; log("Spinrate = " + std::to_string(glob_settings.spinrate), RGB_GREEN); postRedisplay(); break;
+		case MENU_RENDER_SPINRATE_23: glob_settings.spinrate = 23; log("Spinrate = " + std::to_string(glob_settings.spinrate), RGB_GREEN); postRedisplay(); break;
+		case MENU_RENDER_SPINRATE_24: glob_settings.spinrate = 24; log("Spinrate = " + std::to_string(glob_settings.spinrate), RGB_GREEN); postRedisplay(); break;
+		case MENU_RENDER_SPINRATE_25: glob_settings.spinrate = 25; log("Spinrate = " + std::to_string(glob_settings.spinrate), RGB_GREEN); postRedisplay(); break;
+		case MENU_RENDER_SPINRATE_26: glob_settings.spinrate = 26; log("Spinrate = " + std::to_string(glob_settings.spinrate), RGB_GREEN); postRedisplay(); break;
+		case MENU_RENDER_SPINRATE_27: glob_settings.spinrate = 27; log("Spinrate = " + std::to_string(glob_settings.spinrate), RGB_GREEN); postRedisplay(); break;
+		case MENU_RENDER_SPINRATE_28: glob_settings.spinrate = 28; log("Spinrate = " + std::to_string(glob_settings.spinrate), RGB_GREEN); postRedisplay(); break;
+		case MENU_RENDER_SPINRATE_29: glob_settings.spinrate = 29; log("Spinrate = " + std::to_string(glob_settings.spinrate), RGB_GREEN); postRedisplay(); break;
+		case MENU_RENDER_SPINRATE_30: glob_settings.spinrate = 30; log("Spinrate = " + std::to_string(glob_settings.spinrate), RGB_GREEN); postRedisplay(); break;
 
 		default: break;
 
@@ -1254,28 +1247,28 @@ void menu_shape(int code) {
 		case VVIS_SHAPE_NOTHING: 
 			glob_settings.freeglut_settings.shape = VVIS_SHAPE_NOTHING;
 			glob_settings.freeglut_settings.shape_wstr = VVIS_SHAPE_NOTHING_WSTR;
-			log("Shape was changed to nothing", RGB_BLUE);
+			log("Shape was changed to nothing", RGB_GREEN);
 			postRedisplay();
 			break; 
 
 		case VVIS_SHAPE_CONE:
 			glob_settings.freeglut_settings.shape = VVIS_SHAPE_CONE;
 			glob_settings.freeglut_settings.shape_wstr = VVIS_SHAPE_CONE_WSTR;
-			log("Shape was changed to cone", RGB_BLUE);
+			log("Shape was changed to cone", RGB_GREEN);
 			postRedisplay();
 			break;
 
 		case VVIS_SHAPE_SPHERE:
 			glob_settings.freeglut_settings.shape = VVIS_SHAPE_SPHERE;
 			glob_settings.freeglut_settings.shape_wstr = VVIS_SHAPE_SPHERE_WSTR;
-			log("Shape was changed to sphere", RGB_BLUE);
+			log("Shape was changed to sphere", RGB_GREEN);
 			postRedisplay();
 			break;
 
 		case VVIS_SHAPE_ARROW:
 			glob_settings.freeglut_settings.shape = VVIS_SHAPE_ARROW;
 			glob_settings.freeglut_settings.shape_wstr = VVIS_SHAPE_ARROW_WSTR;
-			log("Shape was changed to arrow", RGB_BLUE);
+			log("Shape was changed to arrow", RGB_GREEN);
 			postRedisplay();
 			break;
 	
@@ -1293,37 +1286,37 @@ void menu_poligon(int code) {
 
 		case MENU_INCREASE_POLIGON_BY_1:
 			glob_settings.freeglut_settings.poligonrate += 1;
-			log("Poligonrate was changed and now: " + std::to_string(glob_settings.freeglut_settings.poligonrate), RGB_BLUE);
+			log("Poligonrate was changed and now: " + std::to_string(glob_settings.freeglut_settings.poligonrate), RGB_GREEN);
 			postRedisplay();
 			break;
 
 		case MENU_DECREASE_POLIGON_BY_1:
 			glob_settings.freeglut_settings.poligonrate = glob_settings.freeglut_settings.poligonrate == 1 ? 1 : glob_settings.freeglut_settings.poligonrate - 1;
-			log("Poligonrate was changed and now: " + std::to_string(glob_settings.freeglut_settings.poligonrate), RGB_BLUE);
+			log("Poligonrate was changed and now: " + std::to_string(glob_settings.freeglut_settings.poligonrate), RGB_GREEN);
 			postRedisplay();
 			break;
 			
 		case MENU_SET_POLIGON_5:
 			glob_settings.freeglut_settings.poligonrate = 5;
-			log("Poligonrate was changed and now: " + std::to_string(glob_settings.freeglut_settings.poligonrate), RGB_BLUE);
+			log("Poligonrate was changed and now: " + std::to_string(glob_settings.freeglut_settings.poligonrate), RGB_GREEN);
 			postRedisplay();
 			break;
 
 		case MENU_SET_POLIGON_10:
 			glob_settings.freeglut_settings.poligonrate = 10;
-			log("Poligonrate was changed and now: " + std::to_string(glob_settings.freeglut_settings.poligonrate), RGB_BLUE);
+			log("Poligonrate was changed and now: " + std::to_string(glob_settings.freeglut_settings.poligonrate), RGB_GREEN);
 			postRedisplay();
 			break;
 			
 		case MENU_SET_POLIGON_15:
 			glob_settings.freeglut_settings.poligonrate = 15;
-			log("Poligonrate was changed and now: " + std::to_string(glob_settings.freeglut_settings.poligonrate), RGB_BLUE);
+			log("Poligonrate was changed and now: " + std::to_string(glob_settings.freeglut_settings.poligonrate), RGB_GREEN);
 			postRedisplay();
 			break;
 
 		case MENU_SET_POLIGON_20:
 			glob_settings.freeglut_settings.poligonrate = 20;
-			log("Poligonrate was changed and now: " + std::to_string(glob_settings.freeglut_settings.poligonrate), RGB_BLUE);
+			log("Poligonrate was changed and now: " + std::to_string(glob_settings.freeglut_settings.poligonrate), RGB_GREEN);
 			postRedisplay();
 			break;
 
