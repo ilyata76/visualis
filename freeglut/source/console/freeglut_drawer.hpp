@@ -102,6 +102,13 @@
 	#define MENU_RENDER_SPINRATE_29 10931
 	#define MENU_RENDER_SPINRATE_30 10932
 
+	#define MENU_INCREASE_POLIGON_BY_1 11901
+	#define MENU_DECREASE_POLIGON_BY_1 11902
+	#define MENU_SET_POLIGON_5 11903
+	#define MENU_SET_POLIGON_10 11904
+	#define MENU_SET_POLIGON_15 11905
+	#define MENU_SET_POLIGON_20 11906
+
 	#define MENU_COLORING_BACKGROUND 1100
 	#define MENU_COLORING_BACKGROUND_WHITE 1101
 	#define MENU_COLORING_BACKGROUND_RED 1102
@@ -115,6 +122,7 @@
 	#define MENU_COLORING_BACKGROUND_SUB1 1110
 	#define MENU_COLORING_BACKGROUND_SUB2 1111
 	#define MENU_COLORING_BACKGROUND_SUB3 1112
+	
 
 
 	#define SUBWINDOW_AXIS_MENU_USE_CONES 2001
@@ -204,6 +212,7 @@
 				void menu_spinrate_set_11_20(int code);
 				void menu_spinrate_set_21_30(int code);
 		void menu_shape(int code);
+		void menu_poligon(int code);
 
 	void subwindow_1_menu_init();
 		void subwindow_1_menu(int code);

@@ -581,6 +581,7 @@ void subwindow_0_menu_init() {
 	int _menu_spinrate_set_21_30 = glutCreateMenu(menu_spinrate_set_21_30);
 	int _menu_background = glutCreateMenu(menu_background_sub0);
 	int _menu_shape = glutCreateMenu(menu_shape);
+	int _menu_poligon = glutCreateMenu(menu_poligon);
 
 	char buff[256];
 
@@ -710,6 +711,15 @@ void subwindow_0_menu_init() {
 		glutAddMenuEntry("Arrow", VVIS_SHAPE_ARROW);
 
 
+	glutSetMenu(_menu_poligon);
+		glutAddMenuEntry("Increase by 1", MENU_INCREASE_POLIGON_BY_1);
+		glutAddMenuEntry("Decrease by 1", MENU_DECREASE_POLIGON_BY_1);
+		glutAddMenuEntry("Set 5", MENU_SET_POLIGON_5);
+		glutAddMenuEntry("Set 10", MENU_SET_POLIGON_10);
+		glutAddMenuEntry("Set 15", MENU_SET_POLIGON_15);
+		glutAddMenuEntry("Set 20", MENU_SET_POLIGON_20);
+
+
 	glutSetMenu(_main_menu_render);
 		glutAddSubMenu("Movements by arrows", _menu_movements_by_arrows);
 		glutAddSubMenu("Movements by wasd", _menu_movements_by_wasd);
@@ -723,6 +733,7 @@ void subwindow_0_menu_init() {
 		glutAddSubMenu("Background color", _menu_background);
 		glutAddMenuEntry("Restore gap=7", MENU_RENDER_RESTORE_GAP);
 		glutAddSubMenu("Change shape", _menu_shape);
+		glutAddSubMenu("Poligon rate", _menu_poligon);
 
 	glutAttachMenu(GLUT_RIGHT_BUTTON);
 	glutDetachMenu(GLUT_LEFT_BUTTON);
@@ -1133,6 +1144,49 @@ void menu_shape(int code) {
 
 	}
 
+
+}
+
+
+void menu_poligon(int code) {
+
+	switch (code) {
+
+		case MENU_INCREASE_POLIGON_BY_1:
+			glob_settings.freeglut_settings.poligonrate += 1;
+			postRedisplay();
+			break;
+
+		case MENU_DECREASE_POLIGON_BY_1:
+			glob_settings.freeglut_settings.poligonrate = glob_settings.freeglut_settings.poligonrate == 1 ? 1 : glob_settings.freeglut_settings.poligonrate - 1;
+			postRedisplay();
+			break;
+			
+		case MENU_SET_POLIGON_5:
+			glob_settings.freeglut_settings.poligonrate = 5;
+			postRedisplay();
+			break;
+
+		case MENU_SET_POLIGON_10:
+			glob_settings.freeglut_settings.poligonrate = 10;
+			postRedisplay();
+			break;
+			
+		case MENU_SET_POLIGON_15:
+			glob_settings.freeglut_settings.poligonrate = 15;
+			postRedisplay();
+			break;
+
+		case MENU_SET_POLIGON_20:
+			glob_settings.freeglut_settings.poligonrate = 20;
+			postRedisplay();
+			break;
+
+
+
+		default: break;
+
+	}
 
 }
 
