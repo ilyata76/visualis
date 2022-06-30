@@ -108,6 +108,8 @@ bool Settings::save(wchar_t _flag) {
 	return true;
 }
 
+
+
 bool Settings::get_by_json(const nlohmann::json& _json, wchar_t _flag) {
 	if (_json == nullptr) return false;
 	if (_flag == L'g' || _flag == L'a') {
@@ -165,7 +167,7 @@ bool Settings::get_by_json(const nlohmann::json& _json, wchar_t _flag) {
 		if (_json[VVIS_OTHER_SETTINGS]["main_window"]["width"] == nullptr); else this->main_window.wh.width = _json[VVIS_OTHER_SETTINGS]["main_window"]["width"].get<int>(); 
 		if (_json[VVIS_OTHER_SETTINGS]["spinrate"] == nullptr); else this->spinrate = _json[VVIS_OTHER_SETTINGS]["spinrate"].get<int>(); 
 		if (_json[VVIS_OTHER_SETTINGS]["subwindowing"] == nullptr); else this->spinrate = _json[VVIS_OTHER_SETTINGS]["subwindowing"].get<bool>(); 
-		if (_json[VVIS_OTHER_SETTINGS]["gap"] == nullptr); else this->spinrate = _json[VVIS_OTHER_SETTINGS]["gap"].get<int>(); 
+		if (_json[VVIS_OTHER_SETTINGS]["gap"] == nullptr); else this->gap = _json[VVIS_OTHER_SETTINGS]["gap"].get<int>(); 
 	}
 
 	return true;

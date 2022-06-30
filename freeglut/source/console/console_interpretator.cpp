@@ -442,6 +442,9 @@ bool Interpretator::set_handler(std::vector<std::wstring> _commands) {
 										} else if (_commands[2] == VVIS_SHAPE_NOTHING_WSTR || _commands[2] == L"n") {
 											this->app_settings.freeglut_settings.shape = VVIS_SHAPE_NOTHING;
 											this->app_settings.freeglut_settings.shape_wstr = VVIS_SHAPE_NOTHING_WSTR;
+										} else if (_commands[2] == VVIS_SHAPE_SPHERE_WSTR || _commands[2] == L"s") {
+											this->app_settings.freeglut_settings.shape = VVIS_SHAPE_SPHERE;
+											this->app_settings.freeglut_settings.shape_wstr = VVIS_SHAPE_SPHERE_WSTR;
 										}
 										std::wcout << L"\tShape \"" << this->app_settings.freeglut_settings.shape << "/" << this->app_settings.freeglut_settings.shape_wstr << L"\" has been set up\n";
 										break;

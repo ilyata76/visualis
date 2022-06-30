@@ -940,13 +940,17 @@ void menu_settings(int code) {
 
 		case MENU_SETTINGS_GS_GET: {
 				int width = glob_settings.main_window.wh.width, height = glob_settings.main_window.wh.height;
-				glob_settings.get(L'f');
+				glob_settings.get(L'a');
 				glob_settings.main_window.wh.width = width; glob_settings.main_window.wh.height = height;
+				recalculation_subwindows_wh(); 
+				reshape_reposition_subwindows();
 				postRedisplay();
 			} break;
 
 		case MENU_SETTINGS_GS_RESET:	
 			glob_settings = Settings(glob_settings.global_settings, Freeglut_settings(), glob_settings.main_window, glob_settings.subwindows, 1.0, glob_settings.gap);
+			recalculation_subwindows_wh();
+			reshape_reposition_subwindows();
 			postRedisplay();
 			break;
 
