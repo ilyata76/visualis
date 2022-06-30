@@ -481,9 +481,11 @@ void display_subwindow_0() {
 }
 
 void draw_shape(int index) {
-	Shape* shape = NULL; double args_for_draw[4]; // 4 - max
+	Shape* shape = NULL; double args_for_draw[5]; // 5 - max
 
 	Vertex current_vertex = glob_vct[index];
+
+	// TODO: настраиваемое количество полигонов
 
 	switch (glob_settings.freeglut_settings.shape) {
 
@@ -494,16 +496,26 @@ void draw_shape(int index) {
 			args_for_draw[1] = 0.05 * glob_settings.freeglut_settings.scaling_parameters.y;		//
 			args_for_draw[2] = 10;
 			args_for_draw[3] = 10;
-
 			break;
 
 
 		case VVIS_SHAPE_SPHERE :
 			shape = new Sphere(current_vertex);
 
-			args_for_draw[0] = 0.005 * glob_settings.freeglut_settings.scaling_parameters.x;
+			args_for_draw[0] = 0.009 * glob_settings.freeglut_settings.scaling_parameters.x;
 			args_for_draw[1] = 10;
 			args_for_draw[2] = 10;
+
+			break;
+
+		case VVIS_SHAPE_ARROW :
+			shape = new Arrow(current_vertex);
+
+			args_for_draw[0] = 0.004 * glob_settings.freeglut_settings.scaling_parameters.x;		//
+			args_for_draw[1] = 0.025 * glob_settings.freeglut_settings.scaling_parameters.y;		//
+			args_for_draw[2] = 10;
+			args_for_draw[3] = 10;
+			args_for_draw[4] = 0.003 * glob_settings.freeglut_settings.scaling_parameters.x; // sphere
 
 			break;
 		
@@ -695,6 +707,7 @@ void subwindow_0_menu_init() {
 		glutAddMenuEntry("Nothing", VVIS_SHAPE_NOTHING);
 		glutAddMenuEntry("Cone", VVIS_SHAPE_CONE);
 		glutAddMenuEntry("Sphere", VVIS_SHAPE_SPHERE);
+		glutAddMenuEntry("Arrow", VVIS_SHAPE_ARROW);
 
 
 	glutSetMenu(_main_menu_render);
@@ -1107,6 +1120,12 @@ void menu_shape(int code) {
 		case VVIS_SHAPE_SPHERE:
 			glob_settings.freeglut_settings.shape = VVIS_SHAPE_SPHERE;
 			glob_settings.freeglut_settings.shape_wstr = VVIS_SHAPE_SPHERE_WSTR;
+			postRedisplay();
+			break;
+
+		case VVIS_SHAPE_ARROW:
+			glob_settings.freeglut_settings.shape = VVIS_SHAPE_ARROW;
+			glob_settings.freeglut_settings.shape_wstr = VVIS_SHAPE_ARROW_WSTR;
 			postRedisplay();
 			break;
 	

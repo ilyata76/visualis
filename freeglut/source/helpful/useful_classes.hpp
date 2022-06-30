@@ -46,14 +46,14 @@
 		~WindowPosition() {};
 	};
 
-	struct Arrow {
+	struct winArrow {
 		double x;
 		double y;
 		double pressed_position_x;
 		double pressed_position_y;
 
-		Arrow() : x(0), y(0), pressed_position_x(0), pressed_position_y(0) {};
-		~Arrow() {};
+		winArrow() : x(0), y(0), pressed_position_x(0), pressed_position_y(0) {};
+		~winArrow() {};
 	};
 
 	class Window {
@@ -63,7 +63,7 @@
 			WindowParameters wh;
 			WindowPosition window_position;
 			Rgb backgroundcolor;
-			Arrow arrow;
+			winArrow arrow;
 
 			Window() : descriptor(0), wh(WindowParameters(500.0, 350.0)), backgroundcolor(Rgb(1.0, 1.0, 1.0)), window_position(WindowPosition(0, 0)) {};
 			Window(int _descriptor, WindowParameters _wh, Rgb _background) : descriptor(_descriptor), wh(_wh), backgroundcolor(_background), window_position(WindowPosition(0, 0)) {};

@@ -46,5 +46,20 @@
 
 	};
 
+	class Arrow : public Shape {
+		public:
+			double euler_phi;
+			double euler_theta;
+
+			Arrow(Vertex& _vrt) : Shape(_vrt), euler_phi(0), euler_theta(0) {};
+
+			bool set_draw_configuration();
+
+			bool draw(Rgb color, double* args);
+			wchar_t info();
+
+
+	};
+
 
 #endif // !SHAPE_HPP

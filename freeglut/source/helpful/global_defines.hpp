@@ -34,6 +34,8 @@
 #define VVIS_SHAPE_NOTHING_WSTR	L"nothing"
 #define VVIS_SHAPE_SPHERE		L's'
 #define VVIS_SHAPE_SPHERE_WSTR	L"sphere"
+#define VVIS_SHAPE_ARROW		L'a'
+#define VVIS_SHAPE_ARROW_WSTR	L"arrow"
 
 /// DRAWER OPTIONS
 
