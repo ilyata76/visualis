@@ -12,7 +12,15 @@ void* font_log = GLUT_BITMAP_HELVETICA_12;
 Parameters3f transl_stats = { 0.0, 0.0, 0.0 };
 Parameters3f transl_log = { 0.0, 0.0, 0.0 };
 
+std::vector<std::string> vct_log;
+std::vector<Rgb> vct_log_colorful;
+
 bool have_additional_sub_windows = false;
+
+#define RGB_RED Rgb(255.0 / 255.0, 0.0 / 255.0, 0.0 / 255.0)
+#define RGB_GREEN Rgb(0.0 / 255.0, 255.0 / 255.0, 0.0 / 255.0)
+#define RGB_BLACK Rgb(0.0 / 255.0, 0.0 / 255.0, 0.0 / 255.0)
+#define RGB_BLUE Rgb(0.0 / 255.0, 0.0 / 255.0, 255.0 / 255.0)
 
 std::map<std::wstring, Rgb> colors = {
 	{L"white", Rgb(255.0 / 255.0, 255.0 / 255.0, 255.0 / 255.0)},
@@ -77,6 +85,18 @@ double distance_between_fonts(void* _font) {
 
 }
 
+void log(std::string _str, Rgb _color) {
+	
+	char buffer[256];
+	time_t rawtime; time(&rawtime);
+	struct tm *timeinfo = localtime(&rawtime);
+	strftime(buffer, 256, "%H:%M:%S", timeinfo);
+
+	vct_log.push_back(std::string(buffer) + " - " + _str);
+	vct_log_colorful.push_back(_color);
+
+}
+
 void draw_sample(Settings& _settings, std::vector<Vertex>& _vct, int argc, char** argv) {
 
 	glob_settings = _settings;
@@ -89,6 +109,17 @@ void draw_sample(Settings& _settings, std::vector<Vertex>& _vct, int argc, char*
 	colors[L"sub1"] = glob_settings.subwindows[1].backgroundcolor;
 	colors[L"sub2"] = glob_settings.subwindows[2].backgroundcolor;
 	colors[L"sub3"] = glob_settings.subwindows[3].backgroundcolor;
+
+	font_stats = GLUT_BITMAP_9_BY_15;
+	font_log = GLUT_BITMAP_9_BY_15;
+
+	transl_stats = { 0.0, 0.0, 0.0 };
+	transl_log = { 0.0, 0.0, 0.0 };
+
+	vct_log = {};
+	vct_log_colorful = {};
+
+	log("System initialized", RGB_BLACK);
 
 	// настройки будут переходить из окна к окну только в случае сохранения их здесь и восстановления из файла в консоли
 
@@ -122,6 +153,8 @@ void draw_sample(Settings& _settings, std::vector<Vertex>& _vct, int argc, char*
 		glutMouseFunc(mouse_pressed);
 		subwindow_0_menu_init();
 
+	log("Drawer area was built", RGB_BLACK);
+
 	if (glob_settings.freeglut_settings.use_additional_subwindows) {
 
 		create_additional_subwindows();
@@ -129,7 +162,7 @@ void draw_sample(Settings& _settings, std::vector<Vertex>& _vct, int argc, char*
 
 	}
 	
-	if (glob_settings.freeglut_settings.fullscreen) glutFullScreen();
+	if (glob_settings.freeglut_settings.fullscreen) { glutFullScreen(); log("Fullscreen mode was enabled", RGB_BLUE); }
 
 	// continue
 	glutSetOption(GLUT_ACTION_ON_WINDOW_CLOSE, GLUT_ACTION_CONTINUE_EXECUTION);
@@ -236,6 +269,8 @@ void main_menu_init() {
 		glutAddSubMenu("Gap", _menu_gap);
 		glutAddSubMenu("Subwindows", _menu_subwindows);
 
+	log("Main menu was initialized", RGB_BLACK);
+
 	glutAttachMenu(GLUT_RIGHT_BUTTON);
 	glutDetachMenu(GLUT_LEFT_BUTTON);
 
@@ -254,42 +289,49 @@ void main_menu_gap(int code) {
 	switch (code) {
 
 		case MAIN_MENU_GAP_INCREASE_BY_1:	glob_settings.gap += 1;
+											log("GAP has been changed to " + std::to_string(glob_settings.gap), RGB_BLUE);
 											recalculation_subwindows_wh();
 											reshape_reposition_subwindows();
 											postRedisplay(); 
 											break;
 
 		case MAIN_MENU_GAP_DECREASE_BY_1:	glob_settings.gap = glob_settings.gap == 1 ? 1 : glob_settings.gap - 1;
+											log("GAP has been changed to " + std::to_string(glob_settings.gap), RGB_BLUE);
 											recalculation_subwindows_wh();
 											reshape_reposition_subwindows();
 											postRedisplay(); 
 											break;
 		
 		case MAIN_MENU_GAP_SET_5:	glob_settings.gap = 5;
+									log("GAP has been changed to " + std::to_string(glob_settings.gap), RGB_BLUE);
 									recalculation_subwindows_wh();
 									reshape_reposition_subwindows();
 									postRedisplay(); 
 									break;
 
 		case MAIN_MENU_GAP_SET_6:	glob_settings.gap = 6;
+									log("GAP has been changed to " + std::to_string(glob_settings.gap), RGB_BLUE);
 									recalculation_subwindows_wh();
 									reshape_reposition_subwindows();
 									postRedisplay(); 
 									break;
 
 		case MAIN_MENU_GAP_SET_7:	glob_settings.gap = 7;
+									log("GAP has been changed to " + std::to_string(glob_settings.gap), RGB_BLUE);
 									recalculation_subwindows_wh();
 									reshape_reposition_subwindows();
 									postRedisplay(); 
 									break;
 
 		case MAIN_MENU_GAP_SET_8:	glob_settings.gap = 8;
+									log("GAP has been changed to " + std::to_string(glob_settings.gap), RGB_BLUE);
 									recalculation_subwindows_wh();
 									reshape_reposition_subwindows();
 									postRedisplay(); 
 									break;
 
 		case MAIN_MENU_GAP_SET_9:	glob_settings.gap = 9;
+									log("GAP has been changed to " + std::to_string(glob_settings.gap), RGB_BLUE);
 									recalculation_subwindows_wh();
 									reshape_reposition_subwindows();
 									postRedisplay(); 
@@ -304,18 +346,18 @@ void menu_background_main(int code) {
 
 	switch (code) {
 
-		case MENU_COLORING_BACKGROUND_WHITE: glob_settings.main_window.backgroundcolor = colors[L"white"]; postRedisplay(); break;
-		case MENU_COLORING_BACKGROUND_RED: glob_settings.main_window.backgroundcolor = colors[L"red"]; postRedisplay(); break;
-		case MENU_COLORING_BACKGROUND_GREEN: glob_settings.main_window.backgroundcolor = colors[L"green"]; postRedisplay(); break;
-		case MENU_COLORING_BACKGROUND_BLUE: glob_settings.main_window.backgroundcolor = colors[L"blue"]; postRedisplay(); break;
-		case MENU_COLORING_BACKGROUND_LIGHTBLUE: glob_settings.main_window.backgroundcolor = colors[L"lightblue"]; postRedisplay(); break;
-		case MENU_COLORING_BACKGROUND_BLACK: glob_settings.main_window.backgroundcolor = colors[L"black"]; postRedisplay(); break;
-		case MENU_COLORING_BACKGROUND_LIGHTGREY: glob_settings.main_window.backgroundcolor = colors[L"lightgrey"]; postRedisplay(); break;
-		case MENU_COLORING_BACKGROUND_MAIN: glob_settings.main_window.backgroundcolor = colors[L"main"]; postRedisplay(); break;
-		case MENU_COLORING_BACKGROUND_SUB0: glob_settings.main_window.backgroundcolor = colors[L"sub0"]; postRedisplay(); break;
-		case MENU_COLORING_BACKGROUND_SUB1: glob_settings.main_window.backgroundcolor = colors[L"sub1"]; postRedisplay(); break;
-		case MENU_COLORING_BACKGROUND_SUB2: glob_settings.main_window.backgroundcolor = colors[L"sub2"]; postRedisplay(); break;
-		case MENU_COLORING_BACKGROUND_SUB3: glob_settings.main_window.backgroundcolor = colors[L"sub3"]; postRedisplay(); break;
+		case MENU_COLORING_BACKGROUND_WHITE: glob_settings.main_window.backgroundcolor = colors[L"white"]; log("Main background color changed", RGB_BLUE); postRedisplay(); break;
+		case MENU_COLORING_BACKGROUND_RED: glob_settings.main_window.backgroundcolor = colors[L"red"]; log("Main background color changed", RGB_BLUE);  postRedisplay(); break;
+		case MENU_COLORING_BACKGROUND_GREEN: glob_settings.main_window.backgroundcolor = colors[L"green"]; log("Main background color changed", RGB_BLUE);  postRedisplay(); break;
+		case MENU_COLORING_BACKGROUND_BLUE: glob_settings.main_window.backgroundcolor = colors[L"blue"]; log("Main background color changed", RGB_BLUE);  postRedisplay(); break;
+		case MENU_COLORING_BACKGROUND_LIGHTBLUE: glob_settings.main_window.backgroundcolor = colors[L"lightblue"]; log("Main background color changed", RGB_BLUE);  postRedisplay(); break;
+		case MENU_COLORING_BACKGROUND_BLACK: glob_settings.main_window.backgroundcolor = colors[L"black"]; log("Main background color changed", RGB_BLUE);  postRedisplay(); break;
+		case MENU_COLORING_BACKGROUND_LIGHTGREY: glob_settings.main_window.backgroundcolor = colors[L"lightgrey"]; log("Main background color changed", RGB_BLUE);  postRedisplay(); break;
+		case MENU_COLORING_BACKGROUND_MAIN: glob_settings.main_window.backgroundcolor = colors[L"main"]; log("Main background color changed", RGB_BLUE);  postRedisplay(); break;
+		case MENU_COLORING_BACKGROUND_SUB0: glob_settings.main_window.backgroundcolor = colors[L"sub0"]; log("Main background color changed", RGB_BLUE);  postRedisplay(); break;
+		case MENU_COLORING_BACKGROUND_SUB1: glob_settings.main_window.backgroundcolor = colors[L"sub1"]; log("Main background color changed", RGB_BLUE);  postRedisplay(); break;
+		case MENU_COLORING_BACKGROUND_SUB2: glob_settings.main_window.backgroundcolor = colors[L"sub2"]; log("Main background color changed", RGB_BLUE);  postRedisplay(); break;
+		case MENU_COLORING_BACKGROUND_SUB3: glob_settings.main_window.backgroundcolor = colors[L"sub3"]; log("Main background color changed", RGB_BLUE);  postRedisplay(); break;
 		
 		default: break;
 
@@ -327,20 +369,22 @@ void main_menu_subwindows(int code) {
 
 	switch (code) {
 	
-	case MAIN_MENU_SUBWINDOWS_DESTROY: 
-			glob_settings.freeglut_settings.use_additional_subwindows = false;
-			recalculation_subwindows_wh();
-			reshape_reposition_subwindows();
-			postRedisplay();
-			break;
-	case MAIN_MENU_SUBWINDOWS_BUILD: 
-			glob_settings.freeglut_settings.use_additional_subwindows = true;
-			recalculation_subwindows_wh();
-			reshape_reposition_subwindows();
-			postRedisplay();
-			break;
+		case MAIN_MENU_SUBWINDOWS_DESTROY: 
+				glob_settings.freeglut_settings.use_additional_subwindows = false;
+				log("Subwindows will be destroyed", RGB_BLUE);
+				recalculation_subwindows_wh();
+				reshape_reposition_subwindows();
+				postRedisplay();
+				break;
+		case MAIN_MENU_SUBWINDOWS_BUILD: 
+				glob_settings.freeglut_settings.use_additional_subwindows = true;
+				log("Subwindows will be built", RGB_BLUE);
+				recalculation_subwindows_wh();
+				reshape_reposition_subwindows();
+				postRedisplay();
+				break;
 
-	default: break;
+		default: break;
 	
 	}
 
@@ -380,6 +424,8 @@ void create_additional_subwindows() {
 			glutMouseFunc(subwindow_3_mouse_pressed);
 			subwindow_3_menu_init();
 	}
+
+	log("Additional subwindows were built", RGB_BLACK);
 }
 
 void recalculation_subwindows_wh() {
@@ -423,6 +469,8 @@ void recalculation_subwindows_wh() {
 		glob_settings.subwindows[0].window_position.x = gap;
 		glob_settings.subwindows[0].window_position.y = gap;
 	}
+
+	log("Subwindows were recalculated", RGB_BLACK);
 }
 
 void reshape_reposition_subwindows() {
@@ -441,6 +489,7 @@ void reshape_reposition_subwindows() {
 
 	glutSetWindow(glob_settings.main_window.descriptor);
 
+	log("Subwindows were reshaped and relocated", RGB_BLACK);
 }
 
 void postRedisplay() {
@@ -528,8 +577,6 @@ void draw_shape(int index) {
 	Shape* shape = NULL; double args_for_draw[5]; // 5 - max
 
 	Vertex current_vertex = glob_vct[index];
-
-	// TODO: настраиваемое количество полигонов
 
 	switch (glob_settings.freeglut_settings.shape) {
 
@@ -779,8 +826,11 @@ void subwindow_0_menu_init() {
 		glutAddSubMenu("Change shape", _menu_shape);
 		glutAddSubMenu("Poligon rate", _menu_poligon);
 
+
 	glutAttachMenu(GLUT_RIGHT_BUTTON);
 	glutDetachMenu(GLUT_LEFT_BUTTON);
+
+	log("Sub0 menu was initialized", RGB_BLACK);
 
 }
 
@@ -788,9 +838,13 @@ void subwindow_0_menu(int code) {
 	
 	switch (code) {
 
-		case MENU_RENDER_INVERT_CONTROL: glob_settings.freeglut_settings.translation_by_element *= -1; break;
+		case MENU_RENDER_INVERT_CONTROL: glob_settings.freeglut_settings.translation_by_element *= -1; 
+			log("Control inverted", RGB_BLUE);
+			postRedisplay();
+			break;
 
 		case MENU_RENDER_RESTORE_GAP: glob_settings.gap = 7;
+			log("GAP has been restored to 7", RGB_BLUE);
 			recalculation_subwindows_wh();
 			reshape_reposition_subwindows();
 			postRedisplay();
@@ -811,12 +865,16 @@ void menu_movements_by_arrows(int code) {
 			glob_settings.freeglut_settings.translation_changes.x *= MOVEMENTS_BY_ARROWS_MULTIPLY_SENSIVITY;
 			glob_settings.freeglut_settings.translation_changes.y *= MOVEMENTS_BY_ARROWS_MULTIPLY_SENSIVITY;
 			glob_settings.freeglut_settings.translation_changes.z *= MOVEMENTS_BY_ARROWS_MULTIPLY_SENSIVITY;
+			log("Sensivity of movements by arrow was increased", RGB_BLUE);
+			postRedisplay();
 			break;
 
 		case MENU_RENDER_MOVEMENTS_BY_ARROWS_DECREASE_SENSIVITY:
 			glob_settings.freeglut_settings.translation_changes.x /= MOVEMENTS_BY_ARROWS_MULTIPLY_SENSIVITY;
 			glob_settings.freeglut_settings.translation_changes.y /= MOVEMENTS_BY_ARROWS_MULTIPLY_SENSIVITY;
 			glob_settings.freeglut_settings.translation_changes.z /= MOVEMENTS_BY_ARROWS_MULTIPLY_SENSIVITY;
+			log("Sensivity of movements by arrow was decreased", RGB_BLUE);
+			postRedisplay();
 			break;
 
 		case MENU_RENDER_MOVEMENTS_BY_ARROWS_PRESS_UP: 
@@ -849,12 +907,16 @@ void menu_movements_by_wasd(int code) {
 			glob_settings.freeglut_settings.camera_changes.x *= MOVEMENTS_BY_WASD_MULTIPLY_SENSIVITY;
 			glob_settings.freeglut_settings.camera_changes.y *= MOVEMENTS_BY_WASD_MULTIPLY_SENSIVITY;
 			glob_settings.freeglut_settings.camera_changes.z *= MOVEMENTS_BY_WASD_MULTIPLY_SENSIVITY;
+			log("Sensivity of movements by WASD was increased", RGB_BLUE);
+			postRedisplay();
 			break;
 
 		case MENU_RENDER_MOVEMENTS_BY_WASD_DECREASE_SENSIVITY: 
 			glob_settings.freeglut_settings.camera_changes.x /= MOVEMENTS_BY_WASD_MULTIPLY_SENSIVITY;
 			glob_settings.freeglut_settings.camera_changes.y /= MOVEMENTS_BY_WASD_MULTIPLY_SENSIVITY;
 			glob_settings.freeglut_settings.camera_changes.z /= MOVEMENTS_BY_WASD_MULTIPLY_SENSIVITY;
+			log("Sensivity of movements by WASD was decreased", RGB_BLUE);
+			postRedisplay();
 			break;
 
 		case MENU_RENDER_MOVEMENTS_BY_WASD_PRESS_W:
@@ -887,12 +949,16 @@ void menu_movements_by_ijkl(int code) {
 			glob_settings.freeglut_settings.camera_changes.x *= MOVEMENTS_BY_WASD_MULTIPLY_SENSIVITY;
 			glob_settings.freeglut_settings.camera_changes.y *= MOVEMENTS_BY_WASD_MULTIPLY_SENSIVITY;
 			glob_settings.freeglut_settings.camera_changes.z *= MOVEMENTS_BY_WASD_MULTIPLY_SENSIVITY;
+			log("Sensivity of movements by IJKL was increased", RGB_BLUE);
+			postRedisplay();
 			break;
 
 		case MENU_RENDER_MOVEMENTS_BY_IJKL_DECREASE_SENSIVITY: 
 			glob_settings.freeglut_settings.camera_changes.x /= MOVEMENTS_BY_WASD_MULTIPLY_SENSIVITY;
 			glob_settings.freeglut_settings.camera_changes.y /= MOVEMENTS_BY_WASD_MULTIPLY_SENSIVITY;
 			glob_settings.freeglut_settings.camera_changes.z /= MOVEMENTS_BY_WASD_MULTIPLY_SENSIVITY;
+			postRedisplay();
+			log("Sensivity of movements by IJKL was decreased", RGB_BLUE);
 			break;
 
 		case MENU_RENDER_MOVEMENTS_BY_IJKL_PRESS_I: 
@@ -925,10 +991,14 @@ void menu_movements_by_shiftspace(int code) {
 
 		case MENU_RENDER_MOVEMENTS_BY_SHIFTSPACE_INCREASE_SENSIVITY: 
 			glob_settings.freeglut_settings.estrangement_changes *= MOVEMENTS_BY_SHIFTSPACE_MULTIPLY_SENSIVITY;
+			log("Sensivity of movements by shift/space was increased", RGB_BLUE);
+			postRedisplay();
 			break;
 
 		case MENU_RENDER_MOVEMENTS_BY_SHIFTSPACE_DECREASE_SENSIVITY: 
 			glob_settings.freeglut_settings.estrangement_changes /= MOVEMENTS_BY_SHIFTSPACE_MULTIPLY_SENSIVITY;
+			log("Sensivity of movements by shift/space was decreased", RGB_BLUE);
+			postRedisplay();
 			break;
 
 		case MENU_RENDER_MOVEMENTS_BY_SHIFTSPACE_PRESS_SHIFT: 
@@ -954,12 +1024,16 @@ void menu_scaling(int code) {
 			glob_settings.freeglut_settings.scaling_parameters_changes.x *= SCALING_MULTIPLY_SENSIVITY_X;
 			glob_settings.freeglut_settings.scaling_parameters_changes.y *= SCALING_MULTIPLY_SENSIVITY_Y;
 			glob_settings.freeglut_settings.scaling_parameters_changes.z *= SCALING_MULTIPLY_SENSIVITY_Z;
+			log("Sensivity of movements by page up/down was increased", RGB_BLUE);
+			postRedisplay();
 			break;
 
 		case MENU_RENDER_SCALING_DECREASE_SENSIVITY:
 			glob_settings.freeglut_settings.scaling_parameters_changes.x /= SCALING_MULTIPLY_SENSIVITY_X;
 			glob_settings.freeglut_settings.scaling_parameters_changes.y /= SCALING_MULTIPLY_SENSIVITY_Y;
 			glob_settings.freeglut_settings.scaling_parameters_changes.z /= SCALING_MULTIPLY_SENSIVITY_Z;
+			log("Sensivity of movements by page up/down was decreased", RGB_BLUE);
+			postRedisplay();
 			break;
 
 		case MENU_RENDER_SCALING_PRESS_PAGE_UP: 
@@ -984,11 +1058,13 @@ void menu_color(int code) {
 
 		case MENU_COLOR_OO_OFF:
 			glob_settings.freeglut_settings.coloring_sample = false;
+			log("Coloring mode: OFF", RGB_BLUE);
 			postRedisplay();
 			break;
 
 		case MENU_COLOR_OO_ON:
 			glob_settings.freeglut_settings.coloring_sample = true;
+			log("Coloring mode: ON", RGB_BLUE);
 			postRedisplay();
 			break;
 
@@ -1003,13 +1079,16 @@ void menu_settings(int code) {
 	switch (code) {
 
 		case MENU_SETTINGS_GS_SAVE:
+			log("Settings has been saved", RGB_BLUE);
 			glob_settings.save(L'a');
+			postRedisplay();
 			break;
 
 		case MENU_SETTINGS_GS_GET: {
 				int width = glob_settings.main_window.wh.width, height = glob_settings.main_window.wh.height;
 				glob_settings.get(L'a');
 				glob_settings.main_window.wh.width = width; glob_settings.main_window.wh.height = height;
+				log("Settings has been loaded", RGB_BLUE);
 				recalculation_subwindows_wh(); 
 				reshape_reposition_subwindows();
 				postRedisplay();
@@ -1017,6 +1096,7 @@ void menu_settings(int code) {
 
 		case MENU_SETTINGS_GS_RESET:	
 			glob_settings = Settings(glob_settings.global_settings, Freeglut_settings(), glob_settings.main_window, glob_settings.subwindows, 1.0, glob_settings.gap);
+			log("Settings has been reseted", RGB_BLUE);
 			recalculation_subwindows_wh();
 			reshape_reposition_subwindows();
 			postRedisplay();
@@ -1025,6 +1105,8 @@ void menu_settings(int code) {
 		case MENU_SETTINGS_GS_RESET_FILE: {
 			Settings reseted_settings = Settings(glob_settings.global_settings, Freeglut_settings(), glob_settings.main_window, glob_settings.subwindows, 1.0, glob_settings.gap);
 			reseted_settings.save(L'a');
+			log("Settings has been reseted in file", RGB_BLUE);
+			postRedisplay();
 			} break;
 	}
 
@@ -1034,8 +1116,8 @@ void menu_spinrate(int code) {
 
 	switch(code) {
 	
-		case MENU_RENDER_INCREASE_SPINRATE_BY_1: glob_settings.spinrate += 1; postRedisplay(); break;
-		case MENU_RENDER_DECREASE_SPINRATE_BY_1: glob_settings.spinrate = glob_settings.spinrate == 1 ? 1 : glob_settings.spinrate -= 1; postRedisplay(); break;
+		case MENU_RENDER_INCREASE_SPINRATE_BY_1: glob_settings.spinrate += 1; log("Spinrate was increased by 1", RGB_BLUE); postRedisplay(); break;
+		case MENU_RENDER_DECREASE_SPINRATE_BY_1: glob_settings.spinrate = glob_settings.spinrate == 1 ? 1 : glob_settings.spinrate -= 1; log("Spinrate was decreased by 1", RGB_BLUE); postRedisplay(); break;
 	
 		default: break;
 	}
@@ -1046,26 +1128,26 @@ void menu_spinrate_set(int code) {
 
 	switch (code) {
 
-		case MENU_RENDER_SPINRATE_1: glob_settings.spinrate = 1; postRedisplay(); break;
-		case MENU_RENDER_SPINRATE_2: glob_settings.spinrate = 2; postRedisplay(); break;
-		case MENU_RENDER_SPINRATE_3: glob_settings.spinrate = 3; postRedisplay(); break;
-		case MENU_RENDER_SPINRATE_4: glob_settings.spinrate = 4; postRedisplay(); break;
-		case MENU_RENDER_SPINRATE_5: glob_settings.spinrate = 5; postRedisplay(); break;
-		case MENU_RENDER_SPINRATE_6: glob_settings.spinrate = 6; postRedisplay(); break;
-		case MENU_RENDER_SPINRATE_7: glob_settings.spinrate = 7; postRedisplay(); break;
-		case MENU_RENDER_SPINRATE_8: glob_settings.spinrate = 8; postRedisplay(); break;
-		case MENU_RENDER_SPINRATE_9: glob_settings.spinrate = 9; postRedisplay(); break;
-		case MENU_RENDER_SPINRATE_10: glob_settings.spinrate = 10; postRedisplay(); break;
-		case MENU_RENDER_SPINRATE_11: glob_settings.spinrate = 11; postRedisplay(); break;
-		case MENU_RENDER_SPINRATE_12: glob_settings.spinrate = 12; postRedisplay(); break;
-		case MENU_RENDER_SPINRATE_13: glob_settings.spinrate = 13; postRedisplay(); break;
-		case MENU_RENDER_SPINRATE_14: glob_settings.spinrate = 14; postRedisplay(); break;
-		case MENU_RENDER_SPINRATE_15: glob_settings.spinrate = 15; postRedisplay(); break;
-		case MENU_RENDER_SPINRATE_16: glob_settings.spinrate = 16; postRedisplay(); break;
-		case MENU_RENDER_SPINRATE_17: glob_settings.spinrate = 17; postRedisplay(); break;
-		case MENU_RENDER_SPINRATE_18: glob_settings.spinrate = 18; postRedisplay(); break;
-		case MENU_RENDER_SPINRATE_19: glob_settings.spinrate = 19; postRedisplay(); break;
-		case MENU_RENDER_SPINRATE_20: glob_settings.spinrate = 20; postRedisplay(); break;
+		case MENU_RENDER_SPINRATE_1: glob_settings.spinrate = 1; log("Spinrate = " + std::to_string(glob_settings.spinrate), RGB_BLUE); postRedisplay(); break;
+		case MENU_RENDER_SPINRATE_2: glob_settings.spinrate = 2; log("Spinrate = " + std::to_string(glob_settings.spinrate), RGB_BLUE); postRedisplay(); break;
+		case MENU_RENDER_SPINRATE_3: glob_settings.spinrate = 3; log("Spinrate = " + std::to_string(glob_settings.spinrate), RGB_BLUE); postRedisplay(); break;
+		case MENU_RENDER_SPINRATE_4: glob_settings.spinrate = 4; log("Spinrate = " + std::to_string(glob_settings.spinrate), RGB_BLUE); postRedisplay(); break;
+		case MENU_RENDER_SPINRATE_5: glob_settings.spinrate = 5; log("Spinrate = " + std::to_string(glob_settings.spinrate), RGB_BLUE); postRedisplay(); break;
+		case MENU_RENDER_SPINRATE_6: glob_settings.spinrate = 6; log("Spinrate = " + std::to_string(glob_settings.spinrate), RGB_BLUE); postRedisplay(); break;
+		case MENU_RENDER_SPINRATE_7: glob_settings.spinrate = 7; log("Spinrate = " + std::to_string(glob_settings.spinrate), RGB_BLUE); postRedisplay(); break;
+		case MENU_RENDER_SPINRATE_8: glob_settings.spinrate = 8; log("Spinrate = " + std::to_string(glob_settings.spinrate), RGB_BLUE); postRedisplay(); break;
+		case MENU_RENDER_SPINRATE_9: glob_settings.spinrate = 9; log("Spinrate = " + std::to_string(glob_settings.spinrate), RGB_BLUE); postRedisplay(); break;
+		case MENU_RENDER_SPINRATE_10: glob_settings.spinrate = 10; log("Spinrate = " + std::to_string(glob_settings.spinrate), RGB_BLUE); postRedisplay(); break;
+		case MENU_RENDER_SPINRATE_11: glob_settings.spinrate = 11; log("Spinrate = " + std::to_string(glob_settings.spinrate), RGB_BLUE); postRedisplay(); break;
+		case MENU_RENDER_SPINRATE_12: glob_settings.spinrate = 12; log("Spinrate = " + std::to_string(glob_settings.spinrate), RGB_BLUE); postRedisplay(); break;
+		case MENU_RENDER_SPINRATE_13: glob_settings.spinrate = 13; log("Spinrate = " + std::to_string(glob_settings.spinrate), RGB_BLUE); postRedisplay(); break;
+		case MENU_RENDER_SPINRATE_14: glob_settings.spinrate = 14; log("Spinrate = " + std::to_string(glob_settings.spinrate), RGB_BLUE); postRedisplay(); break;
+		case MENU_RENDER_SPINRATE_15: glob_settings.spinrate = 15; log("Spinrate = " + std::to_string(glob_settings.spinrate), RGB_BLUE); postRedisplay(); break;
+		case MENU_RENDER_SPINRATE_16: glob_settings.spinrate = 16; log("Spinrate = " + std::to_string(glob_settings.spinrate), RGB_BLUE); postRedisplay(); break;
+		case MENU_RENDER_SPINRATE_17: glob_settings.spinrate = 17; log("Spinrate = " + std::to_string(glob_settings.spinrate), RGB_BLUE); postRedisplay(); break;
+		case MENU_RENDER_SPINRATE_18: glob_settings.spinrate = 18; log("Spinrate = " + std::to_string(glob_settings.spinrate), RGB_BLUE); postRedisplay(); break;
+		case MENU_RENDER_SPINRATE_19: glob_settings.spinrate = 19; log("Spinrate = " + std::to_string(glob_settings.spinrate), RGB_BLUE); postRedisplay(); break;
+		case MENU_RENDER_SPINRATE_20: glob_settings.spinrate = 20; log("Spinrate = " + std::to_string(glob_settings.spinrate), RGB_BLUE); postRedisplay(); break;
 
 		default: break;
 
@@ -1076,16 +1158,16 @@ void menu_spinrate_set_1_10(int code) {
 	
 	switch (code) {
 
-		case MENU_RENDER_SPINRATE_1: glob_settings.spinrate = 1; postRedisplay(); break;
-		case MENU_RENDER_SPINRATE_2: glob_settings.spinrate = 2; postRedisplay(); break;
-		case MENU_RENDER_SPINRATE_3: glob_settings.spinrate = 3; postRedisplay(); break;
-		case MENU_RENDER_SPINRATE_4: glob_settings.spinrate = 4; postRedisplay(); break;
-		case MENU_RENDER_SPINRATE_5: glob_settings.spinrate = 5; postRedisplay(); break;
-		case MENU_RENDER_SPINRATE_6: glob_settings.spinrate = 6; postRedisplay(); break;
-		case MENU_RENDER_SPINRATE_7: glob_settings.spinrate = 7; postRedisplay(); break;
-		case MENU_RENDER_SPINRATE_8: glob_settings.spinrate = 8; postRedisplay(); break;
-		case MENU_RENDER_SPINRATE_9: glob_settings.spinrate = 9; postRedisplay(); break;
-		case MENU_RENDER_SPINRATE_10: glob_settings.spinrate = 10; postRedisplay(); break;
+		case MENU_RENDER_SPINRATE_1: glob_settings.spinrate = 1; log("Spinrate = " + std::to_string(glob_settings.spinrate), RGB_BLUE); postRedisplay(); break;
+		case MENU_RENDER_SPINRATE_2: glob_settings.spinrate = 2; log("Spinrate = " + std::to_string(glob_settings.spinrate), RGB_BLUE); postRedisplay(); break;
+		case MENU_RENDER_SPINRATE_3: glob_settings.spinrate = 3; log("Spinrate = " + std::to_string(glob_settings.spinrate), RGB_BLUE); postRedisplay(); break;
+		case MENU_RENDER_SPINRATE_4: glob_settings.spinrate = 4; log("Spinrate = " + std::to_string(glob_settings.spinrate), RGB_BLUE); postRedisplay(); break;
+		case MENU_RENDER_SPINRATE_5: glob_settings.spinrate = 5; log("Spinrate = " + std::to_string(glob_settings.spinrate), RGB_BLUE); postRedisplay(); break;
+		case MENU_RENDER_SPINRATE_6: glob_settings.spinrate = 6; log("Spinrate = " + std::to_string(glob_settings.spinrate), RGB_BLUE); postRedisplay(); break;
+		case MENU_RENDER_SPINRATE_7: glob_settings.spinrate = 7; log("Spinrate = " + std::to_string(glob_settings.spinrate), RGB_BLUE); postRedisplay(); break;
+		case MENU_RENDER_SPINRATE_8: glob_settings.spinrate = 8; log("Spinrate = " + std::to_string(glob_settings.spinrate), RGB_BLUE); postRedisplay(); break;
+		case MENU_RENDER_SPINRATE_9: glob_settings.spinrate = 9; log("Spinrate = " + std::to_string(glob_settings.spinrate), RGB_BLUE); postRedisplay(); break;
+		case MENU_RENDER_SPINRATE_10: glob_settings.spinrate = 10; log("Spinrate = " + std::to_string(glob_settings.spinrate), RGB_BLUE); postRedisplay(); break;
 
 		default: break;
 
@@ -1096,16 +1178,16 @@ void menu_spinrate_set_11_20(int code) {
 	
 	switch (code) {
 
-		case MENU_RENDER_SPINRATE_11: glob_settings.spinrate = 11; postRedisplay(); break;
-		case MENU_RENDER_SPINRATE_12: glob_settings.spinrate = 12; postRedisplay(); break;
-		case MENU_RENDER_SPINRATE_13: glob_settings.spinrate = 13; postRedisplay(); break;
-		case MENU_RENDER_SPINRATE_14: glob_settings.spinrate = 14; postRedisplay(); break;
-		case MENU_RENDER_SPINRATE_15: glob_settings.spinrate = 15; postRedisplay(); break;
-		case MENU_RENDER_SPINRATE_16: glob_settings.spinrate = 16; postRedisplay(); break;
-		case MENU_RENDER_SPINRATE_17: glob_settings.spinrate = 17; postRedisplay(); break;
-		case MENU_RENDER_SPINRATE_18: glob_settings.spinrate = 18; postRedisplay(); break;
-		case MENU_RENDER_SPINRATE_19: glob_settings.spinrate = 19; postRedisplay(); break;
-		case MENU_RENDER_SPINRATE_20: glob_settings.spinrate = 20; postRedisplay(); break;
+		case MENU_RENDER_SPINRATE_11: glob_settings.spinrate = 11; log("Spinrate = " + std::to_string(glob_settings.spinrate), RGB_BLUE); postRedisplay(); break;
+		case MENU_RENDER_SPINRATE_12: glob_settings.spinrate = 12; log("Spinrate = " + std::to_string(glob_settings.spinrate), RGB_BLUE); postRedisplay(); break;
+		case MENU_RENDER_SPINRATE_13: glob_settings.spinrate = 13; log("Spinrate = " + std::to_string(glob_settings.spinrate), RGB_BLUE); postRedisplay(); break;
+		case MENU_RENDER_SPINRATE_14: glob_settings.spinrate = 14; log("Spinrate = " + std::to_string(glob_settings.spinrate), RGB_BLUE); postRedisplay(); break;
+		case MENU_RENDER_SPINRATE_15: glob_settings.spinrate = 15; log("Spinrate = " + std::to_string(glob_settings.spinrate), RGB_BLUE); postRedisplay(); break;
+		case MENU_RENDER_SPINRATE_16: glob_settings.spinrate = 16; log("Spinrate = " + std::to_string(glob_settings.spinrate), RGB_BLUE); postRedisplay(); break;
+		case MENU_RENDER_SPINRATE_17: glob_settings.spinrate = 17; log("Spinrate = " + std::to_string(glob_settings.spinrate), RGB_BLUE); postRedisplay(); break;
+		case MENU_RENDER_SPINRATE_18: glob_settings.spinrate = 18; log("Spinrate = " + std::to_string(glob_settings.spinrate), RGB_BLUE); postRedisplay(); break;
+		case MENU_RENDER_SPINRATE_19: glob_settings.spinrate = 19; log("Spinrate = " + std::to_string(glob_settings.spinrate), RGB_BLUE); postRedisplay(); break;
+		case MENU_RENDER_SPINRATE_20: glob_settings.spinrate = 20; log("Spinrate = " + std::to_string(glob_settings.spinrate), RGB_BLUE); postRedisplay(); break;
 
 		default: break;
 
@@ -1116,16 +1198,16 @@ void menu_spinrate_set_21_30(int code) {
 		
 	switch (code) {
 
-		case MENU_RENDER_SPINRATE_21: glob_settings.spinrate = 21; postRedisplay(); break;
-		case MENU_RENDER_SPINRATE_22: glob_settings.spinrate = 22; postRedisplay(); break;
-		case MENU_RENDER_SPINRATE_23: glob_settings.spinrate = 23; postRedisplay(); break;
-		case MENU_RENDER_SPINRATE_24: glob_settings.spinrate = 24; postRedisplay(); break;
-		case MENU_RENDER_SPINRATE_25: glob_settings.spinrate = 25; postRedisplay(); break;
-		case MENU_RENDER_SPINRATE_26: glob_settings.spinrate = 26; postRedisplay(); break;
-		case MENU_RENDER_SPINRATE_27: glob_settings.spinrate = 27; postRedisplay(); break;
-		case MENU_RENDER_SPINRATE_28: glob_settings.spinrate = 28; postRedisplay(); break;
-		case MENU_RENDER_SPINRATE_29: glob_settings.spinrate = 29; postRedisplay(); break;
-		case MENU_RENDER_SPINRATE_30: glob_settings.spinrate = 30; postRedisplay(); break;
+		case MENU_RENDER_SPINRATE_21: glob_settings.spinrate = 21; log("Spinrate = " + std::to_string(glob_settings.spinrate), RGB_BLUE); postRedisplay(); break;
+		case MENU_RENDER_SPINRATE_22: glob_settings.spinrate = 22; log("Spinrate = " + std::to_string(glob_settings.spinrate), RGB_BLUE); postRedisplay(); break;
+		case MENU_RENDER_SPINRATE_23: glob_settings.spinrate = 23; log("Spinrate = " + std::to_string(glob_settings.spinrate), RGB_BLUE); postRedisplay(); break;
+		case MENU_RENDER_SPINRATE_24: glob_settings.spinrate = 24; log("Spinrate = " + std::to_string(glob_settings.spinrate), RGB_BLUE); postRedisplay(); break;
+		case MENU_RENDER_SPINRATE_25: glob_settings.spinrate = 25; log("Spinrate = " + std::to_string(glob_settings.spinrate), RGB_BLUE); postRedisplay(); break;
+		case MENU_RENDER_SPINRATE_26: glob_settings.spinrate = 26; log("Spinrate = " + std::to_string(glob_settings.spinrate), RGB_BLUE); postRedisplay(); break;
+		case MENU_RENDER_SPINRATE_27: glob_settings.spinrate = 27; log("Spinrate = " + std::to_string(glob_settings.spinrate), RGB_BLUE); postRedisplay(); break;
+		case MENU_RENDER_SPINRATE_28: glob_settings.spinrate = 28; log("Spinrate = " + std::to_string(glob_settings.spinrate), RGB_BLUE); postRedisplay(); break;
+		case MENU_RENDER_SPINRATE_29: glob_settings.spinrate = 29; log("Spinrate = " + std::to_string(glob_settings.spinrate), RGB_BLUE); postRedisplay(); break;
+		case MENU_RENDER_SPINRATE_30: glob_settings.spinrate = 30; log("Spinrate = " + std::to_string(glob_settings.spinrate), RGB_BLUE); postRedisplay(); break;
 
 		default: break;
 
@@ -1136,18 +1218,18 @@ void menu_background_sub0(int code) {
 
 	switch (code) {
 
-		case MENU_COLORING_BACKGROUND_WHITE: glob_settings.subwindows[0].backgroundcolor = colors[L"white"]; postRedisplay(); break;
-		case MENU_COLORING_BACKGROUND_RED: glob_settings.subwindows[0].backgroundcolor = colors[L"red"]; postRedisplay(); break;
-		case MENU_COLORING_BACKGROUND_GREEN: glob_settings.subwindows[0].backgroundcolor = colors[L"green"]; postRedisplay(); break;
-		case MENU_COLORING_BACKGROUND_BLUE: glob_settings.subwindows[0].backgroundcolor = colors[L"blue"]; postRedisplay(); break;
-		case MENU_COLORING_BACKGROUND_LIGHTBLUE: glob_settings.subwindows[0].backgroundcolor = colors[L"lightblue"]; postRedisplay(); break;
-		case MENU_COLORING_BACKGROUND_BLACK: glob_settings.subwindows[0].backgroundcolor = colors[L"black"]; postRedisplay(); break;
-		case MENU_COLORING_BACKGROUND_LIGHTGREY: glob_settings.subwindows[0].backgroundcolor = colors[L"lightgrey"]; postRedisplay(); break;
-		case MENU_COLORING_BACKGROUND_MAIN: glob_settings.subwindows[0].backgroundcolor = colors[L"main"]; postRedisplay(); break;
-		case MENU_COLORING_BACKGROUND_SUB0: glob_settings.subwindows[0].backgroundcolor = colors[L"sub0"]; postRedisplay(); break;
-		case MENU_COLORING_BACKGROUND_SUB1: glob_settings.subwindows[0].backgroundcolor = colors[L"sub1"]; postRedisplay(); break;
-		case MENU_COLORING_BACKGROUND_SUB2: glob_settings.subwindows[0].backgroundcolor = colors[L"sub2"]; postRedisplay(); break;
-		case MENU_COLORING_BACKGROUND_SUB3: glob_settings.subwindows[0].backgroundcolor = colors[L"sub3"]; postRedisplay(); break;
+		case MENU_COLORING_BACKGROUND_WHITE: glob_settings.subwindows[0].backgroundcolor = colors[L"white"]; log("Sub0 background color changed", RGB_BLUE); postRedisplay(); break;
+		case MENU_COLORING_BACKGROUND_RED: glob_settings.subwindows[0].backgroundcolor = colors[L"red"]; log("Sub0 background color changed", RGB_BLUE); postRedisplay(); break;
+		case MENU_COLORING_BACKGROUND_GREEN: glob_settings.subwindows[0].backgroundcolor = colors[L"green"]; log("Sub0 background color changed", RGB_BLUE); postRedisplay(); break;
+		case MENU_COLORING_BACKGROUND_BLUE: glob_settings.subwindows[0].backgroundcolor = colors[L"blue"]; log("Sub0 background color changed", RGB_BLUE); postRedisplay(); break;
+		case MENU_COLORING_BACKGROUND_LIGHTBLUE: glob_settings.subwindows[0].backgroundcolor = colors[L"lightblue"]; log("Sub0 background color changed", RGB_BLUE);  postRedisplay(); break;
+		case MENU_COLORING_BACKGROUND_BLACK: glob_settings.subwindows[0].backgroundcolor = colors[L"black"]; log("Sub0 background color changed", RGB_BLUE);  postRedisplay(); break;
+		case MENU_COLORING_BACKGROUND_LIGHTGREY: glob_settings.subwindows[0].backgroundcolor = colors[L"lightgrey"]; log("Sub0 background color changed", RGB_BLUE);  postRedisplay(); break;
+		case MENU_COLORING_BACKGROUND_MAIN: glob_settings.subwindows[0].backgroundcolor = colors[L"main"]; log("Sub0 background color changed", RGB_BLUE);  postRedisplay(); break;
+		case MENU_COLORING_BACKGROUND_SUB0: glob_settings.subwindows[0].backgroundcolor = colors[L"sub0"]; log("Sub0 background color changed", RGB_BLUE);  postRedisplay(); break;
+		case MENU_COLORING_BACKGROUND_SUB1: glob_settings.subwindows[0].backgroundcolor = colors[L"sub1"]; log("Sub0 background color changed", RGB_BLUE);  postRedisplay(); break;
+		case MENU_COLORING_BACKGROUND_SUB2: glob_settings.subwindows[0].backgroundcolor = colors[L"sub2"]; log("Sub0 background color changed", RGB_BLUE);  postRedisplay(); break;
+		case MENU_COLORING_BACKGROUND_SUB3: glob_settings.subwindows[0].backgroundcolor = colors[L"sub3"]; log("Sub0 background color changed", RGB_BLUE);  postRedisplay(); break;
 		
 		default: break;
 
@@ -1163,24 +1245,28 @@ void menu_shape(int code) {
 		case VVIS_SHAPE_NOTHING: 
 			glob_settings.freeglut_settings.shape = VVIS_SHAPE_NOTHING;
 			glob_settings.freeglut_settings.shape_wstr = VVIS_SHAPE_NOTHING_WSTR;
+			log("Shape was changed to nothing", RGB_BLUE);
 			postRedisplay();
 			break; 
 
 		case VVIS_SHAPE_CONE:
 			glob_settings.freeglut_settings.shape = VVIS_SHAPE_CONE;
 			glob_settings.freeglut_settings.shape_wstr = VVIS_SHAPE_CONE_WSTR;
+			log("Shape was changed to cone", RGB_BLUE);
 			postRedisplay();
 			break;
 
 		case VVIS_SHAPE_SPHERE:
 			glob_settings.freeglut_settings.shape = VVIS_SHAPE_SPHERE;
 			glob_settings.freeglut_settings.shape_wstr = VVIS_SHAPE_SPHERE_WSTR;
+			log("Shape was changed to sphere", RGB_BLUE);
 			postRedisplay();
 			break;
 
 		case VVIS_SHAPE_ARROW:
 			glob_settings.freeglut_settings.shape = VVIS_SHAPE_ARROW;
 			glob_settings.freeglut_settings.shape_wstr = VVIS_SHAPE_ARROW_WSTR;
+			log("Shape was changed to arrow", RGB_BLUE);
 			postRedisplay();
 			break;
 	
@@ -1198,31 +1284,37 @@ void menu_poligon(int code) {
 
 		case MENU_INCREASE_POLIGON_BY_1:
 			glob_settings.freeglut_settings.poligonrate += 1;
+			log("Poligonrate was changed and now: " + std::to_string(glob_settings.freeglut_settings.poligonrate), RGB_BLUE);
 			postRedisplay();
 			break;
 
 		case MENU_DECREASE_POLIGON_BY_1:
 			glob_settings.freeglut_settings.poligonrate = glob_settings.freeglut_settings.poligonrate == 1 ? 1 : glob_settings.freeglut_settings.poligonrate - 1;
+			log("Poligonrate was changed and now: " + std::to_string(glob_settings.freeglut_settings.poligonrate), RGB_BLUE);
 			postRedisplay();
 			break;
 			
 		case MENU_SET_POLIGON_5:
 			glob_settings.freeglut_settings.poligonrate = 5;
+			log("Poligonrate was changed and now: " + std::to_string(glob_settings.freeglut_settings.poligonrate), RGB_BLUE);
 			postRedisplay();
 			break;
 
 		case MENU_SET_POLIGON_10:
 			glob_settings.freeglut_settings.poligonrate = 10;
+			log("Poligonrate was changed and now: " + std::to_string(glob_settings.freeglut_settings.poligonrate), RGB_BLUE);
 			postRedisplay();
 			break;
 			
 		case MENU_SET_POLIGON_15:
 			glob_settings.freeglut_settings.poligonrate = 15;
+			log("Poligonrate was changed and now: " + std::to_string(glob_settings.freeglut_settings.poligonrate), RGB_BLUE);
 			postRedisplay();
 			break;
 
 		case MENU_SET_POLIGON_20:
 			glob_settings.freeglut_settings.poligonrate = 20;
+			log("Poligonrate was changed and now: " + std::to_string(glob_settings.freeglut_settings.poligonrate), RGB_BLUE);
 			postRedisplay();
 			break;
 
@@ -1340,8 +1432,10 @@ void special_keys(int key, int x, int y) {
 									break;
 
 		case GLUT_KEY_F11:			if (!glob_settings.freeglut_settings.fullscreen) { glutSetWindow(glob_settings.main_window.descriptor); glutFullScreen(); glob_settings.freeglut_settings.fullscreen = true;  glutSetWindow(glob_settings.subwindows[0].descriptor);
-		}
-									else { glutSetWindow(glob_settings.main_window.descriptor); glutPositionWindow(0, 0); glob_settings.freeglut_settings.fullscreen = false; glutSetWindow(glob_settings.subwindows[0].descriptor); };
+									log("Fullmode screen was enabled", RGB_BLUE);
+									}
+									else { glutSetWindow(glob_settings.main_window.descriptor); glutPositionWindow(0, 0); glob_settings.freeglut_settings.fullscreen = false; glutSetWindow(glob_settings.subwindows[0].descriptor); log("Fullmode screen was disabled", RGB_BLUE);
+									};
 									break;
 
 		default:					
@@ -1603,7 +1697,7 @@ void subwindow_1_menu_init() {
 		glutAddMenuEntry("Hide axis names", SUBWINDOW_AXIS_MENU_HIDE_NAMES);
 		glutAddSubMenu("Background color", _menu_background);
 
-
+	log("Sub1 menu was initialized", RGB_BLACK);
 	glutAttachMenu(GLUT_RIGHT_BUTTON);
 	glutDetachMenu(GLUT_LEFT_BUTTON);
 }
@@ -1611,10 +1705,10 @@ void subwindow_1_menu_init() {
 void subwindow_1_menu(int code) {
 	
 	switch (code) {
-		case SUBWINDOW_AXIS_MENU_USE_CONES: axis_by_cones = true; glutPostRedisplay();break;
-		case SUBWINDOW_AXIS_MENU_USE_LINES: axis_by_cones = false; glutPostRedisplay(); break;
-		case SUBWINDOW_AXIS_MENU_SHOW_NAMES: show_axis_names = true; glutPostRedisplay(); break;
-		case SUBWINDOW_AXIS_MENU_HIDE_NAMES: show_axis_names = false; glutPostRedisplay(); break;
+		case SUBWINDOW_AXIS_MENU_USE_CONES: axis_by_cones = true; log("Cone mode to axis", RGB_BLUE); postRedisplay();break;
+		case SUBWINDOW_AXIS_MENU_USE_LINES: axis_by_cones = false; log("Line mode to axis", RGB_BLUE); postRedisplay(); break;
+		case SUBWINDOW_AXIS_MENU_SHOW_NAMES: show_axis_names = true; log("Showed names of axis", RGB_BLUE); postRedisplay(); break;
+		case SUBWINDOW_AXIS_MENU_HIDE_NAMES: show_axis_names = false; log("Hided names of axis", RGB_BLUE); postRedisplay(); break;
 		default: break;
 	}
 
@@ -1623,19 +1717,19 @@ void subwindow_1_menu(int code) {
 void menu_background_sub1(int code) {
 
 	switch (code) {
-
-		case MENU_COLORING_BACKGROUND_WHITE: glob_settings.subwindows[1].backgroundcolor = colors[L"white"]; postRedisplay(); break;
-		case MENU_COLORING_BACKGROUND_RED: glob_settings.subwindows[1].backgroundcolor = colors[L"red"]; postRedisplay(); break;
-		case MENU_COLORING_BACKGROUND_GREEN: glob_settings.subwindows[1].backgroundcolor = colors[L"green"]; postRedisplay(); break;
-		case MENU_COLORING_BACKGROUND_BLUE: glob_settings.subwindows[1].backgroundcolor = colors[L"blue"]; postRedisplay(); break;
-		case MENU_COLORING_BACKGROUND_LIGHTBLUE: glob_settings.subwindows[1].backgroundcolor = colors[L"lightblue"]; postRedisplay(); break;
-		case MENU_COLORING_BACKGROUND_BLACK: glob_settings.subwindows[1].backgroundcolor = colors[L"black"]; postRedisplay(); break;
-		case MENU_COLORING_BACKGROUND_LIGHTGREY: glob_settings.subwindows[1].backgroundcolor = colors[L"lightgrey"]; postRedisplay(); break;
-		case MENU_COLORING_BACKGROUND_MAIN: glob_settings.subwindows[1].backgroundcolor = colors[L"main"]; postRedisplay(); break;
-		case MENU_COLORING_BACKGROUND_SUB0: glob_settings.subwindows[1].backgroundcolor = colors[L"sub0"]; postRedisplay(); break;
-		case MENU_COLORING_BACKGROUND_SUB1: glob_settings.subwindows[1].backgroundcolor = colors[L"sub1"]; postRedisplay(); break;
-		case MENU_COLORING_BACKGROUND_SUB2: glob_settings.subwindows[1].backgroundcolor = colors[L"sub2"]; postRedisplay(); break;
-		case MENU_COLORING_BACKGROUND_SUB3: glob_settings.subwindows[1].backgroundcolor = colors[L"sub3"]; postRedisplay(); break;
+		  
+		case MENU_COLORING_BACKGROUND_WHITE: glob_settings.subwindows[1].backgroundcolor = colors[L"white"]; log("Sub1 background color changed", RGB_BLUE); postRedisplay(); break;
+		case MENU_COLORING_BACKGROUND_RED: glob_settings.subwindows[1].backgroundcolor = colors[L"red"]; log("Sub1 background color changed", RGB_BLUE); postRedisplay(); break;
+		case MENU_COLORING_BACKGROUND_GREEN: glob_settings.subwindows[1].backgroundcolor = colors[L"green"]; log("Sub1 background color changed", RGB_BLUE); postRedisplay(); break;
+		case MENU_COLORING_BACKGROUND_BLUE: glob_settings.subwindows[1].backgroundcolor = colors[L"blue"]; log("Sub1 background color changed", RGB_BLUE); postRedisplay(); break;
+		case MENU_COLORING_BACKGROUND_LIGHTBLUE: glob_settings.subwindows[1].backgroundcolor = colors[L"lightblue"]; log("Sub1 background color changed", RGB_BLUE); postRedisplay(); break;
+		case MENU_COLORING_BACKGROUND_BLACK: glob_settings.subwindows[1].backgroundcolor = colors[L"black"]; log("Sub1 background color changed", RGB_BLUE); postRedisplay(); break;
+		case MENU_COLORING_BACKGROUND_LIGHTGREY: glob_settings.subwindows[1].backgroundcolor = colors[L"lightgrey"]; log("Sub1 background color changed", RGB_BLUE); postRedisplay(); break;
+		case MENU_COLORING_BACKGROUND_MAIN: glob_settings.subwindows[1].backgroundcolor = colors[L"main"]; log("Sub1 background color changed", RGB_BLUE); postRedisplay(); break;
+		case MENU_COLORING_BACKGROUND_SUB0: glob_settings.subwindows[1].backgroundcolor = colors[L"sub0"]; log("Sub1 background color changed", RGB_BLUE); postRedisplay(); break;
+		case MENU_COLORING_BACKGROUND_SUB1: glob_settings.subwindows[1].backgroundcolor = colors[L"sub1"]; log("Sub1 background color changed", RGB_BLUE); postRedisplay(); break;
+		case MENU_COLORING_BACKGROUND_SUB2: glob_settings.subwindows[1].backgroundcolor = colors[L"sub2"]; log("Sub1 background color changed", RGB_BLUE); postRedisplay(); break;
+		case MENU_COLORING_BACKGROUND_SUB3: glob_settings.subwindows[1].backgroundcolor = colors[L"sub3"]; log("Sub1 background color changed", RGB_BLUE); postRedisplay(); break;
 
 		default: break;
 
@@ -1665,37 +1759,45 @@ void display_subwindow_2() {
 
 		char buff[256];
 		sprintf(buff, "x, y: %g, %g", x, y);
-		print_text_2f(0.0, glob_settings.subwindows[2].wh.height - distance_between_fonts(font_stats), std::string(buff), font_stats);
-		print_text_2f(0.0, glob_settings.subwindows[2].wh.height - 2 * distance_between_fonts(font_stats), std::string(buff), font_stats);
-		print_text_2f(0.0, glob_settings.subwindows[2].wh.height - 3 * distance_between_fonts(font_stats), std::string(buff), font_stats);
-		print_text_2f(0.0, glob_settings.subwindows[2].wh.height - 4 * distance_between_fonts(font_stats), std::string(buff), font_stats);
-		print_text_2f(0.0, glob_settings.subwindows[2].wh.height - 5 * distance_between_fonts(font_stats), std::string(buff), font_stats);
-		print_text_2f(0.0, glob_settings.subwindows[2].wh.height - 6 * distance_between_fonts(font_stats), std::string(buff), font_stats);
-		print_text_2f(0.0, glob_settings.subwindows[2].wh.height - 7 * distance_between_fonts(font_stats), std::string(buff), font_stats);
-		print_text_2f(0.0, glob_settings.subwindows[2].wh.height - 8 * distance_between_fonts(font_stats), std::string(buff), font_stats);
-		print_text_2f(0.0, glob_settings.subwindows[2].wh.height - 9 * distance_between_fonts(font_stats), std::string(buff), font_stats);
-		print_text_2f(0.0, glob_settings.subwindows[2].wh.height - 10 * distance_between_fonts(font_stats), std::string(buff), font_stats);
-		print_text_2f(0.0, glob_settings.subwindows[2].wh.height - 11 * distance_between_fonts(font_stats), std::string(buff), font_stats);
-		print_text_2f(0.0, glob_settings.subwindows[2].wh.height - 12 * distance_between_fonts(font_stats), std::string(buff), font_stats);
-		print_text_2f(0.0, glob_settings.subwindows[2].wh.height - 13 * distance_between_fonts(font_stats), std::string(buff), font_stats);
-		print_text_2f(0.0, glob_settings.subwindows[2].wh.height - 14* distance_between_fonts(font_stats), std::string(buff), font_stats);
-		print_text_2f(0.0, glob_settings.subwindows[2].wh.height - 15* distance_between_fonts(font_stats), std::string(buff), font_stats);
-		print_text_2f(0.0, glob_settings.subwindows[2].wh.height - 16* distance_between_fonts(font_stats), std::string(buff), font_stats);
-		print_text_2f(0.0, glob_settings.subwindows[2].wh.height - 17 * distance_between_fonts(font_stats), std::string(buff), font_stats);
-		print_text_2f(0.0, glob_settings.subwindows[2].wh.height - 18 * distance_between_fonts(font_stats), std::string(buff), font_stats);
-		print_text_2f(0.0, glob_settings.subwindows[2].wh.height - 19 * distance_between_fonts(font_stats), std::string(buff), font_stats);
-		print_text_2f(0.0, glob_settings.subwindows[2].wh.height - 20 * distance_between_fonts(font_stats), std::string(buff), font_stats);
-		print_text_2f(0.0, glob_settings.subwindows[2].wh.height - 21 * distance_between_fonts(font_stats), std::string(buff), font_stats);
-		print_text_2f(0.0, glob_settings.subwindows[2].wh.height - 22 * distance_between_fonts(font_stats), std::string(buff), font_stats);
-		print_text_2f(0.0, glob_settings.subwindows[2].wh.height - 23 * distance_between_fonts(font_stats), std::string(buff), font_stats);
-		print_text_2f(0.0, glob_settings.subwindows[2].wh.height - 24 * distance_between_fonts(font_stats), std::string(buff), font_stats);
-		print_text_2f(0.0, glob_settings.subwindows[2].wh.height - 25 * distance_between_fonts(font_stats), std::string(buff), font_stats);
-		print_text_2f(0.0, glob_settings.subwindows[2].wh.height - 26 * distance_between_fonts(font_stats), std::string(buff), font_stats);
-		print_text_2f(0.0, glob_settings.subwindows[2].wh.height - 27 * distance_between_fonts(font_stats), std::string(buff), font_stats);
-		print_text_2f(0.0, glob_settings.subwindows[2].wh.height - 28 * distance_between_fonts(font_stats), std::string(buff), font_stats);
-		print_text_2f(0.0, glob_settings.subwindows[2].wh.height - 29 * distance_between_fonts(font_stats), std::string(buff), font_stats);
-		print_text_2f(0.0, glob_settings.subwindows[2].wh.height - 30 * distance_between_fonts(font_stats), std::string(buff), font_stats);
-		print_text_2f(0.0, glob_settings.subwindows[2].wh.height - 31 * distance_between_fonts(font_stats), std::string(buff), font_stats);
+
+		std::vector <std::wstring> vct_temp = {
+			(std::wstring(L"Count of all spins - ") + std::to_wstring(glob_vct.size())),
+			(std::wstring(L"Count of drawed spins - ") + std::to_wstring(glob_vct.size() / glob_settings.spinrate)),
+			(std::wstring(L"Spinrate - ") + std::to_wstring(glob_settings.spinrate)),
+			(std::wstring(L"Additional rotation (phi, theta) - ") + std::to_wstring(glob_settings.freeglut_settings.additional_rotation.phi) + std::wstring(L", ") + std::to_wstring(glob_settings.freeglut_settings.additional_rotation.theta)),
+			(std::wstring(L"Estrangement - ") + std::to_wstring(glob_settings.freeglut_settings.estrangement)),
+			(std::wstring(L"Global translation - (") + std::to_wstring(glob_settings.freeglut_settings.global_translation.x) + std::wstring(L", ") + std::to_wstring(glob_settings.freeglut_settings.global_translation.y) + std::wstring(L", ") + std::to_wstring(glob_settings.freeglut_settings.global_translation.z) + std::wstring(L")")),
+			(std::wstring(L"Scaling parameters - (") + std::to_wstring(glob_settings.freeglut_settings.scaling_parameters.x) + std::wstring(L", ") + std::to_wstring(glob_settings.freeglut_settings.scaling_parameters.y) + std::wstring(L", ") + std::to_wstring(glob_settings.freeglut_settings.scaling_parameters.z) + std::wstring(L")")),			
+			(std::wstring(L"Scaling translation - (") + std::to_wstring(glob_settings.freeglut_settings.scaling_translation.x) + std::wstring(L", ") + std::to_wstring(glob_settings.freeglut_settings.scaling_translation.y) + std::wstring(L", ") + std::to_wstring(glob_settings.freeglut_settings.scaling_translation.z) + std::wstring(L")")),			
+			(std::wstring(L"Position of camera - (") + std::to_wstring(glob_settings.freeglut_settings.position_of_camera.x) + std::wstring(L", ") + std::to_wstring(glob_settings.freeglut_settings.position_of_camera.y) + std::wstring(L", ") + std::to_wstring(glob_settings.freeglut_settings.position_of_camera.z) + std::wstring(L")")),
+			(std::wstring(L"Position of element - (") + std::to_wstring(glob_settings.freeglut_settings.position_of_element.x) + std::wstring(L", ") + std::to_wstring(glob_settings.freeglut_settings.position_of_element.y) + std::wstring(L", ") + std::to_wstring(glob_settings.freeglut_settings.position_of_element.z) + std::wstring(L")")),
+
+			(std::wstring(L"Camera changes - (") + std::to_wstring(glob_settings.freeglut_settings.camera_changes.x) + std::wstring(L", ") + std::to_wstring(glob_settings.freeglut_settings.camera_changes.y) + std::wstring(L", ") + std::to_wstring(glob_settings.freeglut_settings.camera_changes.z) + std::wstring(L")")),
+
+
+			(std::wstring(L"Estrangement changes - ") + std::to_wstring(glob_settings.freeglut_settings.estrangement_changes)),
+			(std::wstring(L"Translation changes - (") + std::to_wstring(glob_settings.freeglut_settings.translation_changes.x) + std::wstring(L", ") + std::to_wstring(glob_settings.freeglut_settings.translation_changes.y) + std::wstring(L", ") + std::to_wstring(glob_settings.freeglut_settings.translation_changes.z) + std::wstring(L")")),
+			
+			(std::wstring(L"Scaling parameters changes - (") + std::to_wstring(glob_settings.freeglut_settings.scaling_parameters_changes.x) + std::wstring(L", ") + std::to_wstring(glob_settings.freeglut_settings.scaling_parameters_changes.y) + std::wstring(L", ") + std::to_wstring(glob_settings.freeglut_settings.scaling_parameters_changes.z) + std::wstring(L")")),
+			
+
+			(std::wstring(L"Translation by element - ") + (glob_settings.freeglut_settings.translation_by_element == -1 ? L"false" : L"true")),
+			(std::wstring(L"Poligon rate - ") + std::to_wstring(glob_settings.freeglut_settings.poligonrate)),
+			(std::wstring(L"Shape - ") + glob_settings.freeglut_settings.shape_wstr),
+			(std::wstring(L"Gap - ") + std::to_wstring(glob_settings.gap)),
+			(std::wstring(L"Coloring sample - ") + (glob_settings.freeglut_settings.coloring_sample ? L"true" : L"false")),
+			(std::wstring(L"Index of spin - ") + (glob_settings.global_settings.index_of_spin == VVIS_DRAW_ALL ? L"DRAW ALL" : std::to_wstring(glob_settings.global_settings.index_of_spin))),
+			(std::wstring(L"Path to folder - ") + glob_settings.global_settings.path_to_folder),
+			(std::wstring(L"Path to sconf file - ") + glob_settings.global_settings.path_to_sconfiguration_file),
+			(std::wstring(L"Path to settings folder - ") + glob_settings.global_settings.path_to_settings_file_folder),
+			(std::wstring(L"Path to settings file - ") + glob_settings.global_settings.path_to_settings_file),
+			(std::wstring(L"Number of file - ") + std::to_wstring(glob_settings.global_settings.number_of_file)),			
+		};
+
+		for (int j = 0; j < vct_temp.size(); ++j) {
+			print_text_2f(3.0, glob_settings.subwindows[2].wh.height - (double(j) + 1.0) * distance_between_fonts(font_stats), vct_temp[j], font_stats);
+		}
+
 
 	glPopMatrix();
 	glutSwapBuffers();
@@ -1749,6 +1851,8 @@ void subwindow_2_menu_init() {
 
 	glutAttachMenu(GLUT_RIGHT_BUTTON);
 	glutDetachMenu(GLUT_LEFT_BUTTON);
+
+	log("Sub2 menu was initialized", RGB_BLACK);
 }
 
 void subwindow_2_menu(int code) {
@@ -1765,18 +1869,18 @@ void menu_background_sub2(int code) {
 
 	switch (code) {
 
-		case MENU_COLORING_BACKGROUND_WHITE: glob_settings.subwindows[2].backgroundcolor = colors[L"white"]; postRedisplay(); break;
-		case MENU_COLORING_BACKGROUND_RED: glob_settings.subwindows[2].backgroundcolor = colors[L"red"]; postRedisplay(); break;
-		case MENU_COLORING_BACKGROUND_GREEN: glob_settings.subwindows[2].backgroundcolor = colors[L"green"]; postRedisplay(); break;
-		case MENU_COLORING_BACKGROUND_BLUE: glob_settings.subwindows[2].backgroundcolor = colors[L"blue"]; postRedisplay(); break;
-		case MENU_COLORING_BACKGROUND_LIGHTBLUE: glob_settings.subwindows[2].backgroundcolor = colors[L"lightblue"]; postRedisplay(); break;
-		case MENU_COLORING_BACKGROUND_BLACK: glob_settings.subwindows[2].backgroundcolor = colors[L"black"]; postRedisplay(); break;
-		case MENU_COLORING_BACKGROUND_LIGHTGREY: glob_settings.subwindows[2].backgroundcolor = colors[L"lightgrey"]; postRedisplay(); break;
-		case MENU_COLORING_BACKGROUND_MAIN: glob_settings.subwindows[2].backgroundcolor = colors[L"main"]; postRedisplay(); break;
-		case MENU_COLORING_BACKGROUND_SUB0: glob_settings.subwindows[2].backgroundcolor = colors[L"sub0"]; postRedisplay(); break;
-		case MENU_COLORING_BACKGROUND_SUB1: glob_settings.subwindows[2].backgroundcolor = colors[L"sub1"]; postRedisplay(); break;
-		case MENU_COLORING_BACKGROUND_SUB2: glob_settings.subwindows[2].backgroundcolor = colors[L"sub2"]; postRedisplay(); break;
-		case MENU_COLORING_BACKGROUND_SUB3: glob_settings.subwindows[2].backgroundcolor = colors[L"sub3"]; postRedisplay(); break;
+		case MENU_COLORING_BACKGROUND_WHITE: glob_settings.subwindows[2].backgroundcolor = colors[L"white"]; log("Sub2 background color changed", RGB_BLUE); postRedisplay(); break;
+		case MENU_COLORING_BACKGROUND_RED: glob_settings.subwindows[2].backgroundcolor = colors[L"red"]; log("Sub2 background color changed", RGB_BLUE); postRedisplay(); break;
+		case MENU_COLORING_BACKGROUND_GREEN: glob_settings.subwindows[2].backgroundcolor = colors[L"green"]; log("Sub2 background color changed", RGB_BLUE); postRedisplay(); break;
+		case MENU_COLORING_BACKGROUND_BLUE: glob_settings.subwindows[2].backgroundcolor = colors[L"blue"]; log("Sub2 background color changed", RGB_BLUE); postRedisplay(); break;
+		case MENU_COLORING_BACKGROUND_LIGHTBLUE: glob_settings.subwindows[2].backgroundcolor = colors[L"lightblue"]; log("Sub2 background color changed", RGB_BLUE); postRedisplay(); break;
+		case MENU_COLORING_BACKGROUND_BLACK: glob_settings.subwindows[2].backgroundcolor = colors[L"black"]; log("Sub2 background color changed", RGB_BLUE); postRedisplay(); break;
+		case MENU_COLORING_BACKGROUND_LIGHTGREY: glob_settings.subwindows[2].backgroundcolor = colors[L"lightgrey"]; log("Sub2 background color changed", RGB_BLUE); postRedisplay(); break;
+		case MENU_COLORING_BACKGROUND_MAIN: glob_settings.subwindows[2].backgroundcolor = colors[L"main"]; log("Sub2 background color changed", RGB_BLUE); postRedisplay(); break;
+		case MENU_COLORING_BACKGROUND_SUB0: glob_settings.subwindows[2].backgroundcolor = colors[L"sub0"]; log("Sub2 background color changed", RGB_BLUE); postRedisplay(); break;
+		case MENU_COLORING_BACKGROUND_SUB1: glob_settings.subwindows[2].backgroundcolor = colors[L"sub1"]; log("Sub2 background color changed", RGB_BLUE); postRedisplay(); break;
+		case MENU_COLORING_BACKGROUND_SUB2: glob_settings.subwindows[2].backgroundcolor = colors[L"sub2"]; log("Sub2 background color changed", RGB_BLUE); postRedisplay(); break;
+		case MENU_COLORING_BACKGROUND_SUB3: glob_settings.subwindows[2].backgroundcolor = colors[L"sub3"]; log("Sub2 background color changed", RGB_BLUE); postRedisplay(); break;
 
 		default: break;
 
@@ -1788,13 +1892,13 @@ void menu_font_sub2(int code) {
 
 	switch (code) {
 
-		case FONT_HELVETICA_10: font_stats = GLUT_BITMAP_HELVETICA_10; postRedisplay(); break;
-		case FONT_HELVETICA_12: font_stats = GLUT_BITMAP_HELVETICA_12; postRedisplay(); break;
-		case FONT_HELVETICA_18: font_stats = GLUT_BITMAP_HELVETICA_18; postRedisplay(); break;
-		case FONT_8_BY_13: font_stats = GLUT_BITMAP_8_BY_13; postRedisplay(); break;
-		case FONT_8_BY_15: font_stats = GLUT_BITMAP_9_BY_15; postRedisplay(); break;
-		case FONT_TIMES_ROMAN_10: font_stats = GLUT_BITMAP_TIMES_ROMAN_10; postRedisplay(); break;
-		case FONT_TIMES_ROMAN_24: font_stats = GLUT_BITMAP_TIMES_ROMAN_24; postRedisplay(); break;
+		case FONT_HELVETICA_10: font_stats = GLUT_BITMAP_HELVETICA_10; log("Sub2 font was changed", RGB_BLUE); postRedisplay(); break;
+		case FONT_HELVETICA_12: font_stats = GLUT_BITMAP_HELVETICA_12; log("Sub2 font was changed", RGB_BLUE); postRedisplay(); break;
+		case FONT_HELVETICA_18: font_stats = GLUT_BITMAP_HELVETICA_18; log("Sub2 font was changed", RGB_BLUE); postRedisplay(); break;
+		case FONT_8_BY_13: font_stats = GLUT_BITMAP_8_BY_13; log("Sub2 font was changed", RGB_BLUE); postRedisplay(); break;
+		case FONT_8_BY_15: font_stats = GLUT_BITMAP_9_BY_15; log("Sub2 font was changed", RGB_BLUE); postRedisplay(); break;
+		case FONT_TIMES_ROMAN_10: font_stats = GLUT_BITMAP_TIMES_ROMAN_10; log("Sub2 font was changed", RGB_BLUE); postRedisplay(); break;
+		case FONT_TIMES_ROMAN_24: font_stats = GLUT_BITMAP_TIMES_ROMAN_24; log("Sub2 font was changed", RGB_BLUE); postRedisplay(); break;
 
 		default: break;
 
@@ -1807,11 +1911,11 @@ void subwindow_2_special_keys(int key, int x, int y) {
 
 	switch (key) {							
 
-		case GLUT_KEY_UP:			transl_stats.y += t_b_e * 1.0;
+		case GLUT_KEY_UP:			transl_stats.y += t_b_e * 3.0;
 									glutPostRedisplay();
 									break;		
 
-		case GLUT_KEY_DOWN:			transl_stats.y -= t_b_e * 1.0;
+		case GLUT_KEY_DOWN:			transl_stats.y -= t_b_e * 3.0;
 									glutPostRedisplay();
 									break;
 
@@ -1858,39 +1962,14 @@ void display_subwindow_3() {
 
 		glTranslatef(transl_log.x, transl_log.y, transl_log.z);
 
-		char buff[256];
-		sprintf(buff, "x, y: %g, %g", x, y);
-		print_text_2f(0.0, glob_settings.subwindows[3].wh.height - distance_between_fonts(font_log), std::string(buff), font_log);
-		print_text_2f(0.0, glob_settings.subwindows[3].wh.height - 2 * distance_between_fonts(font_log), std::string(buff), font_log);
-		print_text_2f(0.0, glob_settings.subwindows[3].wh.height - 3 * distance_between_fonts(font_log), std::string(buff), font_log);
-		print_text_2f(0.0, glob_settings.subwindows[3].wh.height - 4 * distance_between_fonts(font_log), std::string(buff), font_log);
-		print_text_2f(0.0, glob_settings.subwindows[3].wh.height - 5 * distance_between_fonts(font_log), std::string(buff), font_log);
-		print_text_2f(0.0, glob_settings.subwindows[3].wh.height - 6 * distance_between_fonts(font_log), std::string(buff), font_log);
-		print_text_2f(0.0, glob_settings.subwindows[3].wh.height - 7 * distance_between_fonts(font_log), std::string(buff), font_log);
-		print_text_2f(0.0, glob_settings.subwindows[3].wh.height - 8 * distance_between_fonts(font_log), std::string(buff), font_log);
-		print_text_2f(0.0, glob_settings.subwindows[3].wh.height - 9 * distance_between_fonts(font_log), std::string(buff), font_log);
-		print_text_2f(0.0, glob_settings.subwindows[3].wh.height - 10 * distance_between_fonts(font_log), std::string(buff), font_log);
-		print_text_2f(0.0, glob_settings.subwindows[3].wh.height - 11 * distance_between_fonts(font_log), std::string(buff), font_log);
-		print_text_2f(0.0, glob_settings.subwindows[3].wh.height - 12 * distance_between_fonts(font_log), std::string(buff), font_log);
-		print_text_2f(0.0, glob_settings.subwindows[3].wh.height - 13 * distance_between_fonts(font_log), std::string(buff), font_log);
-		print_text_2f(0.0, glob_settings.subwindows[3].wh.height - 14* distance_between_fonts(font_log), std::string(buff), font_log);
-		print_text_2f(0.0, glob_settings.subwindows[3].wh.height - 15* distance_between_fonts(font_log), std::string(buff), font_log);
-		print_text_2f(0.0, glob_settings.subwindows[3].wh.height - 16* distance_between_fonts(font_log), std::string(buff), font_log);
-		print_text_2f(0.0, glob_settings.subwindows[3].wh.height - 17 * distance_between_fonts(font_log), std::string(buff), font_log);
-		print_text_2f(0.0, glob_settings.subwindows[3].wh.height - 18 * distance_between_fonts(font_log), std::string(buff), font_log);
-		print_text_2f(0.0, glob_settings.subwindows[3].wh.height - 19 * distance_between_fonts(font_log), std::string(buff), font_log);
-		print_text_2f(0.0, glob_settings.subwindows[3].wh.height - 20 * distance_between_fonts(font_log), std::string(buff), font_log);
-		print_text_2f(0.0, glob_settings.subwindows[3].wh.height - 21 * distance_between_fonts(font_log), std::string(buff), font_log);
-		print_text_2f(0.0, glob_settings.subwindows[3].wh.height - 22 * distance_between_fonts(font_log), std::string(buff), font_log);
-		print_text_2f(0.0, glob_settings.subwindows[3].wh.height - 23 * distance_between_fonts(font_log), std::string(buff), font_log);
-		print_text_2f(0.0, glob_settings.subwindows[3].wh.height - 24 * distance_between_fonts(font_log), std::string(buff), font_log);
-		print_text_2f(0.0, glob_settings.subwindows[3].wh.height - 25 * distance_between_fonts(font_log), std::string(buff), font_log);
-		print_text_2f(0.0, glob_settings.subwindows[3].wh.height - 26 * distance_between_fonts(font_log), std::string(buff), font_log);
-		print_text_2f(0.0, glob_settings.subwindows[3].wh.height - 27 * distance_between_fonts(font_log), std::string(buff), font_log);
-		print_text_2f(0.0, glob_settings.subwindows[3].wh.height - 28 * distance_between_fonts(font_log), std::string(buff), font_log);
-		print_text_2f(0.0, glob_settings.subwindows[3].wh.height - 29 * distance_between_fonts(font_log), std::string(buff), font_log);
-		print_text_2f(0.0, glob_settings.subwindows[3].wh.height - 30 * distance_between_fonts(font_log), std::string(buff), font_log);
-		print_text_2f(0.0, glob_settings.subwindows[3].wh.height - 31 * distance_between_fonts(font_log), std::string(buff), font_log);
+		if (vct_log.size() == vct_log_colorful.size()) {
+			for (int j = vct_log.size() - 1, i = 0; j >= 0; --j, ++i) {
+				glColor3f(vct_log_colorful[j].red, vct_log_colorful[j].green, vct_log_colorful[j].blue);
+				print_text_2f(3.0, glob_settings.subwindows[3].wh.height - (double(i) + 1.0) * distance_between_fonts(font_log), vct_log[j], font_log);
+			}
+		} else {
+			print_text_2f(3.0, glob_settings.subwindows[3].wh.height - (0.0 + 1.0) * distance_between_fonts(font_log), "Something wrong", font_log);
+		}
 
 	glPopMatrix();
 	glutSwapBuffers();
@@ -1901,11 +1980,11 @@ void subwindow_3_special_keys(int key, int x, int y) {
 
 	switch (key) {							
 
-		case GLUT_KEY_UP:			transl_log.y += t_b_e * 1.0;
+		case GLUT_KEY_UP:			transl_log.y += t_b_e * 3.0;
 									glutPostRedisplay();
 									break;		
 
-		case GLUT_KEY_DOWN:			transl_log.y -= t_b_e * 1.0;
+		case GLUT_KEY_DOWN:			transl_log.y -= t_b_e * 3.0;
 									glutPostRedisplay();
 									break;
 
@@ -1959,12 +2038,23 @@ void subwindow_3_menu_init() {
 		sprintf(buff, "As log area was: (%g/255, %g/255, %g/255)", colors[L"sub3"].red * 255.0, colors[L"sub3"].green * 255.0, colors[L"sub3"].blue * 255.0);
 		glutAddMenuEntry(buff, MENU_COLORING_BACKGROUND_SUB3);
 
+	glutSetMenu(_menu_font);
+		glutAddMenuEntry("HELVETICA 10", FONT_HELVETICA_10);
+		glutAddMenuEntry("HELVETICA 12", FONT_HELVETICA_12);
+		glutAddMenuEntry("HELVETICA 18", FONT_HELVETICA_18);
+		glutAddMenuEntry("8 BY 13", FONT_8_BY_13);
+		glutAddMenuEntry("9 BY 15", FONT_8_BY_15);
+		glutAddMenuEntry("TIMES NEW ROMAN 10", FONT_TIMES_ROMAN_10);
+		glutAddMenuEntry("TIMES NEW ROMAN 24", FONT_TIMES_ROMAN_24);
+
 	glutSetMenu(_subwindow3_menu);
 		glutAddSubMenu("Background color", _menu_background);
 		glutAddSubMenu("Font", _menu_font);
 
 	glutAttachMenu(GLUT_RIGHT_BUTTON);
 	glutDetachMenu(GLUT_LEFT_BUTTON);
+
+	log("Sub3 menu was initialized", RGB_BLACK);
 }
 
 void subwindow_3_menu(int code) {
@@ -1981,18 +2071,18 @@ void menu_background_sub3(int code) {
 	
 	switch (code) {
 
-		case MENU_COLORING_BACKGROUND_WHITE: glob_settings.subwindows[3].backgroundcolor = colors[L"white"]; postRedisplay(); break;
-		case MENU_COLORING_BACKGROUND_RED: glob_settings.subwindows[3].backgroundcolor = colors[L"red"]; postRedisplay(); break;
-		case MENU_COLORING_BACKGROUND_GREEN: glob_settings.subwindows[3].backgroundcolor = colors[L"green"]; postRedisplay(); break;
-		case MENU_COLORING_BACKGROUND_BLUE: glob_settings.subwindows[3].backgroundcolor = colors[L"blue"]; postRedisplay(); break;
-		case MENU_COLORING_BACKGROUND_LIGHTBLUE: glob_settings.subwindows[3].backgroundcolor = colors[L"lightblue"]; postRedisplay(); break;
-		case MENU_COLORING_BACKGROUND_BLACK: glob_settings.subwindows[3].backgroundcolor = colors[L"black"]; postRedisplay(); break;
-		case MENU_COLORING_BACKGROUND_LIGHTGREY: glob_settings.subwindows[3].backgroundcolor = colors[L"lightgrey"]; postRedisplay(); break;
-		case MENU_COLORING_BACKGROUND_MAIN: glob_settings.subwindows[3].backgroundcolor = colors[L"main"]; postRedisplay(); break;
-		case MENU_COLORING_BACKGROUND_SUB0: glob_settings.subwindows[3].backgroundcolor = colors[L"sub0"]; postRedisplay(); break;
-		case MENU_COLORING_BACKGROUND_SUB1: glob_settings.subwindows[3].backgroundcolor = colors[L"sub1"]; postRedisplay(); break;
-		case MENU_COLORING_BACKGROUND_SUB2: glob_settings.subwindows[3].backgroundcolor = colors[L"sub2"]; postRedisplay(); break;
-		case MENU_COLORING_BACKGROUND_SUB3: glob_settings.subwindows[3].backgroundcolor = colors[L"sub3"]; postRedisplay(); break;
+		case MENU_COLORING_BACKGROUND_WHITE: glob_settings.subwindows[3].backgroundcolor = colors[L"white"]; log("Sub3 background color changed", RGB_BLUE); postRedisplay(); break;
+		case MENU_COLORING_BACKGROUND_RED: glob_settings.subwindows[3].backgroundcolor = colors[L"red"]; log("Sub3 background color changed", RGB_BLUE); postRedisplay(); break;
+		case MENU_COLORING_BACKGROUND_GREEN: glob_settings.subwindows[3].backgroundcolor = colors[L"green"]; log("Sub3 background color changed", RGB_BLUE); postRedisplay(); break;
+		case MENU_COLORING_BACKGROUND_BLUE: glob_settings.subwindows[3].backgroundcolor = colors[L"blue"]; log("Sub3 background color changed", RGB_BLUE); postRedisplay(); break;
+		case MENU_COLORING_BACKGROUND_LIGHTBLUE: glob_settings.subwindows[3].backgroundcolor = colors[L"lightblue"]; log("Sub3 background color changed", RGB_BLUE); postRedisplay(); break;
+		case MENU_COLORING_BACKGROUND_BLACK: glob_settings.subwindows[3].backgroundcolor = colors[L"black"]; log("Sub3 background color changed", RGB_BLUE); postRedisplay(); break;
+		case MENU_COLORING_BACKGROUND_LIGHTGREY: glob_settings.subwindows[3].backgroundcolor = colors[L"lightgrey"]; log("Sub3 background color changed", RGB_BLUE); postRedisplay(); break;
+		case MENU_COLORING_BACKGROUND_MAIN: glob_settings.subwindows[3].backgroundcolor = colors[L"main"]; log("Sub3 background color changed", RGB_BLUE); postRedisplay(); break;
+		case MENU_COLORING_BACKGROUND_SUB0: glob_settings.subwindows[3].backgroundcolor = colors[L"sub0"]; log("Sub3 background color changed", RGB_BLUE); postRedisplay(); break;
+		case MENU_COLORING_BACKGROUND_SUB1: glob_settings.subwindows[3].backgroundcolor = colors[L"sub1"]; log("Sub3 background color changed", RGB_BLUE); postRedisplay(); break;
+		case MENU_COLORING_BACKGROUND_SUB2: glob_settings.subwindows[3].backgroundcolor = colors[L"sub2"]; log("Sub3 background color changed", RGB_BLUE); postRedisplay(); break;
+		case MENU_COLORING_BACKGROUND_SUB3: glob_settings.subwindows[3].backgroundcolor = colors[L"sub3"]; log("Sub3 background color changed", RGB_BLUE); postRedisplay(); break;
 
 		default: break;
 
@@ -2003,13 +2093,13 @@ void menu_font_sub3(int code) {
 
 	switch (code) {
 
-		case FONT_HELVETICA_10: font_log = GLUT_BITMAP_HELVETICA_10; postRedisplay(); break;
-		case FONT_HELVETICA_12: font_log = GLUT_BITMAP_HELVETICA_12; postRedisplay(); break;
-		case FONT_HELVETICA_18: font_log = GLUT_BITMAP_HELVETICA_18; postRedisplay(); break;
-		case FONT_8_BY_13: font_log = GLUT_BITMAP_8_BY_13; postRedisplay(); break;
-		case FONT_8_BY_15: font_log = GLUT_BITMAP_9_BY_15; postRedisplay(); break;
-		case FONT_TIMES_ROMAN_10: font_log = GLUT_BITMAP_TIMES_ROMAN_10; postRedisplay(); break;
-		case FONT_TIMES_ROMAN_24: font_log = GLUT_BITMAP_TIMES_ROMAN_24; postRedisplay(); break;
+		case FONT_HELVETICA_10: font_log = GLUT_BITMAP_HELVETICA_10; log("Sub3 font was changed", RGB_BLUE); postRedisplay(); break;
+		case FONT_HELVETICA_12: font_log = GLUT_BITMAP_HELVETICA_12; log("Sub3 font was changed", RGB_BLUE); postRedisplay(); break;
+		case FONT_HELVETICA_18: font_log = GLUT_BITMAP_HELVETICA_18; log("Sub3 font was changed", RGB_BLUE); postRedisplay(); break;
+		case FONT_8_BY_13: font_log = GLUT_BITMAP_8_BY_13; log("Sub3 font was changed", RGB_BLUE); postRedisplay(); break;
+		case FONT_8_BY_15: font_log = GLUT_BITMAP_9_BY_15; log("Sub3 font was changed", RGB_BLUE); postRedisplay(); break;
+		case FONT_TIMES_ROMAN_10: font_log = GLUT_BITMAP_TIMES_ROMAN_10; log("Sub3 font was changed", RGB_BLUE); postRedisplay(); break;
+		case FONT_TIMES_ROMAN_24: font_log = GLUT_BITMAP_TIMES_ROMAN_24; log("Sub3 font was changed", RGB_BLUE); postRedisplay(); break;
 
 		default: break;
 

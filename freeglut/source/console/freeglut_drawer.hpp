@@ -9,6 +9,7 @@
 	#include "../vertex-shape/shape.hpp"
 
 	#include <wchar.h>
+	#include <ctime>
 
 
 	#define MENU_RENDER_MOVEMENTS_BY_ARROWS 1010
@@ -247,6 +248,7 @@
 		void menu_background_sub3(int code);
 		void menu_font_sub3(int code);
 
+	void log(std::string _str, Rgb _color);
 	void log(std::wstring _str);
 
 #endif // !FREEGLUT_DRAWER_HPP
