@@ -124,6 +124,16 @@
 	#define SUBWINDOW_AXIS_MENU_BACGROUND_MAIN 2005
 	#define SUBWINDOW_AXIS_MENU_BACGROUND_GREY 2006
 
+
+	#define MAIN_MENU_GAP 3001
+	#define MAIN_MENU_GAP_INCREASE_BY_1 3002
+	#define MAIN_MENU_GAP_DECREASE_BY_1 3003
+	#define MAIN_MENU_GAP_SET_5 3004
+	#define MAIN_MENU_GAP_SET_6 3005
+	#define MAIN_MENU_GAP_SET_7 3006
+	#define MAIN_MENU_GAP_SET_8 3007
+	#define MAIN_MENU_GAP_SET_9 3008
+
 	void print_text_3f(double _x, double _y, double _z, std::wstring text);
 	void print_text_2f(double _x, double _y, std::wstring text);
 
@@ -166,6 +176,7 @@
 
 	void main_menu_init();
 		void main_menu(int code);
+		void main_menu_gap(int code);
 
 	void menu_background_sub0(int code);
 	void menu_background_sub1(int code);

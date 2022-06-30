@@ -147,6 +147,7 @@ void reshape_mainwindow(int w, int h) {
 void main_menu_init() {
 	int _main_menu = glutCreateMenu(main_menu);
 	int _menu_main = glutCreateMenu(menu_background_main);
+	int _menu_gap = glutCreateMenu(main_menu_gap);
 
 	char buff[256]; 
 
@@ -180,8 +181,18 @@ void main_menu_init() {
 		sprintf(buff, "As log area was: (%g/255, %g/255, %g/255)", colors[L"sub3"].red * 255.0, colors[L"sub3"].green * 255.0, colors[L"sub3"].blue * 255.0);
 		glutAddMenuEntry(buff, MENU_COLORING_BACKGROUND_SUB3);
 
+	glutSetMenu(_menu_gap);
+		glutAddMenuEntry("Increase by 1", MAIN_MENU_GAP_INCREASE_BY_1);
+		glutAddMenuEntry("Decrease by 1", MAIN_MENU_GAP_DECREASE_BY_1);
+		glutAddMenuEntry("Set gap = 5", MAIN_MENU_GAP_SET_5);
+		glutAddMenuEntry("Set gap = 6", MAIN_MENU_GAP_SET_6);
+		glutAddMenuEntry("Set gap = 7", MAIN_MENU_GAP_SET_7);
+		glutAddMenuEntry("Set gap = 8", MAIN_MENU_GAP_SET_8);
+		glutAddMenuEntry("Set gap = 9", MAIN_MENU_GAP_SET_9);
+
 	glutSetMenu(_main_menu);
 		glutAddSubMenu("Background", _menu_main);
+		glutAddSubMenu("Gap", _menu_gap);
 
 	glutAttachMenu(GLUT_RIGHT_BUTTON);
 	glutDetachMenu(GLUT_LEFT_BUTTON);
@@ -191,6 +202,57 @@ void main_menu_init() {
 void main_menu(int code) {
 
 	switch (code) {
+		default: break;
+	}
+
+}
+
+void main_menu_gap(int code) {
+
+	switch (code) {
+
+		case MAIN_MENU_GAP_INCREASE_BY_1:	glob_settings.gap += 1;
+											recalculation_subwindows_wh();
+											reshape_reposition_subwindows();
+											postRedisplay(); 
+											break;
+
+		case MAIN_MENU_GAP_DECREASE_BY_1:	glob_settings.gap = glob_settings.gap == 1 ? 1 : glob_settings.gap - 1;
+											recalculation_subwindows_wh();
+											reshape_reposition_subwindows();
+											postRedisplay(); 
+											break;
+		
+		case MAIN_MENU_GAP_SET_5:	glob_settings.gap = 5;
+									recalculation_subwindows_wh();
+									reshape_reposition_subwindows();
+									postRedisplay(); 
+									break;
+
+		case MAIN_MENU_GAP_SET_6:	glob_settings.gap = 6;
+									recalculation_subwindows_wh();
+									reshape_reposition_subwindows();
+									postRedisplay(); 
+									break;
+
+		case MAIN_MENU_GAP_SET_7:	glob_settings.gap = 7;
+									recalculation_subwindows_wh();
+									reshape_reposition_subwindows();
+									postRedisplay(); 
+									break;
+
+		case MAIN_MENU_GAP_SET_8:	glob_settings.gap = 8;
+									recalculation_subwindows_wh();
+									reshape_reposition_subwindows();
+									postRedisplay(); 
+									break;
+
+		case MAIN_MENU_GAP_SET_9:	glob_settings.gap = 9;
+									recalculation_subwindows_wh();
+									reshape_reposition_subwindows();
+									postRedisplay(); 
+									break;
+
 		default: break;
 	}
 
