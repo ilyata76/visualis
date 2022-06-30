@@ -12,6 +12,7 @@ std::wostream& operator<<(std::wostream& _out, const Settings& _settings) {
 
 	_out << L"\t Window\t\t\t\t\t: (" << _settings.main_window.wh.height << L", " << _settings.main_window.wh.width << L")\n";
 	_out << L"\t Spinrate\t\t\t\t: " << _settings.spinrate << L"\n";
+	_out << L"\t Gap\t\t\t\t\t: " << _settings.gap << L"\n";
 	return _out;
 };
 

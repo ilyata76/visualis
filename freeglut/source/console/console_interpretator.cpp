@@ -504,6 +504,11 @@ bool Interpretator::set_handler(std::vector<std::wstring> _commands) {
 										   std::wcout << L"\tSubwindowing setting \"" << std::boolalpha << this->app_settings.freeglut_settings.use_additional_subwindows << L"\" has been set up\n";
 										   break;
 
+		case INTER_COMMAND_SET_GAP: if (_commands.size() < 3) { std::wcout << L"\tEmpty instruction\n"; return false; }
+								  if (!is_number(_commands[2])) { std::wcout << L"\tNot number\n"; return false; }
+									else { this->app_settings.gap = std::stoi(_commands[2]);
+								std::wcout << L"\tGap number \"" << this->app_settings.gap << L"\" has been set up\n"; } break;
+
 		case VVIS_UNKNOWW_MAP_SECOND: std::wcout << L"\tUnknow subcommand: " << _commands[1] << L'\n'; return false; break;
 		default: break;
 
@@ -566,6 +571,8 @@ bool Interpretator::unset_handler(std::vector<std::wstring> _commands) {
 		case INTER_COMMAND_SET_SPINRATE: std::wcout << L"\tSuccessful\n"; this->app_settings.spinrate = 1; break;
 
 		case INTER_COMMAND_SET_SUBWINDOWING:  std::wcout << L"\tSuccessful\n"; this->app_settings.freeglut_settings.use_additional_subwindows = true; break;
+
+		case INTER_COMMAND_SET_GAP: std::wcout << L"\tSuccessful\n"; this->app_settings.gap = 7; break;
 
 		case VVIS_UNKNOWW_MAP_SECOND: std::wcout << L"\tUnknow subcommand: " << _commands[1] << L'\n'; return false; break;
 		default: break;
@@ -744,7 +751,8 @@ bool set_command_maps(Interpretator& _inter) {
 		{L"translationchanges", INTER_COMMAND_SET_TRANSLATION_CHANGES}, {L"tchanges", INTER_COMMAND_SET_TRANSLATION_CHANGES}, {L"tch", INTER_COMMAND_SET_TRANSLATION_CHANGES},
 		{L"camerachanges", INTER_COMMAND_SET_CAMERA_CHANGES}, {L"cchanges", INTER_COMMAND_SET_CAMERA_CHANGES}, {L"cch", INTER_COMMAND_SET_CAMERA_CHANGES},
 		{L"spinrate", INTER_COMMAND_SET_SPINRATE}, {L"spinr", INTER_COMMAND_SET_SPINRATE}, {L"sr", INTER_COMMAND_SET_SPINRATE}, {L"srate", INTER_COMMAND_SET_SPINRATE},
-		{L"subwindowing", INTER_COMMAND_SET_SUBWINDOWING}
+		{L"subwindowing", INTER_COMMAND_SET_SUBWINDOWING},
+		{L"gap", INTER_COMMAND_SET_GAP}
 	};
 
 	_inter.convert_sub_command = {
