@@ -66,6 +66,7 @@
 	#define MENU_SETTINGS_GS_SHOW 1075
 
 	#define MENU_RENDER_INVERT_CONTROL 1080
+	#define MENU_RENDER_RESTORE_GAP 1081
 
 	#define MENU_RENDER_SPINRATE 1090
 	#define MENU_RENDER_SPINRATE_1 1091
@@ -128,6 +129,7 @@
 
 	void create_additional_subwindows();
 	void recalculation_subwindows_wh();
+	void reshape_reposition_subwindows();
 	void postRedisplay();
 
 	void draw_sample(Settings& _settings, std::vector<Vertex>& _vct, int argc, char** argv);

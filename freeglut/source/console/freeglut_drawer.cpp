@@ -23,7 +23,7 @@ std::map<std::wstring, Rgb> colors = {
 	{L"sbu3", Rgb(230.0 / 255.0, 230.0 / 255.0, 230.0 / 255.0)},
 };
 
-int gap = 10;  // для подокон
+int gap = 7;  // для подокон
 
 void print_text_3f(double _x, double _y, double _z, std::wstring text) {
 	glRasterPos3i(_x, _y, _z);
@@ -142,19 +142,8 @@ void reshape_mainwindow(int w, int h) {
 
 	}
 
-	if (have_additional_sub_windows) {
-		for (const auto& subw : glob_settings.subwindows) {
-			glutSetWindow(subw.descriptor);
-				glutPositionWindow(subw.window_position.x, subw.window_position.y);
-				glutReshapeWindow(subw.wh.width, subw.wh.height);
-		}
-	} else {
-		glutSetWindow(glob_settings.subwindows[0].descriptor);
-			glutPositionWindow(glob_settings.subwindows[0].window_position.x, glob_settings.subwindows[0].window_position.y);
-			glutReshapeWindow(glob_settings.subwindows[0].wh.width, glob_settings.subwindows[0].wh.height);
-	}
+	reshape_reposition_subwindows();
 
-	glutSetWindow(glob_settings.main_window.descriptor);
 }
 
 void main_menu_init() {
@@ -162,6 +151,10 @@ void main_menu_init() {
 	int _menu_main = glutCreateMenu(menu_background_main);
 
 	char buff[256]; 
+
+	// TODO: разрушить доп окна!!!
+	// или построить их!
+	// увеличить или уменьшить gap
 
 	glutSetMenu(_menu_main);
 		sprintf(buff, "White: (%g/255, %g/255, %g/255)", colors[L"white"].red * 255.0, colors[L"white"].green * 255.0, colors[L"white"].blue * 255.0);
@@ -300,6 +293,24 @@ void recalculation_subwindows_wh() {
 		glob_settings.subwindows[0].window_position.x = gap;
 		glob_settings.subwindows[0].window_position.y = gap;
 	}
+}
+
+void reshape_reposition_subwindows() {
+
+	if (have_additional_sub_windows) {
+		for (const auto& subw : glob_settings.subwindows) {
+			glutSetWindow(subw.descriptor);
+				glutPositionWindow(subw.window_position.x, subw.window_position.y);
+				glutReshapeWindow(subw.wh.width, subw.wh.height);
+		}
+	} else {
+		glutSetWindow(glob_settings.subwindows[0].descriptor);
+			glutPositionWindow(glob_settings.subwindows[0].window_position.x, glob_settings.subwindows[0].window_position.y);
+			glutReshapeWindow(glob_settings.subwindows[0].wh.width, glob_settings.subwindows[0].wh.height);
+	}
+
+	glutSetWindow(glob_settings.main_window.descriptor);
+
 }
 
 void postRedisplay() {
@@ -593,6 +604,7 @@ void subwindow_0_menu_init() {
 		glutAddSubMenu("Spinrate", _menu_spinrate);
 		glutAddMenuEntry("Invert control", MENU_RENDER_INVERT_CONTROL);
 		glutAddSubMenu("Background color", _menu_background);
+		glutAddMenuEntry("Restore gap=7", MENU_RENDER_RESTORE_GAP);
 
 	glutAttachMenu(GLUT_RIGHT_BUTTON);
 	glutDetachMenu(GLUT_LEFT_BUTTON);
@@ -604,6 +616,13 @@ void subwindow_0_menu(int code) {
 	switch (code) {
 
 		case MENU_RENDER_INVERT_CONTROL: glob_settings.freeglut_settings.translation_by_element *= -1; break;
+
+		case MENU_RENDER_RESTORE_GAP: gap = 7; 
+			recalculation_subwindows_wh();
+			reshape_reposition_subwindows();
+			postRedisplay();
+			
+			break;
 
 		default:
 			break;
@@ -1325,8 +1344,6 @@ void subwindow_1_menu_init() {
 		glutAddMenuEntry("Use cones", SUBWINDOW_AXIS_MENU_USE_CONES);
 		glutAddMenuEntry("Show axis names", SUBWINDOW_AXIS_MENU_SHOW_NAMES);
 		glutAddMenuEntry("Hide axis names", SUBWINDOW_AXIS_MENU_HIDE_NAMES);
-		glutAddMenuEntry("Use main background", SUBWINDOW_AXIS_MENU_BACGROUND_MAIN);
-		glutAddMenuEntry("Use grey background", SUBWINDOW_AXIS_MENU_BACGROUND_GREY);
 		glutAddSubMenu("Background color", _menu_background);
 
 
