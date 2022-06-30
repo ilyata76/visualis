@@ -152,9 +152,6 @@ void main_menu_init() {
 
 	char buff[256]; 
 
-	// TODO: разрушить доп окна!!!
-	// или построить их!
-
 	glutSetMenu(_menu_main);
 		sprintf(buff, "White: (%g/255, %g/255, %g/255)", colors[L"white"].red * 255.0, colors[L"white"].green * 255.0, colors[L"white"].blue * 255.0);
 		glutAddMenuEntry(buff, MENU_COLORING_BACKGROUND_WHITE);
@@ -561,6 +558,7 @@ void subwindow_0_menu_init() {
 	int _menu_spinrate_set_11_20 = glutCreateMenu(menu_spinrate_set_11_20);
 	int _menu_spinrate_set_21_30 = glutCreateMenu(menu_spinrate_set_21_30);
 	int _menu_background = glutCreateMenu(menu_background_sub0);
+	int _menu_shape = glutCreateMenu(menu_shape);
 
 	char buff[256];
 
@@ -682,6 +680,12 @@ void subwindow_0_menu_init() {
 		sprintf(buff, "As log area was: (%g/255, %g/255, %g/255)", colors[L"sub3"].red * 255.0, colors[L"sub3"].green * 255.0, colors[L"sub3"].blue * 255.0);
 		glutAddMenuEntry(buff, MENU_COLORING_BACKGROUND_SUB3);
 
+
+	glutSetMenu(_menu_shape);
+		glutAddMenuEntry("Nothing", VVIS_SHAPE_NOTHING);
+		glutAddMenuEntry("Cone", VVIS_SHAPE_CONE);
+
+
 	glutSetMenu(_main_menu_render);
 		glutAddSubMenu("Movements by arrows", _menu_movements_by_arrows);
 		glutAddSubMenu("Movements by wasd", _menu_movements_by_wasd);
@@ -694,6 +698,7 @@ void subwindow_0_menu_init() {
 		glutAddMenuEntry("Invert control", MENU_RENDER_INVERT_CONTROL);
 		glutAddSubMenu("Background color", _menu_background);
 		glutAddMenuEntry("Restore gap=7", MENU_RENDER_RESTORE_GAP);
+		glutAddSubMenu("Change shape", _menu_shape);
 
 	glutAttachMenu(GLUT_RIGHT_BUTTON);
 	glutDetachMenu(GLUT_LEFT_BUTTON);
@@ -1066,6 +1071,31 @@ void menu_background_sub0(int code) {
 	}
 
 }
+
+
+void menu_shape(int code) {
+
+	switch (code) {
+	
+		case VVIS_SHAPE_NOTHING: 
+			glob_settings.freeglut_settings.shape = VVIS_SHAPE_NOTHING;
+			glob_settings.freeglut_settings.shape_wstr = VVIS_SHAPE_NOTHING_WSTR;
+			postRedisplay();
+			break; 
+
+		case VVIS_SHAPE_CONE:
+			glob_settings.freeglut_settings.shape = VVIS_SHAPE_CONE;
+			glob_settings.freeglut_settings.shape_wstr = VVIS_SHAPE_CONE_WSTR;
+			postRedisplay();
+			break;
+	
+		default: break;
+
+	}
+
+
+}
+
 
 void normal_keys(unsigned char key, int x, int y) {
 

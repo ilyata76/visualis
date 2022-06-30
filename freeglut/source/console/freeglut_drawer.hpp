@@ -203,6 +203,7 @@
 				void menu_spinrate_set_1_10(int code);
 				void menu_spinrate_set_11_20(int code);
 				void menu_spinrate_set_21_30(int code);
+		void menu_shape(int code);
 
 	void subwindow_1_menu_init();
 		void subwindow_1_menu(int code);
