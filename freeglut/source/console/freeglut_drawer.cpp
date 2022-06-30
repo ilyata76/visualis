@@ -481,7 +481,7 @@ void display_subwindow_0() {
 }
 
 void draw_shape(int index) {
-	Shape* shape = NULL; double args_for_draw[4];
+	Shape* shape = NULL; double args_for_draw[4]; // 4 - max
 
 	Vertex current_vertex = glob_vct[index];
 
@@ -494,6 +494,16 @@ void draw_shape(int index) {
 			args_for_draw[1] = 0.05 * glob_settings.freeglut_settings.scaling_parameters.y;		//
 			args_for_draw[2] = 10;
 			args_for_draw[3] = 10;
+
+			break;
+
+
+		case VVIS_SHAPE_SPHERE :
+			shape = new Sphere(current_vertex);
+
+			args_for_draw[0] = 0.005 * glob_settings.freeglut_settings.scaling_parameters.x;
+			args_for_draw[1] = 10;
+			args_for_draw[2] = 10;
 
 			break;
 		
@@ -684,6 +694,7 @@ void subwindow_0_menu_init() {
 	glutSetMenu(_menu_shape);
 		glutAddMenuEntry("Nothing", VVIS_SHAPE_NOTHING);
 		glutAddMenuEntry("Cone", VVIS_SHAPE_CONE);
+		glutAddMenuEntry("Sphere", VVIS_SHAPE_SPHERE);
 
 
 	glutSetMenu(_main_menu_render);
@@ -1086,6 +1097,12 @@ void menu_shape(int code) {
 		case VVIS_SHAPE_CONE:
 			glob_settings.freeglut_settings.shape = VVIS_SHAPE_CONE;
 			glob_settings.freeglut_settings.shape_wstr = VVIS_SHAPE_CONE_WSTR;
+			postRedisplay();
+			break;
+
+		case VVIS_SHAPE_SPHERE:
+			glob_settings.freeglut_settings.shape = VVIS_SHAPE_SPHERE;
+			glob_settings.freeglut_settings.shape_wstr = VVIS_SHAPE_SPHERE_WSTR;
 			postRedisplay();
 			break;
 	

@@ -32,6 +32,8 @@
 #define VVIS_SHAPE_CONE_WSTR	L"cone"
 #define VVIS_SHAPE_NOTHING		L'n'
 #define VVIS_SHAPE_NOTHING_WSTR	L"nothing"
+#define VVIS_SHAPE_SPHERE		L's'
+#define VVIS_SHAPE_SPHERE_WSTR	L"sphere"
 
 /// DRAWER OPTIONS
 

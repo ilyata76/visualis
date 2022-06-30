@@ -26,3 +26,20 @@ bool Cone::draw(Rgb color, double* args) {
 wchar_t Cone::info() {
     return VVIS_SHAPE_CONE;
 }
+
+bool Sphere::set_draw_configuration() {
+	return true;
+}
+
+bool Sphere::draw(Rgb color, double* args) {
+	glColor3f(color.red, color.green, color.blue);
+	
+	// нарисовали
+	glutSolidSphere(args[0], args[1], args[2]);
+	
+	return true;
+}
+
+wchar_t Sphere::info() {
+	return VVIS_SHAPE_SPHERE;
+}
