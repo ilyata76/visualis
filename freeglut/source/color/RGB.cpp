@@ -1,5 +1,9 @@
 ﻿#include "./RGB.hpp"
 
+bool operator==(Rgb& a, Rgb& b) {
+	return (a.blue == b.blue && a.red == b.red && a.green == b.green);
+}
+
 Rgb get_color_by_direction(const double& _x, const double& _y, const double& _z) {
 		//https://en.wikipedia.org/wiki/HSL_and_HSV
 

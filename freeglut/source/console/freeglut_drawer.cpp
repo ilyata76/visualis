@@ -9,6 +9,10 @@ bool show_axis_names = true;
 void* font_stats = GLUT_BITMAP_HELVETICA_12;
 void* font_log = GLUT_BITMAP_HELVETICA_12;
 
+bool inverted_black_text_stats = false;
+bool inverted_black_text_log = false;
+bool inverted_black_text_axis = false;
+
 Parameters3f transl_stats = { 0.0, 0.0, 0.0 };
 Parameters3f transl_log = { 0.0, 0.0, 0.0 };
 
@@ -20,15 +24,16 @@ bool have_additional_sub_windows = false;
 #define RGB_RED Rgb(255.0 / 255.0, 0.0 / 255.0, 0.0 / 255.0)
 #define RGB_GREEN Rgb(0.0 / 255.0, 255.0 / 255.0, 0.0 / 255.0)
 #define RGB_BLACK Rgb(0.0 / 255.0, 0.0 / 255.0, 0.0 / 255.0)
+#define RGB_WHITE Rgb(255.0 / 255.0, 255.0 / 255.0, 255.0 / 255.0)
 #define RGB_BLUE Rgb(0.0 / 255.0, 0.0 / 255.0, 255.0 / 255.0)
 
 std::map<std::wstring, Rgb> colors = {
-	{L"white", Rgb(255.0 / 255.0, 255.0 / 255.0, 255.0 / 255.0)},
-	{L"red", Rgb(255.0 / 255.0, 0.0 / 255.0, 0.0 / 255.0)},
-	{L"green", Rgb(0.0 / 255.0, 255.0 / 255.0, 0.0 / 255.0)},
-	{L"blue", Rgb(0.0 / 255.0, 0.0 / 255.0, 255.0 / 255.0)},
+	{L"white", RGB_WHITE},
+	{L"red", RGB_RED},
+	{L"green", RGB_GREEN},
+	{L"blue", RGB_BLUE},
 	{L"lightblue", Rgb(108.0 / 255.0, 146.0 / 255.0, 175.0 / 255.0)},
-	{L"black", Rgb(0.0 / 255.0, 0.0 / 255.0, 0.0 / 255.0)},
+	{L"black", RGB_BLACK},
 	{L"lightgrey", Rgb(230.0 / 255.0, 230.0 / 255.0, 230.0 / 255.0)},
 	{L"main", Rgb(255.0 / 255.0, 255.0 / 255.0, 255.0 / 255.0)},
 	{L"sub0", Rgb(255.0 / 255.0, 255.0 / 255.0, 255.0 / 255.0)},
@@ -118,6 +123,10 @@ void draw_sample(Settings& _settings, std::vector<Vertex>& _vct, int argc, char*
 
 	vct_log = {};
 	vct_log_colorful = {};
+
+	inverted_black_text_stats = false;
+	inverted_black_text_log = false;
+	inverted_black_text_axis = false;
 
 	log("System initialized", RGB_BLACK);
 
@@ -1578,7 +1587,8 @@ void draw_axis_by_cones() {
 	glRotated(-90.0, 0, 1, 0);
 	
 	if (show_axis_names) {
-		glColor3f(0.0, 0.0, 0.0);
+		if (inverted_black_text_axis) glColor3f(1.0, 1.0, 1.0);
+		else glColor3f(0.0, 0.0, 0.0);
 		print_text_3f(35.0, 10.0, 5.0, L"X", GLUT_BITMAP_HELVETICA_18);
 	}
 	
@@ -1595,7 +1605,8 @@ void draw_axis_by_cones() {
 	
 	
 	if (show_axis_names) {
-		glColor3f(0.0, 0.0, 0.0);
+		if (inverted_black_text_axis) glColor3f(1.0, 1.0, 1.0);
+		else glColor3f(0.0, 0.0, 0.0);
 		print_text_3f(5.0, 35.0, 5.0, L"Y", GLUT_BITMAP_HELVETICA_18);
 	}
 	
@@ -1608,7 +1619,8 @@ void draw_axis_by_cones() {
 		glTranslated(0.0, 0.0, -5.0 * estrangement);
 	
 	if (show_axis_names) {
-		glColor3f(0.0, 0.0, 0.0);
+		if (inverted_black_text_axis) glColor3f(1.0, 1.0, 1.0);
+		else glColor3f(0.0, 0.0, 0.0);
 		print_text_3f(5.0, 10.0, 35.0, L"Z", GLUT_BITMAP_HELVETICA_18);
 	}
 	
@@ -1627,7 +1639,8 @@ void draw_axis_by_lines() {
 	glEnd();	
 	
 	if (show_axis_names) {
-		glColor3f(0.0, 0.0, 0.0);
+		if (inverted_black_text_axis) glColor3f(1.0, 1.0, 1.0);
+		else glColor3f(0.0, 0.0, 0.0);
 		print_text_3f(35.0, 10.0, 5.0, L"X", GLUT_BITMAP_HELVETICA_18);
 	}
 
@@ -1640,7 +1653,8 @@ void draw_axis_by_lines() {
 	glEnd();
 	
 	if (show_axis_names) {
-		glColor3f(0.0, 0.0, 0.0);
+		if (inverted_black_text_axis) glColor3f(1.0, 1.0, 1.0);
+		else glColor3f(0.0, 0.0, 0.0);
 		print_text_3f(5.0, 35.0, 5.0, L"Y", GLUT_BITMAP_HELVETICA_18);
 	}
 
@@ -1652,7 +1666,8 @@ void draw_axis_by_lines() {
 	glEnd();
 
 	if (show_axis_names) {
-		glColor3f(0.0, 0.0, 0.0);
+		if (inverted_black_text_axis) glColor3f(1.0, 1.0, 1.0);
+		else glColor3f(0.0, 0.0, 0.0);
 		print_text_3f(5.0, 10.0, 35.0, L"Z", GLUT_BITMAP_HELVETICA_18);
 	}
 
@@ -1696,6 +1711,7 @@ void subwindow_1_menu_init() {
 		glutAddMenuEntry("Show axis names", SUBWINDOW_AXIS_MENU_SHOW_NAMES);
 		glutAddMenuEntry("Hide axis names", SUBWINDOW_AXIS_MENU_HIDE_NAMES);
 		glutAddSubMenu("Background color", _menu_background);
+		glutAddMenuEntry("Invert black text to white or conversely", MENU_INVERT_BLACK_TEXT_COLOR);
 
 	log("Sub1 menu was initialized", RGB_BLACK);
 	glutAttachMenu(GLUT_RIGHT_BUTTON);
@@ -1709,6 +1725,7 @@ void subwindow_1_menu(int code) {
 		case SUBWINDOW_AXIS_MENU_USE_LINES: axis_by_cones = false; log("Line mode to axis", RGB_BLUE); postRedisplay(); break;
 		case SUBWINDOW_AXIS_MENU_SHOW_NAMES: show_axis_names = true; log("Showed names of axis", RGB_BLUE); postRedisplay(); break;
 		case SUBWINDOW_AXIS_MENU_HIDE_NAMES: show_axis_names = false; log("Hided names of axis", RGB_BLUE); postRedisplay(); break;
+		case MENU_INVERT_BLACK_TEXT_COLOR: inverted_black_text_axis = !inverted_black_text_axis; log("Black color of sub1 has been inverted", RGB_BLUE); postRedisplay(); break;
 		default: break;
 	}
 
@@ -1752,7 +1769,8 @@ void display_subwindow_2() {
 
 	glMatrixMode(GL_MODELVIEW);
 		glPushMatrix();
-		glColor3f(0.0, 0.0, 0.0);
+		if (inverted_black_text_stats) glColor3f(1.0, 1.0, 1.0);
+		else glColor3f(0.0, 0.0, 0.0);
 		glLoadIdentity();
 
 		glTranslatef(transl_stats.x, transl_stats.y, transl_stats.z);
@@ -1771,16 +1789,10 @@ void display_subwindow_2() {
 			(std::wstring(L"Scaling translation - (") + std::to_wstring(glob_settings.freeglut_settings.scaling_translation.x) + std::wstring(L", ") + std::to_wstring(glob_settings.freeglut_settings.scaling_translation.y) + std::wstring(L", ") + std::to_wstring(glob_settings.freeglut_settings.scaling_translation.z) + std::wstring(L")")),			
 			(std::wstring(L"Position of camera - (") + std::to_wstring(glob_settings.freeglut_settings.position_of_camera.x) + std::wstring(L", ") + std::to_wstring(glob_settings.freeglut_settings.position_of_camera.y) + std::wstring(L", ") + std::to_wstring(glob_settings.freeglut_settings.position_of_camera.z) + std::wstring(L")")),
 			(std::wstring(L"Position of element - (") + std::to_wstring(glob_settings.freeglut_settings.position_of_element.x) + std::wstring(L", ") + std::to_wstring(glob_settings.freeglut_settings.position_of_element.y) + std::wstring(L", ") + std::to_wstring(glob_settings.freeglut_settings.position_of_element.z) + std::wstring(L")")),
-
 			(std::wstring(L"Camera changes - (") + std::to_wstring(glob_settings.freeglut_settings.camera_changes.x) + std::wstring(L", ") + std::to_wstring(glob_settings.freeglut_settings.camera_changes.y) + std::wstring(L", ") + std::to_wstring(glob_settings.freeglut_settings.camera_changes.z) + std::wstring(L")")),
-
-
 			(std::wstring(L"Estrangement changes - ") + std::to_wstring(glob_settings.freeglut_settings.estrangement_changes)),
 			(std::wstring(L"Translation changes - (") + std::to_wstring(glob_settings.freeglut_settings.translation_changes.x) + std::wstring(L", ") + std::to_wstring(glob_settings.freeglut_settings.translation_changes.y) + std::wstring(L", ") + std::to_wstring(glob_settings.freeglut_settings.translation_changes.z) + std::wstring(L")")),
-			
 			(std::wstring(L"Scaling parameters changes - (") + std::to_wstring(glob_settings.freeglut_settings.scaling_parameters_changes.x) + std::wstring(L", ") + std::to_wstring(glob_settings.freeglut_settings.scaling_parameters_changes.y) + std::wstring(L", ") + std::to_wstring(glob_settings.freeglut_settings.scaling_parameters_changes.z) + std::wstring(L")")),
-			
-
 			(std::wstring(L"Translation by element - ") + (glob_settings.freeglut_settings.translation_by_element == -1 ? L"false" : L"true")),
 			(std::wstring(L"Poligon rate - ") + std::to_wstring(glob_settings.freeglut_settings.poligonrate)),
 			(std::wstring(L"Shape - ") + glob_settings.freeglut_settings.shape_wstr),
@@ -1848,6 +1860,7 @@ void subwindow_2_menu_init() {
 	glutSetMenu(_subwindow2_menu);
 		glutAddSubMenu("Background color", _menu_background);
 		glutAddSubMenu("Font", _menu_font);
+		glutAddMenuEntry("Invert black text to white or conversely", MENU_INVERT_BLACK_TEXT_COLOR);
 
 	glutAttachMenu(GLUT_RIGHT_BUTTON);
 	glutDetachMenu(GLUT_LEFT_BUTTON);
@@ -1858,6 +1871,7 @@ void subwindow_2_menu_init() {
 void subwindow_2_menu(int code) {
 
 	switch (code) {
+		case MENU_INVERT_BLACK_TEXT_COLOR: inverted_black_text_stats = !inverted_black_text_stats; log("Black color of sub2 has been inverted", RGB_BLUE); postRedisplay(); break;
 
 		default: break;
 
@@ -1964,6 +1978,8 @@ void display_subwindow_3() {
 
 		if (vct_log.size() == vct_log_colorful.size()) {
 			for (int j = vct_log.size() - 1, i = 0; j >= 0; --j, ++i) {
+				if (vct_log_colorful[j] == RGB_BLACK && inverted_black_text_log) vct_log_colorful[j] = RGB_WHITE;
+				if (vct_log_colorful[j] == RGB_WHITE && !inverted_black_text_log) vct_log_colorful[j] = RGB_BLACK;
 				glColor3f(vct_log_colorful[j].red, vct_log_colorful[j].green, vct_log_colorful[j].blue);
 				print_text_2f(3.0, glob_settings.subwindows[3].wh.height - (double(i) + 1.0) * distance_between_fonts(font_log), vct_log[j], font_log);
 			}
@@ -2050,6 +2066,7 @@ void subwindow_3_menu_init() {
 	glutSetMenu(_subwindow3_menu);
 		glutAddSubMenu("Background color", _menu_background);
 		glutAddSubMenu("Font", _menu_font);
+		glutAddMenuEntry("Invert black text to white or conversely", MENU_INVERT_BLACK_TEXT_COLOR);
 
 	glutAttachMenu(GLUT_RIGHT_BUTTON);
 	glutDetachMenu(GLUT_LEFT_BUTTON);
@@ -2060,6 +2077,8 @@ void subwindow_3_menu_init() {
 void subwindow_3_menu(int code) {
 
 	switch (code) {
+		
+		case MENU_INVERT_BLACK_TEXT_COLOR: inverted_black_text_log = !inverted_black_text_log; log("Black color of sub3 has been inverted", RGB_BLUE); postRedisplay(); break;
 
 		default: break;
 

@@ -14,6 +14,9 @@
 			Rgb() : red(1.0), green(1.0), blue(1.0) {};
 			Rgb(const double& _red, const double& _green, const double& _blue) : red(_red), green(_green), blue(_blue) {};
 			~Rgb() {};
+
+			friend bool operator== (Rgb& a, Rgb& b);
+
 	};
 
 	Rgb get_color_by_direction(const double& _x, const double& _y, const double& _z);
