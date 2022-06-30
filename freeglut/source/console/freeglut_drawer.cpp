@@ -841,12 +841,12 @@ void menu_settings(int code) {
 			} break;
 
 		case MENU_SETTINGS_GS_RESET:	
-			glob_settings = Settings(glob_settings.global_settings, Freeglut_settings(), glob_settings.main_window, glob_settings.subwindows, 1.0);
+			glob_settings = Settings(glob_settings.global_settings, Freeglut_settings(), glob_settings.main_window, glob_settings.subwindows, 1.0, glob_settings.gap);
 			postRedisplay();
 			break;
 
 		case MENU_SETTINGS_GS_RESET_FILE: {
-			Settings reseted_settings = Settings(glob_settings.global_settings, Freeglut_settings(), glob_settings.main_window, glob_settings.subwindows, 1.0);
+			Settings reseted_settings = Settings(glob_settings.global_settings, Freeglut_settings(), glob_settings.main_window, glob_settings.subwindows, 1.0, glob_settings.gap);
 			reseted_settings.save(L'a');
 			} break;
 	}
