@@ -8,6 +8,9 @@
 	#include "../libraries/freeglut/include/GL/freeglut.h"
 	#include "../vertex-shape/shape.hpp"
 
+	#include <wchar.h>
+
+
 	#define MENU_RENDER_MOVEMENTS_BY_ARROWS 1010
 
 	#define MENU_RENDER_MOVEMENTS_BY_ARROWS_SHOW_SENSIVITY 1011
@@ -146,8 +149,20 @@
 	#define MAIN_MENU_SUBWINDOWS_DESTROY 3102
 	#define MAIN_MENU_SUBWINDOWS_BUILD 3103
 
-	void print_text_3f(double _x, double _y, double _z, std::wstring text);
-	void print_text_2f(double _x, double _y, std::wstring text);
+	#define FONT_HELVETICA_10 4101
+	#define FONT_HELVETICA_12 4102
+	#define FONT_HELVETICA_18 4103
+	#define FONT_8_BY_13 4104
+	#define FONT_8_BY_15 4105
+	#define FONT_TIMES_ROMAN_10 4106
+	#define FONT_TIMES_ROMAN_24 4107
+
+	void print_text_3f(double _x, double _y, double _z, std::wstring text, void* FONT);
+	void print_text_2f(double _x, double _y, std::wstring text, void* FONT);
+
+	void print_text_3f(double _x, double _y, double _z, std::string text, void* FONT);
+	void print_text_2f(double _x, double _y, std::string text, void* FONT);
+	
 
 	void create_additional_subwindows();
 	void recalculation_subwindows_wh();
@@ -161,7 +176,7 @@
 	void display_mainwindow();
 	void reshape_mainwindow(int w, int h);
 
-
+	double distance_between_fonts(void* _font);
 	
 	void display_subwindow_0();
 		void draw_shape(int index);
@@ -178,9 +193,14 @@
 		void draw_axis_by_lines();
 	
 	void display_subwindow_2();
+		void subwindow_2_special_keys(int key, int x, int y);
+		void subwindow_2_mouse_pressed(int button, int state, int x, int y);
+	
 	
 	void display_subwindow_3();
-	
+		void subwindow_3_special_keys(int key, int x, int y);
+		void subwindow_3_mouse_pressed(int button, int state, int x, int y);
+
 	void reshape_subwindow_0(int w, int h);
 	void reshape_subwindow_1(int w, int h);
 	void reshape_subwindow_2(int w, int h);
@@ -190,12 +210,8 @@
 		void main_menu(int code);
 		void main_menu_gap(int code);
 		void main_menu_subwindows(int code);
+		void menu_background_main(int code);
 
-	void menu_background_sub0(int code);
-	void menu_background_sub1(int code);
-	void menu_background_sub2(int code);
-	void menu_background_sub3(int code);
-	void menu_background_main(int code);
 
 	void subwindow_0_menu_init();
 		void subwindow_0_menu(int code);
@@ -213,16 +229,23 @@
 				void menu_spinrate_set_21_30(int code);
 		void menu_shape(int code);
 		void menu_poligon(int code);
+		void menu_background_sub0(int code);
 
 	void subwindow_1_menu_init();
 		void subwindow_1_menu(int code);
+		void menu_background_sub1(int code);
+		
 
 
 	void subwindow_2_menu_init();
 		void subwindow_2_menu(int code);
+		void menu_background_sub2(int code);
+		void menu_font_sub2(int code);
 
 	void subwindow_3_menu_init();
 		void subwindow_3_menu(int code);
+		void menu_background_sub3(int code);
+		void menu_font_sub3(int code);
 
 	void log(std::wstring _str);
 

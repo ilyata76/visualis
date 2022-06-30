@@ -6,6 +6,12 @@ std::vector<Vertex> glob_vct;
 bool axis_by_cones = false;
 bool show_axis_names = true;
 
+void* font_stats = GLUT_BITMAP_HELVETICA_12;
+void* font_log = GLUT_BITMAP_HELVETICA_12;
+
+Parameters3f transl_stats = { 0.0, 0.0, 0.0 };
+Parameters3f transl_log = { 0.0, 0.0, 0.0 };
+
 bool have_additional_sub_windows = false;
 
 std::map<std::wstring, Rgb> colors = {
@@ -23,20 +29,52 @@ std::map<std::wstring, Rgb> colors = {
 	{L"sbu3", Rgb(230.0 / 255.0, 230.0 / 255.0, 230.0 / 255.0)},
 };
 
-void print_text_3f(double _x, double _y, double _z, std::wstring text) {
+void print_text_3f(double _x, double _y, double _z, std::wstring text, void* FONT) {
 	glRasterPos3i(_x, _y, _z);
 	int len = text.length(); 
 
 	for (int i = 0; i < len; ++i) 
-		glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, text[i]);
+		glutBitmapCharacter(FONT, text[i]);
 }
 
-void print_text_2f(double _x, double _y, std::wstring text) {
+void print_text_2f(double _x, double _y, std::wstring text, void* FONT) {
 	glRasterPos2i(_x, _y);
 	int len = text.length(); 
 
 	for (int i = 0; i < len; ++i) 
-		glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, text[i]);
+		glutBitmapCharacter(FONT, text[i]);
+}
+
+void print_text_3f(double _x, double _y, double _z, std::string text, void* FONT) {
+	glRasterPos3i(_x, _y, _z);
+	int len = text.length();
+
+	for (int i = 0; i < len; ++i)
+		glutBitmapCharacter(FONT, text[i]);
+}
+
+void print_text_2f(double _x, double _y, std::string text, void* FONT) {
+	glRasterPos2i(_x, _y);
+	int len = text.length(); 
+
+	for (int i = 0; i < len; ++i) 
+		glutBitmapCharacter(FONT, text[i]);
+}
+
+double distance_between_fonts(void* _font) {
+	
+	if (_font == GLUT_BITMAP_HELVETICA_10) return 10.0;
+	if (_font == GLUT_BITMAP_HELVETICA_12) return 12.0;
+	if (_font == GLUT_BITMAP_HELVETICA_18) return 18.0;
+
+	if (_font == GLUT_BITMAP_8_BY_13) return 13.0;
+	if (_font == GLUT_BITMAP_9_BY_15) return 15.0;
+
+	if (_font == GLUT_BITMAP_TIMES_ROMAN_10) return 10.0;
+	if (_font == GLUT_BITMAP_TIMES_ROMAN_24) return 24.0;
+
+	return 10.0;
+
 }
 
 void draw_sample(Settings& _settings, std::vector<Vertex>& _vct, int argc, char** argv) {
@@ -143,6 +181,8 @@ void reshape_mainwindow(int w, int h) {
 	reshape_reposition_subwindows();
 
 }
+
+
 
 void main_menu_init() {
 	int _main_menu = glutCreateMenu(main_menu);
@@ -325,6 +365,8 @@ void create_additional_subwindows() {
 		);
 			glutDisplayFunc(display_subwindow_2);
 			glutReshapeFunc(reshape_subwindow_2);
+			glutSpecialFunc(subwindow_2_special_keys);
+			glutMouseFunc(subwindow_2_mouse_pressed);
 			subwindow_2_menu_init();
 
 		glob_settings.subwindows[3].descriptor = glutCreateSubWindow(
@@ -334,6 +376,8 @@ void create_additional_subwindows() {
 		);
 			glutDisplayFunc(display_subwindow_3);
 			glutReshapeFunc(reshape_subwindow_3);
+			glutSpecialFunc(subwindow_3_special_keys);
+			glutMouseFunc(subwindow_3_mouse_pressed);
 			subwindow_3_menu_init();
 	}
 }
@@ -1441,7 +1485,7 @@ void draw_axis_by_cones() {
 	
 	if (show_axis_names) {
 		glColor3f(0.0, 0.0, 0.0);
-		print_text_3f(35.0, 10.0, 5.0, L"X");
+		print_text_3f(35.0, 10.0, 5.0, L"X", GLUT_BITMAP_HELVETICA_18);
 	}
 	
 	
@@ -1458,7 +1502,7 @@ void draw_axis_by_cones() {
 	
 	if (show_axis_names) {
 		glColor3f(0.0, 0.0, 0.0);
-		print_text_3f(5.0, 35.0, 5.0, L"Y");
+		print_text_3f(5.0, 35.0, 5.0, L"Y", GLUT_BITMAP_HELVETICA_18);
 	}
 	
 	
@@ -1471,7 +1515,7 @@ void draw_axis_by_cones() {
 	
 	if (show_axis_names) {
 		glColor3f(0.0, 0.0, 0.0);
-		print_text_3f(5.0, 10.0, 35.0, L"Z");
+		print_text_3f(5.0, 10.0, 35.0, L"Z", GLUT_BITMAP_HELVETICA_18);
 	}
 	
 	glPopMatrix();
@@ -1490,7 +1534,7 @@ void draw_axis_by_lines() {
 	
 	if (show_axis_names) {
 		glColor3f(0.0, 0.0, 0.0);
-		print_text_3f(35.0, 10.0, 5.0, L"X");
+		print_text_3f(35.0, 10.0, 5.0, L"X", GLUT_BITMAP_HELVETICA_18);
 	}
 
 	glColor3f(0.0, 154.0 / 255.0, 99.0 / 255.0);
@@ -1503,7 +1547,7 @@ void draw_axis_by_lines() {
 	
 	if (show_axis_names) {
 		glColor3f(0.0, 0.0, 0.0);
-		print_text_3f(5.0, 35.0, 5.0, L"Y");
+		print_text_3f(5.0, 35.0, 5.0, L"Y", GLUT_BITMAP_HELVETICA_18);
 	}
 
 	glColor3f(0.0, 0.0, 1.0);
@@ -1515,7 +1559,7 @@ void draw_axis_by_lines() {
 
 	if (show_axis_names) {
 		glColor3f(0.0, 0.0, 0.0);
-		print_text_3f(5.0, 10.0, 35.0, L"Z");
+		print_text_3f(5.0, 10.0, 35.0, L"Z", GLUT_BITMAP_HELVETICA_18);
 	}
 
 }
@@ -1607,15 +1651,60 @@ void display_subwindow_2() {
 	double x = 0.0 - double(glob_settings.subwindows[2].wh.width) + double(gap);
 	double y = 0.0 - double(glob_settings.subwindows[2].wh.height) + double(gap);
 
-	glColor3f(0, 0, 0);
-	print_text_2f(-1.0, 0.0, L"abvobus");
+	glMatrixMode(GL_PROJECTION);
+		glLoadIdentity();
+		gluOrtho2D(0.0, glob_settings.subwindows[2].wh.width, 0.0, glob_settings.subwindows[2].wh.height);
+		glColor3f(0.0, 0.0, 0.0);
 
+	glMatrixMode(GL_MODELVIEW);
+		glPushMatrix();
+		glColor3f(0.0, 0.0, 0.0);
+		glLoadIdentity();
+
+		glTranslatef(transl_stats.x, transl_stats.y, transl_stats.z);
+
+		char buff[256];
+		sprintf(buff, "x, y: %g, %g", x, y);
+		print_text_2f(0.0, glob_settings.subwindows[2].wh.height - distance_between_fonts(font_stats), std::string(buff), font_stats);
+		print_text_2f(0.0, glob_settings.subwindows[2].wh.height - 2 * distance_between_fonts(font_stats), std::string(buff), font_stats);
+		print_text_2f(0.0, glob_settings.subwindows[2].wh.height - 3 * distance_between_fonts(font_stats), std::string(buff), font_stats);
+		print_text_2f(0.0, glob_settings.subwindows[2].wh.height - 4 * distance_between_fonts(font_stats), std::string(buff), font_stats);
+		print_text_2f(0.0, glob_settings.subwindows[2].wh.height - 5 * distance_between_fonts(font_stats), std::string(buff), font_stats);
+		print_text_2f(0.0, glob_settings.subwindows[2].wh.height - 6 * distance_between_fonts(font_stats), std::string(buff), font_stats);
+		print_text_2f(0.0, glob_settings.subwindows[2].wh.height - 7 * distance_between_fonts(font_stats), std::string(buff), font_stats);
+		print_text_2f(0.0, glob_settings.subwindows[2].wh.height - 8 * distance_between_fonts(font_stats), std::string(buff), font_stats);
+		print_text_2f(0.0, glob_settings.subwindows[2].wh.height - 9 * distance_between_fonts(font_stats), std::string(buff), font_stats);
+		print_text_2f(0.0, glob_settings.subwindows[2].wh.height - 10 * distance_between_fonts(font_stats), std::string(buff), font_stats);
+		print_text_2f(0.0, glob_settings.subwindows[2].wh.height - 11 * distance_between_fonts(font_stats), std::string(buff), font_stats);
+		print_text_2f(0.0, glob_settings.subwindows[2].wh.height - 12 * distance_between_fonts(font_stats), std::string(buff), font_stats);
+		print_text_2f(0.0, glob_settings.subwindows[2].wh.height - 13 * distance_between_fonts(font_stats), std::string(buff), font_stats);
+		print_text_2f(0.0, glob_settings.subwindows[2].wh.height - 14* distance_between_fonts(font_stats), std::string(buff), font_stats);
+		print_text_2f(0.0, glob_settings.subwindows[2].wh.height - 15* distance_between_fonts(font_stats), std::string(buff), font_stats);
+		print_text_2f(0.0, glob_settings.subwindows[2].wh.height - 16* distance_between_fonts(font_stats), std::string(buff), font_stats);
+		print_text_2f(0.0, glob_settings.subwindows[2].wh.height - 17 * distance_between_fonts(font_stats), std::string(buff), font_stats);
+		print_text_2f(0.0, glob_settings.subwindows[2].wh.height - 18 * distance_between_fonts(font_stats), std::string(buff), font_stats);
+		print_text_2f(0.0, glob_settings.subwindows[2].wh.height - 19 * distance_between_fonts(font_stats), std::string(buff), font_stats);
+		print_text_2f(0.0, glob_settings.subwindows[2].wh.height - 20 * distance_between_fonts(font_stats), std::string(buff), font_stats);
+		print_text_2f(0.0, glob_settings.subwindows[2].wh.height - 21 * distance_between_fonts(font_stats), std::string(buff), font_stats);
+		print_text_2f(0.0, glob_settings.subwindows[2].wh.height - 22 * distance_between_fonts(font_stats), std::string(buff), font_stats);
+		print_text_2f(0.0, glob_settings.subwindows[2].wh.height - 23 * distance_between_fonts(font_stats), std::string(buff), font_stats);
+		print_text_2f(0.0, glob_settings.subwindows[2].wh.height - 24 * distance_between_fonts(font_stats), std::string(buff), font_stats);
+		print_text_2f(0.0, glob_settings.subwindows[2].wh.height - 25 * distance_between_fonts(font_stats), std::string(buff), font_stats);
+		print_text_2f(0.0, glob_settings.subwindows[2].wh.height - 26 * distance_between_fonts(font_stats), std::string(buff), font_stats);
+		print_text_2f(0.0, glob_settings.subwindows[2].wh.height - 27 * distance_between_fonts(font_stats), std::string(buff), font_stats);
+		print_text_2f(0.0, glob_settings.subwindows[2].wh.height - 28 * distance_between_fonts(font_stats), std::string(buff), font_stats);
+		print_text_2f(0.0, glob_settings.subwindows[2].wh.height - 29 * distance_between_fonts(font_stats), std::string(buff), font_stats);
+		print_text_2f(0.0, glob_settings.subwindows[2].wh.height - 30 * distance_between_fonts(font_stats), std::string(buff), font_stats);
+		print_text_2f(0.0, glob_settings.subwindows[2].wh.height - 31 * distance_between_fonts(font_stats), std::string(buff), font_stats);
+
+	glPopMatrix();
 	glutSwapBuffers();
 }
 
 void subwindow_2_menu_init() {
 	int _subwindow2_menu = glutCreateMenu(subwindow_2_menu);
 	int _menu_background = glutCreateMenu(menu_background_sub2);
+	int _menu_font = glutCreateMenu(menu_font_sub2);
 
 	char buff[256];
 
@@ -1645,8 +1734,18 @@ void subwindow_2_menu_init() {
 		sprintf(buff, "As log area was: (%g/255, %g/255, %g/255)", colors[L"sub3"].red * 255.0, colors[L"sub3"].green * 255.0, colors[L"sub3"].blue * 255.0);
 		glutAddMenuEntry(buff, MENU_COLORING_BACKGROUND_SUB3);
 
+	glutSetMenu(_menu_font);
+		glutAddMenuEntry("HELVETICA 10", FONT_HELVETICA_10);
+		glutAddMenuEntry("HELVETICA 12", FONT_HELVETICA_12);
+		glutAddMenuEntry("HELVETICA 18", FONT_HELVETICA_18);
+		glutAddMenuEntry("8 BY 13", FONT_8_BY_13);
+		glutAddMenuEntry("9 BY 15", FONT_8_BY_15);
+		glutAddMenuEntry("TIMES NEW ROMAN 10", FONT_TIMES_ROMAN_10);
+		glutAddMenuEntry("TIMES NEW ROMAN 24", FONT_TIMES_ROMAN_24);
+
 	glutSetMenu(_subwindow2_menu);
 		glutAddSubMenu("Background color", _menu_background);
+		glutAddSubMenu("Font", _menu_font);
 
 	glutAttachMenu(GLUT_RIGHT_BUTTON);
 	glutDetachMenu(GLUT_LEFT_BUTTON);
@@ -1685,16 +1784,152 @@ void menu_background_sub2(int code) {
 
 }
 
+void menu_font_sub2(int code) {
+
+	switch (code) {
+
+		case FONT_HELVETICA_10: font_stats = GLUT_BITMAP_HELVETICA_10; postRedisplay(); break;
+		case FONT_HELVETICA_12: font_stats = GLUT_BITMAP_HELVETICA_12; postRedisplay(); break;
+		case FONT_HELVETICA_18: font_stats = GLUT_BITMAP_HELVETICA_18; postRedisplay(); break;
+		case FONT_8_BY_13: font_stats = GLUT_BITMAP_8_BY_13; postRedisplay(); break;
+		case FONT_8_BY_15: font_stats = GLUT_BITMAP_9_BY_15; postRedisplay(); break;
+		case FONT_TIMES_ROMAN_10: font_stats = GLUT_BITMAP_TIMES_ROMAN_10; postRedisplay(); break;
+		case FONT_TIMES_ROMAN_24: font_stats = GLUT_BITMAP_TIMES_ROMAN_24; postRedisplay(); break;
+
+		default: break;
+
+	}
+
+}
+
+void subwindow_2_special_keys(int key, int x, int y) {
+	double t_b_e = glob_settings.freeglut_settings.translation_by_element;
+
+	switch (key) {							
+
+		case GLUT_KEY_UP:			transl_stats.y += t_b_e * 1.0;
+									glutPostRedisplay();
+									break;		
+
+		case GLUT_KEY_DOWN:			transl_stats.y -= t_b_e * 1.0;
+									glutPostRedisplay();
+									break;
+
+		default:					
+									break;
+
+	}
+}
+
+
+void subwindow_2_mouse_pressed(int button, int state, int x, int y) {
+
+	// scroll up
+	if (button == 3) {
+		subwindow_2_special_keys(GLUT_KEY_UP, 0, 0);
+	}	
+	// scroll up
+	if (button == 4) {
+		subwindow_2_special_keys(GLUT_KEY_DOWN, 0, 0);
+	}
+
+
+}
+
+
+
 void display_subwindow_3() {
+	int gap = glob_settings.gap;
 	glClearColor(glob_settings.subwindows[3].backgroundcolor.red, glob_settings.subwindows[3].backgroundcolor.green, glob_settings.subwindows[3].backgroundcolor.blue, 0.0);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+	double x = 0.0 - double(glob_settings.subwindows[3].wh.width) + double(gap);
+	double y = 0.0 - double(glob_settings.subwindows[3].wh.height) + double(gap);
+
+	glMatrixMode(GL_PROJECTION);
+		glLoadIdentity();
+		gluOrtho2D(0.0, glob_settings.subwindows[3].wh.width, 0.0, glob_settings.subwindows[3].wh.height);
+		glColor3f(0.0, 0.0, 0.0);
+
+	glMatrixMode(GL_MODELVIEW);
+		glPushMatrix();
+		glColor3f(0.0, 0.0, 0.0);
+		glLoadIdentity();
+
+		glTranslatef(transl_log.x, transl_log.y, transl_log.z);
+
+		char buff[256];
+		sprintf(buff, "x, y: %g, %g", x, y);
+		print_text_2f(0.0, glob_settings.subwindows[3].wh.height - distance_between_fonts(font_log), std::string(buff), font_log);
+		print_text_2f(0.0, glob_settings.subwindows[3].wh.height - 2 * distance_between_fonts(font_log), std::string(buff), font_log);
+		print_text_2f(0.0, glob_settings.subwindows[3].wh.height - 3 * distance_between_fonts(font_log), std::string(buff), font_log);
+		print_text_2f(0.0, glob_settings.subwindows[3].wh.height - 4 * distance_between_fonts(font_log), std::string(buff), font_log);
+		print_text_2f(0.0, glob_settings.subwindows[3].wh.height - 5 * distance_between_fonts(font_log), std::string(buff), font_log);
+		print_text_2f(0.0, glob_settings.subwindows[3].wh.height - 6 * distance_between_fonts(font_log), std::string(buff), font_log);
+		print_text_2f(0.0, glob_settings.subwindows[3].wh.height - 7 * distance_between_fonts(font_log), std::string(buff), font_log);
+		print_text_2f(0.0, glob_settings.subwindows[3].wh.height - 8 * distance_between_fonts(font_log), std::string(buff), font_log);
+		print_text_2f(0.0, glob_settings.subwindows[3].wh.height - 9 * distance_between_fonts(font_log), std::string(buff), font_log);
+		print_text_2f(0.0, glob_settings.subwindows[3].wh.height - 10 * distance_between_fonts(font_log), std::string(buff), font_log);
+		print_text_2f(0.0, glob_settings.subwindows[3].wh.height - 11 * distance_between_fonts(font_log), std::string(buff), font_log);
+		print_text_2f(0.0, glob_settings.subwindows[3].wh.height - 12 * distance_between_fonts(font_log), std::string(buff), font_log);
+		print_text_2f(0.0, glob_settings.subwindows[3].wh.height - 13 * distance_between_fonts(font_log), std::string(buff), font_log);
+		print_text_2f(0.0, glob_settings.subwindows[3].wh.height - 14* distance_between_fonts(font_log), std::string(buff), font_log);
+		print_text_2f(0.0, glob_settings.subwindows[3].wh.height - 15* distance_between_fonts(font_log), std::string(buff), font_log);
+		print_text_2f(0.0, glob_settings.subwindows[3].wh.height - 16* distance_between_fonts(font_log), std::string(buff), font_log);
+		print_text_2f(0.0, glob_settings.subwindows[3].wh.height - 17 * distance_between_fonts(font_log), std::string(buff), font_log);
+		print_text_2f(0.0, glob_settings.subwindows[3].wh.height - 18 * distance_between_fonts(font_log), std::string(buff), font_log);
+		print_text_2f(0.0, glob_settings.subwindows[3].wh.height - 19 * distance_between_fonts(font_log), std::string(buff), font_log);
+		print_text_2f(0.0, glob_settings.subwindows[3].wh.height - 20 * distance_between_fonts(font_log), std::string(buff), font_log);
+		print_text_2f(0.0, glob_settings.subwindows[3].wh.height - 21 * distance_between_fonts(font_log), std::string(buff), font_log);
+		print_text_2f(0.0, glob_settings.subwindows[3].wh.height - 22 * distance_between_fonts(font_log), std::string(buff), font_log);
+		print_text_2f(0.0, glob_settings.subwindows[3].wh.height - 23 * distance_between_fonts(font_log), std::string(buff), font_log);
+		print_text_2f(0.0, glob_settings.subwindows[3].wh.height - 24 * distance_between_fonts(font_log), std::string(buff), font_log);
+		print_text_2f(0.0, glob_settings.subwindows[3].wh.height - 25 * distance_between_fonts(font_log), std::string(buff), font_log);
+		print_text_2f(0.0, glob_settings.subwindows[3].wh.height - 26 * distance_between_fonts(font_log), std::string(buff), font_log);
+		print_text_2f(0.0, glob_settings.subwindows[3].wh.height - 27 * distance_between_fonts(font_log), std::string(buff), font_log);
+		print_text_2f(0.0, glob_settings.subwindows[3].wh.height - 28 * distance_between_fonts(font_log), std::string(buff), font_log);
+		print_text_2f(0.0, glob_settings.subwindows[3].wh.height - 29 * distance_between_fonts(font_log), std::string(buff), font_log);
+		print_text_2f(0.0, glob_settings.subwindows[3].wh.height - 30 * distance_between_fonts(font_log), std::string(buff), font_log);
+		print_text_2f(0.0, glob_settings.subwindows[3].wh.height - 31 * distance_between_fonts(font_log), std::string(buff), font_log);
+
+	glPopMatrix();
 	glutSwapBuffers();
+}
+
+void subwindow_3_special_keys(int key, int x, int y) {
+	double t_b_e = glob_settings.freeglut_settings.translation_by_element;
+
+	switch (key) {							
+
+		case GLUT_KEY_UP:			transl_log.y += t_b_e * 1.0;
+									glutPostRedisplay();
+									break;		
+
+		case GLUT_KEY_DOWN:			transl_log.y -= t_b_e * 1.0;
+									glutPostRedisplay();
+									break;
+
+		default:					
+									break;
+
+	}
+}
+
+void subwindow_3_mouse_pressed(int button, int state, int x, int y) {
+	// scroll up
+	if (button == 3) {
+		subwindow_3_special_keys(GLUT_KEY_UP, 0, 0);
+	}	
+	// scroll up
+	if (button == 4) {
+		subwindow_3_special_keys(GLUT_KEY_DOWN, 0, 0);
+	}
 }
 
 void subwindow_3_menu_init() {
 	int _subwindow3_menu = glutCreateMenu(subwindow_3_menu);
 	int _menu_background = glutCreateMenu(menu_background_sub3);
+	int _menu_font = glutCreateMenu(menu_font_sub3);
 
 	char buff[256];
 
@@ -1726,6 +1961,7 @@ void subwindow_3_menu_init() {
 
 	glutSetMenu(_subwindow3_menu);
 		glutAddSubMenu("Background color", _menu_background);
+		glutAddSubMenu("Font", _menu_font);
 
 	glutAttachMenu(GLUT_RIGHT_BUTTON);
 	glutDetachMenu(GLUT_LEFT_BUTTON);
@@ -1757,6 +1993,23 @@ void menu_background_sub3(int code) {
 		case MENU_COLORING_BACKGROUND_SUB1: glob_settings.subwindows[3].backgroundcolor = colors[L"sub1"]; postRedisplay(); break;
 		case MENU_COLORING_BACKGROUND_SUB2: glob_settings.subwindows[3].backgroundcolor = colors[L"sub2"]; postRedisplay(); break;
 		case MENU_COLORING_BACKGROUND_SUB3: glob_settings.subwindows[3].backgroundcolor = colors[L"sub3"]; postRedisplay(); break;
+
+		default: break;
+
+	}
+}
+
+void menu_font_sub3(int code) {
+
+	switch (code) {
+
+		case FONT_HELVETICA_10: font_log = GLUT_BITMAP_HELVETICA_10; postRedisplay(); break;
+		case FONT_HELVETICA_12: font_log = GLUT_BITMAP_HELVETICA_12; postRedisplay(); break;
+		case FONT_HELVETICA_18: font_log = GLUT_BITMAP_HELVETICA_18; postRedisplay(); break;
+		case FONT_8_BY_13: font_log = GLUT_BITMAP_8_BY_13; postRedisplay(); break;
+		case FONT_8_BY_15: font_log = GLUT_BITMAP_9_BY_15; postRedisplay(); break;
+		case FONT_TIMES_ROMAN_10: font_log = GLUT_BITMAP_TIMES_ROMAN_10; postRedisplay(); break;
+		case FONT_TIMES_ROMAN_24: font_log = GLUT_BITMAP_TIMES_ROMAN_24; postRedisplay(); break;
 
 		default: break;
 
