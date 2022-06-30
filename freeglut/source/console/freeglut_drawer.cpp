@@ -494,8 +494,8 @@ void draw_shape(int index) {
 
 			args_for_draw[0] = 0.005 * glob_settings.freeglut_settings.scaling_parameters.x;		//
 			args_for_draw[1] = 0.05 * glob_settings.freeglut_settings.scaling_parameters.y;		//
-			args_for_draw[2] = 10;
-			args_for_draw[3] = 10;
+			args_for_draw[2] = glob_settings.freeglut_settings.poligonrate;
+			args_for_draw[3] = glob_settings.freeglut_settings.poligonrate;
 			break;
 
 
@@ -503,8 +503,8 @@ void draw_shape(int index) {
 			shape = new Sphere(current_vertex);
 
 			args_for_draw[0] = 0.009 * glob_settings.freeglut_settings.scaling_parameters.x;
-			args_for_draw[1] = 10;
-			args_for_draw[2] = 10;
+			args_for_draw[1] = glob_settings.freeglut_settings.poligonrate;
+			args_for_draw[2] = glob_settings.freeglut_settings.poligonrate;
 
 			break;
 
@@ -513,8 +513,8 @@ void draw_shape(int index) {
 
 			args_for_draw[0] = 0.004 * glob_settings.freeglut_settings.scaling_parameters.x;		//
 			args_for_draw[1] = 0.025 * glob_settings.freeglut_settings.scaling_parameters.y;		//
-			args_for_draw[2] = 10;
-			args_for_draw[3] = 10;
+			args_for_draw[2] = glob_settings.freeglut_settings.poligonrate;
+			args_for_draw[3] = glob_settings.freeglut_settings.poligonrate;
 			args_for_draw[4] = 0.003 * glob_settings.freeglut_settings.scaling_parameters.x; // sphere
 
 			break;
@@ -525,8 +525,8 @@ void draw_shape(int index) {
 
 			args_for_draw[0] = 0.005 * glob_settings.freeglut_settings.scaling_parameters.x;		//
 			args_for_draw[1] = 0.05 * glob_settings.freeglut_settings.scaling_parameters.y;		//
-			args_for_draw[2] = 10;
-			args_for_draw[3] = 10;
+			args_for_draw[2] = glob_settings.freeglut_settings.poligonrate;
+			args_for_draw[3] = glob_settings.freeglut_settings.poligonrate;
 
 			break;
 
@@ -550,7 +550,7 @@ void draw_shape(int index) {
 		current_vertex.point.y * glob_settings.freeglut_settings.scaling_translation.y,
 		current_vertex.point.z * glob_settings.freeglut_settings.scaling_translation.z);
 
-	Rgb color_config(0, 0, 0);
+	Rgb color_config(0.0, 0.0, 0.0);
 
 	if (glob_settings.freeglut_settings.coloring_sample) {
 		color_config = get_color_by_direction(current_vertex.spin.x, current_vertex.spin.y, current_vertex.spin.z);
