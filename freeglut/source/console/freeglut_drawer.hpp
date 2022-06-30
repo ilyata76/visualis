@@ -134,6 +134,10 @@
 	#define MAIN_MENU_GAP_SET_8 3007
 	#define MAIN_MENU_GAP_SET_9 3008
 
+	#define MAIN_MENU_SUBWINDOWS 3101
+	#define MAIN_MENU_SUBWINDOWS_DESTROY 3102
+	#define MAIN_MENU_SUBWINDOWS_BUILD 3103
+
 	void print_text_3f(double _x, double _y, double _z, std::wstring text);
 	void print_text_2f(double _x, double _y, std::wstring text);
 
@@ -177,6 +181,7 @@
 	void main_menu_init();
 		void main_menu(int code);
 		void main_menu_gap(int code);
+		void main_menu_subwindows(int code);
 
 	void menu_background_sub0(int code);
 	void menu_background_sub1(int code);

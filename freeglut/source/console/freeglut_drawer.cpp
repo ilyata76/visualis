@@ -148,12 +148,12 @@ void main_menu_init() {
 	int _main_menu = glutCreateMenu(main_menu);
 	int _menu_main = glutCreateMenu(menu_background_main);
 	int _menu_gap = glutCreateMenu(main_menu_gap);
+	int _menu_subwindows = glutCreateMenu(main_menu_subwindows);
 
 	char buff[256]; 
 
 	// TODO: разрушить доп окна!!!
 	// или построить их!
-	// увеличить или уменьшить gap
 
 	glutSetMenu(_menu_main);
 		sprintf(buff, "White: (%g/255, %g/255, %g/255)", colors[L"white"].red * 255.0, colors[L"white"].green * 255.0, colors[L"white"].blue * 255.0);
@@ -190,9 +190,14 @@ void main_menu_init() {
 		glutAddMenuEntry("Set gap = 8", MAIN_MENU_GAP_SET_8);
 		glutAddMenuEntry("Set gap = 9", MAIN_MENU_GAP_SET_9);
 
+	glutSetMenu(_menu_subwindows);
+		glutAddMenuEntry("Destroy additional subwindows", MAIN_MENU_SUBWINDOWS_DESTROY);
+		glutAddMenuEntry("Build additional subwindows", MAIN_MENU_SUBWINDOWS_BUILD);
+
 	glutSetMenu(_main_menu);
 		glutAddSubMenu("Background", _menu_main);
 		glutAddSubMenu("Gap", _menu_gap);
+		glutAddSubMenu("Subwindows", _menu_subwindows);
 
 	glutAttachMenu(GLUT_RIGHT_BUTTON);
 	glutDetachMenu(GLUT_LEFT_BUTTON);
@@ -277,6 +282,29 @@ void menu_background_main(int code) {
 		
 		default: break;
 
+	}
+
+}
+
+void main_menu_subwindows(int code) {
+
+	switch (code) {
+	
+	case MAIN_MENU_SUBWINDOWS_DESTROY: 
+			glob_settings.freeglut_settings.use_additional_subwindows = false;
+			recalculation_subwindows_wh();
+			reshape_reposition_subwindows();
+			postRedisplay();
+			break;
+	case MAIN_MENU_SUBWINDOWS_BUILD: 
+			glob_settings.freeglut_settings.use_additional_subwindows = true;
+			recalculation_subwindows_wh();
+			reshape_reposition_subwindows();
+			postRedisplay();
+			break;
+
+	default: break;
+	
 	}
 
 }
