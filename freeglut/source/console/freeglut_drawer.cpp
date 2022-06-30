@@ -23,8 +23,6 @@ std::map<std::wstring, Rgb> colors = {
 	{L"sbu3", Rgb(230.0 / 255.0, 230.0 / 255.0, 230.0 / 255.0)},
 };
 
-int gap = 7;  // для подокон
-
 void print_text_3f(double _x, double _y, double _z, std::wstring text) {
 	glRasterPos3i(_x, _y, _z);
 	int len = text.length(); 
@@ -256,6 +254,7 @@ void create_additional_subwindows() {
 void recalculation_subwindows_wh() {
 	int x = glob_settings.main_window.wh.width;
 	int y = glob_settings.main_window.wh.height;
+	int gap = glob_settings.gap;
 
 	if (have_additional_sub_windows && glob_settings.freeglut_settings.use_additional_subwindows) {
 
@@ -617,7 +616,7 @@ void subwindow_0_menu(int code) {
 
 		case MENU_RENDER_INVERT_CONTROL: glob_settings.freeglut_settings.translation_by_element *= -1; break;
 
-		case MENU_RENDER_RESTORE_GAP: gap = 7; 
+		case MENU_RENDER_RESTORE_GAP: glob_settings.gap = 7;
 			recalculation_subwindows_wh();
 			reshape_reposition_subwindows();
 			postRedisplay();
@@ -1387,6 +1386,7 @@ void menu_background_sub1(int code) {
 }
 
 void display_subwindow_2() {
+	int gap = glob_settings.gap;
 	glClearColor(glob_settings.subwindows[2].backgroundcolor.red, glob_settings.subwindows[2].backgroundcolor.green, glob_settings.subwindows[2].backgroundcolor.blue, 0.0);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
