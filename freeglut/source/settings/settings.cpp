@@ -88,8 +88,7 @@ bool Settings::save(wchar_t _flag) {
 		_json[VVIS_FREEGLUT_SETTINGS]["fullscreen"] = this->freeglut_settings.fullscreen;
 
 		_json[VVIS_FREEGLUT_SETTINGS]["estrangement_changes"] = this->freeglut_settings.estrangement_changes;
-
-
+		_json[VVIS_FREEGLUT_SETTINGS]["poligonrate"] = this->freeglut_settings.poligonrate;
 
 	}
 
@@ -159,6 +158,7 @@ bool Settings::get_by_json(const nlohmann::json& _json, wchar_t _flag) {
 		if (_json[VVIS_FREEGLUT_SETTINGS]["fullscreen"] == nullptr); else this->freeglut_settings.fullscreen = _json[VVIS_FREEGLUT_SETTINGS]["fullscreen"].get<bool>();
 
 		if (_json[VVIS_FREEGLUT_SETTINGS]["estrangement_changes"] == nullptr); else this->freeglut_settings.estrangement_changes = _json[VVIS_FREEGLUT_SETTINGS]["estrangement_changes"].get<double>();
+		if (_json[VVIS_FREEGLUT_SETTINGS]["poligonrate"] == nullptr); else this->freeglut_settings.poligonrate = _json[VVIS_FREEGLUT_SETTINGS]["poligonrate"].get<double>();
 
 	}
 
