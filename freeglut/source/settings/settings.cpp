@@ -2,9 +2,17 @@
 
 std::wostream& operator<<(std::wostream& _out, const Settings& _settings) {
 	_out << _settings.global_settings << _settings.freeglut_settings;
-	_out << L"\t Background color\t\t\t [C]: " << _settings.main_window.backgroundcolor.red * 255.0 << L"/255 " << _settings.main_window.backgroundcolor.green * 255.0 << L"/255 " << _settings.main_window.backgroundcolor.blue * 255.0 << L"/255\n";
-	_out << L"\t Window\t\t\t\t\t (X): (" << _settings.main_window.wh.height << L", " << _settings.main_window.wh.width << L")\n";
-	_out << L"\t Spinrate\t\t\t\t [C]: " << _settings.spinrate << L"\n";
+	_out << L"\t Background of mainwindow color\t\t: " << _settings.main_window.backgroundcolor.red * 255.0 << L"/255 " << _settings.main_window.backgroundcolor.green * 255.0 << L"/255 " << _settings.main_window.backgroundcolor.blue * 255.0 << L"/255\n";
+	
+	int j = 0;
+	for (const auto& window : _settings.subwindows) {
+		_out << L"\t Background of subwindow" << j << " color\t\t: " << window.backgroundcolor.red * 255.0 << L"/255 " << window.backgroundcolor.green * 255.0 << L"/255 " << window.backgroundcolor.blue * 255.0 << L"/255\n";
+		++j;
+	}
+
+	_out << L"\t Window\t\t\t\t\t: (" << _settings.main_window.wh.height << L", " << _settings.main_window.wh.width << L")\n";
+	_out << L"\t Spinrate\t\t\t\t: " << _settings.spinrate << L"\n";
+	_out << L"\t Gap\t\t\t\t\t: " << _settings.gap << L"\n";
 	return _out;
 };
 
@@ -46,9 +54,6 @@ bool Settings::save(wchar_t _flag) {
 	///
 
 	if (_flag == L'f' || _flag == L'a') {
-		_json[VVIS_FREEGLUT_SETTINGS]["background"]["red"] = this->main_window.backgroundcolor.red; //
-		_json[VVIS_FREEGLUT_SETTINGS]["background"]["green"] = this->main_window.backgroundcolor.green; //
-		_json[VVIS_FREEGLUT_SETTINGS]["background"]["blue"] = this->main_window.backgroundcolor.blue; //
 		_json[VVIS_FREEGLUT_SETTINGS]["coloring_sample"] = this->freeglut_settings.coloring_sample;
 		_json[VVIS_FREEGLUT_SETTINGS]["shape"] = this->freeglut_settings.shape;
 		_json[VVIS_FREEGLUT_SETTINGS]["shape_str"] = this->freeglut_settings.shape_wstr;
@@ -81,17 +86,28 @@ bool Settings::save(wchar_t _flag) {
 		_json[VVIS_FREEGLUT_SETTINGS]["camera_changes"]["z"] = this->freeglut_settings.camera_changes.z;
 		_json[VVIS_FREEGLUT_SETTINGS]["translation_by_element"] = this->freeglut_settings.translation_by_element;
 		_json[VVIS_FREEGLUT_SETTINGS]["fullscreen"] = this->freeglut_settings.fullscreen;
-		_json[VVIS_FREEGLUT_SETTINGS]["main_window"]["height"] = this->main_window.wh.height; //
-		_json[VVIS_FREEGLUT_SETTINGS]["main_window"]["width"] = this->main_window.wh.width; //
+
 		_json[VVIS_FREEGLUT_SETTINGS]["estrangement_changes"] = this->freeglut_settings.estrangement_changes;
-		_json[VVIS_FREEGLUT_SETTINGS]["spinrate"] = this->spinrate; //
+		_json[VVIS_FREEGLUT_SETTINGS]["polygonrate"] = this->freeglut_settings.polygonrate;
+		_json[VVIS_FREEGLUT_SETTINGS]["subwindowing"] = this->freeglut_settings.use_additional_subwindows;
+
 	}
+
+	if (_flag == L'o' || _flag == L'a') {
+		_json[VVIS_OTHER_SETTINGS]["main_window"]["height"] = this->main_window.wh.height;
+		_json[VVIS_OTHER_SETTINGS]["main_window"]["width"] = this->main_window.wh.width; 
+		_json[VVIS_OTHER_SETTINGS]["spinrate"] = this->spinrate;
+		_json[VVIS_OTHER_SETTINGS]["gap"] = this->gap;
+	}
+
 
 	file << _json.dump(4);
 	file.close();
 
 	return true;
 }
+
+
 
 bool Settings::get_by_json(const nlohmann::json& _json, wchar_t _flag) {
 	if (_json == nullptr) return false;
@@ -108,10 +124,6 @@ bool Settings::get_by_json(const nlohmann::json& _json, wchar_t _flag) {
 	if (_flag == L'f' || _flag == L'a') {
 		if (_json[VVIS_FREEGLUT_SETTINGS] == nullptr) return false;
 
-
-		if (_json[VVIS_FREEGLUT_SETTINGS]["background"]["red"] == nullptr); else this->main_window.backgroundcolor.red = _json[VVIS_FREEGLUT_SETTINGS]["background"]["red"].get<double>(); //
-		if (_json[VVIS_FREEGLUT_SETTINGS]["background"]["green"] == nullptr); else this->main_window.backgroundcolor.green = _json[VVIS_FREEGLUT_SETTINGS]["background"]["green"].get<double>(); //
-		if (_json[VVIS_FREEGLUT_SETTINGS]["background"]["blue"] == nullptr); else this->main_window.backgroundcolor.blue = _json[VVIS_FREEGLUT_SETTINGS]["background"]["blue"].get<double>(); //
 		if (_json[VVIS_FREEGLUT_SETTINGS]["coloring_sample"] == nullptr); else this->freeglut_settings.coloring_sample = _json[VVIS_FREEGLUT_SETTINGS]["coloring_sample"].get<bool>();
 		if (_json[VVIS_FREEGLUT_SETTINGS]["shape"] == nullptr); else this->freeglut_settings.shape = _json[VVIS_FREEGLUT_SETTINGS]["shape"].get<wchar_t>();
 		if (_json[VVIS_FREEGLUT_SETTINGS]["shape_str"] == nullptr); else this->freeglut_settings.shape_wstr = _json[VVIS_FREEGLUT_SETTINGS]["shape_str"].get<std::wstring>();
@@ -144,15 +156,21 @@ bool Settings::get_by_json(const nlohmann::json& _json, wchar_t _flag) {
 		if (_json[VVIS_FREEGLUT_SETTINGS]["camera_changes"]["z"] == nullptr); else this->freeglut_settings.camera_changes.z = _json[VVIS_FREEGLUT_SETTINGS]["camera_changes"]["z"].get<double>();
 		if (_json[VVIS_FREEGLUT_SETTINGS]["translation_by_element"] == nullptr); else this->freeglut_settings.translation_by_element = _json[VVIS_FREEGLUT_SETTINGS]["translation_by_element"].get<double>();
 		if (_json[VVIS_FREEGLUT_SETTINGS]["fullscreen"] == nullptr); else this->freeglut_settings.fullscreen = _json[VVIS_FREEGLUT_SETTINGS]["fullscreen"].get<bool>();
-		if (_json[VVIS_FREEGLUT_SETTINGS]["main_window"]["height"] == nullptr); else this->main_window.wh.height = _json[VVIS_FREEGLUT_SETTINGS]["main_window"]["height"].get<int>(); //
-		if (_json[VVIS_FREEGLUT_SETTINGS]["main_window"]["width"] == nullptr); else this->main_window.wh.width = _json[VVIS_FREEGLUT_SETTINGS]["main_window"]["width"].get<int>(); //
+
 		if (_json[VVIS_FREEGLUT_SETTINGS]["estrangement_changes"] == nullptr); else this->freeglut_settings.estrangement_changes = _json[VVIS_FREEGLUT_SETTINGS]["estrangement_changes"].get<double>();
-		if (_json[VVIS_FREEGLUT_SETTINGS]["spinrate"] == nullptr); else this->spinrate = _json[VVIS_FREEGLUT_SETTINGS]["spinrate"].get<int>(); //
+		if (_json[VVIS_FREEGLUT_SETTINGS]["polygonrate"] == nullptr); else this->freeglut_settings.polygonrate = _json[VVIS_FREEGLUT_SETTINGS]["polygonrate"].get<double>();
 
-
+		if (_json[VVIS_FREEGLUT_SETTINGS]["subwindowing"] == nullptr); else this->freeglut_settings.use_additional_subwindows = _json[VVIS_FREEGLUT_SETTINGS]["subwindowing"].get<bool>();
 
 	}
 
+	if (_flag == L'o' || _flag == L'a') {
+		if (_json[VVIS_OTHER_SETTINGS]["main_window"]["height"] == nullptr); else this->main_window.wh.height = _json[VVIS_OTHER_SETTINGS]["main_window"]["height"].get<int>(); 
+		if (_json[VVIS_OTHER_SETTINGS]["main_window"]["width"] == nullptr); else this->main_window.wh.width = _json[VVIS_OTHER_SETTINGS]["main_window"]["width"].get<int>(); 
+		if (_json[VVIS_OTHER_SETTINGS]["spinrate"] == nullptr); else this->spinrate = _json[VVIS_OTHER_SETTINGS]["spinrate"].get<int>(); 
+
+		if (_json[VVIS_OTHER_SETTINGS]["gap"] == nullptr); else this->gap = _json[VVIS_OTHER_SETTINGS]["gap"].get<int>(); 
+	}
 
 	return true;
 }

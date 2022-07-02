@@ -32,6 +32,10 @@
 #define VVIS_SHAPE_CONE_WSTR	L"cone"
 #define VVIS_SHAPE_NOTHING		L'n'
 #define VVIS_SHAPE_NOTHING_WSTR	L"nothing"
+#define VVIS_SHAPE_SPHERE		L's'
+#define VVIS_SHAPE_SPHERE_WSTR	L"sphere"
+#define VVIS_SHAPE_ARROW		L'a'
+#define VVIS_SHAPE_ARROW_WSTR	L"arrow"
 
 /// DRAWER OPTIONS
 
@@ -67,6 +71,7 @@
 
 #define VVIS_GLOBAL_SETTINGS	"global"
 #define VVIS_FREEGLUT_SETTINGS	"drawer"
+#define VVIS_OTHER_SETTINGS 	"other"
 
 /// UNKNOW_MAP_SECOND
 

@@ -77,7 +77,7 @@ bool Interpretator::settings_handler(std::vector<std::wstring> _commands) {
 	
 		case INTER_COMMAND_SETTINGS_GET:	if(this->app_settings.get(L'a')) std::wcout << "\tSettings has been loaded\n"; else std::wcout << "\tSettings NOT has been loaded\n";	break;
 
-		case INTER_COMMAND_SETTINGS_RESET:	this->app_settings = Settings(); std::wcout << L"\tSuccessful\n"; break;
+		case INTER_COMMAND_SETTINGS_RESET: reset_handler({L"reset"}); break;
 
 		case VVIS_UNKNOWW_MAP_SECOND: std::wcout << L"\tUnknow subcommand: " << _commands[1] << L'\n'; return false; break;
 		default: break;
@@ -169,9 +169,12 @@ bool Interpretator::help_handler(std::vector<std::wstring> _commands) {
 			
 			std::wcout << L"\n";
 			std::wcout << L"\tset backgroundcolor\n";
-				std::wcout << L"\t -- <int> <int> <int>           : sets coloring RGB mode of background\n";
+				std::wcout << L"\t -- <int> <int> <int>           : sets coloring RGB mode of background of main window\n";
 				std::wcout << L"\t                                : Note: int between 0 and 255 is expected\n";
 				std::wcout << L"\t                                : Example: set backgroundcolor 200 250 100\n";
+				std::wcout << L"\t -- <int> <int> <int> <int>     : sets coloring RGB mode of background of subwindow (1st parameter)\n";
+				std::wcout << L"\t                                : Note: first int parameter between 0 and 3 is expected\n";
+				std::wcout << L"\t                                : Example: set backgroundcolor 2 200 250 100\n";
 				std::wcout << L"\t                                : Aliases: bgc\n";
 			
 			std::wcout << L"\n";
@@ -183,7 +186,7 @@ bool Interpretator::help_handler(std::vector<std::wstring> _commands) {
 			std::wcout << L"\n";
 			std::wcout << L"\tset shape\n";
 				std::wcout << L"\t -- <char>                      : sets a shape with which the sample will be built\n";
-				std::wcout << L"\t                                : Note: c - cone, n - nothing\n";
+				std::wcout << L"\t                                : Note: n - nothing, c - cone, s - sphere, a - arrow \n";
 				std::wcout << L"\t                                : Example: set shape c\n";
 				std::wcout << L"\t                                : Aliases: shape\n";
 			
@@ -227,7 +230,27 @@ bool Interpretator::help_handler(std::vector<std::wstring> _commands) {
 				std::wcout << L"\t                                : Example: set spinrate 10\n";
 				std::wcout << L"\t                                : Aliases: spinrate, spinr, sr, srate\n";
 			
-
+			std::wcout << L"\n";
+			std::wcout << L"\tset gap\n";
+				std::wcout << L"\t -- <int>                       : sets the gap between subwindows (axises, logs, stats, drawer area)\n";
+				std::wcout << L"\t                                : Note: >= 0 \n";
+				std::wcout << L"\t                                : Example: set gap 10\n";
+				std::wcout << L"\t                                : Aliases: gap\n";
+			
+			std::wcout << L"\n";
+			std::wcout << L"\tset subwindowing\n";
+				std::wcout << L"\t -- <y/n>                       : subwindowing mode\n";
+				std::wcout << L"\t                                : Note: if \"no\" - only drawer area \n";
+				std::wcout << L"\t                                : Example: set subwindowing 1\n";
+				std::wcout << L"\t                                : Aliases: subwindowing, subwg\n";
+			
+			std::wcout << L"\n";
+			std::wcout << L"\tset polygonrate\n";
+				std::wcout << L"\t -- <int>                       : how many polygons of shape\n";
+				std::wcout << L"\t                                : Note: >= 1\n";
+				std::wcout << L"\t                                : Example: set polygonrate 1\n";
+				std::wcout << L"\t                                : Aliases: polygonrate, pr\n";
+			
 			std::wcout << L"\n";
 			std::wcout << L"\tAliases: set\n";
 
@@ -247,26 +270,55 @@ bool Interpretator::help_handler(std::vector<std::wstring> _commands) {
 			std::wcout << L"\tconvert\n";
 				std::wcout << L"\t -- v6   : converting vampire6 data to sconfiguration file\n";
 				std::wcout << L"\t         : Note: expected: spins-xxx.data, atoms-coords.data \n";
-				std::wcout << L"\t         : Aliases: vampire6, v6, vampire5, v5\n";
-			
+				std::wcout << L"\t         : Aliases: vampire6, v6, vampire5, v5\n";			
+					
 			std::wcout << L"\n";
 			std::wcout << L"\tAliases: convert, con\n";
 			break;
 
 		case INTER_COMMAND_HELP_VISUALIZE:		
+			
 			std::wcout << L"\tconvert file\n";
 				std::wcout << L"\t --  : starts visualization by file (filepath)\n";
 				std::wcout << L"\t     : Note: expected: sconfiguration file \n";
 
+			std::wcout << L"\n";
 			std::wcout << L"\tconvert folder\n";
 				std::wcout << L"\t --  : starts visualization by folder path (filefolder + filenumber)\n";
-				std::wcout << L"\t     : Note: expected: sconfiguration file with filenumber \n";
+				std::wcout << L"\t     : Note: expected: valid filefolder with sconfiguration file, filenumber \n";
 			
 			std::wcout << L"\n";
 			std::wcout << L"\tAliases: visualize, vis\n";
+
+			std::wcout << "\n\n\n\n";
+			std::wcout << L"\t\tINWIDONW (drawer area)\n\n";
+				std::wcout << L"\t -- keys\n";
+				std::wcout << L"\t\tGlobal translation: arrow keys \n";
+				std::wcout << L"\t\tCamera: WASD \n";
+				std::wcout << L"\t\tGlobal rotation: IJKL \n";
+				std::wcout << L"\t\tEstrangement: L_CTRL or L_SHIFT / SPACEBAR \n";
+				std::wcout << L"\t\tExit: ESC \n";
+				std::wcout << L"\t\tGlobal scaling: PAGE_UP/PAGE_DOWN \n";
+
+				std::wcout << L"\t -- mouse\n";
+				std::wcout << L"\t\tPressed mouse button & in movement: global translation (as with arrows)\n";
+				std::wcout << L"\t\tPressed mouse button & ALT & in movement: global rotation (as by IJKL)\n";
+				std::wcout << L"\t\tScrolls: changing estrangement (as by shift/space)\n";
+				std::wcout << L"\t\tRight button: popup menu\n";
+
+			std::wcout << "\n\n\n\n";
+			std::wcout << L"\t\tINWIDONW (stats, logs)\n\n";
+				std::wcout << L"\t -- keys\n";
+				std::wcout << L"\t\tUp/down text motion: arrow keys \n";
+
+				std::wcout << L"\t -- mouse\n";
+				std::wcout << L"\t\tScrolls: scrolls text\n";
+				std::wcout << L"\t\tRight button: popup menu\n";
+
 			break;
 
 		case INTER_COMMAND_HELP_RESET:			
+			
 			std::wcout << L"\treset\n";
 			std::wcout << L"\t --  : resets ALL settings here\n";
 
@@ -275,6 +327,7 @@ bool Interpretator::help_handler(std::vector<std::wstring> _commands) {
 			break;
 
 		case INTER_COMMAND_HELP_RESTART:	
+			
 			std::wcout << L"\trestart\n";
 			std::wcout << L"\t --  : fully restars the program\n";
 
@@ -293,12 +346,14 @@ bool Interpretator::help_handler(std::vector<std::wstring> _commands) {
 
 bool Interpretator::reset_handler(std::vector<std::wstring> _commands) {
 	this->app_settings = Settings();
+	set_command_maps(*this);
 	std::wcout << L"\tSuccessful\n";
 	return true;
 }
 
 bool Interpretator::restart_handler(std::vector<std::wstring> _commands) {
 	this->app_settings = Settings();
+	set_command_maps(*this);
 	std::wcout << L"\tSuccessful\n";
 	return true;
 }
@@ -364,22 +419,69 @@ bool Interpretator::set_handler(std::vector<std::wstring> _commands) {
 									   break;
 
 
-		case INTER_COMMAND_SET_BACKGROUNDCOLOR: if (_commands.size() < 5 || !is_number(_commands[2]) || !is_number(_commands[3])
-											|| !is_number(_commands[4]) || !is_double(_commands[2]) || !is_double(_commands[3]) || !is_double(_commands[4]) 
-											|| std::stod(_commands[2]) > 255 || std::stod(_commands[3]) > 255
-											|| std::stod(_commands[4]) > 255) { std::wcout << L"\tIncorrect format\n"; return false; } 
+		case INTER_COMMAND_SET_BACKGROUNDCOLOR: 
+			
+			switch (_commands.size()) {
+
+				case 5 : 
+
+					if (_commands.size() < 5 || !is_number(_commands[2]) || !is_number(_commands[3])
+						|| !is_number(_commands[4]) || !is_double(_commands[2]) || !is_double(_commands[3]) || !is_double(_commands[4])
+						|| std::stod(_commands[2]) > 255 || std::stod(_commands[3]) > 255
+						|| std::stod(_commands[4]) > 255) {
+						std::wcout << L"\tIncorrect format\n"; return false;
+					}
+
+					this->app_settings.main_window.backgroundcolor.red = std::stod(_commands[2]) / 255.0;
+					this->app_settings.main_window.backgroundcolor.green = std::stod(_commands[3]) / 255.0;
+					this->app_settings.main_window.backgroundcolor.blue = std::stod(_commands[4]) / 255.0;
+
+					std::wcout << L"\tColoring background of main window ("
+						<< this->app_settings.main_window.backgroundcolor.red * 255.0 << ", "
+						<< this->app_settings.main_window.backgroundcolor.green * 255.0 << ", "
+						<< this->app_settings.main_window.backgroundcolor.blue * 255.0
+						<< L") has been set up\n";
+
+					break;
+
+
+				case 6: {
+
+					if (_commands.size() < 6 || !is_number(_commands[2]) || !is_number(_commands[3])
+						|| !is_number(_commands[4]) || !is_number(_commands[5])
+						|| !is_double(_commands[3]) || !is_double(_commands[4]) || !is_double(_commands[5])
+						|| std::stod(_commands[3]) > 255 || std::stod(_commands[4]) > 255
+						|| std::stod(_commands[5]) > 255) {
+						std::wcout << L"\tIncorrect format\n"; return false;
+					}
+
+					int number = std::stoi(_commands[2]);
+
+					if (this->app_settings.subwindows.size() <= number) { std::wcout << L"\tSubwindow " << number << "doesnt exists\n"; return false; }
+
+					this->app_settings.subwindows[number].backgroundcolor.red = std::stod(_commands[3]) / 255.0;
+					this->app_settings.subwindows[number].backgroundcolor.green = std::stod(_commands[4]) / 255.0;
+					this->app_settings.subwindows[number].backgroundcolor.blue = std::stod(_commands[5]) / 255.0;
+
+					std::wcout << L"\tColoring background subwindow " << number << " ("
+						<< this->app_settings.subwindows[number].backgroundcolor.red * 255.0 << ", "
+						<< this->app_settings.subwindows[number].backgroundcolor.green * 255.0 << ", "
+						<< this->app_settings.subwindows[number].backgroundcolor.blue * 255.0
+						<< L") has been set up\n";
+
+				}
+					break;
+
+
+
+				default: 
+					std::wcout << L"\tIncorrect format\n"; return false;
+					break;
+
+
+			}
 											  
-											  this->app_settings.main_window.backgroundcolor.red = std::stod(_commands[2]) / 255.0;
-											  this->app_settings.main_window.backgroundcolor.green = std::stod(_commands[3]) / 255.0;
-											  this->app_settings.main_window.backgroundcolor.blue = std::stod(_commands[4]) / 255.0;
-											  
-											  std::wcout << L"\tColoring background (" 
-												  << this->app_settings.main_window.backgroundcolor.red * 255.0 << ", "
-												  << this->app_settings.main_window.backgroundcolor.green * 255.0 << ", "
-												  << this->app_settings.main_window.backgroundcolor.blue * 255.0
-												  << L") has been set up\n";
-											  
-											  break;
+				break;
 
 		case INTER_COMMAND_SET_FULLSCREEN: if (_commands.size() < 3) { std::wcout << L"\tEmpty instruction\n"; return false; }
 										 this->app_settings.freeglut_settings.fullscreen = by_synonyms(_commands[2]) == L"yes" ? true : false;
@@ -393,6 +495,12 @@ bool Interpretator::set_handler(std::vector<std::wstring> _commands) {
 										} else if (_commands[2] == VVIS_SHAPE_NOTHING_WSTR || _commands[2] == L"n") {
 											this->app_settings.freeglut_settings.shape = VVIS_SHAPE_NOTHING;
 											this->app_settings.freeglut_settings.shape_wstr = VVIS_SHAPE_NOTHING_WSTR;
+										} else if (_commands[2] == VVIS_SHAPE_SPHERE_WSTR || _commands[2] == L"s") {
+											this->app_settings.freeglut_settings.shape = VVIS_SHAPE_SPHERE;
+											this->app_settings.freeglut_settings.shape_wstr = VVIS_SHAPE_SPHERE_WSTR;
+										} else if (_commands[2] == VVIS_SHAPE_ARROW_WSTR || _commands[2] == L"a") {
+											this->app_settings.freeglut_settings.shape = VVIS_SHAPE_ARROW;
+											this->app_settings.freeglut_settings.shape_wstr = VVIS_SHAPE_ARROW_WSTR;
 										}
 										std::wcout << L"\tShape \"" << this->app_settings.freeglut_settings.shape << "/" << this->app_settings.freeglut_settings.shape_wstr << L"\" has been set up\n";
 										break;
@@ -450,6 +558,22 @@ bool Interpretator::set_handler(std::vector<std::wstring> _commands) {
 									   std::wcout << L"\tSpinrate \"" << this->app_settings.spinrate << L"\" has been set up\n";
 									   break;
 
+		case INTER_COMMAND_SET_SUBWINDOWING:  if (_commands.size() < 3) { std::wcout << L"\tEmpty instruction\n"; return false; }
+										   this->app_settings.freeglut_settings.use_additional_subwindows = by_synonyms(_commands[2]) == L"yes" ? true : false;
+										   std::wcout << L"\tSubwindowing setting \"" << std::boolalpha << this->app_settings.freeglut_settings.use_additional_subwindows << L"\" has been set up\n";
+										   break;
+
+		case INTER_COMMAND_SET_GAP: if (_commands.size() < 3) { std::wcout << L"\tEmpty instruction\n"; return false; }
+								  if (!is_number(_commands[2])) { std::wcout << L"\tNot number\n"; return false; }
+									else { this->app_settings.gap = std::stoi(_commands[2]);
+								std::wcout << L"\tGap number \"" << this->app_settings.gap << L"\" has been set up\n"; } break;
+
+		case INTER_COMMAND_SET_POLIGONRATE: if (_commands.size() < 3) { std::wcout << L"\tEmpty instruction\n"; return false; }
+										  if (!is_number(_commands[2])) { std::wcout << L"\tNot number\n"; return false; }
+										  else { this->app_settings.freeglut_settings.polygonrate = std::stoi(_commands[2]);
+								std::wcout << L"\tPoligonrate number \"" << this->app_settings.freeglut_settings.polygonrate << L"\" has been set up\n"; } break;
+
+
 		case VVIS_UNKNOWW_MAP_SECOND: std::wcout << L"\tUnknow subcommand: " << _commands[1] << L'\n'; return false; break;
 		default: break;
 
@@ -479,7 +603,7 @@ bool Interpretator::unset_handler(std::vector<std::wstring> _commands) {
 
 		case INTER_COMMAND_SET_COLORING: std::wcout << L"\tSuccessful\n"; this->app_settings.freeglut_settings.coloring_sample = false; break;
 
-		case INTER_COMMAND_SET_BACKGROUNDCOLOR: std::wcout << L"\tSuccessful\n"; this->app_settings.main_window.backgroundcolor = Rgb(1.0, 1.0, 1.0); break;
+		case INTER_COMMAND_SET_BACKGROUNDCOLOR: std::wcout << L"\tSuccessful\n"; this->app_settings.subwindows[0].backgroundcolor = Rgb(1.0, 1.0, 1.0); break;
 
 		case INTER_COMMAND_SET_FULLSCREEN: std::wcout << L"\tSuccessful\n"; this->app_settings.freeglut_settings.fullscreen = false; break;
 
@@ -510,6 +634,12 @@ bool Interpretator::unset_handler(std::vector<std::wstring> _commands) {
 												break;
 
 		case INTER_COMMAND_SET_SPINRATE: std::wcout << L"\tSuccessful\n"; this->app_settings.spinrate = 1; break;
+
+		case INTER_COMMAND_SET_SUBWINDOWING:  std::wcout << L"\tSuccessful\n"; this->app_settings.freeglut_settings.use_additional_subwindows = true; break;
+
+		case INTER_COMMAND_SET_GAP: std::wcout << L"\tSuccessful\n"; this->app_settings.gap = 7; break;
+
+		case INTER_COMMAND_SET_POLIGONRATE: std::wcout << L"\tSuccessful\n"; this->app_settings.freeglut_settings.polygonrate = 7; break;
 
 		case VVIS_UNKNOWW_MAP_SECOND: std::wcout << L"\tUnknow subcommand: " << _commands[1] << L'\n'; return false; break;
 		default: break;
@@ -619,7 +749,23 @@ bool Interpretator::visualize_handler(std::vector<std::wstring> _commands) {
 }
 
 bool set_command_maps(Interpretator& _inter) {
-	
+
+	// subwindow_0 - drawer square
+	_inter.app_settings.subwindows.push_back(Window());
+	_inter.app_settings.subwindows[0].backgroundcolor = Rgb(230.0 / 255.0, 230.0 / 255.0, 230.0 / 255.0);
+
+	// s_1 - axis
+	_inter.app_settings.subwindows.push_back(Window());
+	_inter.app_settings.subwindows[1].backgroundcolor = Rgb(230.0 / 255.0, 230.0 / 255.0, 230.0 / 255.0);
+
+	// s_2 - stats
+	_inter.app_settings.subwindows.push_back(Window());
+	_inter.app_settings.subwindows[2].backgroundcolor = Rgb(230.0 / 255.0, 230.0 / 255.0, 230.0 / 255.0);
+
+	// s_3 - log
+	_inter.app_settings.subwindows.push_back(Window());
+	_inter.app_settings.subwindows[3].backgroundcolor = Rgb(230.0 / 255.0, 230.0 / 255.0, 230.0 / 255.0);
+
 	_inter.main_command = {
 		{L"help", INTER_COMMAND_HELP},
 		{L"settings", INTER_COMMAND_SETTINGS}, {L"setting", INTER_COMMAND_SETTINGS}, {L"setgs", INTER_COMMAND_SETTINGS}, {L"setg", INTER_COMMAND_SETTINGS}, {L"sgs", INTER_COMMAND_SETTINGS},
@@ -671,7 +817,10 @@ bool set_command_maps(Interpretator& _inter) {
 		{L"scalingchanges", INTER_COMMAND_SET_SCALING_CHANGES}, {L"schanges", INTER_COMMAND_SET_SCALING_CHANGES}, {L"sch", INTER_COMMAND_SET_SCALING_CHANGES},
 		{L"translationchanges", INTER_COMMAND_SET_TRANSLATION_CHANGES}, {L"tchanges", INTER_COMMAND_SET_TRANSLATION_CHANGES}, {L"tch", INTER_COMMAND_SET_TRANSLATION_CHANGES},
 		{L"camerachanges", INTER_COMMAND_SET_CAMERA_CHANGES}, {L"cchanges", INTER_COMMAND_SET_CAMERA_CHANGES}, {L"cch", INTER_COMMAND_SET_CAMERA_CHANGES},
-		{L"spinrate", INTER_COMMAND_SET_SPINRATE}, {L"spinr", INTER_COMMAND_SET_SPINRATE}, {L"sr", INTER_COMMAND_SET_SPINRATE}, {L"srate", INTER_COMMAND_SET_SPINRATE}
+		{L"spinrate", INTER_COMMAND_SET_SPINRATE}, {L"spinr", INTER_COMMAND_SET_SPINRATE}, {L"sr", INTER_COMMAND_SET_SPINRATE}, {L"srate", INTER_COMMAND_SET_SPINRATE},
+		{L"subwindowing", INTER_COMMAND_SET_SUBWINDOWING}, {L"subwg", INTER_COMMAND_SET_SUBWINDOWING},
+		{L"gap", INTER_COMMAND_SET_GAP},
+		{L"polygonrate", INTER_COMMAND_SET_POLIGONRATE}, {L"pr", INTER_COMMAND_SET_POLIGONRATE}
 	};
 
 	_inter.convert_sub_command = {

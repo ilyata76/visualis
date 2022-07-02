@@ -8,6 +8,10 @@
 	#include "../libraries/freeglut/include/GL/freeglut.h"
 	#include "../vertex-shape/shape.hpp"
 
+	#include <wchar.h>
+	#include <ctime>
+
+
 	#define MENU_RENDER_MOVEMENTS_BY_ARROWS 1010
 
 	#define MENU_RENDER_MOVEMENTS_BY_ARROWS_SHOW_SENSIVITY 1011
@@ -66,6 +70,7 @@
 	#define MENU_SETTINGS_GS_SHOW 1075
 
 	#define MENU_RENDER_INVERT_CONTROL 1080
+	#define MENU_RENDER_RESTORE_GAP 1081
 
 	#define MENU_RENDER_SPINRATE 1090
 	#define MENU_RENDER_SPINRATE_1 1091
@@ -88,6 +93,41 @@
 	#define MENU_RENDER_SPINRATE_18 10918
 	#define MENU_RENDER_SPINRATE_19 10919
 	#define MENU_RENDER_SPINRATE_20 10920
+	#define MENU_RENDER_INCREASE_SPINRATE_BY_1 10921
+	#define MENU_RENDER_DECREASE_SPINRATE_BY_1 10922
+	#define MENU_RENDER_SPINRATE_21 10923
+	#define MENU_RENDER_SPINRATE_22 10924
+	#define MENU_RENDER_SPINRATE_23 10925
+	#define MENU_RENDER_SPINRATE_24 10926
+	#define MENU_RENDER_SPINRATE_25 10927
+	#define MENU_RENDER_SPINRATE_26 10928
+	#define MENU_RENDER_SPINRATE_27 10929
+	#define MENU_RENDER_SPINRATE_28 10930
+	#define MENU_RENDER_SPINRATE_29 10931
+	#define MENU_RENDER_SPINRATE_30 10932
+
+	#define MENU_INCREASE_POLYGON_BY_1 11901
+	#define MENU_DECREASE_POLYGON_BY_1 11902
+	#define MENU_SET_POLYGON_5 11903
+	#define MENU_SET_POLYGON_10 11904
+	#define MENU_SET_POLYGON_15 11905
+	#define MENU_SET_POLYGON_20 11906
+
+	#define MENU_COLORING_BACKGROUND 1100
+	#define MENU_COLORING_BACKGROUND_WHITE 1101
+	#define MENU_COLORING_BACKGROUND_RED 1102
+	#define MENU_COLORING_BACKGROUND_GREEN 1103
+	#define MENU_COLORING_BACKGROUND_BLUE 1104
+	#define MENU_COLORING_BACKGROUND_LIGHTBLUE 1105
+	#define MENU_COLORING_BACKGROUND_BLACK 1106
+	#define MENU_COLORING_BACKGROUND_LIGHTGREY 1107
+	#define MENU_COLORING_BACKGROUND_MAIN 1108
+	#define MENU_COLORING_BACKGROUND_SUB0 1109
+	#define MENU_COLORING_BACKGROUND_SUB1 1110
+	#define MENU_COLORING_BACKGROUND_SUB2 1111
+	#define MENU_COLORING_BACKGROUND_SUB3 1112
+	
+	#define MENU_RENDER_LIGHTING 12001
 
 
 	#define SUBWINDOW_AXIS_MENU_USE_CONES 2001
@@ -97,48 +137,122 @@
 	#define SUBWINDOW_AXIS_MENU_BACGROUND_MAIN 2005
 	#define SUBWINDOW_AXIS_MENU_BACGROUND_GREY 2006
 
-	void print_text_3f(double _x, double _y, double _z, std::wstring text);
-	void print_text_2f(double _x, double _y, std::wstring text);
 
-	void draw_sample(Settings& _settings, std::vector<Vertex>& _vct, int argc, char** argv);
-	void display_mainwindow();
-	void draw_shape(int index);
-	void reshape_mainwindow(int w, int h);
+	#define MAIN_MENU_GAP 3001
+	#define MAIN_MENU_GAP_INCREASE_BY_1 3002
+	#define MAIN_MENU_GAP_DECREASE_BY_1 3003
+	#define MAIN_MENU_GAP_SET_5 3004
+	#define MAIN_MENU_GAP_SET_6 3005
+	#define MAIN_MENU_GAP_SET_7 3006
+	#define MAIN_MENU_GAP_SET_8 3007
+	#define MAIN_MENU_GAP_SET_9 3008
+
+	#define MAIN_MENU_SUBWINDOWS 3101
+	#define MAIN_MENU_SUBWINDOWS_DESTROY 3102
+	#define MAIN_MENU_SUBWINDOWS_BUILD 3103
+
+	#define FONT_HELVETICA_10 4101
+	#define FONT_HELVETICA_12 4102
+	#define FONT_HELVETICA_18 4103
+	#define FONT_8_BY_13 4104
+	#define FONT_8_BY_15 4105
+	#define FONT_TIMES_ROMAN_10 4106
+	#define FONT_TIMES_ROMAN_24 4107
+
+	#define MENU_INVERT_BLACK_TEXT_COLOR 5100
+	#define CLEAR_LOG 6100
+
+	void print_text_3f(double _x, double _y, double _z, std::wstring text, void* FONT);
+	void print_text_2f(double _x, double _y, std::wstring text, void* FONT);
+
+	void print_text_3f(double _x, double _y, double _z, std::string text, void* FONT);
+	void print_text_2f(double _x, double _y, std::string text, void* FONT);
 	
-	void normal_keys(unsigned char key, int x, int y);
-	void special_keys(int key, int x, int y);
 
-	void mouse_pressed(int button, int state, int x, int y);
-	void passive_mouse_motion(int x, int y);
-	void pressed_mouse_motion(int x, int y);
-	
-
-	void main_menu_init();
-	void main_menu_render(int code);
-	void menu_movements_by_arrows(int code);
-	void menu_movements_by_wasd(int code);
-	void menu_movements_by_ijkl(int code);
-	void menu_movements_by_shiftspace(int code);
-	void menu_scaling(int code);
-	void menu_color(int code);
-	void menu_settings(int code);
-	void menu_spinrate(int code);
-
-	//void just_mouse_motion();
-
-
-	// SUBWINDOWS
-
-	void display_subwindow_0();
-	void reshape_subwindow_0(int w, int h);
-
-	void subwindow_0_menu_init();
-	void subwindow_0_menu(int code);
-
-	void draw_axis_by_cones();
-	void draw_axis_by_lines();
-
+	void create_additional_subwindows();
+	void recalculation_subwindows_wh();
+	void reshape_reposition_subwindows();
 	void postRedisplay();
 
+	void draw_sample(Settings& _settings, std::vector<Vertex>& _vct, int argc, char** argv);
+
+	// WINDOWS
+
+	void display_mainwindow();
+	void reshape_mainwindow(int w, int h);
+
+	double distance_between_fonts(void* _font);
+	
+	void display_subwindow_0();
+		void draw_shape(int index);
+
+		void normal_keys(unsigned char key, int x, int y);
+		void special_keys(int key, int x, int y);
+		void mouse_pressed(int button, int state, int x, int y);
+		void passive_mouse_motion(int x, int y);
+		void pressed_mouse_motion(int x, int y);
+		
+	
+	void display_subwindow_1();
+		void draw_axis_by_cones();
+		void draw_axis_by_lines();
+	
+	void display_subwindow_2();
+		void subwindow_2_special_keys(int key, int x, int y);
+		void subwindow_2_mouse_pressed(int button, int state, int x, int y);
+	
+	
+	void display_subwindow_3();
+		void subwindow_3_special_keys(int key, int x, int y);
+		void subwindow_3_mouse_pressed(int button, int state, int x, int y);
+
+	void reshape_subwindow_0(int w, int h);
+	void reshape_subwindow_1(int w, int h);
+	void reshape_subwindow_2(int w, int h);
+	void reshape_subwindow_3(int w, int h);
+
+	void main_menu_init();
+		void main_menu(int code);
+		void main_menu_gap(int code);
+		void main_menu_subwindows(int code);
+		void menu_background_main(int code);
+
+
+	void subwindow_0_menu_init();
+		void subwindow_0_menu(int code);
+		void menu_movements_by_arrows(int code);
+		void menu_movements_by_wasd(int code);
+		void menu_movements_by_ijkl(int code);
+		void menu_movements_by_shiftspace(int code);
+		void menu_scaling(int code);
+		void menu_color(int code);
+		void menu_settings(int code);
+		void menu_spinrate(int code);
+			void menu_spinrate_set(int code);
+				void menu_spinrate_set_1_10(int code);
+				void menu_spinrate_set_11_20(int code);
+				void menu_spinrate_set_21_30(int code);
+		void menu_shape(int code);
+		void menu_polygon(int code);
+		void menu_background_sub0(int code);
+
+	void subwindow_1_menu_init();
+		void subwindow_1_menu(int code);
+		void menu_background_sub1(int code);
+		
+
+
+	void subwindow_2_menu_init();
+		void subwindow_2_menu(int code);
+		void menu_background_sub2(int code);
+		void menu_font_sub2(int code);
+
+	void subwindow_3_menu_init();
+		void subwindow_3_menu(int code);
+		void menu_background_sub3(int code);
+		void menu_font_sub3(int code);
+
+	void log(std::string _str, Rgb _color);
+	void log(std::wstring _str);
 
 #endif // !FREEGLUT_DRAWER_HPP

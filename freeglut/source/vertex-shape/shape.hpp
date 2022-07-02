@@ -28,9 +28,37 @@
 			
 			bool set_draw_configuration();
 			
-			// 4 argc
-			bool draw(Rgb color, double* argc);
+			// 4 args
+			bool draw(Rgb color, double* args);
 			wchar_t info();
+	};
+
+
+	class Sphere : public Shape {
+		public:
+			Sphere(Vertex& _vrt) : Shape(_vrt) {};
+			
+			bool set_draw_configuration();
+
+			// 3 args
+			bool draw(Rgb color, double* args);
+			wchar_t info();
+
+	};
+
+	class Arrow : public Shape {
+		public:
+			double euler_phi;
+			double euler_theta;
+
+			Arrow(Vertex& _vrt) : Shape(_vrt), euler_phi(0), euler_theta(0) {};
+
+			bool set_draw_configuration();
+
+			bool draw(Rgb color, double* args);
+			wchar_t info();
+
+
 	};
 
 
