@@ -6,3 +6,9 @@ build
 *.lnk
 trash
 *.bat
+
+*.aux
+*.dvi
+*.log
+*.ps
+*.pdf
