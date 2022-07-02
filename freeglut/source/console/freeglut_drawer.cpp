@@ -130,6 +130,8 @@ void draw_sample(Settings& _settings, std::vector<Vertex>& _vct, int argc, char*
 	inverted_black_text_log = false;
 	inverted_black_text_axis = false;
 
+	beta_light = false;
+
 	log("System initialized", RGB_GREEN);
 
 	// настройки будут переходить из окна к окну только в случае сохранения их здесь и восстановления из файла в консоли

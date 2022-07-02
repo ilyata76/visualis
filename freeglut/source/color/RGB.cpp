@@ -13,8 +13,10 @@ Rgb get_color_by_direction(const double& _x, const double& _y, const double& _z)
 		//Luminance 0-100 - от оси Z 0-180
 
 		double hue = get_euler_phi(_x, _y, _z); //Given a color with hue H ∈ [0°, 360°], saturation SL ∈ [0, 1], and lightness L ∈ [0, 1], we first find chroma:
-		double lightness = (get_euler_theta(_x, _y, _z) * 1 / 180);
+		double lightness = 1.0 - (get_euler_theta(_x, _y, _z) * 1 / 180);
 		double saturation = 1;
+
+		if (hue < 0) hue = 360 + hue;
 
 		double chroma = ( 1 - fabs(2.0 * lightness - 1.0) * saturation );
 		double h = ( hue / 60 );
