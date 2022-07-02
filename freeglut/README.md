@@ -192,6 +192,39 @@ vvis >
 ## Текущее быстродействие
 - [issues/Оптимизация](https://github.com/ilyata76/visualis/issues/12)
 
+## Порядок действий V6
+```
+
+    ____   ____.___  _____________ ___  _____  .____    .___  _________
+    \   \ /   /|   |/   _____/    |   \/  _  \ |    |   |   |/  _____/
+     \   Y   / |   |\_____  \|    |   /  /_\  \|    |   |   |\_____ \
+      \     /  |   |/        \    |  /    |    \    |___|   |/       \
+       \___/   |___/_______  /______/\____|__  /_______ \___/_______ /
+                           \/                \/        \/          \/
+
+vvis > set folp ../temp/b
+
+        Path to folder "../temp/b" has been set up
+
+vvis > set fn 25
+
+        File number "25" has been set up
+
+vvis > convert v6
+
+        atoms file exists? : true
+        spins file exists? : true
+        Parsing and converting... : Successful!
+
+vvis > visualize
+
+        sconfiguration file exists? : true
+        loading... : 6912 vertexes has been loaded
+        visualizing...
+
+```
+
+
 ## PICTURES AND EXAMPLES
 ### alpha 0.3.0
 Основные направления и возможности отрисовки:  
