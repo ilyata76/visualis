@@ -2110,6 +2110,7 @@ void subwindow_3_menu_init() {
 		glutAddSubMenu("Background color", _menu_background);
 		glutAddSubMenu("Font", _menu_font);
 		glutAddMenuEntry("Invert black text to white or conversely", MENU_INVERT_BLACK_TEXT_COLOR);
+		glutAddMenuEntry("Clear log", CLEAR_LOG);
 
 	glutAttachMenu(GLUT_RIGHT_BUTTON);
 	glutDetachMenu(GLUT_LEFT_BUTTON);
@@ -2122,6 +2123,8 @@ void subwindow_3_menu(int code) {
 	switch (code) {
 		
 		case MENU_INVERT_BLACK_TEXT_COLOR: inverted_black_text_log = !inverted_black_text_log; log("Black color of sub3 has been inverted", RGB_BLUE); postRedisplay(); break;
+		case CLEAR_LOG: vct_log = {}; vct_log_colorful = {}; log("Log has been cleared", RGB_RED); postRedisplay(); break;
+
 
 		default: break;
 

@@ -160,6 +160,7 @@
 	#define FONT_TIMES_ROMAN_24 4107
 
 	#define MENU_INVERT_BLACK_TEXT_COLOR 5100
+	#define CLEAR_LOG 6100
 
 	void print_text_3f(double _x, double _y, double _z, std::wstring text, void* FONT);
 	void print_text_2f(double _x, double _y, std::wstring text, void* FONT);
