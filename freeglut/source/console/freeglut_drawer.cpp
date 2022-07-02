@@ -16,6 +16,8 @@ bool inverted_black_text_axis = false;
 Parameters3f transl_stats = { 0.0, 0.0, 0.0 };
 Parameters3f transl_log = { 0.0, 0.0, 0.0 };
 
+bool beta_light = false;
+
 std::vector<std::string> vct_log;
 std::vector<Rgb> vct_log_colorful;
 
@@ -565,6 +567,33 @@ void display_subwindow_0() {
 		
 		glMatrixMode(GL_MODELVIEW);
 
+		if (beta_light && !glob_settings.freeglut_settings.coloring_sample) {
+
+			glEnable(GL_LIGHTING); //рассчёт освещения
+			glEnable(GL_LIGHT0); // источник
+
+			glEnable(GL_NORMALIZE);
+			glLightModelf(GL_LIGHT_MODEL_TWO_SIDE, GL_TRUE);
+			//float direction[] = { 0.0, 0.0, -1.0, 0.0 };
+			GLfloat direction[] = { 0.0, 0.0, 1.0, 0.0 };
+			GLfloat params1[] = { 1.0, 0.0, 0.0, 0.0 };
+			GLfloat params2[] = { 0.0, 1.0, 0.0, 0.0 };
+			GLenum position = (0.0, 0.0, 0.0, 0.0);
+			GLfloat s1[] = { 0.0 };
+			GLfloat s2[] = { 0.0 };
+
+			glMaterialfv(GL_FRONT, GL_SPECULAR, params1);
+			glMaterialfv(GL_FRONT, GL_SHININESS, s1);
+			glMaterialfv(GL_BACK, GL_SPECULAR, params2);
+			glMaterialfv(GL_BACK, GL_SHININESS, s2);
+			glLightfv(GL_LIGHT0, position, direction);
+
+			
+		} else {
+			glDisable(GL_LIGHTING);
+		}
+
+
 		if (glob_settings.global_settings.index_of_spin == VVIS_DRAW_ALL) {
 				
 			size_t size_of_vector = glob_vct.size();
@@ -842,6 +871,7 @@ void subwindow_0_menu_init() {
 		glutAddSubMenu("Polygon rate", _menu_polygon);
 		glutAddMenuEntry("Invert control", MENU_RENDER_INVERT_CONTROL);
 		glutAddMenuEntry("Restore gap=7", MENU_RENDER_RESTORE_GAP);
+		glutAddMenuEntry("Lighting on/off (beta)", MENU_RENDER_LIGHTING);
 
 
 	glutAttachMenu(GLUT_RIGHT_BUTTON);
@@ -867,6 +897,11 @@ void subwindow_0_menu(int code) {
 			postRedisplay();
 			
 			break;
+
+		case MENU_RENDER_LIGHTING: beta_light = !beta_light;
+			if (beta_light) log("Beta lighting was enabled", RGB_RED);
+			else log("Beta lighting was disabled", RGB_GREEN);
+			postRedisplay();
 
 		default:
 			break;
@@ -1550,10 +1585,16 @@ void display_subwindow_1() {
 		double estrangement = 0.7;
 		if (glob_settings.freeglut_settings.estrangement < 0) estrangement = -estrangement;
 
-		glOrtho(
-			-(double(glob_settings.subwindows[1].wh.width) / 2.) * estrangement, (double(glob_settings.subwindows[1].wh.width) / 2.) * estrangement,
-			-(double(glob_settings.subwindows[1].wh.height) / 2.) * abs(estrangement), (double(glob_settings.subwindows[1].wh.height) / 2.) * abs(estrangement),
-			-100000.0, 100000.0
+		//glOrtho(
+		//	-(double(glob_settings.subwindows[1].wh.width) / 2.) * estrangement, (double(glob_settings.subwindows[1].wh.width) / 2.) * estrangement,
+		//	-(double(glob_settings.subwindows[1].wh.height) / 2.) * abs(estrangement), (double(glob_settings.subwindows[1].wh.height) / 2.) * abs(estrangement),
+		//	-100000.0, 100000.0
+		//);
+
+		glFrustum(
+			-1.0 * estrangement, 1.0 * estrangement,
+			-1.0 * abs(estrangement), 1.0 * abs(estrangement),
+			1.0, 1000.0
 		);
 
 	glMatrixMode(GL_MODELVIEW);
@@ -1575,7 +1616,7 @@ void display_subwindow_1() {
 }
 
 void draw_axis_by_cones() {
-	double estrangement = glob_settings.subwindows[1].wh.width / 50.0;
+	double estrangement = glob_settings.subwindows[1].wh.width / 100.0;
 	
 	glColor3f(1.0, 0.0, 0.0);
 	
