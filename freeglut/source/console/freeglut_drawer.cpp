@@ -220,6 +220,8 @@ void reshape_mainwindow(int w, int h) {
 
 	}
 
+	log("Main window was reshaped", RGB_BLACK);
+
 	reshape_reposition_subwindows();
 
 }
@@ -571,10 +573,15 @@ void display_subwindow_0() {
 				if (i % glob_settings.spinrate == 0) draw_shape(i);
 			}
 
+			//log(std::string("Drawed " + std::to_string(size_of_vector/glob_settings.spinrate) + " spins"), RGB_BLACK);
+
 		} else {
 			draw_shape(glob_settings.global_settings.index_of_spin);
+
+			//log(std::string("Drawed " + std::to_string(glob_settings.global_settings.index_of_spin) + " spin"), RGB_BLACK);
 		}
 
+		
 
 		glFlush();
 		glutSwapBuffers();
@@ -594,8 +601,8 @@ void draw_shape(int index) {
 
 			args_for_draw[0] = 0.005 * glob_settings.freeglut_settings.scaling_parameters.x;		//
 			args_for_draw[1] = 0.05 * glob_settings.freeglut_settings.scaling_parameters.y;		//
-			args_for_draw[2] = glob_settings.freeglut_settings.poligonrate;
-			args_for_draw[3] = glob_settings.freeglut_settings.poligonrate;
+			args_for_draw[2] = glob_settings.freeglut_settings.polygonrate;
+			args_for_draw[3] = glob_settings.freeglut_settings.polygonrate;
 			break;
 
 
@@ -603,8 +610,8 @@ void draw_shape(int index) {
 			shape = new Sphere(current_vertex);
 
 			args_for_draw[0] = 0.009 * glob_settings.freeglut_settings.scaling_parameters.x;
-			args_for_draw[1] = glob_settings.freeglut_settings.poligonrate;
-			args_for_draw[2] = glob_settings.freeglut_settings.poligonrate;
+			args_for_draw[1] = glob_settings.freeglut_settings.polygonrate;
+			args_for_draw[2] = glob_settings.freeglut_settings.polygonrate;
 
 			break;
 
@@ -613,8 +620,8 @@ void draw_shape(int index) {
 
 			args_for_draw[0] = 0.004 * glob_settings.freeglut_settings.scaling_parameters.x;		//
 			args_for_draw[1] = 0.025 * glob_settings.freeglut_settings.scaling_parameters.y;		//
-			args_for_draw[2] = glob_settings.freeglut_settings.poligonrate;
-			args_for_draw[3] = glob_settings.freeglut_settings.poligonrate;
+			args_for_draw[2] = glob_settings.freeglut_settings.polygonrate;
+			args_for_draw[3] = glob_settings.freeglut_settings.polygonrate;
 			args_for_draw[4] = 0.003 * glob_settings.freeglut_settings.scaling_parameters.x; // sphere
 
 			break;
@@ -625,8 +632,8 @@ void draw_shape(int index) {
 
 			args_for_draw[0] = 0.005 * glob_settings.freeglut_settings.scaling_parameters.x;		//
 			args_for_draw[1] = 0.05 * glob_settings.freeglut_settings.scaling_parameters.y;		//
-			args_for_draw[2] = glob_settings.freeglut_settings.poligonrate;
-			args_for_draw[3] = glob_settings.freeglut_settings.poligonrate;
+			args_for_draw[2] = glob_settings.freeglut_settings.polygonrate;
+			args_for_draw[3] = glob_settings.freeglut_settings.polygonrate;
 
 			break;
 
@@ -681,7 +688,7 @@ void subwindow_0_menu_init() {
 	int _menu_spinrate_set_21_30 = glutCreateMenu(menu_spinrate_set_21_30);
 	int _menu_background = glutCreateMenu(menu_background_sub0);
 	int _menu_shape = glutCreateMenu(menu_shape);
-	int _menu_poligon = glutCreateMenu(menu_poligon);
+	int _menu_polygon = glutCreateMenu(menu_polygon);
 
 	char buff[256];
 
@@ -812,13 +819,13 @@ void subwindow_0_menu_init() {
 		glutAddMenuEntry("Arrow", VVIS_SHAPE_ARROW);
 
 
-	glutSetMenu(_menu_poligon);
-		glutAddMenuEntry("Increase by 1", MENU_INCREASE_POLIGON_BY_1);
-		glutAddMenuEntry("Decrease by 1", MENU_DECREASE_POLIGON_BY_1);
-		glutAddMenuEntry("Set 5", MENU_SET_POLIGON_5);
-		glutAddMenuEntry("Set 10", MENU_SET_POLIGON_10);
-		glutAddMenuEntry("Set 15", MENU_SET_POLIGON_15);
-		glutAddMenuEntry("Set 20", MENU_SET_POLIGON_20);
+	glutSetMenu(_menu_polygon);
+		glutAddMenuEntry("Increase by 1", MENU_INCREASE_POLYGON_BY_1);
+		glutAddMenuEntry("Decrease by 1", MENU_DECREASE_POLYGON_BY_1);
+		glutAddMenuEntry("Set 5", MENU_SET_POLYGON_5);
+		glutAddMenuEntry("Set 10", MENU_SET_POLYGON_10);
+		glutAddMenuEntry("Set 15", MENU_SET_POLYGON_15);
+		glutAddMenuEntry("Set 20", MENU_SET_POLYGON_20);
 
 
 	glutSetMenu(_main_menu_render);
@@ -829,12 +836,12 @@ void subwindow_0_menu_init() {
 		glutAddSubMenu("Scaling parameters by pageup/pagedown", _menu_scaling);
 		glutAddSubMenu("Coloring", _menu_color);
 		glutAddSubMenu("Settings", _menu_settings);
-		glutAddSubMenu("Spinrate", _menu_spinrate);
-		glutAddMenuEntry("Invert control", MENU_RENDER_INVERT_CONTROL);
+		glutAddSubMenu("Spin rate", _menu_spinrate);
 		glutAddSubMenu("Background color", _menu_background);
+		glutAddSubMenu("Shape", _menu_shape);
+		glutAddSubMenu("Polygon rate", _menu_polygon);
+		glutAddMenuEntry("Invert control", MENU_RENDER_INVERT_CONTROL);
 		glutAddMenuEntry("Restore gap=7", MENU_RENDER_RESTORE_GAP);
-		glutAddSubMenu("Change shape", _menu_shape);
-		glutAddSubMenu("Poligon rate", _menu_poligon);
 
 
 	glutAttachMenu(GLUT_RIGHT_BUTTON);
@@ -1280,43 +1287,43 @@ void menu_shape(int code) {
 }
 
 
-void menu_poligon(int code) {
+void menu_polygon(int code) {
 
 	switch (code) {
 
-		case MENU_INCREASE_POLIGON_BY_1:
-			glob_settings.freeglut_settings.poligonrate += 1;
-			log("Poligonrate was changed and now: " + std::to_string(glob_settings.freeglut_settings.poligonrate), RGB_GREEN);
+		case MENU_INCREASE_POLYGON_BY_1:
+			glob_settings.freeglut_settings.polygonrate += 1;
+			log("Polygonrate was changed and now: " + std::to_string(glob_settings.freeglut_settings.polygonrate), RGB_GREEN);
 			postRedisplay();
 			break;
 
-		case MENU_DECREASE_POLIGON_BY_1:
-			glob_settings.freeglut_settings.poligonrate = glob_settings.freeglut_settings.poligonrate == 1 ? 1 : glob_settings.freeglut_settings.poligonrate - 1;
-			log("Poligonrate was changed and now: " + std::to_string(glob_settings.freeglut_settings.poligonrate), RGB_GREEN);
+		case MENU_DECREASE_POLYGON_BY_1:
+			glob_settings.freeglut_settings.polygonrate = glob_settings.freeglut_settings.polygonrate == 1 ? 1 : glob_settings.freeglut_settings.polygonrate - 1;
+			log("Polygonrate was changed and now: " + std::to_string(glob_settings.freeglut_settings.polygonrate), RGB_GREEN);
 			postRedisplay();
 			break;
 			
-		case MENU_SET_POLIGON_5:
-			glob_settings.freeglut_settings.poligonrate = 5;
-			log("Poligonrate was changed and now: " + std::to_string(glob_settings.freeglut_settings.poligonrate), RGB_GREEN);
+		case MENU_SET_POLYGON_5:
+			glob_settings.freeglut_settings.polygonrate = 5;
+			log("Polygonrate was changed and now: " + std::to_string(glob_settings.freeglut_settings.polygonrate), RGB_GREEN);
 			postRedisplay();
 			break;
 
-		case MENU_SET_POLIGON_10:
-			glob_settings.freeglut_settings.poligonrate = 10;
-			log("Poligonrate was changed and now: " + std::to_string(glob_settings.freeglut_settings.poligonrate), RGB_GREEN);
+		case MENU_SET_POLYGON_10:
+			glob_settings.freeglut_settings.polygonrate = 10;
+			log("Polygonrate was changed and now: " + std::to_string(glob_settings.freeglut_settings.polygonrate), RGB_GREEN);
 			postRedisplay();
 			break;
 			
-		case MENU_SET_POLIGON_15:
-			glob_settings.freeglut_settings.poligonrate = 15;
-			log("Poligonrate was changed and now: " + std::to_string(glob_settings.freeglut_settings.poligonrate), RGB_GREEN);
+		case MENU_SET_POLYGON_15:
+			glob_settings.freeglut_settings.polygonrate = 15;
+			log("Polygonrate was changed and now: " + std::to_string(glob_settings.freeglut_settings.polygonrate), RGB_GREEN);
 			postRedisplay();
 			break;
 
-		case MENU_SET_POLIGON_20:
-			glob_settings.freeglut_settings.poligonrate = 20;
-			log("Poligonrate was changed and now: " + std::to_string(glob_settings.freeglut_settings.poligonrate), RGB_GREEN);
+		case MENU_SET_POLYGON_20:
+			glob_settings.freeglut_settings.polygonrate = 20;
+			log("Polygonrate was changed and now: " + std::to_string(glob_settings.freeglut_settings.polygonrate), RGB_GREEN);
 			postRedisplay();
 			break;
 
@@ -1773,7 +1780,7 @@ void display_subwindow_2() {
 
 		std::vector <std::wstring> vct_temp = {
 			(std::wstring(L"Count of all spins - ") + std::to_wstring(glob_vct.size())),
-			(std::wstring(L"Count of drawed spins - ") + std::to_wstring(glob_vct.size() / glob_settings.spinrate)),
+			(std::wstring(L"Count of drawed spins - ") + (glob_settings.global_settings.index_of_spin == VVIS_DRAW_ALL ? (std::to_wstring(glob_vct.size() / glob_settings.spinrate)) : L"1")),
 			(std::wstring(L"Spinrate - ") + std::to_wstring(glob_settings.spinrate)),
 			(std::wstring(L"Additional rotation (phi, theta) - ") + std::to_wstring(glob_settings.freeglut_settings.additional_rotation.phi) + std::wstring(L", ") + std::to_wstring(glob_settings.freeglut_settings.additional_rotation.theta)),
 			(std::wstring(L"Estrangement - ") + std::to_wstring(glob_settings.freeglut_settings.estrangement)),
@@ -1787,7 +1794,7 @@ void display_subwindow_2() {
 			(std::wstring(L"Translation changes - (") + std::to_wstring(glob_settings.freeglut_settings.translation_changes.x) + std::wstring(L", ") + std::to_wstring(glob_settings.freeglut_settings.translation_changes.y) + std::wstring(L", ") + std::to_wstring(glob_settings.freeglut_settings.translation_changes.z) + std::wstring(L")")),
 			(std::wstring(L"Scaling parameters changes - (") + std::to_wstring(glob_settings.freeglut_settings.scaling_parameters_changes.x) + std::wstring(L", ") + std::to_wstring(glob_settings.freeglut_settings.scaling_parameters_changes.y) + std::wstring(L", ") + std::to_wstring(glob_settings.freeglut_settings.scaling_parameters_changes.z) + std::wstring(L")")),
 			(std::wstring(L"Translation by element - ") + (glob_settings.freeglut_settings.translation_by_element == -1 ? L"false" : L"true")),
-			(std::wstring(L"Poligon rate - ") + std::to_wstring(glob_settings.freeglut_settings.poligonrate)),
+			(std::wstring(L"Polygon rate - ") + std::to_wstring(glob_settings.freeglut_settings.polygonrate)),
 			(std::wstring(L"Shape - ") + glob_settings.freeglut_settings.shape_wstr),
 			(std::wstring(L"Gap - ") + std::to_wstring(glob_settings.gap)),
 			(std::wstring(L"Coloring sample - ") + (glob_settings.freeglut_settings.coloring_sample ? L"true" : L"false")),

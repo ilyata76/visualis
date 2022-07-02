@@ -18,7 +18,7 @@ Freeglut_settings::Freeglut_settings() {
 				this->fullscreen						= false;
 				this->estrangement_changes				= VVIS_ESTRAGNEMENT_CHANGES;
 				this->use_additional_subwindows			= true;
-				this->poligonrate						= 10;
+				this->polygonrate						= 10;
 };
 
 std::wostream& operator<<(std::wostream& _out, const Freeglut_settings& _settings) {
@@ -38,6 +38,6 @@ std::wostream& operator<<(std::wostream& _out, const Freeglut_settings& _setting
 	_out << L"\t Fullscreen\t\t\t\t: " << std::boolalpha << _settings.fullscreen << L"\n";
 	_out << L"\t Estrangement changes\t\t\t: " << std::boolalpha << _settings.estrangement_changes << L"\n";
 	_out << L"\t Additional subwindows\t\t\t: " << std::boolalpha << _settings.use_additional_subwindows << L"\n";
-	_out << L"\t Poligon rate\t\t\t\t: " << _settings.poligonrate << L"\n";
+	_out << L"\t Poligon rate\t\t\t\t: " << _settings.polygonrate << L"\n";
 	return _out;
 }

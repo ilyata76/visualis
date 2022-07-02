@@ -88,7 +88,8 @@ bool Settings::save(wchar_t _flag) {
 		_json[VVIS_FREEGLUT_SETTINGS]["fullscreen"] = this->freeglut_settings.fullscreen;
 
 		_json[VVIS_FREEGLUT_SETTINGS]["estrangement_changes"] = this->freeglut_settings.estrangement_changes;
-		_json[VVIS_FREEGLUT_SETTINGS]["poligonrate"] = this->freeglut_settings.poligonrate;
+		_json[VVIS_FREEGLUT_SETTINGS]["polygonrate"] = this->freeglut_settings.polygonrate;
+		_json[VVIS_FREEGLUT_SETTINGS]["subwindowing"] = this->freeglut_settings.use_additional_subwindows;
 
 	}
 
@@ -96,7 +97,6 @@ bool Settings::save(wchar_t _flag) {
 		_json[VVIS_OTHER_SETTINGS]["main_window"]["height"] = this->main_window.wh.height;
 		_json[VVIS_OTHER_SETTINGS]["main_window"]["width"] = this->main_window.wh.width; 
 		_json[VVIS_OTHER_SETTINGS]["spinrate"] = this->spinrate;
-		_json[VVIS_OTHER_SETTINGS]["subwindowing"] = this->freeglut_settings.use_additional_subwindows;
 		_json[VVIS_OTHER_SETTINGS]["gap"] = this->gap;
 	}
 
@@ -158,7 +158,9 @@ bool Settings::get_by_json(const nlohmann::json& _json, wchar_t _flag) {
 		if (_json[VVIS_FREEGLUT_SETTINGS]["fullscreen"] == nullptr); else this->freeglut_settings.fullscreen = _json[VVIS_FREEGLUT_SETTINGS]["fullscreen"].get<bool>();
 
 		if (_json[VVIS_FREEGLUT_SETTINGS]["estrangement_changes"] == nullptr); else this->freeglut_settings.estrangement_changes = _json[VVIS_FREEGLUT_SETTINGS]["estrangement_changes"].get<double>();
-		if (_json[VVIS_FREEGLUT_SETTINGS]["poligonrate"] == nullptr); else this->freeglut_settings.poligonrate = _json[VVIS_FREEGLUT_SETTINGS]["poligonrate"].get<double>();
+		if (_json[VVIS_FREEGLUT_SETTINGS]["polygonrate"] == nullptr); else this->freeglut_settings.polygonrate = _json[VVIS_FREEGLUT_SETTINGS]["polygonrate"].get<double>();
+
+		if (_json[VVIS_FREEGLUT_SETTINGS]["subwindowing"] == nullptr); else this->freeglut_settings.use_additional_subwindows = _json[VVIS_FREEGLUT_SETTINGS]["subwindowing"].get<bool>();
 
 	}
 
@@ -166,7 +168,7 @@ bool Settings::get_by_json(const nlohmann::json& _json, wchar_t _flag) {
 		if (_json[VVIS_OTHER_SETTINGS]["main_window"]["height"] == nullptr); else this->main_window.wh.height = _json[VVIS_OTHER_SETTINGS]["main_window"]["height"].get<int>(); 
 		if (_json[VVIS_OTHER_SETTINGS]["main_window"]["width"] == nullptr); else this->main_window.wh.width = _json[VVIS_OTHER_SETTINGS]["main_window"]["width"].get<int>(); 
 		if (_json[VVIS_OTHER_SETTINGS]["spinrate"] == nullptr); else this->spinrate = _json[VVIS_OTHER_SETTINGS]["spinrate"].get<int>(); 
-		if (_json[VVIS_OTHER_SETTINGS]["subwindowing"] == nullptr); else this->spinrate = _json[VVIS_OTHER_SETTINGS]["subwindowing"].get<bool>(); 
+
 		if (_json[VVIS_OTHER_SETTINGS]["gap"] == nullptr); else this->gap = _json[VVIS_OTHER_SETTINGS]["gap"].get<int>(); 
 	}
 

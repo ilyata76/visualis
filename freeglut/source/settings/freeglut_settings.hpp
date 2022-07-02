@@ -34,7 +34,7 @@
 			//WindowParameters main_window;
 			double estrangement_changes;
 			bool use_additional_subwindows;
-			int poligonrate;
+			int polygonrate;
 			
 			Freeglut_settings();
 

@@ -169,9 +169,12 @@ bool Interpretator::help_handler(std::vector<std::wstring> _commands) {
 			
 			std::wcout << L"\n";
 			std::wcout << L"\tset backgroundcolor\n";
-				std::wcout << L"\t -- <int> <int> <int>           : sets coloring RGB mode of background\n";
+				std::wcout << L"\t -- <int> <int> <int>           : sets coloring RGB mode of background of main window\n";
 				std::wcout << L"\t                                : Note: int between 0 and 255 is expected\n";
 				std::wcout << L"\t                                : Example: set backgroundcolor 200 250 100\n";
+				std::wcout << L"\t -- <int> <int> <int> <int>     : sets coloring RGB mode of background of subwindow (1st parameter)\n";
+				std::wcout << L"\t                                : Note: first int parameter between 0 and 3 is expected\n";
+				std::wcout << L"\t                                : Example: set backgroundcolor 2 200 250 100\n";
 				std::wcout << L"\t                                : Aliases: bgc\n";
 			
 			std::wcout << L"\n";
@@ -183,7 +186,7 @@ bool Interpretator::help_handler(std::vector<std::wstring> _commands) {
 			std::wcout << L"\n";
 			std::wcout << L"\tset shape\n";
 				std::wcout << L"\t -- <char>                      : sets a shape with which the sample will be built\n";
-				std::wcout << L"\t                                : Note: c - cone, n - nothing\n";
+				std::wcout << L"\t                                : Note: n - nothing, c - cone, s - sphere, a - arrow \n";
 				std::wcout << L"\t                                : Example: set shape c\n";
 				std::wcout << L"\t                                : Aliases: shape\n";
 			
@@ -227,7 +230,27 @@ bool Interpretator::help_handler(std::vector<std::wstring> _commands) {
 				std::wcout << L"\t                                : Example: set spinrate 10\n";
 				std::wcout << L"\t                                : Aliases: spinrate, spinr, sr, srate\n";
 			
-
+			std::wcout << L"\n";
+			std::wcout << L"\tset gap\n";
+				std::wcout << L"\t -- <int>                       : sets the gap between subwindows (axises, logs, stats, drawer area)\n";
+				std::wcout << L"\t                                : Note: >= 0 \n";
+				std::wcout << L"\t                                : Example: set gap 10\n";
+				std::wcout << L"\t                                : Aliases: gap\n";
+			
+			std::wcout << L"\n";
+			std::wcout << L"\tset subwindowing\n";
+				std::wcout << L"\t -- <y/n>                       : subwindowing mode\n";
+				std::wcout << L"\t                                : Note: if \"no\" - only drawer area \n";
+				std::wcout << L"\t                                : Example: set subwindowing 1\n";
+				std::wcout << L"\t                                : Aliases: subwindowing, subwg\n";
+			
+			std::wcout << L"\n";
+			std::wcout << L"\tset polygonrate\n";
+				std::wcout << L"\t -- <int>                       : how many polygons of shape\n";
+				std::wcout << L"\t                                : Note: >= 1\n";
+				std::wcout << L"\t                                : Example: set polygonrate 1\n";
+				std::wcout << L"\t                                : Aliases: polygonrate, pr\n";
+			
 			std::wcout << L"\n";
 			std::wcout << L"\tAliases: set\n";
 
@@ -247,26 +270,55 @@ bool Interpretator::help_handler(std::vector<std::wstring> _commands) {
 			std::wcout << L"\tconvert\n";
 				std::wcout << L"\t -- v6   : converting vampire6 data to sconfiguration file\n";
 				std::wcout << L"\t         : Note: expected: spins-xxx.data, atoms-coords.data \n";
-				std::wcout << L"\t         : Aliases: vampire6, v6, vampire5, v5\n";
-			
+				std::wcout << L"\t         : Aliases: vampire6, v6, vampire5, v5\n";			
+					
 			std::wcout << L"\n";
 			std::wcout << L"\tAliases: convert, con\n";
 			break;
 
 		case INTER_COMMAND_HELP_VISUALIZE:		
+			
 			std::wcout << L"\tconvert file\n";
 				std::wcout << L"\t --  : starts visualization by file (filepath)\n";
 				std::wcout << L"\t     : Note: expected: sconfiguration file \n";
 
+			std::wcout << L"\n";
 			std::wcout << L"\tconvert folder\n";
 				std::wcout << L"\t --  : starts visualization by folder path (filefolder + filenumber)\n";
-				std::wcout << L"\t     : Note: expected: sconfiguration file with filenumber \n";
+				std::wcout << L"\t     : Note: expected: valid filefolder with sconfiguration file, filenumber \n";
 			
 			std::wcout << L"\n";
 			std::wcout << L"\tAliases: visualize, vis\n";
+
+			std::wcout << "\n\n\n\n";
+			std::wcout << L"\t\tINWIDONW (drawer area)\n\n";
+				std::wcout << L"\t -- keys\n";
+				std::wcout << L"\t\tGlobal translation: arrow keys \n";
+				std::wcout << L"\t\tCamera: WASD \n";
+				std::wcout << L"\t\tGlobal rotation: IJKL \n";
+				std::wcout << L"\t\tEstrangement: L_CTRL or L_SHIFT / SPACEBAR \n";
+				std::wcout << L"\t\tExit: ESC \n";
+				std::wcout << L"\t\tGlobal scaling: PAGE_UP/PAGE_DOWN \n";
+
+				std::wcout << L"\t -- mouse\n";
+				std::wcout << L"\t\tPressed mouse button & in movement: global translation (as with arrows)\n";
+				std::wcout << L"\t\tPressed mouse button & ALT & in movement: global rotation (as by IJKL)\n";
+				std::wcout << L"\t\tScrolls: changing estrangement (as by shift/space)\n";
+				std::wcout << L"\t\tRight button: popup menu\n";
+
+			std::wcout << "\n\n\n\n";
+			std::wcout << L"\t\tINWIDONW (stats, logs)\n\n";
+				std::wcout << L"\t -- keys\n";
+				std::wcout << L"\t\tUp/down text motion: arrow keys \n";
+
+				std::wcout << L"\t -- mouse\n";
+				std::wcout << L"\t\tScrolls: scrolls text\n";
+				std::wcout << L"\t\tRight button: popup menu\n";
+
 			break;
 
 		case INTER_COMMAND_HELP_RESET:			
+			
 			std::wcout << L"\treset\n";
 			std::wcout << L"\t --  : resets ALL settings here\n";
 
@@ -275,6 +327,7 @@ bool Interpretator::help_handler(std::vector<std::wstring> _commands) {
 			break;
 
 		case INTER_COMMAND_HELP_RESTART:	
+			
 			std::wcout << L"\trestart\n";
 			std::wcout << L"\t --  : fully restars the program\n";
 
@@ -517,8 +570,8 @@ bool Interpretator::set_handler(std::vector<std::wstring> _commands) {
 
 		case INTER_COMMAND_SET_POLIGONRATE: if (_commands.size() < 3) { std::wcout << L"\tEmpty instruction\n"; return false; }
 										  if (!is_number(_commands[2])) { std::wcout << L"\tNot number\n"; return false; }
-										  else { this->app_settings.freeglut_settings.poligonrate = std::stoi(_commands[2]);
-								std::wcout << L"\tPoligonrate number \"" << this->app_settings.freeglut_settings.poligonrate << L"\" has been set up\n"; } break;
+										  else { this->app_settings.freeglut_settings.polygonrate = std::stoi(_commands[2]);
+								std::wcout << L"\tPoligonrate number \"" << this->app_settings.freeglut_settings.polygonrate << L"\" has been set up\n"; } break;
 
 
 		case VVIS_UNKNOWW_MAP_SECOND: std::wcout << L"\tUnknow subcommand: " << _commands[1] << L'\n'; return false; break;
@@ -586,7 +639,7 @@ bool Interpretator::unset_handler(std::vector<std::wstring> _commands) {
 
 		case INTER_COMMAND_SET_GAP: std::wcout << L"\tSuccessful\n"; this->app_settings.gap = 7; break;
 
-		case INTER_COMMAND_SET_POLIGONRATE: std::wcout << L"\tSuccessful\n"; this->app_settings.freeglut_settings.poligonrate = 10; break;
+		case INTER_COMMAND_SET_POLIGONRATE: std::wcout << L"\tSuccessful\n"; this->app_settings.freeglut_settings.polygonrate = 7; break;
 
 		case VVIS_UNKNOWW_MAP_SECOND: std::wcout << L"\tUnknow subcommand: " << _commands[1] << L'\n'; return false; break;
 		default: break;
@@ -765,9 +818,9 @@ bool set_command_maps(Interpretator& _inter) {
 		{L"translationchanges", INTER_COMMAND_SET_TRANSLATION_CHANGES}, {L"tchanges", INTER_COMMAND_SET_TRANSLATION_CHANGES}, {L"tch", INTER_COMMAND_SET_TRANSLATION_CHANGES},
 		{L"camerachanges", INTER_COMMAND_SET_CAMERA_CHANGES}, {L"cchanges", INTER_COMMAND_SET_CAMERA_CHANGES}, {L"cch", INTER_COMMAND_SET_CAMERA_CHANGES},
 		{L"spinrate", INTER_COMMAND_SET_SPINRATE}, {L"spinr", INTER_COMMAND_SET_SPINRATE}, {L"sr", INTER_COMMAND_SET_SPINRATE}, {L"srate", INTER_COMMAND_SET_SPINRATE},
-		{L"subwindowing", INTER_COMMAND_SET_SUBWINDOWING},
+		{L"subwindowing", INTER_COMMAND_SET_SUBWINDOWING}, {L"subwg", INTER_COMMAND_SET_SUBWINDOWING},
 		{L"gap", INTER_COMMAND_SET_GAP},
-		{L"poligonrate", INTER_COMMAND_SET_POLIGONRATE}
+		{L"polygonrate", INTER_COMMAND_SET_POLIGONRATE}, {L"pr", INTER_COMMAND_SET_POLIGONRATE}
 	};
 
 	_inter.convert_sub_command = {
