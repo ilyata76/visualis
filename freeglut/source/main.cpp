@@ -4,7 +4,7 @@ bool want_to_restart() {
 	std::wcout << L"\tDo you want to restart the program? (y/n)\n"; std::wstring answer;
 	std::wcout << L"\t"; std::wcin >> answer;
 
-	if (answer == by_synonyms(L"yes")) {
+	if (by_synonyms(answer) == L"yes") {
 		return true;
 	}
 
