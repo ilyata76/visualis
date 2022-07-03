@@ -13,7 +13,7 @@
 	#include <algorithm>
 	#include <map>
 	#include "./global_defines.hpp"
-	#include "../libraries/tia-Exceptio/include/assert.hpp"
+	#include "../libraries/exceptio/include/assert.hpp"
 
 	float get_euler_phi(const double& sx, const double& sy, const double& sz);
 

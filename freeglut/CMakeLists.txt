@@ -83,7 +83,7 @@ set (SOURCES_VISUALIS
 # ----------- | SUBDIRECTORIES | ----------- 
 
 message("[visualis] : CALLING TO EXCEPTIO SUBDIRECTORY")
-add_subdirectory(source/libraries/tia-Exceptio/)
+add_subdirectory(source/libraries/exceptio)
 
 message("[visualis] : CALLING TO FREEGLUT SUBDIRECTORY")
 add_subdirectory(source/libraries/freeglut)
