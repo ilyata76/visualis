@@ -16,7 +16,10 @@ int main(int argc, char** argv) {
 		return E.get_index();
 	} catch(int &E) {
 		return E;
-	}
+	} catch (std::exception& E) {
+		std::wcout << E.what();
+		return 1;
+	} // todo: проработать
 
 	return 0;
 }
