@@ -60,7 +60,7 @@ std::vector<std::wstring> line_to_vector(const std::wstring& _str) {
 }
 
 std::wstring to_lower_wstr(std::wstring& _value) {
-	std::transform(_value.begin(), _value.end(), _value.begin(), std::tolower);
+	std::transform(_value.begin(), _value.end(), _value.begin(), [](unsigned char c) { return std::tolower(c); });
 	return std::wstring(_value);
 }
 
