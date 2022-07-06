@@ -31,9 +31,8 @@ float get_euler_theta(const double& sx, const double& sy, const double& sz) {
 	return (sign * 0.0f);
 }
 
-bool file_exist(const std::wstring& _path) {
-	struct _stat buf;
-	return (_wstat(_path.c_str(), &buf) != -1);
+bool file_exist(const std::string _path) {
+	return std::ifstream(_path).good();
 }
 
 std::wostream& print_logo(std::wostream& _out) {

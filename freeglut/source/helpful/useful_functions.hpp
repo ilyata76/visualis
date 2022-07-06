@@ -12,6 +12,7 @@
 	#include <sstream>
 	#include <algorithm>
 	#include <map>
+	#include <fstream>
 	#include "./global_defines.hpp"
 	#include "../libraries/exceptio/include/assert.hpp"
 
@@ -19,7 +20,7 @@
 
 	float get_euler_theta(const double& sx, const double& sy, const double& sz);
 
-	bool file_exist(const std::wstring& _path);
+	bool file_exist(const std::string _path);
 
 	std::wostream& print_logo(std::wostream& _out);
 
