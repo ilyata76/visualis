@@ -1,1 +1,2 @@
 0	ICON	"chick.ico"
+GLUT_ICON   ICON    DISCARDABLE     "objects.ico"
