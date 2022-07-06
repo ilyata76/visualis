@@ -4,74 +4,73 @@
 #ifndef GLOBAL_DEFINES
 #define GLOBAL_DEFINES
 
-
 /// INTERPRETATOR
 
-#define VVIS_PATH_PLUG_WSTR L"<nothing>"
-#define VVIS_INT_PLUG	-1
+constexpr wchar_t VVIS_PATH_PLUG_WSTR[] = L"<nothing>";
+constexpr int VVIS_INT_PLUG = -1;
 
 /// FILE NAMES AND FILES
 
-#define VVIS_SETTINGS_FILE_NAME_WSTR L"visualis-settings.json"
-#define VVIS_VVIS_FILE_START_NAME_WSTR L"sconfiguration-"
-#define VVIS_VVIS_FILE_FORMAT_WSTR L".vvis"
+constexpr wchar_t VVIS_SETTINGS_FILE_NAME_WSTR[] = L"visualis-settings.json";
+constexpr wchar_t VVIS_VVIS_FILE_START_NAME_WSTR[] = L"sconfiguration-";
+constexpr wchar_t VVIS_VVIS_FILE_FORMAT_WSTR[] = L".vvis";
 
-#define VVIS_VAMPIRE5_BASE_WSTR L"00000000"
-#define VVIS_VAMPIRE5_ATOMS_NAME_WSTR L"atoms-coords"
-#define VVIS_VAMPIRE5_SPINS_START_NAME_WSTR L"spins-"
-#define VVIS_VAMPIRE5_ATOMS_FORMAT_WSTR L".data"
-#define VVIS_VAMPIRE5_SPINS_FORMAT_WSTR L".data"
+constexpr wchar_t VVIS_VAMPIRE5_BASE_WSTR[] = L"00000000";
+constexpr wchar_t VVIS_VAMPIRE5_ATOMS_NAME_WSTR[] = L"atoms-coords";
+constexpr wchar_t VVIS_VAMPIRE5_SPINS_START_NAME_WSTR[] = L"spins-";
+constexpr wchar_t VVIS_VAMPIRE5_ATOMS_FORMAT_WSTR[] = L".data";
+constexpr wchar_t VVIS_VAMPIRE5_SPINS_FORMAT_WSTR[] = L".data";
 
-#define VVIS_VVIS_COMMENT L'#'
-#define VVIS_VAMPIRE5_DATA_COMMENT L'#'
-#define VVIS_VVIS_SEPARATOR L'\t'
+constexpr wchar_t VVIS_VVIS_COMMENT = L'#';
+constexpr wchar_t VVIS_VAMPIRE5_DATA_COMMENT = L'#';
+constexpr wchar_t VVIS_VVIS_SEPARATOR = L'\t';
 
 /// DRAWER SHAPES
 
-#define VVIS_SHAPE_CONE			L'c'
-#define VVIS_SHAPE_CONE_WSTR	L"cone"
-#define VVIS_SHAPE_NOTHING		L'n'
-#define VVIS_SHAPE_NOTHING_WSTR	L"nothing"
-#define VVIS_SHAPE_SPHERE		L's'
-#define VVIS_SHAPE_SPHERE_WSTR	L"sphere"
-#define VVIS_SHAPE_ARROW		L'a'
-#define VVIS_SHAPE_ARROW_WSTR	L"arrow"
+constexpr wchar_t VVIS_SHAPE_CONE = L'c';
+constexpr wchar_t VVIS_SHAPE_CONE_WSTR[] = L"cone";
+constexpr wchar_t VVIS_SHAPE_NOTHING = L'n';
+constexpr wchar_t VVIS_SHAPE_NOTHING_WSTR[] = L"nothing";
+constexpr wchar_t VVIS_SHAPE_SPHERE = L's';
+constexpr wchar_t VVIS_SHAPE_SPHERE_WSTR[] = L"sphere";
+constexpr wchar_t VVIS_SHAPE_ARROW = L'a';
+constexpr wchar_t VVIS_SHAPE_ARROW_WSTR[] = L"arrow";
 
 /// DRAWER OPTIONS
 
-#define VVIS_DRAW_ALL			-1
-#define VVIS_USING_COLOR		false
-#define VVIS_COUNTERCLOCKWISE	1 // use 0 for not
+constexpr int VVIS_DRAW_ALL = -1;
+constexpr bool VVIS_USING_COLOR = false;
+constexpr bool VVIS_COUNTERCLOCKWISE = true;
 
-#define VVIS_SCALING_PARAMETERS_CHANGES_X 0.3
-#define VVIS_SCALING_PARAMETERS_CHANGES_Y 0.3
-#define VVIS_SCALING_PARAMETERS_CHANGES_Z 0.3
+constexpr double VVIS_SCALING_PARAMETERS_CHANGES_X = 0.3;
+constexpr double  VVIS_SCALING_PARAMETERS_CHANGES_Y = 0.3;
+constexpr double  VVIS_SCALING_PARAMETERS_CHANGES_Z = 0.3;
 
-#define VVIS_TRANSLATION_CHANGES_X 0.5
-#define VVIS_TRANSLATION_CHANGES_Y 0.5
-#define VVIS_TRANSLATION_CHANGES_Z 0.5
+constexpr double VVIS_TRANSLATION_CHANGES_X = 0.5;
+constexpr double VVIS_TRANSLATION_CHANGES_Y = 0.5;
+constexpr double VVIS_TRANSLATION_CHANGES_Z = 0.5;
 
-#define VVIS_CAMERA_CHANGES_X 0.5
-#define VVIS_CAMERA_CHANGES_Y 0.5
-#define VVIS_CAMERA_CHANGES_Z 0.5
+constexpr double VVIS_CAMERA_CHANGES_X = 0.5;
+constexpr double VVIS_CAMERA_CHANGES_Y = 0.5;
+constexpr double VVIS_CAMERA_CHANGES_Z = 0.5;
 
-#define VVIS_ESTRAGNEMENT_CHANGES 0.03
+constexpr double VVIS_ESTRAGNEMENT_CHANGES = 0.03;
 
-#define VVIS_TRANSLATION_BY_ELEMENT -1.0 // 1 if left-left; -1 left-right <- translation by head
+constexpr double VVIS_TRANSLATION_BY_ELEMENT = -1.0; // 1 if left-left; -1 left-right <- translation by head
 
-#define MOVEMENTS_BY_ARROWS_MULTIPLY_SENSIVITY 0.7 // /= for decrease *= for increase
-#define MOVEMENTS_BY_WASD_MULTIPLY_SENSIVITY 0.7
-#define MOVEMENTS_BY_SHIFTSPACE_MULTIPLY_SENSIVITY 0.9
+constexpr double MOVEMENTS_BY_ARROWS_MULTIPLY_SENSIVITY = 0.7; // /= for decrease *= for increase
+constexpr double MOVEMENTS_BY_WASD_MULTIPLY_SENSIVITY = 0.7;
+constexpr double MOVEMENTS_BY_SHIFTSPACE_MULTIPLY_SENSIVITY = 0.9;
 
-#define SCALING_MULTIPLY_SENSIVITY_X 0.9
-#define SCALING_MULTIPLY_SENSIVITY_Y 0.9
-#define SCALING_MULTIPLY_SENSIVITY_Z 0.9
+constexpr double SCALING_MULTIPLY_SENSIVITY_X = 0.9;
+constexpr double SCALING_MULTIPLY_SENSIVITY_Y = 0.9;
+constexpr double SCALING_MULTIPLY_SENSIVITY_Z = 0.9;
 
 /// BLOCKS VISUALIS-SETTINGS.JSON
 
-#define VVIS_GLOBAL_SETTINGS	"global"
-#define VVIS_FREEGLUT_SETTINGS	"drawer"
-#define VVIS_OTHER_SETTINGS 	"other"
+constexpr char VVIS_GLOBAL_SETTINGS[] = "global";
+constexpr char VVIS_FREEGLUT_SETTINGS[] = "drawer";
+constexpr char VVIS_OTHER_SETTINGS[] = "other";
 
 /// UNKNOW_MAP_SECOND
 

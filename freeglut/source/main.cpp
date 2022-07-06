@@ -39,11 +39,6 @@ int main(int argc, char** argv) {
 
 		if (want_to_restart()) return main(argc, argv); else return 1;
 
-	} catch (std::logic_error& E) {
-		std::wcout << L"\tLogic error : " << E.what() << std::endl;
-
-		if (want_to_restart()) return main(argc, argv); else return 1;
-
 	} catch (std::domain_error& E) {
 		std::wcout << L"\tDomain error : " << E.what() << std::endl;
 
@@ -59,12 +54,12 @@ int main(int argc, char** argv) {
 
 		if (want_to_restart()) return main(argc, argv); else return 1;
 
-	} catch (std::runtime_error& E) {
-		std::wcout << L"\tRuntime error : " << E.what() << std::endl;
+	} catch (std::logic_error& E) {
+		std::wcout << L"\tLogic error : " << E.what() << std::endl;
 
 		if (want_to_restart()) return main(argc, argv); else return 1;
 
-	} catch (std::range_error& E) {
+	}  catch (std::range_error& E) {
 		std::wcout << L"\tRange error : " << E.what() << std::endl;
 
 		if (want_to_restart()) return main(argc, argv); else return 1;
@@ -76,6 +71,11 @@ int main(int argc, char** argv) {
 
 	} catch (std::system_error& E) {
 		std::wcout << L"\tSystem error : " << E.what() << std::endl;
+
+		if (want_to_restart()) return main(argc, argv); else return 1;
+
+	} catch (std::runtime_error& E) {
+		std::wcout << L"\tRuntime error : " << E.what() << std::endl;
 
 		if (want_to_restart()) return main(argc, argv); else return 1;
 
