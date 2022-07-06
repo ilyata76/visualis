@@ -34,7 +34,7 @@ bool Settings::save(wchar_t _flag) {
 			}
 			this->global_settings.path_to_settings_file_folder = this->global_settings.path_to_folder;
 		}
-		this->global_settings.path_to_settings_file = this->global_settings.path_to_settings_file_folder + L"/" + VVIS_SETTINGS_FILE_NAME_WSTR;
+		this->global_settings.path_to_settings_file = this->global_settings.path_to_settings_file_folder + "/" + VVIS_SETTINGS_FILE_NAME_WSTR;
 	}
 
 	if (file_exist(this->global_settings.path_to_settings_file)) {
@@ -158,10 +158,10 @@ bool Settings::get_by_json(const nlohmann::json& _json, wchar_t _flag) {
 		if (_json.contains(VVIS_GLOBAL_SETTINGS)) {
 
 			if (_json[VVIS_GLOBAL_SETTINGS].contains("path_to_folder")) 
-				this->global_settings.path_to_folder = _json[VVIS_GLOBAL_SETTINGS]["path_to_folder"].get<std::wstring>();
+				this->global_settings.path_to_folder = _json[VVIS_GLOBAL_SETTINGS]["path_to_folder"].get<std::string>();
 
 			if (_json[VVIS_GLOBAL_SETTINGS].contains("path_to_sconfiguration_file"))
-				this->global_settings.path_to_sconfiguration_file = _json[VVIS_GLOBAL_SETTINGS]["path_to_sconfiguration_file"].get<std::wstring>();
+				this->global_settings.path_to_sconfiguration_file = _json[VVIS_GLOBAL_SETTINGS]["path_to_sconfiguration_file"].get<std::string>();
 
 			if (_json[VVIS_GLOBAL_SETTINGS].contains("number_of_file")) 
 				this->global_settings.number_of_file = _json[VVIS_GLOBAL_SETTINGS]["number_of_file"].get<int>();
@@ -401,7 +401,7 @@ bool Settings::get(wchar_t _flag) {
 			}
 			this->global_settings.path_to_settings_file_folder = this->global_settings.path_to_folder;
 		}
-		this->global_settings.path_to_settings_file = this->global_settings.path_to_settings_file_folder + L"/" + VVIS_SETTINGS_FILE_NAME_WSTR;
+		this->global_settings.path_to_settings_file = this->global_settings.path_to_settings_file_folder + "/" + VVIS_SETTINGS_FILE_NAME_WSTR;
 	}
 
 	if (file_exist(this->global_settings.path_to_settings_file)) {

@@ -6,20 +6,20 @@
 
 /// INTERPRETATOR
 
-constexpr wchar_t VVIS_PATH_PLUG_WSTR[] = L"<nothing>";
+constexpr char VVIS_PATH_PLUG_WSTR[] = "<nothing>";
 constexpr int VVIS_INT_PLUG = -1;
 
 /// FILE NAMES AND FILES
 
-constexpr wchar_t VVIS_SETTINGS_FILE_NAME_WSTR[] = L"visualis-settings.json";
-constexpr wchar_t VVIS_VVIS_FILE_START_NAME_WSTR[] = L"sconfiguration-";
-constexpr wchar_t VVIS_VVIS_FILE_FORMAT_WSTR[] = L".vvis";
+constexpr char VVIS_SETTINGS_FILE_NAME_WSTR[] = "visualis-settings.json";
+constexpr char VVIS_VVIS_FILE_START_NAME_WSTR[] = "sconfiguration-";
+constexpr char VVIS_VVIS_FILE_FORMAT_WSTR[] = ".vvis";
 
-constexpr wchar_t VVIS_VAMPIRE5_BASE_WSTR[] = L"00000000";
-constexpr wchar_t VVIS_VAMPIRE5_ATOMS_NAME_WSTR[] = L"atoms-coords";
-constexpr wchar_t VVIS_VAMPIRE5_SPINS_START_NAME_WSTR[] = L"spins-";
-constexpr wchar_t VVIS_VAMPIRE5_ATOMS_FORMAT_WSTR[] = L".data";
-constexpr wchar_t VVIS_VAMPIRE5_SPINS_FORMAT_WSTR[] = L".data";
+constexpr char VVIS_VAMPIRE5_BASE_WSTR[] = "00000000";
+constexpr char VVIS_VAMPIRE5_ATOMS_NAME_WSTR[] = "atoms-coords";
+constexpr char VVIS_VAMPIRE5_SPINS_START_NAME_WSTR[] = "spins-";
+constexpr char VVIS_VAMPIRE5_ATOMS_FORMAT_WSTR[] = ".data";
+constexpr char VVIS_VAMPIRE5_SPINS_FORMAT_WSTR[] = ".data";
 
 constexpr wchar_t VVIS_VVIS_COMMENT = L'#';
 constexpr wchar_t VVIS_VAMPIRE5_DATA_COMMENT = L'#';

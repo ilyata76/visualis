@@ -36,11 +36,14 @@
 
 	bool is_number(const std::wstring& _str);
 
-	bool contains_subwstr(const std::wstring& _str, const std::wstring& _substr);
+	bool contains_substr(const std::string& _str, const std::string& _substr);
 
 	std::wstring by_synonyms(const std::wstring& _value);
 
-	std::wstring v5_get_file_number(const std::wstring& _number);
+	std::string v5_get_file_number(const std::string& _number);
+
+	std::string wstr2str(const std::wstring& _wstr);
+	std::wstring str2wstr(const std::string& _wstr);
 
 	bool is_double(std::wstring& _value);
 

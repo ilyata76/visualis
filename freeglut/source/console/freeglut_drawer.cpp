@@ -1842,10 +1842,10 @@ void display_subwindow_2() {
 			(std::wstring(L"Gap - ") + std::to_wstring(glob_settings.gap)),
 			(std::wstring(L"Coloring sample - ") + (glob_settings.freeglut_settings.coloring_sample ? L"true" : L"false")),
 			(std::wstring(L"Index of spin - ") + (glob_settings.global_settings.index_of_spin == VVIS_DRAW_ALL ? L"DRAW ALL" : std::to_wstring(glob_settings.global_settings.index_of_spin))),
-			(std::wstring(L"Path to folder - ") + glob_settings.global_settings.path_to_folder),
-			(std::wstring(L"Path to sconf file - ") + glob_settings.global_settings.path_to_sconfiguration_file),
-			(std::wstring(L"Path to settings folder - ") + glob_settings.global_settings.path_to_settings_file_folder),
-			(std::wstring(L"Path to settings file - ") + glob_settings.global_settings.path_to_settings_file),
+			(std::wstring(L"Path to folder - ") + str2wstr(glob_settings.global_settings.path_to_folder)),
+			(std::wstring(L"Path to sconf file - ") + str2wstr(glob_settings.global_settings.path_to_sconfiguration_file)),
+			(std::wstring(L"Path to settings folder - ") + str2wstr(glob_settings.global_settings.path_to_settings_file_folder)),
+			(std::wstring(L"Path to settings file - ") + str2wstr(glob_settings.global_settings.path_to_settings_file)),
 			(std::wstring(L"Number of file - ") + std::to_wstring(glob_settings.global_settings.number_of_file)),			
 		};
 

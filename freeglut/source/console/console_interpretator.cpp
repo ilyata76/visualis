@@ -368,18 +368,18 @@ bool Interpretator::set_handler(std::vector<std::wstring> _commands) {
 			if (_commands.size() < 3) { std::wcout << L"\tEmpty path\n"; return false; }
 			if (_commands[2].size() > 0) {
 				remove_quotations(_commands[2]);
-				this->app_settings.global_settings.path_to_folder = _commands[2];
-				std::wcout << L"\tPath to folder \"" << this->app_settings.global_settings.path_to_folder << L"\" has been set up\n";
+				this->app_settings.global_settings.path_to_folder = wstr2str(_commands[2]);
+				std::wcout << L"\tPath to folder \"" << str2wstr(this->app_settings.global_settings.path_to_folder) << L"\" has been set up\n";
 			} else std::wcout << L"\n\tEmpty path\n";
 		} break;
 		
 		case INTER_COMMAND_SET_FILEPATH: {
 			if (_commands.size() < 3) { std::wcout << L"\tEmpty path\n"; return false; }
-			if (!contains_subwstr(_commands[2], VVIS_VVIS_FILE_FORMAT_WSTR) || !contains_subwstr(_commands[2], VVIS_VVIS_FILE_START_NAME_WSTR)) { std::wcout << L"\tWrong file name\n"; return false; }
+			if (!contains_substr(wstr2str(_commands[2]), VVIS_VVIS_FILE_FORMAT_WSTR) || !contains_substr(wstr2str(_commands[2]), VVIS_VVIS_FILE_START_NAME_WSTR)) { std::wcout << L"\tWrong file name\n"; return false; }
 			if (_commands[2].size() > 0) {
 				remove_quotations(_commands[2]);
-				this->app_settings.global_settings.path_to_sconfiguration_file = _commands[2];
-				std::wcout << L"\tPath to sconfiguration file \"" << this->app_settings.global_settings.path_to_sconfiguration_file << L"\" has been set up\n";
+				this->app_settings.global_settings.path_to_sconfiguration_file = wstr2str(_commands[2]);
+				std::wcout << L"\tPath to sconfiguration file \"" << str2wstr(this->app_settings.global_settings.path_to_sconfiguration_file) << L"\" has been set up\n";
 			} else std::wcout << L"\n\tEmpty path\n";
 		} break;
 
@@ -397,18 +397,18 @@ bool Interpretator::set_handler(std::vector<std::wstring> _commands) {
 			if (_commands.size() < 3) { std::wcout << L"\tEmpty path\n"; return false; }
 			if (_commands[2].size() > 0) {
 				remove_quotations(_commands[2]);
-				this->app_settings.global_settings.path_to_settings_file_folder = _commands[2];
-				std::wcout << L"\tPath to settings folder \"" << this->app_settings.global_settings.path_to_settings_file_folder << L"\" has been set up\n";
+				this->app_settings.global_settings.path_to_settings_file_folder = wstr2str(_commands[2]);
+				std::wcout << L"\tPath to settings folder \"" << str2wstr(this->app_settings.global_settings.path_to_settings_file_folder) << L"\" has been set up\n";
 			} else std::wcout << L"\n\tEmpty path\n";
 		} break;
 
 		case INTER_COMMAND_SET_SETTINGSFILE: {
 			if (_commands.size() < 3) { std::wcout << L"\tEmpty path\n"; return false; }
-			if (!contains_subwstr(_commands[2], VVIS_SETTINGS_FILE_NAME_WSTR)) { std::wcout << L"\tWrong file name\n"; return false; }
+			if (!contains_substr(wstr2str(_commands[2]), VVIS_SETTINGS_FILE_NAME_WSTR)) { std::wcout << L"\tWrong file name\n"; return false; }
 			if (_commands[2].size() > 0) {
 				remove_quotations(_commands[2]);
-				this->app_settings.global_settings.path_to_settings_file = _commands[2];
-				std::wcout << L"\tPath to settings file \"" << this->app_settings.global_settings.path_to_settings_file << L"\" has been set up\n";
+				this->app_settings.global_settings.path_to_settings_file = wstr2str(_commands[2]);
+				std::wcout << L"\tPath to settings file \"" << str2wstr(this->app_settings.global_settings.path_to_settings_file) << L"\" has been set up\n";
 			} else std::wcout << L"\n\tEmpty path\n";
 		} break;
 
@@ -659,12 +659,12 @@ bool Interpretator::convert_handler(std::vector<std::wstring> _commands) {
 		case INTER_COMMAND_CONVERT_VAMPIRE5: {
 			bool boolean = false;
 			
-			boolean = file_exist(this->app_settings.global_settings.path_to_folder + L"\\" + VVIS_VAMPIRE5_ATOMS_NAME_WSTR + VVIS_VAMPIRE5_ATOMS_FORMAT_WSTR);
+			boolean = file_exist(this->app_settings.global_settings.path_to_folder + "\\" + VVIS_VAMPIRE5_ATOMS_NAME_WSTR + VVIS_VAMPIRE5_ATOMS_FORMAT_WSTR);
 			std::wcout << L"\tatoms file exists? : " << std::boolalpha << boolean << L'\n';
 
 			if (!boolean) return false;
 
-			boolean = file_exist(this->app_settings.global_settings.path_to_folder + L"\\" + VVIS_VAMPIRE5_SPINS_START_NAME_WSTR + v5_get_file_number(std::to_wstring(this->app_settings.global_settings.number_of_file)) + VVIS_VAMPIRE5_SPINS_FORMAT_WSTR);
+			boolean = file_exist(this->app_settings.global_settings.path_to_folder + "\\" + VVIS_VAMPIRE5_SPINS_START_NAME_WSTR + v5_get_file_number(std::to_string(this->app_settings.global_settings.number_of_file)) + VVIS_VAMPIRE5_SPINS_FORMAT_WSTR);
 			std::wcout << L"\tspins file exists? : " << std::boolalpha << boolean << L'\n';
 
 			if (!boolean) return false;
@@ -696,17 +696,17 @@ bool Interpretator::visualize_handler(std::vector<std::wstring> _commands) {
 		case INTER_COMMAND_VISUALIZE_FOLDER: { 
 			bool boolean = false;
 			
-			boolean = file_exist(this->app_settings.global_settings.path_to_folder + L"\\" + VVIS_VVIS_FILE_START_NAME_WSTR + v5_get_file_number(std::to_wstring(this->app_settings.global_settings.number_of_file)) + VVIS_VVIS_FILE_FORMAT_WSTR);
+			boolean = file_exist(this->app_settings.global_settings.path_to_folder + "\\" + VVIS_VVIS_FILE_START_NAME_WSTR + v5_get_file_number(std::to_string(this->app_settings.global_settings.number_of_file)) + VVIS_VVIS_FILE_FORMAT_WSTR);
 			std::wcout << L"\tsconfiguration file exists? : " << std::boolalpha << boolean << L'\n';
 
 			if (!boolean) return false;
 
 			std::wcout << L"\tloading... : ";
-			std::vector<Vertex> vct = sconfiguration_parsing(this->app_settings.global_settings.path_to_folder + L"\\" + VVIS_VVIS_FILE_START_NAME_WSTR + v5_get_file_number(std::to_wstring(this->app_settings.global_settings.number_of_file)) + VVIS_VVIS_FILE_FORMAT_WSTR);
+			std::vector<Vertex> vct = sconfiguration_parsing(this->app_settings.global_settings.path_to_folder + "\\" + VVIS_VVIS_FILE_START_NAME_WSTR + v5_get_file_number(std::to_string(this->app_settings.global_settings.number_of_file)) + VVIS_VVIS_FILE_FORMAT_WSTR);
 			std::wcout << vct.size() << L" vertexes has been loaded\n";
 			std::wcout << L"\tvisualizing..." << L'\n';
 			
-			this->app_settings.global_settings.path_to_sconfiguration_file = this->app_settings.global_settings.path_to_folder + L"\\" + VVIS_VVIS_FILE_START_NAME_WSTR + v5_get_file_number(std::to_wstring(this->app_settings.global_settings.number_of_file)) + VVIS_VVIS_FILE_FORMAT_WSTR;
+			this->app_settings.global_settings.path_to_sconfiguration_file = this->app_settings.global_settings.path_to_folder + "\\" + VVIS_VVIS_FILE_START_NAME_WSTR + v5_get_file_number(std::to_string(this->app_settings.global_settings.number_of_file)) + VVIS_VVIS_FILE_FORMAT_WSTR;
 
 			draw_sample(this->app_settings, vct, this->argc, this->argv);
 
@@ -724,10 +724,10 @@ bool Interpretator::visualize_handler(std::vector<std::wstring> _commands) {
 				this->app_settings.global_settings.path_to_folder == VVIS_PATH_PLUG_WSTR &&
 				this->app_settings.global_settings.path_to_settings_file_folder == VVIS_PATH_PLUG_WSTR) {
 
-				std::wstring filename = VVIS_VVIS_FILE_START_NAME_WSTR + v5_get_file_number(std::to_wstring(this->app_settings.global_settings.number_of_file)) + VVIS_VVIS_FILE_FORMAT_WSTR;
-				std::wstring path = this->app_settings.global_settings.path_to_sconfiguration_file;
+				std::string filename = VVIS_VVIS_FILE_START_NAME_WSTR + v5_get_file_number(std::to_string(this->app_settings.global_settings.number_of_file)) + VVIS_VVIS_FILE_FORMAT_WSTR;
+				std::string path = this->app_settings.global_settings.path_to_sconfiguration_file;
 				path.erase(path.end() - filename.size(), path.end()); this->app_settings.global_settings.path_to_settings_file_folder = path;
-				std::wcout << L"\tfolder path to settings file : " << this->app_settings.global_settings.path_to_settings_file_folder << L" has been set up\n";
+				std::wcout << L"\tfolder path to settings file : " << str2wstr(this->app_settings.global_settings.path_to_settings_file_folder) << L" has been set up\n";
 
 			}
 

@@ -93,7 +93,7 @@ bool is_number(const std::wstring& _str) {
 		_str.end(), [](wchar_t c) { return !(std::isdigit(c) || c == L'0'); }) == _str.end();
 }
 
-bool contains_subwstr(const std::wstring& _str, const std::wstring& _substr) {
+bool contains_substr(const std::string& _str, const std::string& _substr) {
 	return _str.find(_substr) != _str.npos;
 }
 
@@ -119,16 +119,24 @@ std::wstring by_synonyms(const std::wstring& _value) {
 
 }
 
-std::wstring v5_get_file_number(const std::wstring& _number) {
-	std::wstring num = _number;
-	std::wstring base = VVIS_VAMPIRE5_BASE_WSTR;
+std::string v5_get_file_number(const std::string& _number) {
+	std::string num = _number;
+	std::string base = VVIS_VAMPIRE5_BASE_WSTR;
 
 	size_t num_lenght = num.length(); size_t base_lenght = base.length();
 	for (int i = 0; num_lenght != 0; ++i, num.pop_back(), num_lenght = num.length()) {
 		base[base_lenght - 1 - i] = num[num_lenght - 1];
 	};
 
-	return std::wstring(base);
+	return std::string(base);
+}
+
+std::string wstr2str(const std::wstring& _wstr) {
+	return std::string(_wstr.begin(), _wstr.end());
+}
+
+std::wstring str2wstr(const std::string& _wstr) {
+	return std::wstring(_wstr.begin(), _wstr.end());
 }
 
 bool is_double(std::wstring& _value) {
