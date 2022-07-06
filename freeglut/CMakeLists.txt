@@ -80,6 +80,10 @@ set (SOURCES_VISUALIS
 
 )
 
+set (RESOURCES_VISUALIS
+	source/rc/vvis.rc
+)
+
 # ----------- | SUBDIRECTORIES | ----------- 
 
 message("[visualis] : CALLING TO EXCEPTIO SUBDIRECTORY")
@@ -99,6 +103,7 @@ add_executable (${VISUALIS}
 	${ENTRYPOINT_VISUALIS} 
 	${HEADERS_VISUALIS} 
 	${SOURCES_VISUALIS}
+	${RESOURCES_VISUALIS}
 )
 
 # ----------- | LINKING LIBRARIES | ----------- 
