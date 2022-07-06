@@ -139,6 +139,10 @@ std::wstring str2wstr(const std::string& _wstr) {
 	return std::wstring(_wstr.begin(), _wstr.end());
 }
 
+const char* c_str(const std::string& _str) {
+	return _str.c_str();
+}
+
 bool is_double(std::wstring& _value) {
 	try {
 		std::stod(_value);

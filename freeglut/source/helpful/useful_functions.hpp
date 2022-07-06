@@ -45,6 +45,8 @@
 	std::string wstr2str(const std::wstring& _wstr);
 	std::wstring str2wstr(const std::string& _wstr);
 
+	const char* c_str(const std::string& _str);
+
 	bool is_double(std::wstring& _value);
 
 #endif // !USEFUL_FUNCTIONS

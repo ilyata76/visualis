@@ -38,7 +38,7 @@ bool Settings::save(wchar_t _flag) {
 	}
 
 	if (file_exist(this->global_settings.path_to_settings_file)) {
-		file.open(this->global_settings.path_to_settings_file, std::ios_base::in);
+		file.open(c_str(this->global_settings.path_to_settings_file), std::ios_base::in);
 		_json << file;
 		file.close();
 	}

@@ -13,9 +13,9 @@ bool v5_parser_converter(const std::string& _path_to_folder, int _number_of_file
     std::wstring m, l, x, y, z;
     std::wstring sx, sy, sz;
 
-    atoms_file.open(_path_to_folder + "\\" + VVIS_VAMPIRE5_ATOMS_NAME_WSTR + VVIS_VAMPIRE5_ATOMS_FORMAT_WSTR, std::ios_base::in);
-    spins_file.open(_path_to_folder + "\\" + VVIS_VAMPIRE5_SPINS_START_NAME_WSTR + v5_get_file_number(std::to_string(_number_of_file)) + VVIS_VAMPIRE5_SPINS_FORMAT_WSTR, std::ios_base::in);
-    sconfiguration_file.open(_path_to_folder + "\\" + VVIS_VVIS_FILE_START_NAME_WSTR + v5_get_file_number(std::to_string(_number_of_file)) + VVIS_VVIS_FILE_FORMAT_WSTR, std::ios_base::out | std::ios_base::trunc);
+    atoms_file.open(c_str(_path_to_folder + "\\" + VVIS_VAMPIRE5_ATOMS_NAME_WSTR + VVIS_VAMPIRE5_ATOMS_FORMAT_WSTR), std::ios_base::in);
+    spins_file.open(c_str(_path_to_folder + "\\" + VVIS_VAMPIRE5_SPINS_START_NAME_WSTR + v5_get_file_number(std::to_string(_number_of_file)) + VVIS_VAMPIRE5_SPINS_FORMAT_WSTR), std::ios_base::in);
+    sconfiguration_file.open(c_str(_path_to_folder + "\\" + VVIS_VVIS_FILE_START_NAME_WSTR + v5_get_file_number(std::to_string(_number_of_file)) + VVIS_VVIS_FILE_FORMAT_WSTR), std::ios_base::out | std::ios_base::trunc);
 
     atoms_file >> size1;
     spins_file >> size2;

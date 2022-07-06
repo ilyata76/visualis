@@ -23,7 +23,7 @@ Freeglut_settings::Freeglut_settings() {
 
 std::wostream& operator<<(std::wostream& _out, const Freeglut_settings& _settings) {
 	_out << L"\t Coloring sample\t\t\t: " << std::boolalpha << _settings.coloring_sample << L"\n";
-	_out << L"\t Shape\t\t\t\t\t: " << _settings.shape << "/" << _settings.shape_wstr << L"\n";
+	_out << L"\t Shape\t\t\t\t\t: " << _settings.shape << "|" << _settings.shape_wstr << L"\n";
 	_out << L"\t Additional rotation\t\t\t: " << _settings.additional_rotation.phi << "(phi), " << _settings.additional_rotation.theta << L"(theta)\n";
 	_out << L"\t Estrangement\t\t\t\t: " << _settings.estrangement << L"\n";
 	_out << L"\t Global translation\t\t\t: (" << _settings.global_translation.x << L", " << _settings.global_translation.y << L", " << _settings.global_translation.z << L")\n";

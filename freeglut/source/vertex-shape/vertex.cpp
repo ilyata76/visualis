@@ -7,7 +7,7 @@ std::vector<Vertex> sconfiguration_parsing(const std::string& _path_to_file) {
     std::vector<Vertex> result;
     
     std::wfstream sconfiguration_file;
-    sconfiguration_file.open(_path_to_file, std::ios_base::in);
+    sconfiguration_file.open(c_str(_path_to_file), std::ios_base::in);
     
     std::wstring str = L"#", strk;
     
