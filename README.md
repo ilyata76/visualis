@@ -1,2 +1,2 @@
 # visualis
-- [./freeglut](https://github.com/ilyata76/visualis/tree/master/freeglut) freeglut visualization (windows yet); [./freeglut/REAMDE](https://github.com/ilyata76/visualis/blob/master/freeglut/README.md)
+- [./freeglut](https://github.com/ilyata76/visualis/tree/master/freeglut) freeglut visualization (windows 10 / ubuntu 22.04 LTS, X11); Чистое консольное приложение, в случае Windows в том числе запускаемое через .exe приложение. [./freeglut/REAMDE](https://github.com/ilyata76/visualis/blob/master/freeglut/README.md)

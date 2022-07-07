@@ -1,0 +1,112 @@
+{
+    "drawer": {
+        "additional_rotation": {
+            "phi": -9.0,
+            "theta": 10.0
+        },
+        "beta_light": true,
+        "camera_changes": {
+            "x": 0.5,
+            "y": 0.5,
+            "z": 0.5
+        },
+        "coloring_sample": false,
+        "estrangement": 0.09999999999999923,
+        "estrangement_changes": 0.03,
+        "fullscreen": false,
+        "gap": 7,
+        "global_translation": {
+            "x": -10.0,
+            "y": -7.0,
+            "z": 0.0
+        },
+        "polygonrate": 10,
+        "position_of_camera": {
+            "x": 25.0,
+            "y": 13.5,
+            "z": 0.0
+        },
+        "position_of_element": {
+            "x": -25.0,
+            "y": -13.5,
+            "z": -100.0
+        },
+        "scaling_parameters": {
+            "x": 52.399999999999835,
+            "y": 52.399999999999835,
+            "z": 52.399999999999835
+        },
+        "scaling_parameters_changes": {
+            "x": 0.3,
+            "y": 0.3,
+            "z": 0.3
+        },
+        "scaling_translation": {
+            "x": 1.0,
+            "y": 1.0,
+            "z": 1.0
+        },
+        "shape": 99,
+        "shape_str": [
+            99,
+            111,
+            110,
+            101
+        ],
+        "spinrate": 1,
+        "subwindowing": true,
+        "translation_by_element": -1.0,
+        "translation_changes": {
+            "x": 0.5,
+            "y": 0.5,
+            "z": 0.5
+        }
+    },
+    "global": {
+        "index_of_spin": -1,
+        "number_of_file": 2,
+        "path_to_folder": "../test/alpha-0.4.0",
+        "path_to_sconfiguration_file": "../test/alpha-0.4.0/sconfiguration-00000002.vvis"
+    },
+    "other": {
+        "axis_by_cones": false,
+        "inverted_black_text_axis": true,
+        "inverted_black_text_log": true,
+        "inverted_black_text_stats": true,
+        "show_axis_names": true
+    },
+    "windows": {
+        "main_window": {
+            "background": {
+                "blue": 255,
+                "green": 255,
+                "red": 255
+            },
+            "height": 1017,
+            "width": 1920
+        },
+        "subwindows": {
+            "0": {
+                "blue": 0,
+                "green": 0,
+                "red": 0
+            },
+            "1": {
+                "blue": 0,
+                "green": 0,
+                "red": 0
+            },
+            "2": {
+                "blue": 0,
+                "green": 0,
+                "red": 0
+            },
+            "3": {
+                "blue": 0,
+                "green": 0,
+                "red": 0
+            },
+            "count": 4
+        }
+    }
+}

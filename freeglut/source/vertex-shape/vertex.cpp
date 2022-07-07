@@ -1,13 +1,13 @@
 ﻿#include "./vertex.hpp"
 
-std::vector<Vertex> sconfiguration_parsing(const std::wstring& _path_to_file) {
+std::vector<Vertex> sconfiguration_parsing(const std::string& _path_to_file) {
     Assert(_path_to_file != VVIS_PATH_PLUG_WSTR);
-    Assert(_path_to_file != L"\0" && _path_to_file != L"\n");
+    Assert(_path_to_file != "\0" && _path_to_file != "\n");
     
     std::vector<Vertex> result;
     
     std::wfstream sconfiguration_file;
-    sconfiguration_file.open(_path_to_file, std::ios_base::in);
+    sconfiguration_file.open(c_str(_path_to_file), std::ios_base::in);
     
     std::wstring str = L"#", strk;
     
@@ -30,8 +30,11 @@ std::vector<Vertex> sconfiguration_parsing(const std::wstring& _path_to_file) {
         sconfiguration_file >> sy; while (sy[0] == VVIS_VAMPIRE5_DATA_COMMENT) { std::getline(sconfiguration_file, strk); sconfiguration_file >> sy; }
         sconfiguration_file >> sz; while (sz[0] == VVIS_VAMPIRE5_DATA_COMMENT) { std::getline(sconfiguration_file, strk); sconfiguration_file >> sz; }
 
-        if (m != L"\0" && m != L"\n" && l != L"\0" && l != L"\n" && is_number(l) && is_number(m))
-            result.push_back(Vertex(Point(std::stod(x), std::stod(y), std::stod(z)), Spin(std::stod(sx), std::stod(sy), std::stod(sz)), index, std::stoi(l), std::stoi(m)));
+        if (m != L"\0" && m != L"\n" && l != L"\0" && l != L"\n" && is_number(l) && is_number(m)) {
+            Point p(std::stod(x), std::stod(y), std::stod(z));
+            Spin s(std::stod(sx), std::stod(sy), std::stod(sz));
+            result.push_back(Vertex(p, s, index, std::stoi(l), std::stoi(m)));
+        }
 
     }
 

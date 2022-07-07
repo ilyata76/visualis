@@ -8,15 +8,16 @@
 	#include <ostream>
 	
 	#include "../helpful/global_defines.hpp"
+	#include "../helpful/useful_functions.hpp"
 
 	class Global_settings {
 		
 		public:
 			
-			std::wstring path_to_folder;
-			std::wstring path_to_sconfiguration_file;
-			std::wstring path_to_settings_file;
-			std::wstring path_to_settings_file_folder;
+			std::string path_to_folder;
+			std::string path_to_sconfiguration_file;
+			std::string path_to_settings_file;
+			std::string path_to_settings_file_folder;
 			int number_of_file;
 			int index_of_spin;
 

@@ -24,6 +24,6 @@
 	};
 
 	// _path_to_file must be valid
-	std::vector<Vertex> sconfiguration_parsing(const std::wstring& _path_to_file);
+	std::vector<Vertex> sconfiguration_parsing(const std::string& _path_to_file);
 
 #endif // !VERTEX_HPP

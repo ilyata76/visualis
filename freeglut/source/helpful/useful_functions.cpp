@@ -31,9 +31,8 @@ float get_euler_theta(const double& sx, const double& sy, const double& sz) {
 	return (sign * 0.0f);
 }
 
-bool file_exist(const std::wstring& _path) {
-	struct _stat buf;
-	return (_wstat(_path.c_str(), &buf) != -1);
+bool file_exist(const std::string _path) {
+	return std::ifstream(_path).good();
 }
 
 std::wostream& print_logo(std::wostream& _out) {
@@ -61,11 +60,11 @@ std::vector<std::wstring> line_to_vector(const std::wstring& _str) {
 }
 
 std::wstring to_lower_wstr(std::wstring& _value) {
-	std::transform(_value.begin(), _value.end(), _value.begin(), std::tolower);
+	std::transform(_value.begin(), _value.end(), _value.begin(), [](unsigned char c) { return std::tolower(c); });
 	return std::wstring(_value);
 }
 
-int get_second_from_map(std::map<std::wstring, int>& _map, std::wstring& _value) {
+int get_second_from_map(std::map<std::wstring, int>& _map, std::wstring _value) {
 	std::map<std::wstring, int>::iterator it = _map.find(_value);
 
 	return it == _map.end() ? VVIS_UNKNOWW_MAP_SECOND : it->second;
@@ -94,7 +93,7 @@ bool is_number(const std::wstring& _str) {
 		_str.end(), [](wchar_t c) { return !(std::isdigit(c) || c == L'0'); }) == _str.end();
 }
 
-bool contains_subwstr(const std::wstring& _str, const std::wstring& _substr) {
+bool contains_substr(const std::string& _str, const std::string& _substr) {
 	return _str.find(_substr) != _str.npos;
 }
 
@@ -120,16 +119,28 @@ std::wstring by_synonyms(const std::wstring& _value) {
 
 }
 
-std::wstring v5_get_file_number(const std::wstring& _number) {
-	std::wstring num = _number;
-	std::wstring base = VVIS_VAMPIRE5_BASE_WSTR;
+std::string v5_get_file_number(const std::string& _number) {
+	std::string num = _number;
+	std::string base = VVIS_VAMPIRE5_BASE_WSTR;
 
 	size_t num_lenght = num.length(); size_t base_lenght = base.length();
 	for (int i = 0; num_lenght != 0; ++i, num.pop_back(), num_lenght = num.length()) {
 		base[base_lenght - 1 - i] = num[num_lenght - 1];
 	};
 
-	return std::wstring(base);
+	return std::string(base);
+}
+
+std::string wstr2str(const std::wstring& _wstr) {
+	return std::string(_wstr.begin(), _wstr.end());
+}
+
+std::wstring str2wstr(const std::string& _wstr) {
+	return std::wstring(_wstr.begin(), _wstr.end());
+}
+
+const char* c_str(const std::string& _str) {
+	return _str.c_str();
 }
 
 bool is_double(std::wstring& _value) {

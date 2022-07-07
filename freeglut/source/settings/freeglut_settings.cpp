@@ -19,11 +19,14 @@ Freeglut_settings::Freeglut_settings() {
 				this->estrangement_changes				= VVIS_ESTRAGNEMENT_CHANGES;
 				this->use_additional_subwindows			= true;
 				this->polygonrate						= 10;
+				this->spinrate							= 1;
+				this->gap								= 7;
+				this->beta_light						= false;
 };
 
 std::wostream& operator<<(std::wostream& _out, const Freeglut_settings& _settings) {
 	_out << L"\t Coloring sample\t\t\t: " << std::boolalpha << _settings.coloring_sample << L"\n";
-	_out << L"\t Shape\t\t\t\t\t: " << _settings.shape << "/" << _settings.shape_wstr << L"\n";
+	_out << L"\t Shape\t\t\t\t\t: " << _settings.shape << "|" << _settings.shape_wstr << L"\n";
 	_out << L"\t Additional rotation\t\t\t: " << _settings.additional_rotation.phi << "(phi), " << _settings.additional_rotation.theta << L"(theta)\n";
 	_out << L"\t Estrangement\t\t\t\t: " << _settings.estrangement << L"\n";
 	_out << L"\t Global translation\t\t\t: (" << _settings.global_translation.x << L", " << _settings.global_translation.y << L", " << _settings.global_translation.z << L")\n";
@@ -39,5 +42,8 @@ std::wostream& operator<<(std::wostream& _out, const Freeglut_settings& _setting
 	_out << L"\t Estrangement changes\t\t\t: " << std::boolalpha << _settings.estrangement_changes << L"\n";
 	_out << L"\t Additional subwindows\t\t\t: " << std::boolalpha << _settings.use_additional_subwindows << L"\n";
 	_out << L"\t Poligon rate\t\t\t\t: " << _settings.polygonrate << L"\n";
+	_out << L"\t Spinrate\t\t\t\t: " << _settings.spinrate << L"\n";
+	_out << L"\t Gap\t\t\t\t\t: " << _settings.gap << L"\n";
+	_out << L"\t Lighting (beta)\t\t\t: " << std::boolalpha << _settings.beta_light << L"\n";
 	return _out;
 }

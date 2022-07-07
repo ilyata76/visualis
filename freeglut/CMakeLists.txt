@@ -1,4 +1,4 @@
-﻿cmake_minimum_required (VERSION 3.18)
+﻿cmake_minimum_required (VERSION 3.16)
 
 set (VISUALIS vvis) 
 
@@ -43,6 +43,7 @@ set (HEADERS_VISUALIS
 
 	source/settings/global_settings.hpp
 	source/settings/freeglut_settings.hpp
+	source/settings/other_settings.hpp
 	source/settings/settings.hpp
 
 	
@@ -67,6 +68,7 @@ set (SOURCES_VISUALIS
 
 	source/settings/global_settings.cpp
 	source/settings/freeglut_settings.cpp
+	source/settings/other_settings.cpp
 	source/settings/settings.cpp
 
 	source/console/console_interpretator.cpp
@@ -78,6 +80,10 @@ set (SOURCES_VISUALIS
 
 	source/console/freeglut_drawer.cpp
 
+)
+
+set (RESOURCES_VISUALIS
+	source/rc/vvis.rc
 )
 
 # ----------- | SUBDIRECTORIES | ----------- 
@@ -99,11 +105,15 @@ add_executable (${VISUALIS}
 	${ENTRYPOINT_VISUALIS} 
 	${HEADERS_VISUALIS} 
 	${SOURCES_VISUALIS}
+	${RESOURCES_VISUALIS}
 )
 
 # ----------- | LINKING LIBRARIES | ----------- 
 
 message("[visualis] : LINKING LIBRARIES : exceptio")
+
+SET(libs_glu ${OPENGL_glu_LIBRARY} ${LIBS})
+#SET(libs_gl ${OPENGL_gl_LIBRARY} ${LIBS})
 
 target_link_libraries( ${VISUALIS} 
 	EXCEPTIO_CPP_LIBRARY
@@ -115,10 +125,14 @@ if(USE_STATIC)
 	find_library(FREGL freeglut_static)
 	target_link_libraries( ${VISUALIS} 
 		freeglut_static
+		${libs_glu}
+		#${libs_gl}
 	)
 else()
 	find_library(FREGL freeglut)
 	target_link_libraries( ${VISUALIS} 
 		freeglut
+		${libs_glu}
+		#${libs_gl}
 	)
 endif()
