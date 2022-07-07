@@ -110,7 +110,7 @@ add_executable (${VISUALIS}
 
 message("[visualis] : LINKING LIBRARIES : exceptio")
 
-SET(libs_glut ${OPENGL_glu_LIBRARY} ${LIBS})
+SET(libs_glu ${OPENGL_glu_LIBRARY} ${LIBS})
 #SET(libs_gl ${OPENGL_gl_LIBRARY} ${LIBS})
 
 target_link_libraries( ${VISUALIS} 
