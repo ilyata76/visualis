@@ -111,7 +111,7 @@ void draw_sample(Settings& _settings, std::vector<Vertex>& _vct, int argc, char*
 	glob_settings = _settings;
 	glob_vct = _vct;
 
-	if (!glob_settings.freeglut_settings.use_additional_subwindows) have_additional_sub_windows = false;
+	have_additional_sub_windows = false;
 
 	colors[L"main"] = glob_settings.main_window.backgroundcolor;
 	colors[L"sub0"] = glob_settings.subwindows[0].backgroundcolor;
@@ -1396,46 +1396,38 @@ void normal_keys(unsigned char key, int x, int y) {
 
 	switch (key) {
 	
-		case 'ц':
 		case 'w':	glob_settings.freeglut_settings.position_of_camera.y -= t_b_e * glob_settings.freeglut_settings.camera_changes.y; 
 					glob_settings.freeglut_settings.position_of_element.y += t_b_e * glob_settings.freeglut_settings.camera_changes.y;
 					postRedisplay();
 					break;
 
-		case 'ы':
 		case 's':	glob_settings.freeglut_settings.position_of_camera.y += t_b_e * glob_settings.freeglut_settings.camera_changes.y;
 					glob_settings.freeglut_settings.position_of_element.y -= t_b_e * glob_settings.freeglut_settings.camera_changes.y;
 					postRedisplay();
 					break;
 
-		case 'ф':
 		case 'a':	glob_settings.freeglut_settings.position_of_camera.x += t_b_e * glob_settings.freeglut_settings.camera_changes.x;
 					glob_settings.freeglut_settings.position_of_element.x -= t_b_e * glob_settings.freeglut_settings.camera_changes.x;
 					postRedisplay();
 					break;
 
-		case 'в':
 		case 'd':	glob_settings.freeglut_settings.position_of_camera.x -= t_b_e * glob_settings.freeglut_settings.camera_changes.x;
 					glob_settings.freeglut_settings.position_of_element.x += t_b_e * glob_settings.freeglut_settings.camera_changes.x;
 					postRedisplay();
 					break;
 
-		case 'ш':
 		case 'i':	glob_settings.freeglut_settings.additional_rotation.theta -= t_b_e * glob_settings.freeglut_settings.camera_changes.y;
 					postRedisplay();
 					break;
 
-		case 'л':
 		case 'k':	glob_settings.freeglut_settings.additional_rotation.theta += t_b_e * glob_settings.freeglut_settings.camera_changes.y;
 					postRedisplay();
 					break;
 		
-		case 'о':
 		case 'j':	glob_settings.freeglut_settings.additional_rotation.phi -= t_b_e * glob_settings.freeglut_settings.camera_changes.x;
 					postRedisplay();
 					break;
 		
-		case 'д':
 		case 'l':	glob_settings.freeglut_settings.additional_rotation.phi += t_b_e * glob_settings.freeglut_settings.camera_changes.x;
 					postRedisplay();
 					break;
