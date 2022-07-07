@@ -30,7 +30,8 @@
 
 	std::wostream& print_vector(std::wostream& _out, std::vector<std::wstring>& _vector, std::wstring separator = L" ");
 
-	int get_second_from_map(std::map<std::wstring, int>& _map, std::wstring& _value);
+	// GNU: (_commands[2]) <- cannot convert to link
+	int get_second_from_map(std::map<std::wstring, int>& _map, std::wstring _value);
 
 	std::wstring remove_quotations(std::wstring& _str);
 

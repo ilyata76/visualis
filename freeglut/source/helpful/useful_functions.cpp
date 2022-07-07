@@ -64,7 +64,7 @@ std::wstring to_lower_wstr(std::wstring& _value) {
 	return std::wstring(_value);
 }
 
-int get_second_from_map(std::map<std::wstring, int>& _map, std::wstring& _value) {
+int get_second_from_map(std::map<std::wstring, int>& _map, std::wstring _value) {
 	std::map<std::wstring, int>::iterator it = _map.find(_value);
 
 	return it == _map.end() ? VVIS_UNKNOWW_MAP_SECOND : it->second;
