@@ -368,13 +368,13 @@ bool Settings::get_by_json(const nlohmann::json& _json, wchar_t _flag) {
 						if (_json[VVIS_OTHER_SETTINGS]["subwindows"].contains(std::to_string(j))) {
 
 							if (_json[VVIS_OTHER_SETTINGS]["subwindows"][std::to_string(j)].contains("red"))
-								this->subwindows[j].backgroundcolor.red = _json[VVIS_OTHER_SETTINGS]["subwindows"][std::to_string(j)]["red"] / 255.0;
+								this->subwindows[j].backgroundcolor.red = _json[VVIS_OTHER_SETTINGS]["subwindows"][std::to_string(j)]["red"].get<int>() / 255.0;
 
 							if (_json[VVIS_OTHER_SETTINGS]["subwindows"][std::to_string(j)].contains("green"))
-								this->subwindows[j].backgroundcolor.green = _json[VVIS_OTHER_SETTINGS]["subwindows"][std::to_string(j)]["green"] / 255.0;
+								this->subwindows[j].backgroundcolor.green = _json[VVIS_OTHER_SETTINGS]["subwindows"][std::to_string(j)]["green"].get<int>() / 255.0;
 
 							if (_json[VVIS_OTHER_SETTINGS]["subwindows"][std::to_string(j)].contains("blue"))
-								this->subwindows[j].backgroundcolor.blue = _json[VVIS_OTHER_SETTINGS]["subwindows"][std::to_string(j)]["blue"] / 255.0;
+								this->subwindows[j].backgroundcolor.blue = _json[VVIS_OTHER_SETTINGS]["subwindows"][std::to_string(j)]["blue"].get<int>() / 255.0;
 
 						}
 
