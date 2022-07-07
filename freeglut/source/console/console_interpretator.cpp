@@ -554,8 +554,8 @@ bool Interpretator::set_handler(std::vector<std::wstring> _commands) {
 
 		case INTER_COMMAND_SET_SPINRATE: if (_commands.size() < 3) { std::wcout << L"\tEmpty instruction\n"; return false; }
 									   if (!is_number(_commands[2])) { std::wcout << L"\tNot number\n"; return false; }
-									   this->app_settings.spinrate = std::stoi(_commands[2]);
-									   std::wcout << L"\tSpinrate \"" << this->app_settings.spinrate << L"\" has been set up\n";
+									   this->app_settings.freeglut_settings.spinrate = std::stoi(_commands[2]);
+									   std::wcout << L"\tSpinrate \"" << this->app_settings.freeglut_settings.spinrate << L"\" has been set up\n";
 									   break;
 
 		case INTER_COMMAND_SET_SUBWINDOWING:  if (_commands.size() < 3) { std::wcout << L"\tEmpty instruction\n"; return false; }
@@ -565,8 +565,8 @@ bool Interpretator::set_handler(std::vector<std::wstring> _commands) {
 
 		case INTER_COMMAND_SET_GAP: if (_commands.size() < 3) { std::wcout << L"\tEmpty instruction\n"; return false; }
 								  if (!is_number(_commands[2])) { std::wcout << L"\tNot number\n"; return false; }
-									else { this->app_settings.gap = std::stoi(_commands[2]);
-								std::wcout << L"\tGap number \"" << this->app_settings.gap << L"\" has been set up\n"; } break;
+									else { this->app_settings.freeglut_settings.gap = std::stoi(_commands[2]);
+								std::wcout << L"\tGap number \"" << this->app_settings.freeglut_settings.gap << L"\" has been set up\n"; } break;
 
 		case INTER_COMMAND_SET_POLIGONRATE: if (_commands.size() < 3) { std::wcout << L"\tEmpty instruction\n"; return false; }
 										  if (!is_number(_commands[2])) { std::wcout << L"\tNot number\n"; return false; }
@@ -633,11 +633,11 @@ bool Interpretator::unset_handler(std::vector<std::wstring> _commands) {
 												this->app_settings.freeglut_settings.camera_changes.z = VVIS_CAMERA_CHANGES_Z;
 												break;
 
-		case INTER_COMMAND_SET_SPINRATE: std::wcout << L"\tSuccessful\n"; this->app_settings.spinrate = 1; break;
+		case INTER_COMMAND_SET_SPINRATE: std::wcout << L"\tSuccessful\n"; this->app_settings.freeglut_settings.spinrate = 1; break;
 
 		case INTER_COMMAND_SET_SUBWINDOWING:  std::wcout << L"\tSuccessful\n"; this->app_settings.freeglut_settings.use_additional_subwindows = true; break;
 
-		case INTER_COMMAND_SET_GAP: std::wcout << L"\tSuccessful\n"; this->app_settings.gap = 7; break;
+		case INTER_COMMAND_SET_GAP: std::wcout << L"\tSuccessful\n"; this->app_settings.freeglut_settings.gap = 7; break;
 
 		case INTER_COMMAND_SET_POLIGONRATE: std::wcout << L"\tSuccessful\n"; this->app_settings.freeglut_settings.polygonrate = 7; break;
 

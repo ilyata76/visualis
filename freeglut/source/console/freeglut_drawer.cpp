@@ -3,27 +3,10 @@
 Settings glob_settings;
 std::vector<Vertex> glob_vct;
 
-bool axis_by_cones = false;
-bool show_axis_names = true;
-
-void* font_stats = GLUT_BITMAP_HELVETICA_12;
-void* font_log = GLUT_BITMAP_HELVETICA_12;
-
-bool inverted_black_text_stats = false;
-bool inverted_black_text_log = false;
-bool inverted_black_text_axis = false;
-
-Parameters3f transl_stats = { 0.0, 0.0, 0.0 };
-Parameters3f transl_log = { 0.0, 0.0, 0.0 };
-
-bool beta_light = false;
-
 std::vector<std::string> vct_log;
 std::vector<Rgb> vct_log_colorful;
 
 bool have_additional_sub_windows = false;
-
-
 
 std::map<std::wstring, Rgb> colors = {
 	{L"white", Rgb(255.0 / 255.0, 255.0 / 255.0, 255.0 / 255.0)},
@@ -119,20 +102,11 @@ void draw_sample(Settings& _settings, std::vector<Vertex>& _vct, int argc, char*
 	colors[L"sub2"] = glob_settings.subwindows[2].backgroundcolor;
 	colors[L"sub3"] = glob_settings.subwindows[3].backgroundcolor;
 
-	font_stats = GLUT_BITMAP_9_BY_15;
-	font_log = GLUT_BITMAP_9_BY_15;
-
-	transl_stats = { 0.0, 0.0, 0.0 };
-	transl_log = { 0.0, 0.0, 0.0 };
+	glob_settings.other_settings.font_stats = GLUT_BITMAP_9_BY_15;
+	glob_settings.other_settings.font_log = GLUT_BITMAP_9_BY_15;
 
 	vct_log = {};
 	vct_log_colorful = {};
-
-	inverted_black_text_stats = false;
-	inverted_black_text_log = false;
-	inverted_black_text_axis = false;
-
-	beta_light = false;
 
 	log("System initialized", RGB_GREEN);
 
@@ -299,50 +273,50 @@ void main_menu_gap(int code) {
 
 	switch (code) {
 
-		case MAIN_MENU_GAP_INCREASE_BY_1:	glob_settings.gap += 1;
-											log("GAP has been changed to " + std::to_string(glob_settings.gap), RGB_BLUE);
+		case MAIN_MENU_GAP_INCREASE_BY_1:	glob_settings.freeglut_settings.gap += 1;
+											log("GAP has been changed to " + std::to_string(glob_settings.freeglut_settings.gap), RGB_BLUE);
 											recalculation_subwindows_wh();
 											reshape_reposition_subwindows();
 											postRedisplay(); 
 											break;
 
-		case MAIN_MENU_GAP_DECREASE_BY_1:	glob_settings.gap = glob_settings.gap == 1 ? 1 : glob_settings.gap - 1;
-											log("GAP has been changed to " + std::to_string(glob_settings.gap), RGB_BLUE);
+		case MAIN_MENU_GAP_DECREASE_BY_1:	glob_settings.freeglut_settings.gap = glob_settings.freeglut_settings.gap == 1 ? 1 : glob_settings.freeglut_settings.gap - 1;
+											log("GAP has been changed to " + std::to_string(glob_settings.freeglut_settings.gap), RGB_BLUE);
 											recalculation_subwindows_wh();
 											reshape_reposition_subwindows();
 											postRedisplay(); 
 											break;
 		
-		case MAIN_MENU_GAP_SET_5:	glob_settings.gap = 5;
-									log("GAP has been changed to " + std::to_string(glob_settings.gap), RGB_BLUE);
+		case MAIN_MENU_GAP_SET_5:	glob_settings.freeglut_settings.gap = 5;
+									log("GAP has been changed to " + std::to_string(glob_settings.freeglut_settings.gap), RGB_BLUE);
 									recalculation_subwindows_wh();
 									reshape_reposition_subwindows();
 									postRedisplay(); 
 									break;
 
-		case MAIN_MENU_GAP_SET_6:	glob_settings.gap = 6;
-									log("GAP has been changed to " + std::to_string(glob_settings.gap), RGB_BLUE);
+		case MAIN_MENU_GAP_SET_6:	glob_settings.freeglut_settings.gap = 6;
+									log("GAP has been changed to " + std::to_string(glob_settings.freeglut_settings.gap), RGB_BLUE);
 									recalculation_subwindows_wh();
 									reshape_reposition_subwindows();
 									postRedisplay(); 
 									break;
 
-		case MAIN_MENU_GAP_SET_7:	glob_settings.gap = 7;
-									log("GAP has been changed to " + std::to_string(glob_settings.gap), RGB_BLUE);
+		case MAIN_MENU_GAP_SET_7:	glob_settings.freeglut_settings.gap = 7;
+									log("GAP has been changed to " + std::to_string(glob_settings.freeglut_settings.gap), RGB_BLUE);
 									recalculation_subwindows_wh();
 									reshape_reposition_subwindows();
 									postRedisplay(); 
 									break;
 
-		case MAIN_MENU_GAP_SET_8:	glob_settings.gap = 8;
-									log("GAP has been changed to " + std::to_string(glob_settings.gap), RGB_BLUE);
+		case MAIN_MENU_GAP_SET_8:	glob_settings.freeglut_settings.gap = 8;
+									log("GAP has been changed to " + std::to_string(glob_settings.freeglut_settings.gap), RGB_BLUE);
 									recalculation_subwindows_wh();
 									reshape_reposition_subwindows();
 									postRedisplay(); 
 									break;
 
-		case MAIN_MENU_GAP_SET_9:	glob_settings.gap = 9;
-									log("GAP has been changed to " + std::to_string(glob_settings.gap), RGB_BLUE);
+		case MAIN_MENU_GAP_SET_9:	glob_settings.freeglut_settings.gap = 9;
+									log("GAP has been changed to " + std::to_string(glob_settings.freeglut_settings.gap), RGB_BLUE);
 									recalculation_subwindows_wh();
 									reshape_reposition_subwindows();
 									postRedisplay(); 
@@ -463,7 +437,7 @@ void destroy_additional_subwindows() {
 void recalculation_subwindows_wh() {
 	int x = glob_settings.main_window.wh.width;
 	int y = glob_settings.main_window.wh.height;
-	int gap = glob_settings.gap;
+	int gap = glob_settings.freeglut_settings.gap;
 
 	if (have_additional_sub_windows && glob_settings.freeglut_settings.use_additional_subwindows) {
 
@@ -586,7 +560,7 @@ void display_subwindow_0() {
 		
 		glMatrixMode(GL_MODELVIEW);
 
-		if (beta_light && !glob_settings.freeglut_settings.coloring_sample) {
+		if (glob_settings.freeglut_settings.beta_light && !glob_settings.freeglut_settings.coloring_sample) {
 
 			glEnable(GL_LIGHTING); //рассчёт освещения
 			glEnable(GL_LIGHT0); // источник
@@ -618,7 +592,7 @@ void display_subwindow_0() {
 			size_t size_of_vector = glob_vct.size();
 				
 			for (unsigned int i = 0; i < size_of_vector; ++i) {
-				if (i % glob_settings.spinrate == 0) draw_shape(i);
+				if (i % glob_settings.freeglut_settings.spinrate == 0) draw_shape(i);
 			}
 
 			//log(std::string("Drawed " + std::to_string(size_of_vector/glob_settings.spinrate) + " spins"), RGB_BLACK);
@@ -909,7 +883,7 @@ void subwindow_0_menu(int code) {
 			postRedisplay();
 			break;
 
-		case MENU_RENDER_RESTORE_GAP: glob_settings.gap = 7;
+		case MENU_RENDER_RESTORE_GAP: glob_settings.freeglut_settings.gap = 7;
 			log("GAP has been restored to 7", RGB_BLUE);
 			recalculation_subwindows_wh();
 			reshape_reposition_subwindows();
@@ -917,8 +891,8 @@ void subwindow_0_menu(int code) {
 			
 			break;
 
-		case MENU_RENDER_LIGHTING: beta_light = !beta_light;
-			if (beta_light) log("Beta lighting was enabled", RGB_RED);
+		case MENU_RENDER_LIGHTING: glob_settings.freeglut_settings.beta_light = !glob_settings.freeglut_settings.beta_light;
+			if (glob_settings.freeglut_settings.beta_light) log("Beta lighting was enabled", RGB_RED);
 			else log("Beta lighting was disabled", RGB_GREEN);
 			postRedisplay();
 
@@ -1165,7 +1139,14 @@ void menu_settings(int code) {
 		} break;
 
 		case MENU_SETTINGS_GS_RESET: {
-			glob_settings = Settings(glob_settings.global_settings, Freeglut_settings(), glob_settings.main_window, glob_settings.subwindows, 1.0, glob_settings.gap);
+			glob_settings = Settings(glob_settings.global_settings, Freeglut_settings(), glob_settings.main_window, glob_settings.subwindows);
+
+			glob_settings.main_window.backgroundcolor = colors[L"main"];
+			glob_settings.subwindows[0].backgroundcolor = colors[L"sub0"];
+			glob_settings.subwindows[1].backgroundcolor = colors[L"sub1"];
+			glob_settings.subwindows[2].backgroundcolor = colors[L"sub2"];
+			glob_settings.subwindows[3].backgroundcolor = colors[L"sub3"];
+
 			log("Settings has been reseted", RGB_GREEN);
 			recalculation_subwindows_wh();
 			reshape_reposition_subwindows();
@@ -1173,7 +1154,7 @@ void menu_settings(int code) {
 		} break;
 
 		case MENU_SETTINGS_GS_RESET_FILE: {
-			Settings reseted_settings = Settings(glob_settings.global_settings, Freeglut_settings(), glob_settings.main_window, glob_settings.subwindows, 1.0, glob_settings.gap);
+			Settings reseted_settings = Settings(glob_settings.global_settings, Freeglut_settings(), glob_settings.main_window, glob_settings.subwindows);
 			reseted_settings.save(L'a');
 			log("Settings has been reseted in file", RGB_BLUE);
 			postRedisplay();
@@ -1186,8 +1167,8 @@ void menu_spinrate(int code) {
 
 	switch(code) {
 	
-		case MENU_RENDER_INCREASE_SPINRATE_BY_1: glob_settings.spinrate += 1; log("Spinrate was increased by 1", RGB_BLUE); postRedisplay(); break;
-		case MENU_RENDER_DECREASE_SPINRATE_BY_1: glob_settings.spinrate = glob_settings.spinrate == 1 ? 1 : glob_settings.spinrate -= 1; log("Spinrate was decreased by 1", RGB_BLUE); postRedisplay(); break;
+		case MENU_RENDER_INCREASE_SPINRATE_BY_1: glob_settings.freeglut_settings.spinrate += 1; log("Spinrate was increased by 1", RGB_BLUE); postRedisplay(); break;
+		case MENU_RENDER_DECREASE_SPINRATE_BY_1: glob_settings.freeglut_settings.spinrate = glob_settings.freeglut_settings.spinrate == 1 ? 1 : glob_settings.freeglut_settings.spinrate -= 1; log("Spinrate was decreased by 1", RGB_BLUE); postRedisplay(); break;
 	
 		default: break;
 	}
@@ -1206,9 +1187,9 @@ void menu_spinrate_set(int code) {
 				spinrate += 1;
 			}
 
-			glob_settings.spinrate = spinrate;
+			glob_settings.freeglut_settings.spinrate = spinrate;
 
-			log("AUTO Spinrate = " + std::to_string(glob_settings.spinrate), RGB_GREEN); postRedisplay();
+			log("AUTO Spinrate = " + std::to_string(glob_settings.freeglut_settings.spinrate), RGB_GREEN); postRedisplay();
 
 		} break;
 
@@ -1221,16 +1202,16 @@ void menu_spinrate_set_1_10(int code) {
 	
 	switch (code) {
 
-		case MENU_RENDER_SPINRATE_1: glob_settings.spinrate = 1; log("Spinrate = " + std::to_string(glob_settings.spinrate), RGB_GREEN); postRedisplay(); break;
-		case MENU_RENDER_SPINRATE_2: glob_settings.spinrate = 2; log("Spinrate = " + std::to_string(glob_settings.spinrate), RGB_GREEN); postRedisplay(); break;
-		case MENU_RENDER_SPINRATE_3: glob_settings.spinrate = 3; log("Spinrate = " + std::to_string(glob_settings.spinrate), RGB_GREEN); postRedisplay(); break;
-		case MENU_RENDER_SPINRATE_4: glob_settings.spinrate = 4; log("Spinrate = " + std::to_string(glob_settings.spinrate), RGB_GREEN); postRedisplay(); break;
-		case MENU_RENDER_SPINRATE_5: glob_settings.spinrate = 5; log("Spinrate = " + std::to_string(glob_settings.spinrate), RGB_GREEN); postRedisplay(); break;
-		case MENU_RENDER_SPINRATE_6: glob_settings.spinrate = 6; log("Spinrate = " + std::to_string(glob_settings.spinrate), RGB_GREEN); postRedisplay(); break;
-		case MENU_RENDER_SPINRATE_7: glob_settings.spinrate = 7; log("Spinrate = " + std::to_string(glob_settings.spinrate), RGB_GREEN); postRedisplay(); break;
-		case MENU_RENDER_SPINRATE_8: glob_settings.spinrate = 8; log("Spinrate = " + std::to_string(glob_settings.spinrate), RGB_GREEN); postRedisplay(); break;
-		case MENU_RENDER_SPINRATE_9: glob_settings.spinrate = 9; log("Spinrate = " + std::to_string(glob_settings.spinrate), RGB_GREEN); postRedisplay(); break;
-		case MENU_RENDER_SPINRATE_10: glob_settings.spinrate = 10; log("Spinrate = " + std::to_string(glob_settings.spinrate), RGB_GREEN); postRedisplay(); break;
+		case MENU_RENDER_SPINRATE_1: glob_settings.freeglut_settings.spinrate = 1; log("Spinrate = " + std::to_string(glob_settings.freeglut_settings.spinrate), RGB_GREEN); postRedisplay(); break;
+		case MENU_RENDER_SPINRATE_2: glob_settings.freeglut_settings.spinrate = 2; log("Spinrate = " + std::to_string(glob_settings.freeglut_settings.spinrate), RGB_GREEN); postRedisplay(); break;
+		case MENU_RENDER_SPINRATE_3: glob_settings.freeglut_settings.spinrate = 3; log("Spinrate = " + std::to_string(glob_settings.freeglut_settings.spinrate), RGB_GREEN); postRedisplay(); break;
+		case MENU_RENDER_SPINRATE_4: glob_settings.freeglut_settings.spinrate = 4; log("Spinrate = " + std::to_string(glob_settings.freeglut_settings.spinrate), RGB_GREEN); postRedisplay(); break;
+		case MENU_RENDER_SPINRATE_5: glob_settings.freeglut_settings.spinrate = 5; log("Spinrate = " + std::to_string(glob_settings.freeglut_settings.spinrate), RGB_GREEN); postRedisplay(); break;
+		case MENU_RENDER_SPINRATE_6: glob_settings.freeglut_settings.spinrate = 6; log("Spinrate = " + std::to_string(glob_settings.freeglut_settings.spinrate), RGB_GREEN); postRedisplay(); break;
+		case MENU_RENDER_SPINRATE_7: glob_settings.freeglut_settings.spinrate = 7; log("Spinrate = " + std::to_string(glob_settings.freeglut_settings.spinrate), RGB_GREEN); postRedisplay(); break;
+		case MENU_RENDER_SPINRATE_8: glob_settings.freeglut_settings.spinrate = 8; log("Spinrate = " + std::to_string(glob_settings.freeglut_settings.spinrate), RGB_GREEN); postRedisplay(); break;
+		case MENU_RENDER_SPINRATE_9: glob_settings.freeglut_settings.spinrate = 9; log("Spinrate = " + std::to_string(glob_settings.freeglut_settings.spinrate), RGB_GREEN); postRedisplay(); break;
+		case MENU_RENDER_SPINRATE_10: glob_settings.freeglut_settings.spinrate = 10; log("Spinrate = " + std::to_string(glob_settings.freeglut_settings.spinrate), RGB_GREEN); postRedisplay(); break;
 
 		default: break;
 
@@ -1241,16 +1222,16 @@ void menu_spinrate_set_11_20(int code) {
 	
 	switch (code) {
 
-		case MENU_RENDER_SPINRATE_11: glob_settings.spinrate = 11; log("Spinrate = " + std::to_string(glob_settings.spinrate), RGB_GREEN); postRedisplay(); break;
-		case MENU_RENDER_SPINRATE_12: glob_settings.spinrate = 12; log("Spinrate = " + std::to_string(glob_settings.spinrate), RGB_GREEN); postRedisplay(); break;
-		case MENU_RENDER_SPINRATE_13: glob_settings.spinrate = 13; log("Spinrate = " + std::to_string(glob_settings.spinrate), RGB_GREEN); postRedisplay(); break;
-		case MENU_RENDER_SPINRATE_14: glob_settings.spinrate = 14; log("Spinrate = " + std::to_string(glob_settings.spinrate), RGB_GREEN); postRedisplay(); break;
-		case MENU_RENDER_SPINRATE_15: glob_settings.spinrate = 15; log("Spinrate = " + std::to_string(glob_settings.spinrate), RGB_GREEN); postRedisplay(); break;
-		case MENU_RENDER_SPINRATE_16: glob_settings.spinrate = 16; log("Spinrate = " + std::to_string(glob_settings.spinrate), RGB_GREEN); postRedisplay(); break;
-		case MENU_RENDER_SPINRATE_17: glob_settings.spinrate = 17; log("Spinrate = " + std::to_string(glob_settings.spinrate), RGB_GREEN); postRedisplay(); break;
-		case MENU_RENDER_SPINRATE_18: glob_settings.spinrate = 18; log("Spinrate = " + std::to_string(glob_settings.spinrate), RGB_GREEN); postRedisplay(); break;
-		case MENU_RENDER_SPINRATE_19: glob_settings.spinrate = 19; log("Spinrate = " + std::to_string(glob_settings.spinrate), RGB_GREEN); postRedisplay(); break;
-		case MENU_RENDER_SPINRATE_20: glob_settings.spinrate = 20; log("Spinrate = " + std::to_string(glob_settings.spinrate), RGB_GREEN); postRedisplay(); break;
+		case MENU_RENDER_SPINRATE_11: glob_settings.freeglut_settings.spinrate = 11; log("Spinrate = " + std::to_string(glob_settings.freeglut_settings.spinrate), RGB_GREEN); postRedisplay(); break;
+		case MENU_RENDER_SPINRATE_12: glob_settings.freeglut_settings.spinrate = 12; log("Spinrate = " + std::to_string(glob_settings.freeglut_settings.spinrate), RGB_GREEN); postRedisplay(); break;
+		case MENU_RENDER_SPINRATE_13: glob_settings.freeglut_settings.spinrate = 13; log("Spinrate = " + std::to_string(glob_settings.freeglut_settings.spinrate), RGB_GREEN); postRedisplay(); break;
+		case MENU_RENDER_SPINRATE_14: glob_settings.freeglut_settings.spinrate = 14; log("Spinrate = " + std::to_string(glob_settings.freeglut_settings.spinrate), RGB_GREEN); postRedisplay(); break;
+		case MENU_RENDER_SPINRATE_15: glob_settings.freeglut_settings.spinrate = 15; log("Spinrate = " + std::to_string(glob_settings.freeglut_settings.spinrate), RGB_GREEN); postRedisplay(); break;
+		case MENU_RENDER_SPINRATE_16: glob_settings.freeglut_settings.spinrate = 16; log("Spinrate = " + std::to_string(glob_settings.freeglut_settings.spinrate), RGB_GREEN); postRedisplay(); break;
+		case MENU_RENDER_SPINRATE_17: glob_settings.freeglut_settings.spinrate = 17; log("Spinrate = " + std::to_string(glob_settings.freeglut_settings.spinrate), RGB_GREEN); postRedisplay(); break;
+		case MENU_RENDER_SPINRATE_18: glob_settings.freeglut_settings.spinrate = 18; log("Spinrate = " + std::to_string(glob_settings.freeglut_settings.spinrate), RGB_GREEN); postRedisplay(); break;
+		case MENU_RENDER_SPINRATE_19: glob_settings.freeglut_settings.spinrate = 19; log("Spinrate = " + std::to_string(glob_settings.freeglut_settings.spinrate), RGB_GREEN); postRedisplay(); break;
+		case MENU_RENDER_SPINRATE_20: glob_settings.freeglut_settings.spinrate = 20; log("Spinrate = " + std::to_string(glob_settings.freeglut_settings.spinrate), RGB_GREEN); postRedisplay(); break;
 
 		default: break;
 
@@ -1261,16 +1242,16 @@ void menu_spinrate_set_21_30(int code) {
 		
 	switch (code) {
 
-		case MENU_RENDER_SPINRATE_21: glob_settings.spinrate = 21; log("Spinrate = " + std::to_string(glob_settings.spinrate), RGB_GREEN); postRedisplay(); break;
-		case MENU_RENDER_SPINRATE_22: glob_settings.spinrate = 22; log("Spinrate = " + std::to_string(glob_settings.spinrate), RGB_GREEN); postRedisplay(); break;
-		case MENU_RENDER_SPINRATE_23: glob_settings.spinrate = 23; log("Spinrate = " + std::to_string(glob_settings.spinrate), RGB_GREEN); postRedisplay(); break;
-		case MENU_RENDER_SPINRATE_24: glob_settings.spinrate = 24; log("Spinrate = " + std::to_string(glob_settings.spinrate), RGB_GREEN); postRedisplay(); break;
-		case MENU_RENDER_SPINRATE_25: glob_settings.spinrate = 25; log("Spinrate = " + std::to_string(glob_settings.spinrate), RGB_GREEN); postRedisplay(); break;
-		case MENU_RENDER_SPINRATE_26: glob_settings.spinrate = 26; log("Spinrate = " + std::to_string(glob_settings.spinrate), RGB_GREEN); postRedisplay(); break;
-		case MENU_RENDER_SPINRATE_27: glob_settings.spinrate = 27; log("Spinrate = " + std::to_string(glob_settings.spinrate), RGB_GREEN); postRedisplay(); break;
-		case MENU_RENDER_SPINRATE_28: glob_settings.spinrate = 28; log("Spinrate = " + std::to_string(glob_settings.spinrate), RGB_GREEN); postRedisplay(); break;
-		case MENU_RENDER_SPINRATE_29: glob_settings.spinrate = 29; log("Spinrate = " + std::to_string(glob_settings.spinrate), RGB_GREEN); postRedisplay(); break;
-		case MENU_RENDER_SPINRATE_30: glob_settings.spinrate = 30; log("Spinrate = " + std::to_string(glob_settings.spinrate), RGB_GREEN); postRedisplay(); break;
+		case MENU_RENDER_SPINRATE_21: glob_settings.freeglut_settings.spinrate = 21; log("Spinrate = " + std::to_string(glob_settings.freeglut_settings.spinrate), RGB_GREEN); postRedisplay(); break;
+		case MENU_RENDER_SPINRATE_22: glob_settings.freeglut_settings.spinrate = 22; log("Spinrate = " + std::to_string(glob_settings.freeglut_settings.spinrate), RGB_GREEN); postRedisplay(); break;
+		case MENU_RENDER_SPINRATE_23: glob_settings.freeglut_settings.spinrate = 23; log("Spinrate = " + std::to_string(glob_settings.freeglut_settings.spinrate), RGB_GREEN); postRedisplay(); break;
+		case MENU_RENDER_SPINRATE_24: glob_settings.freeglut_settings.spinrate = 24; log("Spinrate = " + std::to_string(glob_settings.freeglut_settings.spinrate), RGB_GREEN); postRedisplay(); break;
+		case MENU_RENDER_SPINRATE_25: glob_settings.freeglut_settings.spinrate = 25; log("Spinrate = " + std::to_string(glob_settings.freeglut_settings.spinrate), RGB_GREEN); postRedisplay(); break;
+		case MENU_RENDER_SPINRATE_26: glob_settings.freeglut_settings.spinrate = 26; log("Spinrate = " + std::to_string(glob_settings.freeglut_settings.spinrate), RGB_GREEN); postRedisplay(); break;
+		case MENU_RENDER_SPINRATE_27: glob_settings.freeglut_settings.spinrate = 27; log("Spinrate = " + std::to_string(glob_settings.freeglut_settings.spinrate), RGB_GREEN); postRedisplay(); break;
+		case MENU_RENDER_SPINRATE_28: glob_settings.freeglut_settings.spinrate = 28; log("Spinrate = " + std::to_string(glob_settings.freeglut_settings.spinrate), RGB_GREEN); postRedisplay(); break;
+		case MENU_RENDER_SPINRATE_29: glob_settings.freeglut_settings.spinrate = 29; log("Spinrate = " + std::to_string(glob_settings.freeglut_settings.spinrate), RGB_GREEN); postRedisplay(); break;
+		case MENU_RENDER_SPINRATE_30: glob_settings.freeglut_settings.spinrate = 30; log("Spinrate = " + std::to_string(glob_settings.freeglut_settings.spinrate), RGB_GREEN); postRedisplay(); break;
 
 		default: break;
 
@@ -1616,7 +1597,7 @@ void display_subwindow_1() {
 	glRotated(glob_settings.freeglut_settings.additional_rotation.phi, 0, 1, 0);
 	glRotatef(glob_settings.freeglut_settings.additional_rotation.theta, 1, 0, 0);
 
-	if (axis_by_cones) {
+	if (glob_settings.other_settings.axis_by_cones) {
 		draw_axis_by_cones();
 	} else {
 		draw_axis_by_lines();
@@ -1638,8 +1619,8 @@ void draw_axis_by_cones() {
 		glTranslated(0.0, 0.0, -5.0 * estrangement);
 	glRotated(-90.0, 0, 1, 0);
 	
-	if (show_axis_names) {
-		if (inverted_black_text_axis) glColor3f(1.0, 1.0, 1.0);
+	if (glob_settings.other_settings.show_axis_names) {
+		if (glob_settings.other_settings.inverted_black_text_axis) glColor3f(1.0, 1.0, 1.0);
 		else glColor3f(0.0, 0.0, 0.0);
 		print_text_3f(35.0, 10.0, 5.0, L"X", GLUT_BITMAP_HELVETICA_18);
 	}
@@ -1656,8 +1637,8 @@ void draw_axis_by_cones() {
 	glRotated(90.0, 1, 0, 0);
 	
 	
-	if (show_axis_names) {
-		if (inverted_black_text_axis) glColor3f(1.0, 1.0, 1.0);
+	if (glob_settings.other_settings.show_axis_names) {
+		if (glob_settings.other_settings.inverted_black_text_axis) glColor3f(1.0, 1.0, 1.0);
 		else glColor3f(0.0, 0.0, 0.0);
 		print_text_3f(5.0, 35.0, 5.0, L"Y", GLUT_BITMAP_HELVETICA_18);
 	}
@@ -1670,8 +1651,8 @@ void draw_axis_by_cones() {
 		glutSolidCone(3.0 * estrangement, 17.0 * estrangement, 10.0, 10.0);
 		glTranslated(0.0, 0.0, -5.0 * estrangement);
 	
-	if (show_axis_names) {
-		if (inverted_black_text_axis) glColor3f(1.0, 1.0, 1.0);
+	if (glob_settings.other_settings.show_axis_names) {
+		if (glob_settings.other_settings.inverted_black_text_axis) glColor3f(1.0, 1.0, 1.0);
 		else glColor3f(0.0, 0.0, 0.0);
 		print_text_3f(5.0, 10.0, 35.0, L"Z", GLUT_BITMAP_HELVETICA_18);
 	}
@@ -1690,8 +1671,8 @@ void draw_axis_by_lines() {
 		glVertex3f(30.0, 0.0, 0.0);
 	glEnd();	
 	
-	if (show_axis_names) {
-		if (inverted_black_text_axis) glColor3f(1.0, 1.0, 1.0);
+	if (glob_settings.other_settings.show_axis_names) {
+		if (glob_settings.other_settings.inverted_black_text_axis) glColor3f(1.0, 1.0, 1.0);
 		else glColor3f(0.0, 0.0, 0.0);
 		print_text_3f(35.0, 10.0, 5.0, L"X", GLUT_BITMAP_HELVETICA_18);
 	}
@@ -1704,8 +1685,8 @@ void draw_axis_by_lines() {
 		glVertex3f(0.0, 30.0, 0.0);
 	glEnd();
 	
-	if (show_axis_names) {
-		if (inverted_black_text_axis) glColor3f(1.0, 1.0, 1.0);
+	if (glob_settings.other_settings.show_axis_names) {
+		if (glob_settings.other_settings.inverted_black_text_axis) glColor3f(1.0, 1.0, 1.0);
 		else glColor3f(0.0, 0.0, 0.0);
 		print_text_3f(5.0, 35.0, 5.0, L"Y", GLUT_BITMAP_HELVETICA_18);
 	}
@@ -1717,8 +1698,8 @@ void draw_axis_by_lines() {
 		glVertex3f(0.0, 0.0, 30.0);
 	glEnd();
 
-	if (show_axis_names) {
-		if (inverted_black_text_axis) glColor3f(1.0, 1.0, 1.0);
+	if (glob_settings.other_settings.show_axis_names) {
+		if (glob_settings.other_settings.inverted_black_text_axis) glColor3f(1.0, 1.0, 1.0);
 		else glColor3f(0.0, 0.0, 0.0);
 		print_text_3f(5.0, 10.0, 35.0, L"Z", GLUT_BITMAP_HELVETICA_18);
 	}
@@ -1773,11 +1754,11 @@ void subwindow_1_menu_init() {
 void subwindow_1_menu(int code) {
 	
 	switch (code) {
-		case SUBWINDOW_AXIS_MENU_USE_CONES: axis_by_cones = true; log("Cone mode to axis", RGB_BLUE); postRedisplay();break;
-		case SUBWINDOW_AXIS_MENU_USE_LINES: axis_by_cones = false; log("Line mode to axis", RGB_BLUE); postRedisplay(); break;
-		case SUBWINDOW_AXIS_MENU_SHOW_NAMES: show_axis_names = true; log("Showed names of axis", RGB_BLUE); postRedisplay(); break;
-		case SUBWINDOW_AXIS_MENU_HIDE_NAMES: show_axis_names = false; log("Hided names of axis", RGB_BLUE); postRedisplay(); break;
-		case MENU_INVERT_BLACK_TEXT_COLOR: inverted_black_text_axis = !inverted_black_text_axis; log("Black color of sub1 has been inverted", RGB_BLUE); postRedisplay(); break;
+		case SUBWINDOW_AXIS_MENU_USE_CONES: glob_settings.other_settings.axis_by_cones = true; log("Cone mode to axis", RGB_BLUE); postRedisplay();break;
+		case SUBWINDOW_AXIS_MENU_USE_LINES: glob_settings.other_settings.axis_by_cones = false; log("Line mode to axis", RGB_BLUE); postRedisplay(); break;
+		case SUBWINDOW_AXIS_MENU_SHOW_NAMES: glob_settings.other_settings.show_axis_names = true; log("Showed names of axis", RGB_BLUE); postRedisplay(); break;
+		case SUBWINDOW_AXIS_MENU_HIDE_NAMES: glob_settings.other_settings.show_axis_names = false; log("Hided names of axis", RGB_BLUE); postRedisplay(); break;
+		case MENU_INVERT_BLACK_TEXT_COLOR: glob_settings.other_settings.inverted_black_text_axis = !glob_settings.other_settings.inverted_black_text_axis; log("Black color of sub1 has been inverted", RGB_BLUE); postRedisplay(); break;
 		default: break;
 	}
 
@@ -1807,7 +1788,7 @@ void menu_background_sub1(int code) {
 }
 
 void display_subwindow_2() {
-	int gap = glob_settings.gap;
+	int gap = glob_settings.freeglut_settings.gap;
 	glClearColor(glob_settings.subwindows[2].backgroundcolor.red, glob_settings.subwindows[2].backgroundcolor.green, glob_settings.subwindows[2].backgroundcolor.blue, 0.0);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -1821,19 +1802,19 @@ void display_subwindow_2() {
 
 	glMatrixMode(GL_MODELVIEW);
 		glPushMatrix();
-		if (inverted_black_text_stats) glColor3f(1.0, 1.0, 1.0);
+		if (glob_settings.other_settings.inverted_black_text_stats) glColor3f(1.0, 1.0, 1.0);
 		else glColor3f(0.0, 0.0, 0.0);
 		glLoadIdentity();
 
-		glTranslatef(transl_stats.x, transl_stats.y, transl_stats.z);
+		glTranslatef(glob_settings.other_settings.transl_stats.x, glob_settings.other_settings.transl_stats.y, glob_settings.other_settings.transl_stats.z);
 
 		char buff[256];
 		sprintf(buff, "x, y: %g, %g", x, y);
 
 		std::vector <std::wstring> vct_temp = {
 			(std::wstring(L"Count of all spins - ") + std::to_wstring(glob_vct.size())),
-			(std::wstring(L"Count of drawed spins - ") + (glob_settings.global_settings.index_of_spin == VVIS_DRAW_ALL ? (std::to_wstring(glob_vct.size() / glob_settings.spinrate)) : L"1")),
-			(std::wstring(L"Spinrate - ") + std::to_wstring(glob_settings.spinrate)),
+			(std::wstring(L"Count of drawed spins - ") + (glob_settings.global_settings.index_of_spin == VVIS_DRAW_ALL ? (std::to_wstring(glob_vct.size() / glob_settings.freeglut_settings.spinrate)) : L"1")),
+			(std::wstring(L"Spinrate - ") + std::to_wstring(glob_settings.freeglut_settings.spinrate)),
 			(std::wstring(L"Additional rotation (phi, theta) - ") + std::to_wstring(glob_settings.freeglut_settings.additional_rotation.phi) + std::wstring(L", ") + std::to_wstring(glob_settings.freeglut_settings.additional_rotation.theta)),
 			(std::wstring(L"Estrangement - ") + std::to_wstring(glob_settings.freeglut_settings.estrangement)),
 			(std::wstring(L"Global translation - (") + std::to_wstring(glob_settings.freeglut_settings.global_translation.x) + std::wstring(L", ") + std::to_wstring(glob_settings.freeglut_settings.global_translation.y) + std::wstring(L", ") + std::to_wstring(glob_settings.freeglut_settings.global_translation.z) + std::wstring(L")")),
@@ -1848,7 +1829,7 @@ void display_subwindow_2() {
 			(std::wstring(L"Translation by element - ") + (glob_settings.freeglut_settings.translation_by_element == -1 ? L"false" : L"true")),
 			(std::wstring(L"Polygon rate - ") + std::to_wstring(glob_settings.freeglut_settings.polygonrate)),
 			(std::wstring(L"Shape - ") + glob_settings.freeglut_settings.shape_wstr),
-			(std::wstring(L"Gap - ") + std::to_wstring(glob_settings.gap)),
+			(std::wstring(L"Gap - ") + std::to_wstring(glob_settings.freeglut_settings.gap)),
 			(std::wstring(L"Coloring sample - ") + (glob_settings.freeglut_settings.coloring_sample ? L"true" : L"false")),
 			(std::wstring(L"Index of spin - ") + (glob_settings.global_settings.index_of_spin == VVIS_DRAW_ALL ? L"DRAW ALL" : std::to_wstring(glob_settings.global_settings.index_of_spin))),
 			(std::wstring(L"Path to folder - ") + str2wstr(glob_settings.global_settings.path_to_folder)),
@@ -1859,7 +1840,7 @@ void display_subwindow_2() {
 		};
 
 		for (int j = 0; j < vct_temp.size(); ++j) {
-			print_text_2f(3.0, glob_settings.subwindows[2].wh.height - (double(j) + 1.0) * distance_between_fonts(font_stats), vct_temp[j], font_stats);
+			print_text_2f(3.0, glob_settings.subwindows[2].wh.height - (double(j) + 1.0) * distance_between_fonts(glob_settings.other_settings.font_stats), vct_temp[j], glob_settings.other_settings.font_stats);
 		}
 
 
@@ -1923,7 +1904,7 @@ void subwindow_2_menu_init() {
 void subwindow_2_menu(int code) {
 
 	switch (code) {
-		case MENU_INVERT_BLACK_TEXT_COLOR: inverted_black_text_stats = !inverted_black_text_stats; log("Black color of sub2 has been inverted", RGB_BLUE); postRedisplay(); break;
+		case MENU_INVERT_BLACK_TEXT_COLOR: glob_settings.other_settings.inverted_black_text_stats = !glob_settings.other_settings.inverted_black_text_stats; log("Black color of sub2 has been inverted", RGB_BLUE); postRedisplay(); break;
 
 		default: break;
 
@@ -1958,13 +1939,13 @@ void menu_font_sub2(int code) {
 
 	switch (code) {
 
-		case FONT_HELVETICA_10: font_stats = GLUT_BITMAP_HELVETICA_10; log("Sub2 font was changed", RGB_BLUE); postRedisplay(); break;
-		case FONT_HELVETICA_12: font_stats = GLUT_BITMAP_HELVETICA_12; log("Sub2 font was changed", RGB_BLUE); postRedisplay(); break;
-		case FONT_HELVETICA_18: font_stats = GLUT_BITMAP_HELVETICA_18; log("Sub2 font was changed", RGB_BLUE); postRedisplay(); break;
-		case FONT_8_BY_13: font_stats = GLUT_BITMAP_8_BY_13; log("Sub2 font was changed", RGB_BLUE); postRedisplay(); break;
-		case FONT_8_BY_15: font_stats = GLUT_BITMAP_9_BY_15; log("Sub2 font was changed", RGB_BLUE); postRedisplay(); break;
-		case FONT_TIMES_ROMAN_10: font_stats = GLUT_BITMAP_TIMES_ROMAN_10; log("Sub2 font was changed", RGB_BLUE); postRedisplay(); break;
-		case FONT_TIMES_ROMAN_24: font_stats = GLUT_BITMAP_TIMES_ROMAN_24; log("Sub2 font was changed", RGB_BLUE); postRedisplay(); break;
+		case FONT_HELVETICA_10: glob_settings.other_settings.font_stats = GLUT_BITMAP_HELVETICA_10; log("Sub2 font was changed", RGB_BLUE); postRedisplay(); break;
+		case FONT_HELVETICA_12: glob_settings.other_settings.font_stats = GLUT_BITMAP_HELVETICA_12; log("Sub2 font was changed", RGB_BLUE); postRedisplay(); break;
+		case FONT_HELVETICA_18: glob_settings.other_settings.font_stats = GLUT_BITMAP_HELVETICA_18; log("Sub2 font was changed", RGB_BLUE); postRedisplay(); break;
+		case FONT_8_BY_13: glob_settings.other_settings.font_stats = GLUT_BITMAP_8_BY_13; log("Sub2 font was changed", RGB_BLUE); postRedisplay(); break;
+		case FONT_8_BY_15: glob_settings.other_settings.font_stats = GLUT_BITMAP_9_BY_15; log("Sub2 font was changed", RGB_BLUE); postRedisplay(); break;
+		case FONT_TIMES_ROMAN_10: glob_settings.other_settings.font_stats = GLUT_BITMAP_TIMES_ROMAN_10; log("Sub2 font was changed", RGB_BLUE); postRedisplay(); break;
+		case FONT_TIMES_ROMAN_24: glob_settings.other_settings.font_stats = GLUT_BITMAP_TIMES_ROMAN_24; log("Sub2 font was changed", RGB_BLUE); postRedisplay(); break;
 
 		default: break;
 
@@ -1977,11 +1958,11 @@ void subwindow_2_special_keys(int key, int x, int y) {
 
 	switch (key) {							
 
-		case GLUT_KEY_UP:			transl_stats.y += t_b_e * 3.0;
+		case GLUT_KEY_UP:			glob_settings.other_settings.transl_stats.y += t_b_e * 3.0;
 									glutPostRedisplay();
 									break;		
 
-		case GLUT_KEY_DOWN:			transl_stats.y -= t_b_e * 3.0;
+		case GLUT_KEY_DOWN:			glob_settings.other_settings.transl_stats.y -= t_b_e * 3.0;
 									glutPostRedisplay();
 									break;
 
@@ -2009,7 +1990,7 @@ void subwindow_2_mouse_pressed(int button, int state, int x, int y) {
 
 
 void display_subwindow_3() {
-	int gap = glob_settings.gap;
+	int gap = glob_settings.freeglut_settings.gap;
 	glClearColor(glob_settings.subwindows[3].backgroundcolor.red, glob_settings.subwindows[3].backgroundcolor.green, glob_settings.subwindows[3].backgroundcolor.blue, 0.0);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -2026,17 +2007,17 @@ void display_subwindow_3() {
 		glColor3f(0.0, 0.0, 0.0);
 		glLoadIdentity();
 
-		glTranslatef(transl_log.x, transl_log.y, transl_log.z);
+		glTranslatef(glob_settings.other_settings.transl_log.x, glob_settings.other_settings.transl_log.y, glob_settings.other_settings.transl_log.z);
 
 		if (vct_log.size() == vct_log_colorful.size()) {
 			for (int j = vct_log.size() - 1, i = 0; j >= 0; --j, ++i) {
-				if (vct_log_colorful[j] == RGB_BLACK && inverted_black_text_log) vct_log_colorful[j] = RGB_WHITE;
-				if (vct_log_colorful[j] == RGB_WHITE && !inverted_black_text_log) vct_log_colorful[j] = RGB_BLACK;
+				if (vct_log_colorful[j] == RGB_BLACK && glob_settings.other_settings.inverted_black_text_log) vct_log_colorful[j] = RGB_WHITE;
+				if (vct_log_colorful[j] == RGB_WHITE && !glob_settings.other_settings.inverted_black_text_log) vct_log_colorful[j] = RGB_BLACK;
 				glColor3f(vct_log_colorful[j].red, vct_log_colorful[j].green, vct_log_colorful[j].blue);
-				print_text_2f(3.0, glob_settings.subwindows[3].wh.height - (double(i) + 1.0) * distance_between_fonts(font_log), vct_log[j], font_log);
+				print_text_2f(3.0, glob_settings.subwindows[3].wh.height - (double(i) + 1.0) * distance_between_fonts(glob_settings.other_settings.font_log), vct_log[j], glob_settings.other_settings.font_log);
 			}
 		} else {
-			print_text_2f(3.0, glob_settings.subwindows[3].wh.height - (0.0 + 1.0) * distance_between_fonts(font_log), "Something wrong", font_log);
+			print_text_2f(3.0, glob_settings.subwindows[3].wh.height - (0.0 + 1.0) * distance_between_fonts(glob_settings.other_settings.font_log), "Something wrong", glob_settings.other_settings.font_log);
 		}
 
 	glPopMatrix();
@@ -2048,11 +2029,11 @@ void subwindow_3_special_keys(int key, int x, int y) {
 
 	switch (key) {							
 
-		case GLUT_KEY_UP:			transl_log.y += t_b_e * 3.0;
+		case GLUT_KEY_UP:			glob_settings.other_settings.transl_log.y += t_b_e * 3.0;
 									glutPostRedisplay();
 									break;		
 
-		case GLUT_KEY_DOWN:			transl_log.y -= t_b_e * 3.0;
+		case GLUT_KEY_DOWN:			glob_settings.other_settings.transl_log.y -= t_b_e * 3.0;
 									glutPostRedisplay();
 									break;
 
@@ -2131,7 +2112,7 @@ void subwindow_3_menu(int code) {
 
 	switch (code) {
 		
-		case MENU_INVERT_BLACK_TEXT_COLOR: inverted_black_text_log = !inverted_black_text_log; log("Black color of sub3 has been inverted", RGB_BLUE); postRedisplay(); break;
+		case MENU_INVERT_BLACK_TEXT_COLOR: glob_settings.other_settings.inverted_black_text_log = !glob_settings.other_settings.inverted_black_text_log; log("Black color of sub3 has been inverted", RGB_BLUE); postRedisplay(); break;
 		case CLEAR_LOG: vct_log = {}; vct_log_colorful = {}; log("Log has been cleared", RGB_RED); postRedisplay(); break;
 
 
@@ -2167,13 +2148,13 @@ void menu_font_sub3(int code) {
 
 	switch (code) {
 
-		case FONT_HELVETICA_10: font_log = GLUT_BITMAP_HELVETICA_10; log("Sub3 font was changed", RGB_BLUE); postRedisplay(); break;
-		case FONT_HELVETICA_12: font_log = GLUT_BITMAP_HELVETICA_12; log("Sub3 font was changed", RGB_BLUE); postRedisplay(); break;
-		case FONT_HELVETICA_18: font_log = GLUT_BITMAP_HELVETICA_18; log("Sub3 font was changed", RGB_BLUE); postRedisplay(); break;
-		case FONT_8_BY_13: font_log = GLUT_BITMAP_8_BY_13; log("Sub3 font was changed", RGB_BLUE); postRedisplay(); break;
-		case FONT_8_BY_15: font_log = GLUT_BITMAP_9_BY_15; log("Sub3 font was changed", RGB_BLUE); postRedisplay(); break;
-		case FONT_TIMES_ROMAN_10: font_log = GLUT_BITMAP_TIMES_ROMAN_10; log("Sub3 font was changed", RGB_BLUE); postRedisplay(); break;
-		case FONT_TIMES_ROMAN_24: font_log = GLUT_BITMAP_TIMES_ROMAN_24; log("Sub3 font was changed", RGB_BLUE); postRedisplay(); break;
+		case FONT_HELVETICA_10: glob_settings.other_settings.font_log = GLUT_BITMAP_HELVETICA_10; log("Sub3 font was changed", RGB_BLUE); postRedisplay(); break;
+		case FONT_HELVETICA_12: glob_settings.other_settings.font_log = GLUT_BITMAP_HELVETICA_12; log("Sub3 font was changed", RGB_BLUE); postRedisplay(); break;
+		case FONT_HELVETICA_18: glob_settings.other_settings.font_log = GLUT_BITMAP_HELVETICA_18; log("Sub3 font was changed", RGB_BLUE); postRedisplay(); break;
+		case FONT_8_BY_13: glob_settings.other_settings.font_log = GLUT_BITMAP_8_BY_13; log("Sub3 font was changed", RGB_BLUE); postRedisplay(); break;
+		case FONT_8_BY_15: glob_settings.other_settings.font_log = GLUT_BITMAP_9_BY_15; log("Sub3 font was changed", RGB_BLUE); postRedisplay(); break;
+		case FONT_TIMES_ROMAN_10: glob_settings.other_settings.font_log = GLUT_BITMAP_TIMES_ROMAN_10; log("Sub3 font was changed", RGB_BLUE); postRedisplay(); break;
+		case FONT_TIMES_ROMAN_24: glob_settings.other_settings.font_log = GLUT_BITMAP_TIMES_ROMAN_24; log("Sub3 font was changed", RGB_BLUE); postRedisplay(); break;
 
 		default: break;
 

@@ -1,7 +1,7 @@
 ﻿#include "./settings.hpp"
 
 std::wostream& operator<<(std::wostream& _out, const Settings& _settings) {
-	_out << _settings.global_settings << _settings.freeglut_settings;
+	_out << _settings.global_settings << _settings.freeglut_settings << _settings.other_settings;
 	_out << L"\t Background of mainwindow color\t\t: " << _settings.main_window.backgroundcolor.red * 255.0 << L"/255 " << _settings.main_window.backgroundcolor.green * 255.0 << L"/255 " << _settings.main_window.backgroundcolor.blue * 255.0 << L"/255\n";
 	
 	int j = 0;
@@ -11,8 +11,6 @@ std::wostream& operator<<(std::wostream& _out, const Settings& _settings) {
 	}
 
 	_out << L"\t Window\t\t\t\t\t: (" << _settings.main_window.wh.height << L", " << _settings.main_window.wh.width << L")\n";
-	_out << L"\t Spinrate\t\t\t\t: " << _settings.spinrate << L"\n";
-	_out << L"\t Gap\t\t\t\t\t: " << _settings.gap << L"\n";
 	return _out;
 };
 
@@ -22,6 +20,10 @@ std::wostream& Settings::print_only_global(std::wostream& _out) {
 
 std::wostream& Settings::print_only_freeglut(std::wostream& _out) {
 	return operator<<(_out, this->freeglut_settings);
+}
+
+std::wostream& Settings::print_only_other(std::wostream& _out) {
+	return operator<<(_out, this->other_settings);
 }
 
 bool Settings::save(wchar_t _flag) {
@@ -115,32 +117,49 @@ bool Settings::save(wchar_t _flag) {
 
 			_json[VVIS_FREEGLUT_SETTINGS]["subwindowing"] = this->freeglut_settings.use_additional_subwindows;
 
+			_json[VVIS_FREEGLUT_SETTINGS]["spinrate"] = this->freeglut_settings.spinrate;
+
+			_json[VVIS_FREEGLUT_SETTINGS]["gap"] = this->freeglut_settings.gap;
+
+			_json[VVIS_FREEGLUT_SETTINGS]["beta_light"] = this->freeglut_settings.beta_light;
+
+		}
+
+		if (_flag == L'w' || _flag == L'a') {
+
+			_json[VVIS_WINDOWS_SETTINGS]["main_window"]["height"] = this->main_window.wh.height;
+			_json[VVIS_WINDOWS_SETTINGS]["main_window"]["width"] = this->main_window.wh.width;
+		
+
+			_json[VVIS_WINDOWS_SETTINGS]["main_window"]["background"]["red"] = int(this->main_window.backgroundcolor.red * 255.0);
+			_json[VVIS_WINDOWS_SETTINGS]["main_window"]["background"]["green"] = int(this->main_window.backgroundcolor.green * 255.0);
+			_json[VVIS_WINDOWS_SETTINGS]["main_window"]["background"]["blue"] = int(this->main_window.backgroundcolor.blue * 255.0);
+		
+		
+			_json[VVIS_WINDOWS_SETTINGS]["subwindows"]["count"] = this->subwindows.size();
+		
+			for (int j = 0; j < subwindows.size(); ++j) {
+				_json[VVIS_WINDOWS_SETTINGS]["subwindows"][std::to_string(j)]["red"] = int(this->subwindows[j].backgroundcolor.red * 255.0);
+				_json[VVIS_WINDOWS_SETTINGS]["subwindows"][std::to_string(j)]["green"] = int(this->subwindows[j].backgroundcolor.green * 255.0);
+				_json[VVIS_WINDOWS_SETTINGS]["subwindows"][std::to_string(j)]["blue"] = int(this->subwindows[j].backgroundcolor.blue * 255.0);
+			}
+
 		}
 
 		if (_flag == L'o' || _flag == L'a') {
 
-			_json[VVIS_OTHER_SETTINGS]["main_window"]["height"] = this->main_window.wh.height;
-			_json[VVIS_OTHER_SETTINGS]["main_window"]["width"] = this->main_window.wh.width; 
-		
+			_json[VVIS_OTHER_SETTINGS]["axis_by_cones"] = this->other_settings.axis_by_cones;
 
-			_json[VVIS_OTHER_SETTINGS]["main_window"]["background"]["red"] = int(this->main_window.backgroundcolor.red * 255.0); 
-			_json[VVIS_OTHER_SETTINGS]["main_window"]["background"]["green"] = int(this->main_window.backgroundcolor.green * 255.0); 
-			_json[VVIS_OTHER_SETTINGS]["main_window"]["background"]["blue"] = int(this->main_window.backgroundcolor.blue * 255.0); 
-		
-		
-			_json[VVIS_OTHER_SETTINGS]["subwindows"]["count"] = this->subwindows.size();
-		
-			for (int j = 0; j < subwindows.size(); ++j) {
-				_json[VVIS_OTHER_SETTINGS]["subwindows"][std::to_string(j)]["red"] = int(this->subwindows[j].backgroundcolor.red * 255.0);
-				_json[VVIS_OTHER_SETTINGS]["subwindows"][std::to_string(j)]["green"] = int(this->subwindows[j].backgroundcolor.green * 255.0);
-				_json[VVIS_OTHER_SETTINGS]["subwindows"][std::to_string(j)]["blue"] = int(this->subwindows[j].backgroundcolor.blue * 255.0);
-			}
-		
-		
-		
-			_json[VVIS_OTHER_SETTINGS]["spinrate"] = this->spinrate;
+			_json[VVIS_OTHER_SETTINGS]["show_axis_names"] = this->other_settings.show_axis_names;
 
-			_json[VVIS_OTHER_SETTINGS]["gap"] = this->gap;
+			_json[VVIS_OTHER_SETTINGS]["inverted_black_text_stats"] = this->other_settings.inverted_black_text_stats;
+
+			_json[VVIS_OTHER_SETTINGS]["inverted_black_text_log"] = this->other_settings.inverted_black_text_log;
+
+			_json[VVIS_OTHER_SETTINGS]["inverted_black_text_axis"] = this->other_settings.inverted_black_text_axis;
+
+
+
 		}
 
 
@@ -284,7 +303,7 @@ bool Settings::get_by_json(const nlohmann::json& _json, wchar_t _flag) {
 
 				}
 
-				if(_json[VVIS_FREEGLUT_SETTINGS].contains("translation_changes")) {
+				if (_json[VVIS_FREEGLUT_SETTINGS].contains("translation_changes")) {
 
 					if (_json[VVIS_FREEGLUT_SETTINGS]["translation_changes"].contains("x"))
 						this->freeglut_settings.translation_changes.x = _json[VVIS_FREEGLUT_SETTINGS]["translation_changes"]["x"].get<double>();
@@ -325,64 +344,67 @@ bool Settings::get_by_json(const nlohmann::json& _json, wchar_t _flag) {
 				if (_json[VVIS_FREEGLUT_SETTINGS].contains("subwindowing"))
 					this->freeglut_settings.use_additional_subwindows = _json[VVIS_FREEGLUT_SETTINGS]["subwindowing"].get<bool>();
 
+				if (_json[VVIS_FREEGLUT_SETTINGS].contains("spinrate"))
+					this->freeglut_settings.spinrate = _json[VVIS_FREEGLUT_SETTINGS]["spinrate"].get<int>();
+
+				if (_json[VVIS_FREEGLUT_SETTINGS].contains("gap"))
+					this->freeglut_settings.gap = _json[VVIS_FREEGLUT_SETTINGS]["gap"].get<int>();
+
+				if (_json[VVIS_FREEGLUT_SETTINGS].contains("beta_light"))
+					this->freeglut_settings.beta_light = _json[VVIS_FREEGLUT_SETTINGS]["beta_light"].get<bool>();
+
+
 			} else return false;
 		}
 
-		if (_flag == L'o' || _flag == L'a') {
+		if (_flag == L'w' || _flag == L'a') {
 
-			if (_json.contains(VVIS_OTHER_SETTINGS)) {
+			if (_json.contains(VVIS_WINDOWS_SETTINGS)) {
 
-				if (_json[VVIS_OTHER_SETTINGS].contains("main_window")) {
+				if (_json[VVIS_WINDOWS_SETTINGS].contains("main_window")) {
 
-					if (_json[VVIS_OTHER_SETTINGS]["main_window"].contains("height"))
-						this->main_window.wh.height = _json[VVIS_OTHER_SETTINGS]["main_window"]["height"].get<int>();
+					if (_json[VVIS_WINDOWS_SETTINGS]["main_window"].contains("height"))
+						this->main_window.wh.height = _json[VVIS_WINDOWS_SETTINGS]["main_window"]["height"].get<int>();
 
-					if (_json[VVIS_OTHER_SETTINGS]["main_window"].contains("width"))
-						this->main_window.wh.width = _json[VVIS_OTHER_SETTINGS]["main_window"]["width"].get<int>();
+					if (_json[VVIS_WINDOWS_SETTINGS]["main_window"].contains("width"))
+						this->main_window.wh.width = _json[VVIS_WINDOWS_SETTINGS]["main_window"]["width"].get<int>();
 
-					if (_json[VVIS_OTHER_SETTINGS]["main_window"].contains("background")) {
+					if (_json[VVIS_WINDOWS_SETTINGS]["main_window"].contains("background")) {
 
-						if (_json[VVIS_OTHER_SETTINGS]["main_window"]["background"].contains("red"))
-							this->main_window.backgroundcolor.red = _json[VVIS_OTHER_SETTINGS]["main_window"]["background"]["red"].get<int>() / 255.0;
+						if (_json[VVIS_WINDOWS_SETTINGS]["main_window"]["background"].contains("red"))
+							this->main_window.backgroundcolor.red = _json[VVIS_WINDOWS_SETTINGS]["main_window"]["background"]["red"].get<int>() / 255.0;
 
-						if (_json[VVIS_OTHER_SETTINGS]["main_window"]["background"].contains("green"))
-							this->main_window.backgroundcolor.green = _json[VVIS_OTHER_SETTINGS]["main_window"]["background"]["green"].get<int>() / 255.0;
+						if (_json[VVIS_WINDOWS_SETTINGS]["main_window"]["background"].contains("green"))
+							this->main_window.backgroundcolor.green = _json[VVIS_WINDOWS_SETTINGS]["main_window"]["background"]["green"].get<int>() / 255.0;
 
-						if (_json[VVIS_OTHER_SETTINGS]["main_window"]["background"].contains("blue"))
-							this->main_window.backgroundcolor.blue = _json[VVIS_OTHER_SETTINGS]["main_window"]["background"]["blue"].get<int>() / 255.0;
+						if (_json[VVIS_WINDOWS_SETTINGS]["main_window"]["background"].contains("blue"))
+							this->main_window.backgroundcolor.blue = _json[VVIS_WINDOWS_SETTINGS]["main_window"]["background"]["blue"].get<int>() / 255.0;
 
 					}
 
 				}
 
-				if (_json[VVIS_OTHER_SETTINGS].contains("spinrate"))
-					this->spinrate = _json[VVIS_OTHER_SETTINGS]["spinrate"].get<int>();
-
-				if (_json[VVIS_OTHER_SETTINGS].contains("gap"))
-					this->gap = _json[VVIS_OTHER_SETTINGS]["gap"].get<int>();
-
-
-				if (_json[VVIS_OTHER_SETTINGS].contains("subwindows")) {
+				if (_json[VVIS_WINDOWS_SETTINGS].contains("subwindows")) {
 
 					int count = 0;
 
-					if (_json[VVIS_OTHER_SETTINGS]["subwindows"].contains("count"))
-						count = _json[VVIS_OTHER_SETTINGS]["subwindows"]["count"].get<int>();
+					if (_json[VVIS_WINDOWS_SETTINGS]["subwindows"].contains("count"))
+						count = _json[VVIS_WINDOWS_SETTINGS]["subwindows"]["count"].get<int>();
 
 					if (count <= this->subwindows.size()) {
 
 						for (int j = 0; j < count; ++j) {
 
-							if (_json[VVIS_OTHER_SETTINGS]["subwindows"].contains(std::to_string(j))) {
+							if (_json[VVIS_WINDOWS_SETTINGS]["subwindows"].contains(std::to_string(j))) {
 
-								if (_json[VVIS_OTHER_SETTINGS]["subwindows"][std::to_string(j)].contains("red"))
-									this->subwindows[j].backgroundcolor.red = _json[VVIS_OTHER_SETTINGS]["subwindows"][std::to_string(j)]["red"].get<int>() / 255.0;
+								if (_json[VVIS_WINDOWS_SETTINGS]["subwindows"][std::to_string(j)].contains("red"))
+									this->subwindows[j].backgroundcolor.red = _json[VVIS_WINDOWS_SETTINGS]["subwindows"][std::to_string(j)]["red"].get<int>() / 255.0;
 
-								if (_json[VVIS_OTHER_SETTINGS]["subwindows"][std::to_string(j)].contains("green"))
-									this->subwindows[j].backgroundcolor.green = _json[VVIS_OTHER_SETTINGS]["subwindows"][std::to_string(j)]["green"].get<int>() / 255.0;
+								if (_json[VVIS_WINDOWS_SETTINGS]["subwindows"][std::to_string(j)].contains("green"))
+									this->subwindows[j].backgroundcolor.green = _json[VVIS_WINDOWS_SETTINGS]["subwindows"][std::to_string(j)]["green"].get<int>() / 255.0;
 
-								if (_json[VVIS_OTHER_SETTINGS]["subwindows"][std::to_string(j)].contains("blue"))
-									this->subwindows[j].backgroundcolor.blue = _json[VVIS_OTHER_SETTINGS]["subwindows"][std::to_string(j)]["blue"].get<int>() / 255.0;
+								if (_json[VVIS_WINDOWS_SETTINGS]["subwindows"][std::to_string(j)].contains("blue"))
+									this->subwindows[j].backgroundcolor.blue = _json[VVIS_WINDOWS_SETTINGS]["subwindows"][std::to_string(j)]["blue"].get<int>() / 255.0;
 
 							}
 
@@ -391,6 +413,30 @@ bool Settings::get_by_json(const nlohmann::json& _json, wchar_t _flag) {
 					}
 
 				}
+
+			} else return false;
+
+		}
+
+		if (_flag == L'o' || _flag == L'a') {
+
+			if (_json.contains(VVIS_OTHER_SETTINGS)) {
+
+
+				if (_json[VVIS_OTHER_SETTINGS].contains("axis_by_cones"))
+					this->other_settings.axis_by_cones = _json[VVIS_OTHER_SETTINGS]["axis_by_cones"].get<bool>();
+
+				if (_json[VVIS_OTHER_SETTINGS].contains("show_axis_names"))
+					this->other_settings.show_axis_names = _json[VVIS_OTHER_SETTINGS]["show_axis_names"].get<bool>();
+
+				if (_json[VVIS_OTHER_SETTINGS].contains("inverted_black_text_stats"))
+					this->other_settings.inverted_black_text_stats = _json[VVIS_OTHER_SETTINGS]["inverted_black_text_stats"].get<bool>();
+
+				if (_json[VVIS_OTHER_SETTINGS].contains("inverted_black_text_log"))
+					this->other_settings.inverted_black_text_log = _json[VVIS_OTHER_SETTINGS]["inverted_black_text_log"].get<bool>();
+
+				if (_json[VVIS_OTHER_SETTINGS].contains("inverted_black_text_axis"))
+					this->other_settings.inverted_black_text_axis = _json[VVIS_OTHER_SETTINGS]["inverted_black_text_axis"].get<bool>();
 
 			} else return false;
 

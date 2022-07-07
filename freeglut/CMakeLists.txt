@@ -43,6 +43,7 @@ set (HEADERS_VISUALIS
 
 	source/settings/global_settings.hpp
 	source/settings/freeglut_settings.hpp
+	source/settings/other_settings.hpp
 	source/settings/settings.hpp
 
 	
@@ -67,6 +68,7 @@ set (SOURCES_VISUALIS
 
 	source/settings/global_settings.cpp
 	source/settings/freeglut_settings.cpp
+	source/settings/other_settings.cpp
 	source/settings/settings.cpp
 
 	source/console/console_interpretator.cpp

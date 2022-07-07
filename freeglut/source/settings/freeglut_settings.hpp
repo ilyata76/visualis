@@ -35,6 +35,9 @@
 			double estrangement_changes;
 			bool use_additional_subwindows;
 			int polygonrate;
+			int spinrate;
+			int gap;
+			bool beta_light;
 			
 			Freeglut_settings();
 

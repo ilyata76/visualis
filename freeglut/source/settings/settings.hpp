@@ -6,6 +6,7 @@
 
 	#include "./freeglut_settings.hpp"
 	#include "./global_settings.hpp"
+	#include "./other_settings.hpp"
 
 	#include "../libraries/json/single_include/nlohmann/json.hpp"
 
@@ -18,21 +19,20 @@
 		public:
 			Global_settings global_settings;
 			Freeglut_settings freeglut_settings;
+			Other_settings other_settings;
 			Window main_window;
 			std::vector<Window> subwindows;
-			int spinrate;
-			int gap;
 
-			Settings() : spinrate(1), gap(7) {
+			Settings() {
 
 			};
 
-			Settings(const Global_settings& _g_s, const Freeglut_settings& _f_s) : global_settings(_g_s), freeglut_settings(_f_s), spinrate(1), gap(7) {
+			Settings(const Global_settings& _g_s, const Freeglut_settings& _f_s) : global_settings(_g_s), freeglut_settings(_f_s) {
 
 			};
 
-			Settings(const Global_settings& _g_s, const Freeglut_settings& _f_s, const Window& _main_window, std::vector<Window> _subwindows, int _spinrate, int _gap) 
-				: global_settings(_g_s), freeglut_settings(_f_s), main_window(_main_window), subwindows(_subwindows), spinrate(_spinrate), gap(_gap) {
+			Settings(const Global_settings& _g_s, const Freeglut_settings& _f_s, const Window& _main_window, std::vector<Window> _subwindows) 
+				: global_settings(_g_s), freeglut_settings(_f_s), main_window(_main_window), subwindows(_subwindows) {
 
 			};
 
@@ -41,6 +41,8 @@
 			std::wostream& print_only_global(std::wostream& _out);
 
 			std::wostream& print_only_freeglut(std::wostream& _out);
+			
+			std::wostream& print_only_other(std::wostream& _out);
 
 			// flag: g - only global, f - only freeglut, a - all
 			bool save(wchar_t _flag);

@@ -70,6 +70,7 @@ constexpr double SCALING_MULTIPLY_SENSIVITY_Z = 0.9;
 
 constexpr char VVIS_GLOBAL_SETTINGS[] = "global";
 constexpr char VVIS_FREEGLUT_SETTINGS[] = "drawer";
+constexpr char VVIS_WINDOWS_SETTINGS[] = "windows";
 constexpr char VVIS_OTHER_SETTINGS[] = "other";
 
 /// UNKNOW_MAP_SECOND
