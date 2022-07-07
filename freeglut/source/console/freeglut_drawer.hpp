@@ -170,6 +170,7 @@
 	
 
 	void create_additional_subwindows();
+	void destroy_additional_subwindows();
 	void recalculation_subwindows_wh();
 	void reshape_reposition_subwindows();
 	void postRedisplay();

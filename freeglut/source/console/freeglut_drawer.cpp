@@ -207,13 +207,7 @@ void reshape_mainwindow(int w, int h) {
 
 	if (w < 500 || h < 300 || double(h)/double(w) > 1.1) {
 		
-		if (have_additional_sub_windows) {
-			glutDestroyWindow(glob_settings.subwindows[1].descriptor);
-			glutDestroyWindow(glob_settings.subwindows[2].descriptor);
-			glutDestroyWindow(glob_settings.subwindows[3].descriptor);
-		}
-
-		have_additional_sub_windows = false;
+		destroy_additional_subwindows();
 
 	} else {
 	
@@ -391,11 +385,13 @@ void main_menu_subwindows(int code) {
 				log("Subwindows will be destroyed", RGB_BLUE);
 				recalculation_subwindows_wh();
 				reshape_reposition_subwindows();
+				destroy_additional_subwindows();
 				postRedisplay();
 				break;
 		case MAIN_MENU_SUBWINDOWS_BUILD: 
 				glob_settings.freeglut_settings.use_additional_subwindows = true;
 				log("Subwindows will be built", RGB_BLUE);
+				create_additional_subwindows();
 				recalculation_subwindows_wh();
 				reshape_reposition_subwindows();
 				postRedisplay();
@@ -408,41 +404,60 @@ void main_menu_subwindows(int code) {
 }
 
 void create_additional_subwindows() {
+	if (have_additional_sub_windows == false) {
+		if (glob_settings.freeglut_settings.use_additional_subwindows) {
+			glob_settings.subwindows[1].descriptor = glutCreateSubWindow(
+				glob_settings.main_window.descriptor,
+				glob_settings.subwindows[1].window_position.x, glob_settings.subwindows[1].window_position.y,
+				glob_settings.subwindows[1].wh.width, glob_settings.subwindows[1].wh.height
+			);
+				glutDisplayFunc(display_subwindow_1);
+				glutReshapeFunc(reshape_subwindow_1);
+				subwindow_1_menu_init();
 
-	if (glob_settings.freeglut_settings.use_additional_subwindows) {
-		glob_settings.subwindows[1].descriptor = glutCreateSubWindow(
-			glob_settings.main_window.descriptor,
-			glob_settings.subwindows[1].window_position.x, glob_settings.subwindows[1].window_position.y,
-			glob_settings.subwindows[1].wh.width, glob_settings.subwindows[1].wh.height
-		);
-			glutDisplayFunc(display_subwindow_1);
-			glutReshapeFunc(reshape_subwindow_1);
-			subwindow_1_menu_init();
+			glob_settings.subwindows[2].descriptor = glutCreateSubWindow(
+				glob_settings.main_window.descriptor,
+				glob_settings.subwindows[2].window_position.x, glob_settings.subwindows[2].window_position.y,
+				glob_settings.subwindows[2].wh.width, glob_settings.subwindows[2].wh.height
+			);
+				glutDisplayFunc(display_subwindow_2);
+				glutReshapeFunc(reshape_subwindow_2);
+				glutSpecialFunc(subwindow_2_special_keys);
+				glutMouseFunc(subwindow_2_mouse_pressed);
+				subwindow_2_menu_init();
 
-		glob_settings.subwindows[2].descriptor = glutCreateSubWindow(
-			glob_settings.main_window.descriptor,
-			glob_settings.subwindows[2].window_position.x, glob_settings.subwindows[2].window_position.y,
-			glob_settings.subwindows[2].wh.width, glob_settings.subwindows[2].wh.height
-		);
-			glutDisplayFunc(display_subwindow_2);
-			glutReshapeFunc(reshape_subwindow_2);
-			glutSpecialFunc(subwindow_2_special_keys);
-			glutMouseFunc(subwindow_2_mouse_pressed);
-			subwindow_2_menu_init();
+			glob_settings.subwindows[3].descriptor = glutCreateSubWindow(
+				glob_settings.main_window.descriptor,
+				glob_settings.subwindows[3].window_position.x, glob_settings.subwindows[3].window_position.y,
+				glob_settings.subwindows[3].wh.width, glob_settings.subwindows[3].wh.height
+			);
+				glutDisplayFunc(display_subwindow_3);
+				glutReshapeFunc(reshape_subwindow_3);
+				glutSpecialFunc(subwindow_3_special_keys);
+				glutMouseFunc(subwindow_3_mouse_pressed);
+				subwindow_3_menu_init();
+		}
 
-		glob_settings.subwindows[3].descriptor = glutCreateSubWindow(
-			glob_settings.main_window.descriptor,
-			glob_settings.subwindows[3].window_position.x, glob_settings.subwindows[3].window_position.y,
-			glob_settings.subwindows[3].wh.width, glob_settings.subwindows[3].wh.height
-		);
-			glutDisplayFunc(display_subwindow_3);
-			glutReshapeFunc(reshape_subwindow_3);
-			glutSpecialFunc(subwindow_3_special_keys);
-			glutMouseFunc(subwindow_3_mouse_pressed);
-			subwindow_3_menu_init();
+		have_additional_sub_windows = true;
+
+		log("Additional subwindows were built", RGB_BLACK);
+	} else log("Additional subwindows were NOT built", RGB_BLACK);
+}
+
+void destroy_additional_subwindows() {
+
+	if (have_additional_sub_windows == true && glob_settings.freeglut_settings.use_additional_subwindows == false) {
+
+		if (have_additional_sub_windows) {
+			glutDestroyWindow(glob_settings.subwindows[1].descriptor);
+			glutDestroyWindow(glob_settings.subwindows[2].descriptor);
+			glutDestroyWindow(glob_settings.subwindows[3].descriptor);
+		}
+
+		have_additional_sub_windows = false;
+
 	}
 
-	log("Additional subwindows were built", RGB_BLACK);
 }
 
 void recalculation_subwindows_wh() {
