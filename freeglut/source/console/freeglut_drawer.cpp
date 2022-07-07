@@ -23,19 +23,15 @@ std::vector<Rgb> vct_log_colorful;
 
 bool have_additional_sub_windows = false;
 
-#define RGB_RED Rgb(195.0 / 255.0, 21.0 / 255.0, 21.0 / 255.0)
-#define RGB_GREEN Rgb(0.0, 154.0 / 255.0, 99.0 / 255.0)
-#define RGB_BLACK Rgb(0.0 / 255.0, 0.0 / 255.0, 0.0 / 255.0)
-#define RGB_WHITE Rgb(255.0 / 255.0, 255.0 / 255.0, 255.0 / 255.0)
-#define RGB_BLUE Rgb(19.0 / 255.0, 86.0 / 255.0, 201.0 / 255.0)
+
 
 std::map<std::wstring, Rgb> colors = {
-	{L"white", RGB_WHITE},
-	{L"red", RGB_RED},
-	{L"green", RGB_GREEN},
-	{L"blue", RGB_BLUE},
+	{L"white", Rgb(255.0 / 255.0, 255.0 / 255.0, 255.0 / 255.0)},
+	{L"red", Rgb(195.0 / 255.0, 21.0 / 255.0, 21.0 / 255.0)},
+	{L"green", Rgb(0.0, 154.0 / 255.0, 99.0 / 255.0)},
+	{L"blue", Rgb(19.0 / 255.0, 86.0 / 255.0, 201.0 / 255.0)},
 	{L"lightblue", Rgb(108.0 / 255.0, 146.0 / 255.0, 175.0 / 255.0)},
-	{L"black", RGB_BLACK},
+	{L"black", Rgb(0.0 / 255.0, 0.0 / 255.0, 0.0 / 255.0)},
 	{L"lightgrey", Rgb(230.0 / 255.0, 230.0 / 255.0, 230.0 / 255.0)},
 	{L"main", Rgb(255.0 / 255.0, 255.0 / 255.0, 255.0 / 255.0)},
 	{L"sub0", Rgb(255.0 / 255.0, 255.0 / 255.0, 255.0 / 255.0)},
@@ -43,6 +39,12 @@ std::map<std::wstring, Rgb> colors = {
 	{L"sub2", Rgb(230.0 / 255.0, 230.0 / 255.0, 230.0 / 255.0)},
 	{L"sbu3", Rgb(230.0 / 255.0, 230.0 / 255.0, 230.0 / 255.0)},
 };
+
+Rgb RGB_RED = colors[L"red"];
+Rgb RGB_GREEN = colors[L"green"];
+Rgb RGB_BLACK = colors[L"black"];
+Rgb RGB_WHITE = colors[L"white"];
+Rgb RGB_BLUE = colors[L"blue"];
 
 void print_text_3f(double _x, double _y, double _z, std::wstring text, void* FONT) {
 	glRasterPos3i(_x, _y, _z);
