@@ -110,6 +110,9 @@ add_executable (${VISUALIS}
 
 message("[visualis] : LINKING LIBRARIES : exceptio")
 
+SET(libs_glut ${OPENGL_glu_LIBRARY} ${LIBS})
+#SET(libs_gl ${OPENGL_gl_LIBRARY} ${LIBS})
+
 target_link_libraries( ${VISUALIS} 
 	EXCEPTIO_CPP_LIBRARY
 )
@@ -120,10 +123,14 @@ if(USE_STATIC)
 	find_library(FREGL freeglut_static)
 	target_link_libraries( ${VISUALIS} 
 		freeglut_static
+		${libs_glu}
+		#${libs_gl}
 	)
 else()
 	find_library(FREGL freeglut)
 	target_link_libraries( ${VISUALIS} 
 		freeglut
+		${libs_glu}
+		#${libs_gl}
 	)
 endif()

@@ -659,12 +659,12 @@ bool Interpretator::convert_handler(std::vector<std::wstring> _commands) {
 		case INTER_COMMAND_CONVERT_VAMPIRE5: {
 			bool boolean = false;
 			
-			boolean = file_exist(this->app_settings.global_settings.path_to_folder + "\\" + VVIS_VAMPIRE5_ATOMS_NAME_WSTR + VVIS_VAMPIRE5_ATOMS_FORMAT_WSTR);
+			boolean = file_exist(this->app_settings.global_settings.path_to_folder + "/" + VVIS_VAMPIRE5_ATOMS_NAME_WSTR + VVIS_VAMPIRE5_ATOMS_FORMAT_WSTR);
 			std::wcout << L"\tatoms file exists? : " << std::boolalpha << boolean << L'\n';
 
 			if (!boolean) return false;
 
-			boolean = file_exist(this->app_settings.global_settings.path_to_folder + "\\" + VVIS_VAMPIRE5_SPINS_START_NAME_WSTR + v5_get_file_number(std::to_string(this->app_settings.global_settings.number_of_file)) + VVIS_VAMPIRE5_SPINS_FORMAT_WSTR);
+			boolean = file_exist(this->app_settings.global_settings.path_to_folder + "/" + VVIS_VAMPIRE5_SPINS_START_NAME_WSTR + v5_get_file_number(std::to_string(this->app_settings.global_settings.number_of_file)) + VVIS_VAMPIRE5_SPINS_FORMAT_WSTR);
 			std::wcout << L"\tspins file exists? : " << std::boolalpha << boolean << L'\n';
 
 			if (!boolean) return false;
@@ -696,17 +696,17 @@ bool Interpretator::visualize_handler(std::vector<std::wstring> _commands) {
 		case INTER_COMMAND_VISUALIZE_FOLDER: { 
 			bool boolean = false;
 			
-			boolean = file_exist(this->app_settings.global_settings.path_to_folder + "\\" + VVIS_VVIS_FILE_START_NAME_WSTR + v5_get_file_number(std::to_string(this->app_settings.global_settings.number_of_file)) + VVIS_VVIS_FILE_FORMAT_WSTR);
+			boolean = file_exist(this->app_settings.global_settings.path_to_folder + "/" + VVIS_VVIS_FILE_START_NAME_WSTR + v5_get_file_number(std::to_string(this->app_settings.global_settings.number_of_file)) + VVIS_VVIS_FILE_FORMAT_WSTR);
 			std::wcout << L"\tsconfiguration file exists? : " << std::boolalpha << boolean << L'\n';
 
 			if (!boolean) return false;
 
 			std::wcout << L"\tloading... : ";
-			std::vector<Vertex> vct = sconfiguration_parsing(this->app_settings.global_settings.path_to_folder + "\\" + VVIS_VVIS_FILE_START_NAME_WSTR + v5_get_file_number(std::to_string(this->app_settings.global_settings.number_of_file)) + VVIS_VVIS_FILE_FORMAT_WSTR);
+			std::vector<Vertex> vct = sconfiguration_parsing(this->app_settings.global_settings.path_to_folder + "/" + VVIS_VVIS_FILE_START_NAME_WSTR + v5_get_file_number(std::to_string(this->app_settings.global_settings.number_of_file)) + VVIS_VVIS_FILE_FORMAT_WSTR);
 			std::wcout << vct.size() << L" vertexes has been loaded\n";
 			std::wcout << L"\tvisualizing..." << L'\n';
 			
-			this->app_settings.global_settings.path_to_sconfiguration_file = this->app_settings.global_settings.path_to_folder + "\\" + VVIS_VVIS_FILE_START_NAME_WSTR + v5_get_file_number(std::to_string(this->app_settings.global_settings.number_of_file)) + VVIS_VVIS_FILE_FORMAT_WSTR;
+			this->app_settings.global_settings.path_to_sconfiguration_file = this->app_settings.global_settings.path_to_folder + "/" + VVIS_VVIS_FILE_START_NAME_WSTR + v5_get_file_number(std::to_string(this->app_settings.global_settings.number_of_file)) + VVIS_VVIS_FILE_FORMAT_WSTR;
 
 			draw_sample(this->app_settings, vct, this->argc, this->argv);
 
