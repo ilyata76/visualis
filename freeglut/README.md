@@ -1,5 +1,5 @@
 # visualis freeglut
-  alpha 0.3.0  
+  alpha 0.4.0  
   
 # Консольное приложение
 
@@ -162,15 +162,14 @@ vvis >
 
 ## Текущие ограничения
 + C++17
-+ only Windows
-+ console only
++ Windows 10 / Ubuntu 22.04LTS verified the project build
 
 ## Компиляция CMake
-  Можно склонировать репозиторий со всеми подмодулями  
+  Можно склонировать репозиторий, например, так
 ```s
-    git clone --recursive-submodules git@github.com:ilyata76/visualis.git
+    git clone git@github.com:ilyata76/visualis.git
 ```
-  Или же без них, но в папки, находящиеся по пути `source/libraries/`, требуется разместить соответствующие библиотеки (см. зависимости)  
+  Далее для компиляции `freeglut`-версии:
 ```
     cd ./freeglut/
     mkdir build 
@@ -188,6 +187,7 @@ vvis >
     cmake -DUSE_STATIC=OFF ..
     cmake --build .
 ```
+  **Для компиляции проекта в LINUX нужно лишь единственное условие, чтобы компилировалась библиотека freeGLUT.**
 
 ## Текущее быстродействие
 - [issues/Оптимизация](https://github.com/ilyata76/visualis/issues/12)
@@ -226,7 +226,7 @@ vvis > visualize
 
 
 ## PICTURES AND EXAMPLES
-### alpha 0.3.0
+### Актуально с alpha 0.3.0
 Основные направления и возможности отрисовки:  
 ![directions](https://github.com/ilyata76/visualis/blob/master/freeglut/pics/alpha-0.3.0/Directions_alpha_0_3_0.png)  
 Фигуры для отрисовки:  
@@ -241,3 +241,7 @@ vvis > visualize
 Примеры других интерфейсов (отрисовано: в сферах(1) и в стрелках (2)):  
 ![co_dw_spheres](https://github.com/ilyata76/visualis/blob/master/freeglut/pics/alpha-0.3.0/Co_DW_spheres_alpha_0_3_0.png)  
 ![co_dw_spheres](https://github.com/ilyata76/visualis/blob/master/freeglut/pics/alpha-0.3.0/Co_DW_arrows_alpha_0_3_0.png)  
+### 0.4.0 сборка доступна для Linux
+Проверено для `Ubuntu 22.04 LTS, X11`  
+![co_cube_ubuntu](https://github.com/ilyata76/visualis/blob/master/freeglut/pics/alpha-0.4.0/Co_cube_alpha_0_4_0_ubuntu_22.04_LTS.png)  
+![co_vertex_ubuntu](https://github.com/ilyata76/visualis/blob/master/freeglut/pics/alpha-0.4.0/Co_vertex_alpha_0_4_0_ubuntu_22.04LTS_lighting.png)  
