@@ -1,4 +1,4 @@
-#include "./other_settings.hpp"
+﻿#include "./other_settings.hpp"
 
 
 Other_settings::Other_settings() {

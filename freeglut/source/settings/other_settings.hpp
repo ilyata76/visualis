@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 
 #ifndef OTHER_SETTINGS_HPP
