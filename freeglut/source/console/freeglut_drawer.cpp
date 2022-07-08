@@ -159,7 +159,7 @@ void draw_sample(Settings& _settings, std::vector<Vertex>& _vct, int argc, char*
 	if (glob_settings.freeglut_settings.fullscreen) { glutFullScreen(); log("Fullscreen mode was enabled", RGB_BLUE); }
 
 	// continue
-	glutSetOption(GLUT_ACTION_ON_WINDOW_CLOSE, GLUT_ACTION_CONTINUE_EXECUTION);
+	glutSetOption(GLUT_ACTION_ON_WINDOW_CLOSE, GLUT_ACTION_GLUTMAINLOOP_RETURNS);
 	
 	glutMainLoop();
 
@@ -1422,9 +1422,6 @@ void normal_keys(unsigned char key, int x, int y) {
 					postRedisplay();
 					break;
 		
-		case 27:	glutLeaveMainLoop(); 
-					break;
-
 		default: 
 					break;
 	
