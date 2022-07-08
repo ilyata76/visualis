@@ -27,6 +27,7 @@ std::wostream& Settings::print_only_other(std::wostream& _out) {
 }
 
 bool Settings::save(wchar_t _flag) {
+	Assert((_flag == L'a' || _flag == L'o' || _flag == L'f' || _flag == L'g'), 1, L"unknown flag", L"Assert, settings.save");
 	try {
 		std::fstream file; nlohmann::json _json;
 
@@ -175,7 +176,7 @@ bool Settings::save(wchar_t _flag) {
 
 
 bool Settings::get_by_json(const nlohmann::json& _json, wchar_t _flag) {
-
+	Assert((_flag == L'a' || _flag == L'o' || _flag == L'f' || _flag == L'g'), 1, L"unknown flag", L"Assert, settings.get");
 	try {
 
 		if (_json == nullptr) return false;
@@ -450,6 +451,7 @@ bool Settings::get_by_json(const nlohmann::json& _json, wchar_t _flag) {
 }
 
 bool Settings::get(wchar_t _flag) {
+	Assert((_flag == L'a' || _flag == L'o' || _flag == L'f' || _flag == L'g'), 1, L"unknown flag", L"Assert, settings.get");
 	std::fstream file; nlohmann::json _json;
 
 	if (this->global_settings.path_to_settings_file == VVIS_PATH_PLUG_WSTR) {

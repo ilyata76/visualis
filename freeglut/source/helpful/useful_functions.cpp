@@ -1,8 +1,7 @@
 ﻿#include "./useful_functions.hpp"
 
-// TODO: Asserts на пустые параметры
-
 float get_euler_phi(const double& sx, const double& sy, const double& sz) {
+	Assert(!(sx == 0 && sy == 0 && sz == 0), 1, L"NULL-agruments sx,sy,sz were recieved", L"Assert, get_euler_phi");
 	int sign = -1;
 	if (VVIS_COUNTERCLOCKWISE) sign = 1;
 	if (sx > 0 && sy > 0) {
@@ -20,6 +19,7 @@ float get_euler_phi(const double& sx, const double& sy, const double& sz) {
 }
 
 float get_euler_theta(const double& sx, const double& sy, const double& sz) {
+	Assert(!(sx == 0 && sy == 0 && sz == 0), 1, L"NULL-agruments sx,sy,sz were recieved", L"Assert, get_euler_theta");
 	int sign = -1;
 	if (VVIS_COUNTERCLOCKWISE) sign = 1;
 
@@ -32,6 +32,7 @@ float get_euler_theta(const double& sx, const double& sy, const double& sz) {
 }
 
 bool file_exist(const std::string _path) {
+	Assert(_path.size() > 0, 1, L"NULL path was recieved", L"Assert, file_exists");
 	return std::ifstream(_path).good();
 }
 
@@ -71,6 +72,7 @@ int get_second_from_map(std::map<std::wstring, int>& _map, std::wstring _value) 
 }
 
 std::wstring remove_quotations(std::wstring& _str) {
+	Assert(_str.size() > 0, 1, L"NULL str value was recieved", L"Assert, remove_quotations");
 	if (_str.size() > 1) {
 		if ((_str[0] == L'\"' && _str[_str.size() - 1] == L'\"') ||
 			(_str[0] == L'\'' && _str[_str.size() - 1] == L'\'')) {
@@ -120,6 +122,7 @@ std::wstring by_synonyms(const std::wstring& _value) {
 }
 
 std::string v5_get_file_number(const std::string& _number) {
+	Assert(_number.size() > 0, 1, L"NULL number value was recieved", L"Assert, v5_get_file_number");
 	std::string num = _number;
 	std::string base = VVIS_VAMPIRE5_BASE_WSTR;
 

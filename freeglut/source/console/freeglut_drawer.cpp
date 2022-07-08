@@ -30,6 +30,7 @@ Rgb RGB_WHITE = colors[L"white"];
 Rgb RGB_BLUE = colors[L"blue"];
 
 void print_text_3f(double _x, double _y, double _z, std::wstring text, void* FONT) {
+	Assert(text.size() > 0, 1, L"NULL str text was recieved", L"Assert, print_text_3f");
 	glRasterPos3i(_x, _y, _z);
 	int len = text.length(); 
 
@@ -38,6 +39,7 @@ void print_text_3f(double _x, double _y, double _z, std::wstring text, void* FON
 }
 
 void print_text_2f(double _x, double _y, std::wstring text, void* FONT) {
+	Assert(text.size() > 0, 1, L"NULL str text was recieved", L"Assert, print_text_2f");
 	glRasterPos2i(_x, _y);
 	int len = text.length(); 
 
@@ -46,6 +48,7 @@ void print_text_2f(double _x, double _y, std::wstring text, void* FONT) {
 }
 
 void print_text_3f(double _x, double _y, double _z, std::string text, void* FONT) {
+	Assert(text.size() > 0, 1, L"NULL str text was recieved", L"Assert, print_text_3i");
 	glRasterPos3i(_x, _y, _z);
 	int len = text.length();
 
@@ -54,6 +57,7 @@ void print_text_3f(double _x, double _y, double _z, std::string text, void* FONT
 }
 
 void print_text_2f(double _x, double _y, std::string text, void* FONT) {
+	Assert(text.size() > 0, 1, L"NULL str text was recieved", L"Assert, print_text_2i");
 	glRasterPos2i(_x, _y);
 	int len = text.length(); 
 
@@ -78,6 +82,7 @@ double distance_between_fonts(void* _font) {
 }
 
 void log(std::string _str, Rgb _color) {
+	Assert(_str.size() > 0, 1, L"NULL str text was recieved", L"Assert, log");
 	
 	char buffer[256];
 	time_t rawtime; time(&rawtime);

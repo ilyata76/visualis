@@ -14,6 +14,8 @@ bool want_to_restart() {
 
 int main(int argc, char** argv) {
 	try {
+		Assert(argc > 0);
+
 		Interpretator I;
 
 		enum interpreter_state { ok, error, restart };

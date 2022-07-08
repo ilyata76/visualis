@@ -1,8 +1,7 @@
 ﻿#include "./vertex.hpp"
 
 std::vector<Vertex> sconfiguration_parsing(const std::string& _path_to_file) {
-    Assert(_path_to_file != VVIS_PATH_PLUG_WSTR);
-    Assert(_path_to_file != "\0" && _path_to_file != "\n");
+    Assert((_path_to_file != VVIS_PATH_PLUG_WSTR && _path_to_file.size() > 0), 1, L"_path invalid", L"Assert, sconf_pars");
     
     std::vector<Vertex> result;
     

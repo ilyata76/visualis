@@ -10,6 +10,7 @@ bool Cone::set_draw_configuration() {
 }
 
 bool Cone::draw(Rgb color, double* args) {
+	Assert((args[0] != 0 && args[1] != 0), 1, L"null base or height", L"Assert, cone.draw");
 	glColor3f(color.red, color.green, color.blue);
 	// повернули
 	glRotatef(this->euler_phi, 0, 0, 1);
@@ -32,6 +33,7 @@ bool Sphere::set_draw_configuration() {
 }
 
 bool Sphere::draw(Rgb color, double* args) {
+	Assert((args[0] != 0 && args[1] != 0), 1, L"null base or height", L"Assert, cone.draw");
 	glColor3f(color.red, color.green, color.blue);
 	
 	// нарисовали
@@ -54,6 +56,7 @@ bool Arrow::set_draw_configuration() {
 }
 
 bool Arrow::draw(Rgb color, double* args) {
+	Assert((args[0] != 0 && args[1] != 0), 1, L"null base or height", L"Assert, cone.draw");
 	glColor3f(color.red, color.green, color.blue);
 
 	// повернули

@@ -1,8 +1,8 @@
 ﻿#include "./parser-converter.hpp"
 
 bool v5_parser_converter(const std::string& _path_to_folder, int _number_of_file) {    
-    Assert(_path_to_folder != VVIS_PATH_PLUG_WSTR);
-    Assert(_number_of_file != VVIS_INT_PLUG);
+    Assert((_path_to_folder != VVIS_PATH_PLUG_WSTR && _path_to_folder.size() > 0), 1, L"_path invalid", L"Assert, parser_conv");
+    Assert((_number_of_file != VVIS_INT_PLUG && _number_of_file >= 0), 1, L"invalid number", L"Assert, parser_conv");
 
 
     std::wfstream atoms_file;
