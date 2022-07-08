@@ -1,8 +1,22 @@
-windows.txt
+# folder for cmake build
 build
+
+# temporary folders
+temp
+trash
+guide
+
+# TODO any files
+TODO.*
+
+# IDE folders
 .vscode
 .vs
+
+# from .rc
+*.aps
+
+# Other
 *.exe
 *.lnk
-trash
 *.bat
