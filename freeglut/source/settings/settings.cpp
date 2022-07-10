@@ -160,7 +160,40 @@ bool Settings::save(wchar_t _flag) {
 			_json[VVIS_OTHER_SETTINGS]["inverted_black_text_axis"] = this->other_settings.inverted_black_text_axis;
 
 
+			int materials_count = this->other_settings.materials.size();
+			int layers_count = this->other_settings.layers.size();
+			
+			_json[VVIS_OTHER_SETTINGS]["layers"]["count"] = layers_count;
+			
+			
+			for (int j = 0; j < layers_count; ++j) {
 
+				_json[VVIS_OTHER_SETTINGS]["layers"][std::to_string(j)]["index"] = this->other_settings.layers[j].number;
+				
+				_json[VVIS_OTHER_SETTINGS]["layers"][std::to_string(j)]["color"]["red"] = this->other_settings.layers[j].color.red;
+				_json[VVIS_OTHER_SETTINGS]["layers"][std::to_string(j)]["color"]["green"] = this->other_settings.layers[j].color.green;
+				_json[VVIS_OTHER_SETTINGS]["layers"][std::to_string(j)]["color"]["blue"] = this->other_settings.layers[j].color.blue;
+
+				_json[VVIS_OTHER_SETTINGS]["layers"][std::to_string(j)]["name"] = this->other_settings.layers[j].name;
+
+			}
+
+			_json[VVIS_OTHER_SETTINGS]["materials"]["count"] = materials_count;
+			
+			for (int j = 0; j < materials_count; ++j) {
+
+				_json[VVIS_OTHER_SETTINGS]["materials"][std::to_string(j)]["index"] = this->other_settings.materials[j].number;
+
+				_json[VVIS_OTHER_SETTINGS]["materials"][std::to_string(j)]["color"]["red"] = this->other_settings.materials[j].color.red;
+				_json[VVIS_OTHER_SETTINGS]["materials"][std::to_string(j)]["color"]["green"] = this->other_settings.materials[j].color.green;
+				_json[VVIS_OTHER_SETTINGS]["materials"][std::to_string(j)]["color"]["blue"] = this->other_settings.materials[j].color.blue;
+
+				_json[VVIS_OTHER_SETTINGS]["materials"][std::to_string(j)]["name"] = this->other_settings.materials[j].name;
+
+			}
+
+
+			// TODO: save layers/materials
 		}
 
 
@@ -438,7 +471,7 @@ bool Settings::get_by_json(const nlohmann::json& _json, wchar_t _flag) {
 
 				if (_json[VVIS_OTHER_SETTINGS].contains("inverted_black_text_axis"))
 					this->other_settings.inverted_black_text_axis = _json[VVIS_OTHER_SETTINGS]["inverted_black_text_axis"].get<bool>();
-
+				// TODO: get layers/materials
 			} else return false;
 
 		}

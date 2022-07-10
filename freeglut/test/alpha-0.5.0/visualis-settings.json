@@ -1,0 +1,153 @@
+{
+    "drawer": {
+        "additional_rotation": {
+            "phi": 0.0,
+            "theta": 0.0
+        },
+        "beta_light": false,
+        "camera_changes": {
+            "x": 0.5,
+            "y": 0.5,
+            "z": 0.5
+        },
+        "coloring_sample": false,
+        "estrangement": 1.0,
+        "estrangement_changes": 0.03,
+        "fullscreen": false,
+        "gap": 7,
+        "global_translation": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+        },
+        "polygonrate": 10,
+        "position_of_camera": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+        },
+        "position_of_element": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": -100.0
+        },
+        "scaling_parameters": {
+            "x": 20.0,
+            "y": 20.0,
+            "z": 20.0
+        },
+        "scaling_parameters_changes": {
+            "x": 0.3,
+            "y": 0.3,
+            "z": 0.3
+        },
+        "scaling_translation": {
+            "x": 1.0,
+            "y": 1.0,
+            "z": 1.0
+        },
+        "shape": 99,
+        "shape_str": [
+            99,
+            111,
+            110,
+            101
+        ],
+        "spinrate": 1,
+        "subwindowing": true,
+        "translation_by_element": -1.0,
+        "translation_changes": {
+            "x": 0.5,
+            "y": 0.5,
+            "z": 0.5
+        }
+    },
+    "global": {
+        "index_of_spin": -1,
+        "number_of_file": -1,
+        "path_to_folder": "../test/alpha-0.5.0",
+        "path_to_sconfiguration_file": "<nothing>"
+    },
+    "other": {
+        "axis_by_cones": false,
+        "inverted_black_text_axis": false,
+        "inverted_black_text_log": false,
+        "inverted_black_text_stats": false,
+        "layers": {
+            "0": {
+                "color": {
+                    "blue": 0.796078431372549,
+                    "green": 0.9019607843137255,
+                    "red": 0.9019607843137255
+                },
+                "index": 1,
+                "name": [
+                    97,
+                    111,
+                    98
+                ]
+            },
+            "1": {
+                "color": {
+                    "blue": 0.00784313725490196,
+                    "green": 0.09411764705882353,
+                    "red": 0.9176470588235294
+                },
+                "index": 5,
+                "name": [
+                    53
+                ]
+            },
+            "count": 2
+        },
+        "materials": {
+            "0": {
+                "color": {
+                    "blue": 0.0392156862745098,
+                    "green": 0.9019607843137255,
+                    "red": 0.9019607843137255
+                },
+                "index": 2,
+                "name": [
+                    50
+                ]
+            },
+            "count": 1
+        },
+        "show_axis_names": true
+    },
+    "windows": {
+        "main_window": {
+            "background": {
+                "blue": 255,
+                "green": 255,
+                "red": 255
+            },
+            "height": 350,
+            "width": 500
+        },
+        "subwindows": {
+            "0": {
+                "blue": 230,
+                "green": 230,
+                "red": 230
+            },
+            "1": {
+                "blue": 230,
+                "green": 230,
+                "red": 230
+            },
+            "2": {
+                "blue": 230,
+                "green": 230,
+                "red": 230
+            },
+            "3": {
+                "blue": 230,
+                "green": 230,
+                "red": 230
+            },
+            "count": 4
+        }
+    }
+}
