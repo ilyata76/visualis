@@ -252,8 +252,32 @@ bool Interpretator::help_handler(std::vector<std::wstring> _commands) {
 				std::wcout << L"\t                                : Aliases: polygonrate, pr\n";
 			
 			std::wcout << L"\n";
+			std::wcout << L"\tset multilayer\n";
+				std::wcout << L"\t -- <y/n>                       : every layer will be colored\n";
+				std::wcout << L"\t                                : Aliases: multilayer\n";
+			
+			std::wcout << L"\n";
+			std::wcout << L"\tset multimaterial\n";
+				std::wcout << L"\t -- <y/n>                       : every material will be colored\n";
+				std::wcout << L"\t                                : Aliases: multimaterial\n";
+			
+			std::wcout << L"\n";
+			std::wcout << L"\tset layer\n";
+				std::wcout << L"\t -- <int> <int> <int> <int> <str> : sets colored mode to layer by index\n";
+				std::wcout << L"\t                                  : Note: first parameter is INDEX, 2-4 - RGB (255 max),\n";
+				std::wcout << L"\t                                  : Note: str parameter (optional) - name\n";
+				std::wcout << L"\t                                  : Aliases: layer\n";
+			
+			std::wcout << L"\n";
+			std::wcout << L"\tset material\n";
+				std::wcout << L"\t -- <int> <int> <int> <int> <str> : sets colored mode to material by index\n";
+				std::wcout << L"\t                                  : Note: first parameter is INDEX, 2-4 - RGB (255 max),\n";
+				std::wcout << L"\t                                  : Note: str parameter (optional) - name\n";
+				std::wcout << L"\t                                  : Aliases: layer\n";
+			
+			std::wcout << L"\n";
 			std::wcout << L"\tAliases: set\n";
-			// TODO: multi set layer
+
 			break;
 
 		case INTER_COMMAND_HELP_UNSET:			
@@ -345,15 +369,19 @@ bool Interpretator::help_handler(std::vector<std::wstring> _commands) {
 }
 
 bool Interpretator::reset_handler(std::vector<std::wstring> _commands) {
+	std::string temp = this->app_settings.global_settings.path_to_settings_file;
 	this->app_settings = Settings();
 	set_command_maps(*this);
+	this->app_settings.global_settings.path_to_settings_file = temp;
 	std::wcout << L"\tSuccessful\n";
 	return true;
 }
 
 bool Interpretator::restart_handler(std::vector<std::wstring> _commands) {
+	std::string temp = this->app_settings.global_settings.path_to_settings_file;
 	this->app_settings = Settings();
 	set_command_maps(*this);
+	this->app_settings.global_settings.path_to_settings_file = temp;
 	std::wcout << L"\tSuccessful\n";
 	return true;
 }
