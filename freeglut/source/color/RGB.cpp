@@ -5,7 +5,7 @@ bool operator==(Rgb& a, Rgb& b) {
 }
 
 std::wostream& operator<<(std::wostream& _out, const Rgb& _rgb) {
-	_out << _rgb.red * 255 << "/ 255" << _rgb.green * 255 << "/ 255" << _rgb.blue * 255 << "/ 255";
+	_out << int(_rgb.red * 255) << "/255 " << int(_rgb.green * 255) << "/255 " << int(_rgb.blue * 255) << "/255";
 	return _out;
 }
 

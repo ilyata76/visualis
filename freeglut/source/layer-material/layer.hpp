@@ -11,7 +11,7 @@
 		std::wstring name;
 		int number;
 
-		Layer() : color(Rgb(0.5, 0.5, 0.5)), name(L"undefined"), number(0) {};
+		Layer() : color(Rgb(1, 1, 1)), name(L"undefined"), number(0) {};
 		Layer(Rgb& _color, std::wstring& _name, int _number) : color(_color), name(_name), number(_number) {};
 		Layer(Rgb& _color, int _number) : color(_color), name(std::to_wstring(_number)), number(_number) {};
 
@@ -20,6 +20,7 @@
 	};
 
 	bool layer_in_vector(std::vector<Layer>& _vct, int _index);
+	bool set_layer(std::vector<Layer>& _vct, int _index, Layer _lay);
 	Layer find_layer_in_vector(std::vector<Layer> _vct, int _index);
 
 

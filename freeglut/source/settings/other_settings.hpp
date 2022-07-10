@@ -12,6 +12,9 @@
 	#include <ostream>
 	#include <vector>
 
+	#include "../layer-material/layer.hpp"
+	#include "../layer-material/material.hpp"
+
 	class Other_settings {
 		
 		public:
@@ -31,6 +34,9 @@
 			
 			bool multilayering;
 			bool multimaterialing;
+
+			std::vector<Layer> layers;
+			std::vector<Material> materials;
 
 			Other_settings();
 

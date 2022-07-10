@@ -1,7 +1,7 @@
 ﻿#include "layer.hpp"
 
 std::wostream& operator<<(std::wostream& _out, const Layer& _layer) {
-	_out << "\t\t Index: " << _layer.number << L'\n\t\t Color: '; _out << _layer.color << L'\n\t\t Name: '; _out << _layer.name;
+	_out << "Index: " << _layer.number << L" Color: "; _out << _layer.color << L" Name: "; _out << _layer.name;
 	return _out;
 }
 
@@ -13,6 +13,16 @@ bool layer_in_vector(std::vector<Layer>& _vct, int _index) {
 
 	return false;
 
+}
+
+bool set_layer(std::vector<Layer>& _vct, int _index, Layer _lay) {
+	if (!layer_in_vector(_vct, _index)) return false;
+
+	for (auto& x : _vct) {
+		if (x.number == _index) x = _lay;
+	}
+
+	return true;
 }
 
 Layer find_layer_in_vector(std::vector<Layer> _vct, int _index) {

@@ -574,6 +574,54 @@ bool Interpretator::set_handler(std::vector<std::wstring> _commands) {
 								std::wcout << L"\tPoligonrate number \"" << this->app_settings.freeglut_settings.polygonrate << L"\" has been set up\n"; } break;
 
 
+		case INTER_COMMAND_SET_LAYER: { 
+										if (_commands.size() < 6
+										|| !is_number(_commands[2]) || !is_number(_commands[3]) || !is_number(_commands[4]) || !is_number(_commands[5])
+										) { std::wcout << L"\tIncorrect format\n"; return false; }
+
+										Layer a;
+										Rgb color = Rgb(std::stoi(_commands[3]) / 255.0, std::stoi(_commands[4]) / 255.0, std::stoi(_commands[5]) / 255.0);
+
+										if (_commands.size() == 6) {
+											a = Layer(color, std::stoi(_commands[2]));
+										} else {
+											a = Layer(color, _commands[6], std::stoi(_commands[2]));
+										}
+
+										if (!layer_in_vector(this->app_settings.other_settings.layers, std::stoi(_commands[2])))
+											this->app_settings.other_settings.layers.push_back(a);
+										else
+											set_layer(this->app_settings.other_settings.layers, std::stoi(_commands[2]), a);
+
+										std::wcout << L"\tSuccesful\n";
+
+									} break;
+
+		case INTER_COMMAND_SET_MATERIAL: { 
+										if (_commands.size() < 6
+										|| !is_number(_commands[2]) || !is_number(_commands[3]) || !is_number(_commands[4]) || !is_number(_commands[5])
+										) { std::wcout << L"\tIncorrect format\n"; return false; }
+
+										Material a;
+										Rgb color = Rgb(std::stoi(_commands[3]) / 255, std::stoi(_commands[4]) / 255, std::stoi(_commands[5]) / 255);
+
+										if (_commands.size() == 6) {
+											a = Material(color, std::stoi(_commands[2]));
+										} else {
+											a = Material(color, _commands[6], std::stoi(_commands[2]));
+										}
+
+										if (!material_in_vector(this->app_settings.other_settings.materials, std::stoi(_commands[2])))
+											this->app_settings.other_settings.materials.push_back(a);
+										else
+											set_material(this->app_settings.other_settings.materials, std::stoi(_commands[2]), a);
+
+										std::wcout << L"\tSuccesful\n";
+
+									} break;
+
+
+
 		case VVIS_UNKNOWW_MAP_SECOND: std::wcout << L"\tUnknow subcommand: " << _commands[1] << L'\n'; return false; break;
 		default: break;
 
@@ -702,8 +750,10 @@ bool Interpretator::visualize_handler(std::vector<std::wstring> _commands) {
 			if (!boolean) return false;
 
 			std::wcout << L"\tloading... : ";
+			//TODO: int& count_of_mat / layers 
 			std::vector<Vertex> vct = sconfiguration_parsing(this->app_settings.global_settings.path_to_folder + "/" + VVIS_VVIS_FILE_START_NAME_WSTR + v5_get_file_number(std::to_string(this->app_settings.global_settings.number_of_file)) + VVIS_VVIS_FILE_FORMAT_WSTR);
 			std::wcout << vct.size() << L" vertexes has been loaded\n";
+			//дозагрузка уровней и материалов
 			std::wcout << L"\tvisualizing..." << L'\n';
 			
 			this->app_settings.global_settings.path_to_sconfiguration_file = this->app_settings.global_settings.path_to_folder + "/" + VVIS_VVIS_FILE_START_NAME_WSTR + v5_get_file_number(std::to_string(this->app_settings.global_settings.number_of_file)) + VVIS_VVIS_FILE_FORMAT_WSTR;
@@ -820,7 +870,9 @@ bool set_command_maps(Interpretator& _inter) {
 		{L"spinrate", INTER_COMMAND_SET_SPINRATE}, {L"spinr", INTER_COMMAND_SET_SPINRATE}, {L"sr", INTER_COMMAND_SET_SPINRATE}, {L"srate", INTER_COMMAND_SET_SPINRATE},
 		{L"subwindowing", INTER_COMMAND_SET_SUBWINDOWING}, {L"subwg", INTER_COMMAND_SET_SUBWINDOWING},
 		{L"gap", INTER_COMMAND_SET_GAP},
-		{L"polygonrate", INTER_COMMAND_SET_POLIGONRATE}, {L"pr", INTER_COMMAND_SET_POLIGONRATE}
+		{L"polygonrate", INTER_COMMAND_SET_POLIGONRATE}, {L"pr", INTER_COMMAND_SET_POLIGONRATE},
+		{L"layer", INTER_COMMAND_SET_LAYER},
+		{L"material", INTER_COMMAND_SET_MATERIAL}
 	};
 
 	_inter.convert_sub_command = {

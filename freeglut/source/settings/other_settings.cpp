@@ -18,18 +18,30 @@ Other_settings::Other_settings() {
 	this->multilayering					 = false;
 	this->multimaterialing				 = false;
 
+	this->layers						 = {};
+	this->materials						 = {};
+
 }
 
 
 std::wostream& operator<<(std::wostream& _out, const Other_settings& _settings) {
-	_out << L"\t Axis by cones\t\t\t: " << std::boolalpha << _settings.axis_by_cones << L"\n";
+	_out << L"\t Axis by cones\t\t\t\t: " << std::boolalpha << _settings.axis_by_cones << L"\n";
 	_out << L"\t Show axis names\t\t\t: " << std::boolalpha << _settings.show_axis_names << L"\n";
-	_out << L"\t Inverted black text in stats\t\t\t: " << std::boolalpha << _settings.inverted_black_text_stats << L"\n";
-	_out << L"\t Inverted black text in logs\t\t\t: " << std::boolalpha << _settings.inverted_black_text_log << L"\n";
-	_out << L"\t Inverted black text in axis\t\t\t: " << std::boolalpha << _settings.inverted_black_text_axis << L"\n";
+	_out << L"\t Inverted black text in stats\t\t: " << std::boolalpha << _settings.inverted_black_text_stats << L"\n";
+	_out << L"\t Inverted black text in logs\t\t: " << std::boolalpha << _settings.inverted_black_text_log << L"\n";
+	_out << L"\t Inverted black text in axis\t\t: " << std::boolalpha << _settings.inverted_black_text_axis << L"\n";
 	_out << L"\t Translation stats\t\t\t: (" << _settings.transl_stats.x << L", " << _settings.transl_stats.y << L", " << _settings.transl_stats.z << L"\n";
 	_out << L"\t Translation log\t\t\t: (" << _settings.transl_log.x << L", " << _settings.transl_log.y << L", " << _settings.transl_log.z << L"\n";
 	_out << L"\t Multi layer mode\t\t\t: " << std::boolalpha << _settings.multilayering << L"\n";
 	_out << L"\t Multi material mode\t\t\t: " << std::boolalpha << _settings.multimaterialing << L"\n";
+
+	for (const auto& layer : _settings.layers) {
+		_out << L"\t Layer\t\t\t\t\t: " << layer << L"\n";
+	}
+
+	for (const auto& material : _settings.materials) {
+		_out << L"\t Material\t\t\t\t: " << material << L"\n";
+	}
+
 	return _out;
 }
