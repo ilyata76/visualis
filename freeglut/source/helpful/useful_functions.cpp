@@ -165,3 +165,13 @@ int int_rand_result(int a, int b) {
 	std::uniform_int_distribution <int> dist(a, b);
 	return dist(mt);
 }
+
+int double_rand_result(double a, double b) {
+	std::random_device rd;
+	std::mt19937 mt(rd());
+	if (a > b) {
+		double temp = a; a = b; b = temp;
+	}
+	std::uniform_real_distribution <double> dist(a, b);
+	return dist(mt);
+}

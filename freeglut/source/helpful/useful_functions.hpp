@@ -53,4 +53,6 @@
 
 	int int_rand_result(int a, int b);
 
+	int double_rand_result(double a, double b);
+
 #endif // !USEFUL_FUNCTIONS
