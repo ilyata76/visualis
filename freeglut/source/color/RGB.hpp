@@ -6,7 +6,7 @@
 
 	#include "../helpful/useful_functions.hpp"
 
-	// red green blue from values 0.0 to 1.0
+	// red green blue values from 0.0 to 1.0
 	class Rgb {
 		public:
 			double red, green, blue;
@@ -16,6 +16,7 @@
 			~Rgb() {};
 
 			friend bool operator== (Rgb& a, Rgb& b);
+			friend std::wostream& operator<<(std::wostream& _out, const Rgb& _rgb);
 
 	};
 

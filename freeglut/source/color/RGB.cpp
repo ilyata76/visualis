@@ -4,6 +4,11 @@ bool operator==(Rgb& a, Rgb& b) {
 	return (a.blue == b.blue && a.red == b.red && a.green == b.green);
 }
 
+std::wostream& operator<<(std::wostream& _out, const Rgb& _rgb) {
+	_out << _rgb.red * 255 << "/ 255" << _rgb.green * 255 << "/ 255" << _rgb.blue * 255 << "/ 255";
+	return _out;
+}
+
 Rgb get_color_by_direction(const double& _x, const double& _y, const double& _z) {
 		//https://en.wikipedia.org/wiki/HSL_and_HSV
 
