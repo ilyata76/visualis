@@ -72,7 +72,8 @@
 	constexpr auto MENU_RENDER_INVERT_CONTROL = 1080;
 	constexpr auto MENU_RENDER_RESTORE_GAP = 1081;
 
-	constexpr auto MENU_RENDER_SPINRATE = 1090;
+	constexpr auto MENU_RENDER_SPINRATE_10k = 1090;
+	constexpr auto MENU_RENDER_SPINRATE_5k = 1191;
 	constexpr auto MENU_RENDER_SPINRATE_1 = 1091;
 	constexpr auto MENU_RENDER_SPINRATE_2 = 1092;
 	constexpr auto MENU_RENDER_SPINRATE_3 = 1093;
@@ -129,7 +130,9 @@
 	
 	constexpr auto MENU_RENDER_LIGHTING = 12001;
 	constexpr auto MENU_RENDER_MULTILAYER = 12002;
-	constexpr auto MENU_RENDER_MULTIMATERIAL = 12003;
+	constexpr auto MENU_RENDER_MULTILAYER_RECALC = 12003;
+	constexpr auto MENU_RENDER_MULTIMATERIAL = 12004;
+	constexpr auto MENU_RENDER_MULTIMATERIAL_RECALC = 12005;
 
 
 	constexpr auto SUBWINDOW_AXIS_MENU_USE_CONES = 2001;
@@ -238,6 +241,7 @@
 		void menu_shape(int code);
 		void menu_polygon(int code);
 		void menu_background_sub0(int code);
+		void menu_mods(int code);
 
 	void subwindow_1_menu_init();
 		void subwindow_1_menu(int code);

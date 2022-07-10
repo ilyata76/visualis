@@ -744,6 +744,7 @@ void subwindow_0_menu_init() {
 	int _menu_background = glutCreateMenu(menu_background_sub0);
 	int _menu_shape = glutCreateMenu(menu_shape);
 	int _menu_polygon = glutCreateMenu(menu_polygon);
+	int _menu_mods = glutCreateMenu(menu_mods);
 
 	char buff[256];
 
@@ -833,7 +834,8 @@ void subwindow_0_menu_init() {
 		glutAddSubMenu("1-10", _menu_spinrate_set_1_10);
 		glutAddSubMenu("11-20", _menu_spinrate_set_11_20);
 		glutAddSubMenu("21-30", _menu_spinrate_set_21_30);
-		glutAddMenuEntry("I want count of spins < 10 000", MENU_RENDER_SPINRATE);
+		glutAddMenuEntry("I want count of spins < 10 000", MENU_RENDER_SPINRATE_10k);
+		glutAddMenuEntry("I want count of spins < 5 000", MENU_RENDER_SPINRATE_5k);
 
 	glutSetMenu(_menu_spinrate);
 		glutAddMenuEntry("Increase by 1", MENU_RENDER_INCREASE_SPINRATE_BY_1);
@@ -882,6 +884,13 @@ void subwindow_0_menu_init() {
 		glutAddMenuEntry("Set 15", MENU_SET_POLYGON_15);
 		glutAddMenuEntry("Set 20", MENU_SET_POLYGON_20);
 
+	glutSetMenu(_menu_mods);
+		glutAddSubMenu("Coloring", _menu_color);
+		glutAddMenuEntry("Lighting on/off (beta)", MENU_RENDER_LIGHTING);
+		glutAddMenuEntry("MultiLAYER mode on/off", MENU_RENDER_MULTILAYER);
+		glutAddMenuEntry("MultiLAYER mode recalculation colors", MENU_RENDER_MULTILAYER_RECALC);
+		glutAddMenuEntry("MultiMATERIAL mode on/off", MENU_RENDER_MULTIMATERIAL);
+		glutAddMenuEntry("MultiMATERIAL mode recalculation colors", MENU_RENDER_MULTIMATERIAL_RECALC);
 
 	glutSetMenu(_main_menu_render);
 		glutAddSubMenu("Movements by arrows", _menu_movements_by_arrows);
@@ -889,7 +898,7 @@ void subwindow_0_menu_init() {
 		glutAddSubMenu("Movements by ijkl", _menu_movements_by_ijkl);
 		glutAddSubMenu("Movements by shift(lctrl)/space", _menu_movements_by_shiftspace);
 		glutAddSubMenu("Scaling parameters by pageup/pagedown", _menu_scaling);
-		glutAddSubMenu("Coloring", _menu_color);
+		glutAddSubMenu("Mods", _menu_mods);
 		glutAddSubMenu("Settings", _menu_settings);
 		glutAddSubMenu("Spin rate", _menu_spinrate);
 		glutAddSubMenu("Background color", _menu_background);
@@ -897,9 +906,7 @@ void subwindow_0_menu_init() {
 		glutAddSubMenu("Polygon rate", _menu_polygon);
 		glutAddMenuEntry("Invert control", MENU_RENDER_INVERT_CONTROL);
 		glutAddMenuEntry("Restore gap=7", MENU_RENDER_RESTORE_GAP);
-		glutAddMenuEntry("Lighting on/off (beta)", MENU_RENDER_LIGHTING);
-		glutAddMenuEntry("MultiLAYER mode on/off", MENU_RENDER_MULTILAYER);
-		glutAddMenuEntry("MultiMATERIAL mode on/off", MENU_RENDER_MULTIMATERIAL);
+
 
 
 	glutAttachMenu(GLUT_RIGHT_BUTTON);
@@ -923,81 +930,8 @@ void subwindow_0_menu(int code) {
 			recalculation_subwindows_wh();
 			reshape_reposition_subwindows();
 			postRedisplay();
-			
 			break;
 
-		case MENU_RENDER_LIGHTING: glob_settings.freeglut_settings.beta_light = !glob_settings.freeglut_settings.beta_light;
-			if (glob_settings.freeglut_settings.beta_light) log("Beta lighting was enabled", RGB_RED);
-			else log("Beta lighting was disabled", RGB_BLUE);
-			postRedisplay();
-
-
-		case MENU_RENDER_MULTILAYER: {
-			glob_settings.other_settings.multilayering = !glob_settings.other_settings.multilayering;
-
-			if (glob_settings.other_settings.multilayering) {
-				log("Multi layer mode was enabled", RGB_BLUE);
-
-				l_count = count_of_layers(glob_vct);
-
-				log("Count of layers: " + std::to_string(l_count), RGB_GREEN);
-
-				if (glob_settings.other_settings.layers.size() != l_count) {
-					for (int j = 0; j < l_count; ++j) {
-						if (!layer_in_vector(glob_settings.other_settings.layers, j)) {
-							Rgb rgb(int_rand_result(0, 255) / 255.0, int_rand_result(0, 255) / 255.0, int_rand_result(0, 255) / 255.0);
-							Layer layer(rgb, j);
-							glob_settings.other_settings.layers.push_back(layer);
-							log("Layer " + std::to_string(j) + " was added", RGB_BLACK);
-						}
-					}
-				}
-
-				if (glob_settings.other_settings.multilayering) {
-					for (const auto& x : glob_settings.other_settings.layers) {
-						layers_colors[x.number] = x.color;
-					}
-					log("Layer map was recalculated", RGB_BLACK);
-				}
-			} else log("Multi layer mode was disabled", RGB_BLUE);
-
-			postRedisplay();
-		} break;
-
-
-		case MENU_RENDER_MULTIMATERIAL: {
-			glob_settings.other_settings.multimaterialing = !glob_settings.other_settings.multimaterialing;
-
-			if (glob_settings.other_settings.multimaterialing) {
-				log("Multi material mode was enabled", RGB_BLUE);
-
-				m_count = count_of_materials(glob_vct);
-
-				log("Count of materials: " + std::to_string(m_count), RGB_GREEN);
-
-				if (glob_settings.other_settings.materials.size() != m_count) {
-					for (int j = 0; j < m_count; ++j) {
-						if (!material_in_vector(glob_settings.other_settings.materials, j)) {
-							Rgb rgb(int_rand_result(0, 255) / 255.0, int_rand_result(0, 255) / 255.0, int_rand_result(0, 255) / 255.0);
-							Material material(rgb, j);
-							glob_settings.other_settings.materials.push_back(material);
-							log("Material " + std::to_string(j) + " was added", RGB_BLACK);
-						}
-					}
-				}
-
-
-				if (glob_settings.other_settings.multimaterialing) {
-					for (const auto& x : glob_settings.other_settings.materials) {
-						materials_colors[x.number] = x.color;
-					}
-					log("Material map was recalculated", RGB_BLACK);
-				}
-			} else log("Multi material mode was disabled", RGB_BLUE);
-
-
-			postRedisplay();
-		} break;
 
 		default:
 			break;
@@ -1282,11 +1216,25 @@ void menu_spinrate_set(int code) {
 
 	switch (code) {
 
-		case MENU_RENDER_SPINRATE: {
+		case MENU_RENDER_SPINRATE_10k: {
 
 			int len = glob_vct.size(); int spinrate = 1;
 
 			while (len / spinrate > 10000) {
+				spinrate += 1;
+			}
+
+			glob_settings.freeglut_settings.spinrate = spinrate;
+
+			log("AUTO Spinrate = " + std::to_string(glob_settings.freeglut_settings.spinrate), RGB_GREEN); postRedisplay();
+
+		} break;
+
+		case MENU_RENDER_SPINRATE_5k: {
+
+			int len = glob_vct.size(); int spinrate = 1;
+
+			while (len / spinrate > 5000) {
 				spinrate += 1;
 			}
 
@@ -1382,6 +1330,141 @@ void menu_background_sub0(int code) {
 
 	}
 
+}
+
+void menu_mods(int code) {
+	switch (code) {
+
+		case MENU_RENDER_LIGHTING: glob_settings.freeglut_settings.beta_light = !glob_settings.freeglut_settings.beta_light;
+			if (glob_settings.freeglut_settings.beta_light) log("Beta lighting was enabled", RGB_RED);
+			else log("Beta lighting was disabled", RGB_BLUE);
+			postRedisplay();
+			break;
+
+
+		case MENU_RENDER_MULTILAYER: {
+			glob_settings.other_settings.multilayering = !glob_settings.other_settings.multilayering;
+
+			if (glob_settings.other_settings.multilayering) {
+				log("Multi layer mode was enabled", RGB_BLUE);
+
+				l_count = count_of_layers(glob_vct);
+
+				log("Count of layers: " + std::to_string(l_count), RGB_GREEN);
+
+				if (glob_settings.other_settings.layers.size() != l_count) {
+					for (int j = 0; j < l_count; ++j) {
+						if (!layer_in_vector(glob_settings.other_settings.layers, j)) {
+							Rgb rgb(int_rand_result(0, 255) / 255.0, int_rand_result(0, 255) / 255.0, int_rand_result(0, 255) / 255.0);
+							Layer layer(rgb, j);
+							glob_settings.other_settings.layers.push_back(layer);
+							log("Layer " + std::to_string(j) + " was added", RGB_BLACK);
+						}
+					}
+				}
+
+				if (glob_settings.other_settings.multilayering) {
+					for (const auto& x : glob_settings.other_settings.layers) {
+						layers_colors[x.number] = x.color;
+					}
+					log("Layer map was recalculated", RGB_BLACK);
+				}
+			} else log("Multi layer mode was disabled", RGB_BLUE);
+
+			postRedisplay();
+		} break;
+
+
+		case MENU_RENDER_MULTIMATERIAL: {
+			glob_settings.other_settings.multimaterialing = !glob_settings.other_settings.multimaterialing;
+
+			if (glob_settings.other_settings.multimaterialing) {
+				log("Multi material mode was enabled", RGB_BLUE);
+
+				m_count = count_of_materials(glob_vct);
+
+				log("Count of materials: " + std::to_string(m_count), RGB_GREEN);
+
+				if (glob_settings.other_settings.materials.size() != m_count) {
+					for (int j = 0; j < m_count; ++j) {
+						if (!material_in_vector(glob_settings.other_settings.materials, j)) {
+							Rgb rgb(int_rand_result(0, 255) / 255.0, int_rand_result(0, 255) / 255.0, int_rand_result(0, 255) / 255.0);
+							Material material(rgb, j);
+							glob_settings.other_settings.materials.push_back(material);
+							log("Material " + std::to_string(j) + " was added", RGB_BLACK);
+						}
+					}
+				}
+
+
+				if (glob_settings.other_settings.multimaterialing) {
+					for (const auto& x : glob_settings.other_settings.materials) {
+						materials_colors[x.number] = x.color;
+					}
+					log("Material map was recalculated", RGB_BLACK);
+				}
+			} else log("Multi material mode was disabled", RGB_BLUE);
+
+
+			postRedisplay();
+		} break;
+
+
+		case MENU_RENDER_MULTIMATERIAL_RECALC: {
+			m_count = count_of_materials(glob_vct);
+			log("Count of materials: " + std::to_string(m_count), RGB_GREEN);
+
+			glob_settings.other_settings.materials = {};
+			log("Material colors was reseted", RGB_GREEN);
+
+			for (int j = 0; j < m_count; ++j) {
+				if (!material_in_vector(glob_settings.other_settings.materials, j)) {
+					Rgb rgb(int_rand_result(0, 255) / 255.0, int_rand_result(0, 255) / 255.0, int_rand_result(0, 255) / 255.0);
+					Material material(rgb, j);
+					glob_settings.other_settings.materials.push_back(material);
+					log("Material " + std::to_string(j) + " was added", RGB_BLACK);
+				}
+			}
+			for (const auto& x : glob_settings.other_settings.materials) {
+				materials_colors[x.number] = x.color;
+			} log("Material map was recalculated", RGB_BLACK);
+
+
+			log("Material colors was recalculated", RGB_BLUE);
+			postRedisplay();
+		} break;
+
+		case MENU_RENDER_MULTILAYER_RECALC: {
+
+			l_count = count_of_layers(glob_vct);
+
+			log("Count of layers: " + std::to_string(l_count), RGB_GREEN);
+
+			glob_settings.other_settings.layers = {};
+			log("Layer colors was reseted", RGB_GREEN);
+			
+			for (int j = 0; j < l_count; ++j) {
+				if (!layer_in_vector(glob_settings.other_settings.layers, j)) {
+					Rgb rgb(int_rand_result(0, 255) / 255.0, int_rand_result(0, 255) / 255.0, int_rand_result(0, 255) / 255.0);
+					Layer layer(rgb, j);
+					glob_settings.other_settings.layers.push_back(layer);
+					log("Layer " + std::to_string(j) + " was added", RGB_BLACK);
+				}
+			}
+
+			for (const auto& x : glob_settings.other_settings.layers) {
+				layers_colors[x.number] = x.color;
+			}
+			log("Layer map was recalculated", RGB_BLACK);
+
+			log("Layer colors was recalculated", RGB_BLUE);
+			postRedisplay();
+		} break;
+
+		default:
+			break;
+
+	}
 }
 
 

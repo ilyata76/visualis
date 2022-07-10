@@ -11,13 +11,13 @@
             "z": 0.5
         },
         "coloring_sample": false,
-        "estrangement": 1.0,
+        "estrangement": -0.08000000000000076,
         "estrangement_changes": 0.03,
         "fullscreen": false,
         "gap": 7,
         "global_translation": {
-            "x": 0.0,
-            "y": 0.0,
+            "x": -21.0,
+            "y": -25.0,
             "z": 0.0
         },
         "polygonrate": 10,
@@ -32,9 +32,9 @@
             "z": -100.0
         },
         "scaling_parameters": {
-            "x": 20.0,
-            "y": 20.0,
-            "z": 20.0
+            "x": 37.39999999999998,
+            "y": 37.39999999999998,
+            "z": 37.39999999999998
         },
         "scaling_parameters_changes": {
             "x": 0.3,
@@ -46,16 +46,18 @@
             "y": 1.0,
             "z": 1.0
         },
-        "shape": 99,
+        "shape": 115,
         "shape_str": [
-            99,
-            111,
-            110,
+            115,
+            112,
+            104,
+            101,
+            114,
             101
         ],
         "spinrate": 1,
         "subwindowing": true,
-        "translation_by_element": -1.0,
+        "translation_by_element": 1.0,
         "translation_changes": {
             "x": 0.5,
             "y": 0.5,
@@ -64,9 +66,9 @@
     },
     "global": {
         "index_of_spin": -1,
-        "number_of_file": -1,
+        "number_of_file": 2,
         "path_to_folder": "../test/alpha-0.5.0",
-        "path_to_sconfiguration_file": "<nothing>"
+        "path_to_sconfiguration_file": "../test/alpha-0.5.0/sconfiguration-00000002.vvis"
     },
     "other": {
         "axis_by_cones": false,
@@ -76,27 +78,270 @@
         "layers": {
             "0": {
                 "color": {
-                    "blue": 300,
-                    "green": 200,
-                    "red": 200
+                    "blue": 135,
+                    "green": 84,
+                    "red": 247
+                },
+                "index": 0,
+                "name": [
+                    48
+                ]
+            },
+            "1": {
+                "color": {
+                    "blue": 99,
+                    "green": 243,
+                    "red": 147
                 },
                 "index": 1,
                 "name": [
                     49
                 ]
             },
-            "count": 1
-        },
-        "materials": {
-            "0": {
+            "10": {
                 "color": {
-                    "blue": 10,
-                    "green": 10,
-                    "red": 10
+                    "blue": 241,
+                    "green": 198,
+                    "red": 124
+                },
+                "index": 10,
+                "name": [
+                    49,
+                    48
+                ]
+            },
+            "11": {
+                "color": {
+                    "blue": 31,
+                    "green": 68,
+                    "red": 149
+                },
+                "index": 11,
+                "name": [
+                    49,
+                    49
+                ]
+            },
+            "12": {
+                "color": {
+                    "blue": 140,
+                    "green": 209,
+                    "red": 59
+                },
+                "index": 12,
+                "name": [
+                    49,
+                    50
+                ]
+            },
+            "13": {
+                "color": {
+                    "blue": 19,
+                    "green": 232,
+                    "red": 164
+                },
+                "index": 13,
+                "name": [
+                    49,
+                    51
+                ]
+            },
+            "14": {
+                "color": {
+                    "blue": 60,
+                    "green": 193,
+                    "red": 25
+                },
+                "index": 14,
+                "name": [
+                    49,
+                    52
+                ]
+            },
+            "15": {
+                "color": {
+                    "blue": 157,
+                    "green": 158,
+                    "red": 48
+                },
+                "index": 15,
+                "name": [
+                    49,
+                    53
+                ]
+            },
+            "16": {
+                "color": {
+                    "blue": 208,
+                    "green": 189,
+                    "red": 129
+                },
+                "index": 16,
+                "name": [
+                    49,
+                    54
+                ]
+            },
+            "17": {
+                "color": {
+                    "blue": 234,
+                    "green": 223,
+                    "red": 109
+                },
+                "index": 17,
+                "name": [
+                    49,
+                    55
+                ]
+            },
+            "18": {
+                "color": {
+                    "blue": 199,
+                    "green": 50,
+                    "red": 254
+                },
+                "index": 18,
+                "name": [
+                    49,
+                    56
+                ]
+            },
+            "19": {
+                "color": {
+                    "blue": 17,
+                    "green": 108,
+                    "red": 18
+                },
+                "index": 19,
+                "name": [
+                    49,
+                    57
+                ]
+            },
+            "2": {
+                "color": {
+                    "blue": 213,
+                    "green": 249,
+                    "red": 110
                 },
                 "index": 2,
                 "name": [
                     50
+                ]
+            },
+            "20": {
+                "color": {
+                    "blue": 255,
+                    "green": 142,
+                    "red": 57
+                },
+                "index": 20,
+                "name": [
+                    50,
+                    48
+                ]
+            },
+            "21": {
+                "color": {
+                    "blue": 209,
+                    "green": 83,
+                    "red": 107
+                },
+                "index": 21,
+                "name": [
+                    50,
+                    49
+                ]
+            },
+            "3": {
+                "color": {
+                    "blue": 202,
+                    "green": 250,
+                    "red": 30
+                },
+                "index": 3,
+                "name": [
+                    51
+                ]
+            },
+            "4": {
+                "color": {
+                    "blue": 133,
+                    "green": 77,
+                    "red": 25
+                },
+                "index": 4,
+                "name": [
+                    52
+                ]
+            },
+            "5": {
+                "color": {
+                    "blue": 50,
+                    "green": 6,
+                    "red": 112
+                },
+                "index": 5,
+                "name": [
+                    53
+                ]
+            },
+            "6": {
+                "color": {
+                    "blue": 27,
+                    "green": 110,
+                    "red": 83
+                },
+                "index": 6,
+                "name": [
+                    54
+                ]
+            },
+            "7": {
+                "color": {
+                    "blue": 131,
+                    "green": 89,
+                    "red": 207
+                },
+                "index": 7,
+                "name": [
+                    55
+                ]
+            },
+            "8": {
+                "color": {
+                    "blue": 6,
+                    "green": 3,
+                    "red": 95
+                },
+                "index": 8,
+                "name": [
+                    56
+                ]
+            },
+            "9": {
+                "color": {
+                    "blue": 147,
+                    "green": 200,
+                    "red": 81
+                },
+                "index": 9,
+                "name": [
+                    57
+                ]
+            },
+            "count": 22
+        },
+        "materials": {
+            "0": {
+                "color": {
+                    "blue": 230,
+                    "green": 74,
+                    "red": 7
+                },
+                "index": 0,
+                "name": [
+                    48
                 ]
             },
             "count": 1
@@ -112,8 +357,8 @@
                 "green": 255,
                 "red": 255
             },
-            "height": 350,
-            "width": 500
+            "height": 1017,
+            "width": 1920
         },
         "subwindows": {
             "0": {
