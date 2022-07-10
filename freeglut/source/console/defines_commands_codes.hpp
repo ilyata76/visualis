@@ -64,4 +64,6 @@ constexpr auto INTER_COMMAND_RESET = 700;
 
 constexpr auto INTER_COMMAND_RESTART = 800;
 
+constexpr auto INTER_COMMAND_SHELL = 900;
+
 #endif // !DEFINES_COMMANDS_CODES_HPP

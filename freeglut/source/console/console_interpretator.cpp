@@ -18,6 +18,13 @@ unsigned char Interpretator::loop(int argc, char** argv, std::vector<std::wstrin
 	do {
 		if (_commands.empty()) {
 			std::wcout << this->prompt; std::getline(std::wcin, str);
+
+			if (str.size() > 6 &&
+				str[0] == L's' && str[1] == L'h' && str[2] == L'e' && str[3] == L'l' && str[4] == L'l') {
+				std::wcout << "\n"; system(c_str(wstr2str(str.erase(0, 6)))); std::wcout << "\n";
+				continue;
+			}
+
 			command_vector = line_to_vector(str); 
 		} else {
 			command_vector = _commands; _commands = {};
@@ -36,6 +43,8 @@ unsigned char Interpretator::loop(int argc, char** argv, std::vector<std::wstrin
 			case INTER_COMMAND_UNSET:		std::wcout << L'\n'; if (!this->unset_handler(command_vector)) std::wcout << "\tUnsuccessfully\n"; std::wcout << std::endl;		break;
 			case INTER_COMMAND_CONVERT:		std::wcout << L'\n'; if (!this->convert_handler(command_vector)) std::wcout << "\tUnsuccessfully\n"; std::wcout << std::endl;		break;
 			case INTER_COMMAND_VISUALIZE:	std::wcout << L'\n'; if (!this->visualize_handler(command_vector)) std::wcout << "\tUnsuccessfully\n"; std::wcout << std::endl;		break;
+			case INTER_COMMAND_SHELL: std::wcout << L"\n\tUse shell <command>\n";
+
 
 			case VVIS_UNKNOWW_MAP_SECOND: std::wcout << L"\n\tUnknow command: " << command_vector[0] << L'\n' << std::endl; break;
 			default: break;
@@ -958,7 +967,8 @@ bool set_command_maps(Interpretator& _inter) {
 		{L"convert", INTER_COMMAND_CONVERT}, {L"con", INTER_COMMAND_CONVERT},
 		{L"visualize", INTER_COMMAND_VISUALIZE}, {L"vis", INTER_COMMAND_VISUALIZE},
 		{L"reset", INTER_COMMAND_RESET},
-		{L"restart", INTER_COMMAND_RESTART}
+		{L"restart", INTER_COMMAND_RESTART},
+		{L"shell", INTER_COMMAND_SHELL}
 	};
 
 	_inter.help_sub_command = {
