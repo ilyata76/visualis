@@ -3,3 +3,4 @@
 2: Co cube
 3: Co vertex
 4: Co domain wall
+5: multi layer / multi material
