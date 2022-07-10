@@ -18,6 +18,13 @@ unsigned char Interpretator::loop(int argc, char** argv, std::vector<std::wstrin
 	do {
 		if (_commands.empty()) {
 			std::wcout << this->prompt; std::getline(std::wcin, str);
+
+			if (str.size() > 6 &&
+				str[0] == L's' && str[1] == L'h' && str[2] == L'e' && str[3] == L'l' && str[4] == L'l') {
+				std::wcout << "\n"; system(c_str(wstr2str(str.erase(0, 6)))); std::wcout << "\n";
+				continue;
+			}
+
 			command_vector = line_to_vector(str); 
 		} else {
 			command_vector = _commands; _commands = {};
@@ -36,6 +43,8 @@ unsigned char Interpretator::loop(int argc, char** argv, std::vector<std::wstrin
 			case INTER_COMMAND_UNSET:		std::wcout << L'\n'; if (!this->unset_handler(command_vector)) std::wcout << "\tUnsuccessfully\n"; std::wcout << std::endl;		break;
 			case INTER_COMMAND_CONVERT:		std::wcout << L'\n'; if (!this->convert_handler(command_vector)) std::wcout << "\tUnsuccessfully\n"; std::wcout << std::endl;		break;
 			case INTER_COMMAND_VISUALIZE:	std::wcout << L'\n'; if (!this->visualize_handler(command_vector)) std::wcout << "\tUnsuccessfully\n"; std::wcout << std::endl;		break;
+			case INTER_COMMAND_SHELL: std::wcout << L"\n\tUse shell <command>\n";
+
 
 			case VVIS_UNKNOWW_MAP_SECOND: std::wcout << L"\n\tUnknow command: " << command_vector[0] << L'\n' << std::endl; break;
 			default: break;
@@ -252,6 +261,30 @@ bool Interpretator::help_handler(std::vector<std::wstring> _commands) {
 				std::wcout << L"\t                                : Aliases: polygonrate, pr\n";
 			
 			std::wcout << L"\n";
+			std::wcout << L"\tset multilayer\n";
+				std::wcout << L"\t -- <y/n>                       : every layer will be colored\n";
+				std::wcout << L"\t                                : Aliases: multilayer\n";
+			
+			std::wcout << L"\n";
+			std::wcout << L"\tset multimaterial\n";
+				std::wcout << L"\t -- <y/n>                       : every material will be colored\n";
+				std::wcout << L"\t                                : Aliases: multimaterial\n";
+			
+			std::wcout << L"\n";
+			std::wcout << L"\tset layer\n";
+				std::wcout << L"\t -- <int> <int> <int> <int> <str> : sets colored mode to layer by index\n";
+				std::wcout << L"\t                                  : Note: first parameter is INDEX, 2-4 - RGB (255 max),\n";
+				std::wcout << L"\t                                  : Note: str parameter (optional) - name\n";
+				std::wcout << L"\t                                  : Aliases: layer\n";
+			
+			std::wcout << L"\n";
+			std::wcout << L"\tset material\n";
+				std::wcout << L"\t -- <int> <int> <int> <int> <str> : sets colored mode to material by index\n";
+				std::wcout << L"\t                                  : Note: first parameter is INDEX, 2-4 - RGB (255 max),\n";
+				std::wcout << L"\t                                  : Note: str parameter (optional) - name\n";
+				std::wcout << L"\t                                  : Aliases: layer\n";
+			
+			std::wcout << L"\n";
 			std::wcout << L"\tAliases: set\n";
 
 			break;
@@ -345,15 +378,19 @@ bool Interpretator::help_handler(std::vector<std::wstring> _commands) {
 }
 
 bool Interpretator::reset_handler(std::vector<std::wstring> _commands) {
+	std::string temp = this->app_settings.global_settings.path_to_settings_file;
 	this->app_settings = Settings();
 	set_command_maps(*this);
+	this->app_settings.global_settings.path_to_settings_file = temp;
 	std::wcout << L"\tSuccessful\n";
 	return true;
 }
 
 bool Interpretator::restart_handler(std::vector<std::wstring> _commands) {
+	std::string temp = this->app_settings.global_settings.path_to_settings_file;
 	this->app_settings = Settings();
 	set_command_maps(*this);
+	this->app_settings.global_settings.path_to_settings_file = temp;
 	std::wcout << L"\tSuccessful\n";
 	return true;
 }
@@ -574,6 +611,62 @@ bool Interpretator::set_handler(std::vector<std::wstring> _commands) {
 								std::wcout << L"\tPoligonrate number \"" << this->app_settings.freeglut_settings.polygonrate << L"\" has been set up\n"; } break;
 
 
+		case INTER_COMMAND_SET_LAYER: { 
+										if (_commands.size() < 6
+										|| !is_number(_commands[2]) || !is_number(_commands[3]) || !is_number(_commands[4]) || !is_number(_commands[5])
+										) { std::wcout << L"\tIncorrect format\n"; return false; }
+
+										Layer a;
+										Rgb color = Rgb(std::stoi(_commands[3]) / 255.0, std::stoi(_commands[4]) / 255.0, std::stoi(_commands[5]) / 255.0);
+
+										if (_commands.size() == 6) {
+											a = Layer(color, std::stoi(_commands[2]));
+										} else {
+											a = Layer(color, _commands[6], std::stoi(_commands[2]));
+										}
+
+										if (!layer_in_vector(this->app_settings.other_settings.layers, std::stoi(_commands[2])))
+											this->app_settings.other_settings.layers.push_back(a);
+										else
+											set_layer(this->app_settings.other_settings.layers, std::stoi(_commands[2]), a);
+
+										std::wcout << L"\tSuccesful\n";
+
+									} break;
+
+		case INTER_COMMAND_SET_MATERIAL: { 
+										if (_commands.size() < 6
+										|| !is_number(_commands[2]) || !is_number(_commands[3]) || !is_number(_commands[4]) || !is_number(_commands[5])
+										) { std::wcout << L"\tIncorrect format\n"; return false; }
+
+										Material a;
+										Rgb color = Rgb(std::stoi(_commands[3]) / 255.0, std::stoi(_commands[4]) / 255.0, std::stoi(_commands[5]) / 255.0);
+
+										if (_commands.size() == 6) {
+											a = Material(color, std::stoi(_commands[2]));
+										} else {
+											a = Material(color, _commands[6], std::stoi(_commands[2]));
+										}
+
+										if (!material_in_vector(this->app_settings.other_settings.materials, std::stoi(_commands[2])))
+											this->app_settings.other_settings.materials.push_back(a);
+										else
+											set_material(this->app_settings.other_settings.materials, std::stoi(_commands[2]), a);
+
+										std::wcout << L"\tSuccesful\n";
+
+									} break;
+
+		case INTER_COMMAND_SET_MULTIMATERIAL: if (_commands.size() < 3) { std::wcout << L"\tEmpty instruction\n"; return false; }
+											this->app_settings.other_settings.multimaterialing = by_synonyms(_commands[2]) == L"yes" ? true : false;
+											std::wcout << L"\tMultimaterial setting \"" << std::boolalpha << this->app_settings.other_settings.multimaterialing << L"\" has been set up\n";
+											break;
+
+		case INTER_COMMAND_SET_MULTILAYER: if (_commands.size() < 3) { std::wcout << L"\tEmpty instruction\n"; return false; }
+										 this->app_settings.other_settings.multilayering = by_synonyms(_commands[2]) == L"yes" ? true : false;
+										 std::wcout << L"\tMultilayer setting \"" << std::boolalpha << this->app_settings.other_settings.multilayering << L"\" has been set up\n";
+										 break;
+
 		case VVIS_UNKNOWW_MAP_SECOND: std::wcout << L"\tUnknow subcommand: " << _commands[1] << L'\n'; return false; break;
 		default: break;
 
@@ -641,6 +734,23 @@ bool Interpretator::unset_handler(std::vector<std::wstring> _commands) {
 
 		case INTER_COMMAND_SET_POLIGONRATE: std::wcout << L"\tSuccessful\n"; this->app_settings.freeglut_settings.polygonrate = 7; break;
 
+		case INTER_COMMAND_SET_MULTIMATERIAL:  std::wcout << L"\tSuccessful\n"; this->app_settings.other_settings.multimaterialing = false; break;
+		
+		case INTER_COMMAND_SET_MULTILAYER:  std::wcout << L"\tSuccessful\n"; this->app_settings.other_settings.multilayering = false; break;
+
+		case INTER_COMMAND_SET_MATERIAL: if (_commands.size() < 3 || !is_number(_commands[2])) 
+											{ std::wcout << L"\tIncorrect format\n"; return false; } 
+									   if(remove_material(this->app_settings.other_settings.materials, std::stoi(_commands[2]))) std::wcout << L"\tSuccessful\n";
+									   else std::wcout << L"\tUnsuccessful\n";
+									   break;
+
+		case INTER_COMMAND_SET_LAYER: if (_commands.size() < 3 || !is_number(_commands[2])) 
+											{ std::wcout << L"\tIncorrect format\n"; return false; } 
+									   if (remove_layer(this->app_settings.other_settings.layers, std::stoi(_commands[2]))) std::wcout << L"\tSuccessful\n";
+									   else std::wcout << L"\tUnsuccessful\n";
+									   
+									   break;
+
 		case VVIS_UNKNOWW_MAP_SECOND: std::wcout << L"\tUnknow subcommand: " << _commands[1] << L'\n'; return false; break;
 		default: break;
 
@@ -702,8 +812,50 @@ bool Interpretator::visualize_handler(std::vector<std::wstring> _commands) {
 			if (!boolean) return false;
 
 			std::wcout << L"\tloading... : ";
+
 			std::vector<Vertex> vct = sconfiguration_parsing(this->app_settings.global_settings.path_to_folder + "/" + VVIS_VVIS_FILE_START_NAME_WSTR + v5_get_file_number(std::to_string(this->app_settings.global_settings.number_of_file)) + VVIS_VVIS_FILE_FORMAT_WSTR);
 			std::wcout << vct.size() << L" vertexes has been loaded\n";
+			
+			if (this->app_settings.other_settings.multilayering) {
+				int l_count = 0;
+				std::wcout << L"\tcounting layers... : ";
+				l_count = count_of_layers(vct);
+				std::wcout << l_count<< L'\n';
+
+				if (this->app_settings.other_settings.layers.size() != l_count) {
+					std::wcout << L"\tlayers : ";
+					for (int j = 0; j < l_count; ++j) {
+						if (!layer_in_vector(this->app_settings.other_settings.layers, j)) {
+							Rgb rgb(int_rand_result(0, 255) / 255.0, int_rand_result(0, 255) / 255.0, int_rand_result(0, 255) / 255.0);
+							Layer layer(rgb, j);
+							this->app_settings.other_settings.layers.push_back(layer);
+							std::wcout << j << L" ";
+						} 
+					} std::wcout << L"- was added\n";
+				}
+
+			}
+
+			if (this->app_settings.other_settings.multimaterialing) {
+				int m_count = 0;
+				std::wcout << L"\tcounting layers... : ";
+				m_count = count_of_materials(vct);
+				std::wcout << m_count << L'\n';
+
+				if (this->app_settings.other_settings.materials.size() != m_count) {
+					std::wcout << L"\tmaterials : ";
+					for (int j = 0; j < m_count; ++j) {
+						if (!material_in_vector(this->app_settings.other_settings.materials, j)) {
+							Rgb rgb(int_rand_result(0, 255) / 255.0, int_rand_result(0, 255) / 255.0, int_rand_result(0, 255) / 255.0);
+							Material material(rgb, j);
+							this->app_settings.other_settings.materials.push_back(material);
+							std::wcout << j << L" ";
+						} 
+					} std::wcout << L" - was added\n";
+				}
+
+			}
+
 			std::wcout << L"\tvisualizing..." << L'\n';
 			
 			this->app_settings.global_settings.path_to_sconfiguration_file = this->app_settings.global_settings.path_to_folder + "/" + VVIS_VVIS_FILE_START_NAME_WSTR + v5_get_file_number(std::to_string(this->app_settings.global_settings.number_of_file)) + VVIS_VVIS_FILE_FORMAT_WSTR;
@@ -734,6 +886,47 @@ bool Interpretator::visualize_handler(std::vector<std::wstring> _commands) {
 			std::wcout << L"\tloading...";
 			std::vector<Vertex> vct = sconfiguration_parsing(this->app_settings.global_settings.path_to_sconfiguration_file);
 			std::wcout << L" : " << vct.size() << L" vertexes has been loaded\n";
+
+			if (this->app_settings.other_settings.multilayering) {
+				int l_count = 0;
+				std::wcout << L"\tcounting layers... : ";
+				l_count = count_of_layers(vct);
+				std::wcout << l_count<< L'\n';
+
+				if (this->app_settings.other_settings.layers.size() != l_count) {
+					std::wcout << L"\tlayers : ";
+					for (int j = 0; j < l_count; ++j) {
+						if (!layer_in_vector(this->app_settings.other_settings.layers, j)) {
+							Rgb rgb(int_rand_result(0, 255) / 255.0, int_rand_result(0, 255) / 255.0, int_rand_result(0, 255) / 255.0);
+							Layer layer(rgb, j);
+							this->app_settings.other_settings.layers.push_back(layer);
+							std::wcout << j << L" ";
+						} 
+					} std::wcout << L"- was added\n";
+				}
+
+			}
+
+			if (this->app_settings.other_settings.multimaterialing) {
+				int m_count = 0;
+				std::wcout << L"\tcounting layers... : ";
+				m_count = count_of_materials(vct);
+				std::wcout << m_count << L'\n';
+
+				if (this->app_settings.other_settings.materials.size() != m_count) {
+					std::wcout << L"\tmaterials : ";
+					for (int j = 0; j < m_count; ++j) {
+						if (!material_in_vector(this->app_settings.other_settings.materials, j)) {
+							Rgb rgb(int_rand_result(0, 255) / 255.0, int_rand_result(0, 255) / 255.0, int_rand_result(0, 255) / 255.0);
+							Material material(rgb, j);
+							this->app_settings.other_settings.materials.push_back(material);
+							std::wcout << j << L" ";
+						} 
+					} std::wcout << L" - was added\n";
+				}
+
+			}
+
 			std::wcout << L"\tvisualizing... : " << L'\n';
 
 			draw_sample(this->app_settings, vct, this->argc, this->argv);
@@ -774,7 +967,8 @@ bool set_command_maps(Interpretator& _inter) {
 		{L"convert", INTER_COMMAND_CONVERT}, {L"con", INTER_COMMAND_CONVERT},
 		{L"visualize", INTER_COMMAND_VISUALIZE}, {L"vis", INTER_COMMAND_VISUALIZE},
 		{L"reset", INTER_COMMAND_RESET},
-		{L"restart", INTER_COMMAND_RESTART}
+		{L"restart", INTER_COMMAND_RESTART},
+		{L"shell", INTER_COMMAND_SHELL}
 	};
 
 	_inter.help_sub_command = {
@@ -820,7 +1014,11 @@ bool set_command_maps(Interpretator& _inter) {
 		{L"spinrate", INTER_COMMAND_SET_SPINRATE}, {L"spinr", INTER_COMMAND_SET_SPINRATE}, {L"sr", INTER_COMMAND_SET_SPINRATE}, {L"srate", INTER_COMMAND_SET_SPINRATE},
 		{L"subwindowing", INTER_COMMAND_SET_SUBWINDOWING}, {L"subwg", INTER_COMMAND_SET_SUBWINDOWING},
 		{L"gap", INTER_COMMAND_SET_GAP},
-		{L"polygonrate", INTER_COMMAND_SET_POLIGONRATE}, {L"pr", INTER_COMMAND_SET_POLIGONRATE}
+		{L"polygonrate", INTER_COMMAND_SET_POLIGONRATE}, {L"pr", INTER_COMMAND_SET_POLIGONRATE},
+		{L"layer", INTER_COMMAND_SET_LAYER},
+		{L"material", INTER_COMMAND_SET_MATERIAL},
+		{L"multimaterial", INTER_COMMAND_SET_MULTIMATERIAL},
+		{L"multilayer", INTER_COMMAND_SET_MULTILAYER}
 	};
 
 	_inter.convert_sub_command = {

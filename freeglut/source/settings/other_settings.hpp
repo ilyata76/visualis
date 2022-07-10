@@ -10,6 +10,10 @@
 
 	#include <string>
 	#include <ostream>
+	#include <vector>
+
+	#include "../layer-material/layer.hpp"
+	#include "../layer-material/material.hpp"
 
 	class Other_settings {
 		
@@ -28,6 +32,12 @@
 			Parameters3f transl_stats;// = { 0.0, 0.0, 0.0 };
 			Parameters3f transl_log;// = { 0.0, 0.0, 0.0 };
 			
+			bool multilayering;
+			bool multimaterialing;
+
+			std::vector<Layer> layers;
+			std::vector<Material> materials;
+
 			Other_settings();
 
 			friend std::wostream& operator<<(std::wostream& _out, const Other_settings& _settings);

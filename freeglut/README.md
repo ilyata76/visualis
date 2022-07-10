@@ -1,5 +1,5 @@
 # visualis freeglut
-  alpha 0.4.0  
+  alpha 0.5.0  
   
 # Консольное приложение
 
@@ -72,14 +72,19 @@ vvis >
     + `gap`- устанавливает расстояние между подокнами
     + `subwindowing` - устанавливает, используются ли дополнительные подокна в приложении (лог, статистика, оси)
     + `polygonrate` - устанавливает параметр качества отображаемых объектов
+    + `multimaterial` - устанавливает справедливо ли отображение в моде расцветки по материалам
+    + `multilayer` - ... по слоям
+    + `layer` - установить RGB отображение для каждого слоя
+    + `material` - ... для каждого материала
 + `unset` - позволяет восстановить стандартную настройку
 + `convert` - конвертирует исходные файлы (по доступу через *filepath*) в sconfiguration-xxxxxxxx.vvis
     + `v6` конвертирует файлы [Vampire6](https://github.com/richard-evans/vampire), Vampire5
 + `visualize` - визуализирует систему, находя sconfiguration-xxxxxxxx.vvis (по умолчанию через *folder*)
-    + `folder` - ищет sconfiguration-xxxxxxxx.vvis с номером *filenumber* по пути *folderpath*. Путь до папки настроек принимается за *folderpath*, если таковой не был указан
-    + `file` - ищет sconfiguration-xxxxxxxx.vvis по пути *filepath*. Путь до папки настроек принимается за папку, в которой этот файл находится, если таковой не был указан
+    + `folder` - ищет sconfiguration-xxxxxxxx.vvis с номером *filenumber* по пути *folderpath*. Путь до папки настроек принимается за *folderpath*, если таковой не был указан. Если указан *multi*-мод, то доопределяет RGB цвета рандомно
+    + `file` - ищет sconfiguration-xxxxxxxx.vvis по пути *filepath*. Путь до папки настроек принимается за папку, в которой этот файл находится, если таковой не был указан. Если указан *multi*-мод, то доопределяет RGB цвета рандомно
 + `reset` сбрасывает текущие настройки до начальных (синонимичен к *settings reset*)
 + `restart` полностью перезагружает программу
++ `shell` позволяет обращаться к командам консоли через приложение
 + `exit` выход из приложения
 
 ## Оконное продолжение
@@ -111,7 +116,7 @@ vvis >
 + перемещать образец вдоль плоскости XY  
   
 При зажатой клавише мыши и кнопки `ALT_LEFT` можно:  
-+ вращать образец вдоль осей X или Y  
++ вращать образец вдоль осей X или Y  (не работает в `LINUX`)
   
 При прокручивании колеса можно:  
 + приближать или отдалять образец, а также смотреть ему за спину  
@@ -128,6 +133,7 @@ vvis >
 + восстановить *gap*, если тот был указан 0
 + выбрать цвет фона из ряда существующих (в т.ч. указанных для каждой из областей в консоли)
 + включить цветное отражение света (beta)
++ включить/выключить или пересчитать RGB цвета в *multi*-модах 
 
 ### Подокна логов и статистика
 + С помощью клавиш `arrow UP`/`arrow DOWN` можно прокручивать текст
@@ -153,6 +159,7 @@ vvis >
 + Для цвета подокон есть несколько стандартных + те, что указал пользователь (все 5)
 + При определённых параметрах окна (если оно слишком вытянуто в высоту или сжато) дополнительные подокна не показываются
 + Оси - в перспективной проекции, образец - в ортогональной
++ `shell` позволяет выполнять любые команды консоли, даже вызвать приложение в приложении
 
 ## Зависимости
 + **[Exceptio](https://github.com/ilyata76/tia-Exceptio.git)** для обработки исключений и ошибок
@@ -222,6 +229,25 @@ vvis > visualize
         visualizing...
 
 ```
+## Пример обращения shell
+```
+vvis > shell powershell ls .\Debug
+
+
+
+    Catalog: <>\Debug
+
+
+Mode                 LastWriteTime         Length Name
+----                 -------------         ------ ----
+-a----        10.07.2022     18:48        2337792 vvis.exe
+-a----        10.07.2022     18:48       13827264 vvis.ilk
+-a----        10.07.2022     18:48        8802304 vvis.pdb
+
+
+
+vvis >
+```
 
 
 ## PICTURES AND EXAMPLES
@@ -240,7 +266,10 @@ vvis > visualize
 Примеры других интерфейсов (отрисовано: в сферах(1) и в стрелках (2)):  
 ![co_dw_spheres](https://github.com/ilyata76/visualis/blob/master/freeglut/pics/alpha-0.3.0/Co_DW_spheres_alpha_0_3_0.png)  
 ![co_dw_spheres](https://github.com/ilyata76/visualis/blob/master/freeglut/pics/alpha-0.3.0/Co_DW_arrows_alpha_0_3_0.png)  
-### 0.4.0 сборка доступна для Linux
+### 0.4.0 alpha сборка доступна для Linux
 Проверено для `Ubuntu 22.04 LTS, X11`  
 ![co_cube_ubuntu](https://github.com/ilyata76/visualis/blob/master/freeglut/pics/alpha-0.4.0/Co_cube_alpha_0_4_0_ubuntu_22.04_LTS.png)  
 ![co_vertex_ubuntu](https://github.com/ilyata76/visualis/blob/master/freeglut/pics/alpha-0.4.0/Co_vertex_alpha_0_4_0_ubuntu_22.04LTS_lighting.png)  
+### 0.5.0 alpha привнесла раскраску в моде multilayer или multimaterial
+![1](https://github.com/ilyata76/visualis/blob/master/freeglut/pics/alpha-0.5.0/multilayermode_alpha_0_5_0.png)  
+![2](https://github.com/ilyata76/visualis/blob/master/freeglut/pics/alpha-0.5.0/multimaterialmode_alpha_0_5_0.png)  

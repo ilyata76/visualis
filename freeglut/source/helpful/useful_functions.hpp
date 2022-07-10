@@ -12,6 +12,7 @@
 	#include <sstream>
 	#include <algorithm>
 	#include <map>
+	#include <random>
 	#include <fstream>
 	#include "./global_defines.hpp"
 	#include "../libraries/exceptio/include/assert.hpp"
@@ -49,5 +50,9 @@
 	const char* c_str(const std::string& _str);
 
 	bool is_double(std::wstring& _value);
+
+	int int_rand_result(int a, int b);
+
+	int double_rand_result(double a, double b);
 
 #endif // !USEFUL_FUNCTIONS

@@ -29,7 +29,7 @@ std::wostream& Settings::print_only_other(std::wostream& _out) {
 bool Settings::save(wchar_t _flag) {
 	Assert((_flag == L'a' || _flag == L'o' || _flag == L'f' || _flag == L'g'), 1, L"unknown flag", L"Assert, settings.save");
 	try {
-		std::fstream file; nlohmann::json _json;
+		std::fstream file; nlohmann::json _json; //nlohmann::json _json_backup;
 
 		if (this->global_settings.path_to_settings_file == VVIS_PATH_PLUG_WSTR) {
 			if (this->global_settings.path_to_settings_file_folder == VVIS_PATH_PLUG_WSTR) {
@@ -41,11 +41,11 @@ bool Settings::save(wchar_t _flag) {
 			this->global_settings.path_to_settings_file = this->global_settings.path_to_settings_file_folder + "/" + VVIS_SETTINGS_FILE_NAME_WSTR;
 		}
 
-		if (file_exist(this->global_settings.path_to_settings_file)) {
-			file.open(c_str(this->global_settings.path_to_settings_file), std::ios_base::in);
-			_json << file;
-			file.close();
-		}
+		//if (file_exist(this->global_settings.path_to_settings_file)) {
+		//	file.open(c_str(this->global_settings.path_to_settings_file), std::ios_base::in);
+		//	_json_backup << file;
+		//	file.close();
+		//}
 
 		file.open(this->global_settings.path_to_settings_file, std::ios_base::out | std::ios_base::trunc);
 
@@ -159,7 +159,41 @@ bool Settings::save(wchar_t _flag) {
 
 			_json[VVIS_OTHER_SETTINGS]["inverted_black_text_axis"] = this->other_settings.inverted_black_text_axis;
 
+			_json[VVIS_OTHER_SETTINGS]["multilayer"] = this->other_settings.multilayering;
 
+			_json[VVIS_OTHER_SETTINGS]["multimaterial"] = this->other_settings.multimaterialing;
+
+			int materials_count = this->other_settings.materials.size();
+			int layers_count = this->other_settings.layers.size();
+			
+			_json[VVIS_OTHER_SETTINGS]["layers"]["count"] = layers_count;
+			
+			
+			for (int j = 0; j < layers_count; ++j) {
+
+				_json[VVIS_OTHER_SETTINGS]["layers"][std::to_string(j)]["index"] = this->other_settings.layers[j].number;
+				
+				_json[VVIS_OTHER_SETTINGS]["layers"][std::to_string(j)]["color"]["red"] = int(this->other_settings.layers[j].color.red * 255.0);
+				_json[VVIS_OTHER_SETTINGS]["layers"][std::to_string(j)]["color"]["green"] = int(this->other_settings.layers[j].color.green * 255.0);
+				_json[VVIS_OTHER_SETTINGS]["layers"][std::to_string(j)]["color"]["blue"] = int(this->other_settings.layers[j].color.blue * 255.0);
+
+				_json[VVIS_OTHER_SETTINGS]["layers"][std::to_string(j)]["name"] = this->other_settings.layers[j].name;
+
+			}
+
+			_json[VVIS_OTHER_SETTINGS]["materials"]["count"] = materials_count;
+			
+			for (int j = 0; j < materials_count; ++j) {
+
+				_json[VVIS_OTHER_SETTINGS]["materials"][std::to_string(j)]["index"] = this->other_settings.materials[j].number;
+
+				_json[VVIS_OTHER_SETTINGS]["materials"][std::to_string(j)]["color"]["red"] = int(this->other_settings.materials[j].color.red * 255.0);
+				_json[VVIS_OTHER_SETTINGS]["materials"][std::to_string(j)]["color"]["green"] = int(this->other_settings.materials[j].color.green * 255.0);
+				_json[VVIS_OTHER_SETTINGS]["materials"][std::to_string(j)]["color"]["blue"] = int(this->other_settings.materials[j].color.blue * 255.0);
+
+				_json[VVIS_OTHER_SETTINGS]["materials"][std::to_string(j)]["name"] = this->other_settings.materials[j].name;
+
+			}
 
 		}
 
@@ -438,6 +472,108 @@ bool Settings::get_by_json(const nlohmann::json& _json, wchar_t _flag) {
 
 				if (_json[VVIS_OTHER_SETTINGS].contains("inverted_black_text_axis"))
 					this->other_settings.inverted_black_text_axis = _json[VVIS_OTHER_SETTINGS]["inverted_black_text_axis"].get<bool>();
+
+				if (_json[VVIS_OTHER_SETTINGS].contains("multilayer"))
+					this->other_settings.multilayering = _json[VVIS_OTHER_SETTINGS]["multilayer"].get<bool>();
+
+				if (_json[VVIS_OTHER_SETTINGS].contains("multimaterial"))
+					this->other_settings.multimaterialing = _json[VVIS_OTHER_SETTINGS]["multimaterial"].get<bool>();
+
+				
+				
+				
+				
+				if (_json[VVIS_OTHER_SETTINGS].contains("layers")) {
+
+					int l_count = 0;
+
+					if (_json[VVIS_OTHER_SETTINGS]["layers"].contains("count"))
+						l_count = _json[VVIS_OTHER_SETTINGS]["layers"]["count"].get<int>();
+
+					this->other_settings.layers = {};
+
+					for (int j = 0; j < l_count; ++j) {
+
+						if (_json[VVIS_OTHER_SETTINGS]["layers"].contains(std::to_string(j))) {
+
+							Layer layer;
+
+							if (_json[VVIS_OTHER_SETTINGS]["layers"][std::to_string(j)].contains("color")) {
+
+								if (_json[VVIS_OTHER_SETTINGS]["layers"][std::to_string(j)]["color"].contains("red"))
+									layer.color.red = _json[VVIS_OTHER_SETTINGS]["layers"][std::to_string(j)]["color"]["red"].get<int>() / 255.0;
+
+								if (_json[VVIS_OTHER_SETTINGS]["layers"][std::to_string(j)]["color"].contains("green"))
+									layer.color.green = _json[VVIS_OTHER_SETTINGS]["layers"][std::to_string(j)]["color"]["green"].get<int>() / 255.0;
+
+								if (_json[VVIS_OTHER_SETTINGS]["layers"][std::to_string(j)]["color"].contains("blue"))
+									layer.color.blue = _json[VVIS_OTHER_SETTINGS]["layers"][std::to_string(j)]["color"]["blue"].get<int>() / 255.0;
+
+
+							}
+
+							if (_json[VVIS_OTHER_SETTINGS]["layers"][std::to_string(j)].contains("index"))
+								layer.number = _json[VVIS_OTHER_SETTINGS]["layers"][std::to_string(j)]["index"].get<int>();
+
+							if (_json[VVIS_OTHER_SETTINGS]["layers"][std::to_string(j)].contains("name"))
+								layer.name = _json[VVIS_OTHER_SETTINGS]["layers"][std::to_string(j)]["name"].get<std::wstring>();
+
+							this->other_settings.layers.push_back(layer);
+
+						}
+
+					}
+
+
+				}
+
+
+				if (_json[VVIS_OTHER_SETTINGS].contains("materials")) {
+
+					int m_count = 0;
+
+					if (_json[VVIS_OTHER_SETTINGS]["materials"].contains("count"))
+						m_count = _json[VVIS_OTHER_SETTINGS]["materials"]["count"].get<int>();
+
+					this->other_settings.materials = {};
+
+					for (int j = 0; j < m_count; ++j) {
+
+						if (_json[VVIS_OTHER_SETTINGS]["materials"].contains(std::to_string(j))) {
+
+							Material material;
+
+							if (_json[VVIS_OTHER_SETTINGS]["materials"][std::to_string(j)].contains("color")) {
+
+								if (_json[VVIS_OTHER_SETTINGS]["materials"][std::to_string(j)]["color"].contains("red"))
+									material.color.red = _json[VVIS_OTHER_SETTINGS]["materials"][std::to_string(j)]["color"]["red"].get<int>() / 255.0;
+
+								if (_json[VVIS_OTHER_SETTINGS]["materials"][std::to_string(j)]["color"].contains("green"))
+									material.color.green = _json[VVIS_OTHER_SETTINGS]["materials"][std::to_string(j)]["color"]["green"].get<int>() / 255.0;
+
+								if (_json[VVIS_OTHER_SETTINGS]["materials"][std::to_string(j)]["color"].contains("blue"))
+									material.color.blue = _json[VVIS_OTHER_SETTINGS]["materials"][std::to_string(j)]["color"]["blue"].get<int>() / 255.0;
+
+
+							}
+
+							if (_json[VVIS_OTHER_SETTINGS]["materials"][std::to_string(j)].contains("index"))
+								material.number = _json[VVIS_OTHER_SETTINGS]["materials"][std::to_string(j)]["index"].get<int>();
+
+							if (_json[VVIS_OTHER_SETTINGS]["materials"][std::to_string(j)].contains("name"))
+								material.name = _json[VVIS_OTHER_SETTINGS]["materials"][std::to_string(j)]["name"].get<std::wstring>();
+
+							this->other_settings.materials.push_back(material);
+
+						}
+
+					}
+
+					
+
+				}
+
+
 
 			} else return false;
 

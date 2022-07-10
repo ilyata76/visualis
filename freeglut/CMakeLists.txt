@@ -2,7 +2,7 @@
 
 set (VISUALIS vvis) 
 
-project (${VISUALIS} VERSION 0.2.0)
+project (${VISUALIS} VERSION 0.5.0)
 
 # ----------- | VISUALIS PROJECT : OPTIONS | ----------- 
 
@@ -41,6 +41,9 @@ set (HEADERS_VISUALIS
 	source/helpful/useful_classes.hpp
 	source/color/RGB.hpp
 
+	source/layer-material/layer.hpp
+	source/layer-material/material.hpp
+
 	source/settings/global_settings.hpp
 	source/settings/freeglut_settings.hpp
 	source/settings/other_settings.hpp
@@ -65,6 +68,9 @@ set (SOURCES_VISUALIS
 	source/helpful/useful_classes.cpp
 	source/helpful/useful_functions.cpp
 	source/color/RGB.cpp
+
+	source/layer-material/layer.cpp
+	source/layer-material/material.cpp
 
 	source/settings/global_settings.cpp
 	source/settings/freeglut_settings.cpp
@@ -113,7 +119,7 @@ add_executable (${VISUALIS}
 message("[visualis] : LINKING LIBRARIES : exceptio")
 
 SET(libs_glu ${OPENGL_glu_LIBRARY} ${LIBS})
-#SET(libs_gl ${OPENGL_gl_LIBRARY} ${LIBS})
+SET(libs_gl ${OPENGL_gl_LIBRARY} ${LIBS})
 
 target_link_libraries( ${VISUALIS} 
 	EXCEPTIO_CPP_LIBRARY
@@ -126,13 +132,13 @@ if(USE_STATIC)
 	target_link_libraries( ${VISUALIS} 
 		freeglut_static
 		${libs_glu}
-		#${libs_gl}
+		${libs_gl}
 	)
 else()
 	find_library(FREGL freeglut)
 	target_link_libraries( ${VISUALIS} 
 		freeglut
 		${libs_glu}
-		#${libs_gl}
+		${libs_gl}
 	)
 endif()
