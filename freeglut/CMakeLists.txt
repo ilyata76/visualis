@@ -41,6 +41,9 @@ set (HEADERS_VISUALIS
 	source/helpful/useful_classes.hpp
 	source/color/RGB.hpp
 
+	source/layer-material/layer.hpp
+	source/layer-material/material.hpp
+
 	source/settings/global_settings.hpp
 	source/settings/freeglut_settings.hpp
 	source/settings/other_settings.hpp
@@ -65,6 +68,9 @@ set (SOURCES_VISUALIS
 	source/helpful/useful_classes.cpp
 	source/helpful/useful_functions.cpp
 	source/color/RGB.cpp
+
+	source/layer-material/layer.cpp
+	source/layer-material/material.cpp
 
 	source/settings/global_settings.cpp
 	source/settings/freeglut_settings.cpp
