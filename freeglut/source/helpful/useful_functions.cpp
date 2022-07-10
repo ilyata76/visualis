@@ -155,3 +155,13 @@ bool is_double(std::wstring& _value) {
 		return false;
 	};
 }
+
+int int_rand_result(int a, int b) {
+	std::random_device rd;
+	std::mt19937 mt(rd());
+	if (a > b) {
+		int temp = a; a = b; b = temp;
+	}
+	std::uniform_int_distribution <int> dist(a, b);
+	return dist(mt);
+}
