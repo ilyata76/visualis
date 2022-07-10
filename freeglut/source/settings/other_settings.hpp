@@ -10,6 +10,7 @@
 
 	#include <string>
 	#include <ostream>
+	#include <vector>
 
 	class Other_settings {
 		
@@ -28,6 +29,9 @@
 			Parameters3f transl_stats;// = { 0.0, 0.0, 0.0 };
 			Parameters3f transl_log;// = { 0.0, 0.0, 0.0 };
 			
+			bool multilayering;
+			bool multimaterialing;
+
 			Other_settings();
 
 			friend std::wostream& operator<<(std::wostream& _out, const Other_settings& _settings);

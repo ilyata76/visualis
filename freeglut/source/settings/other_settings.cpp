@@ -14,6 +14,10 @@ Other_settings::Other_settings() {
 
 	this->transl_stats					 = { 0.0, 0.0, 0.0 };
 	this->transl_log					 = { 0.0, 0.0, 0.0 };
+
+	this->multilayering					 = false;
+	this->multimaterialing				 = false;
+
 }
 
 
@@ -25,5 +29,7 @@ std::wostream& operator<<(std::wostream& _out, const Other_settings& _settings) 
 	_out << L"\t Inverted black text in axis\t\t\t: " << std::boolalpha << _settings.inverted_black_text_axis << L"\n";
 	_out << L"\t Translation stats\t\t\t: (" << _settings.transl_stats.x << L", " << _settings.transl_stats.y << L", " << _settings.transl_stats.z << L"\n";
 	_out << L"\t Translation log\t\t\t: (" << _settings.transl_log.x << L", " << _settings.transl_log.y << L", " << _settings.transl_log.z << L"\n";
+	_out << L"\t Multi layer mode\t\t\t: " << std::boolalpha << _settings.multilayering << L"\n";
+	_out << L"\t Multi material mode\t\t\t: " << std::boolalpha << _settings.multimaterialing << L"\n";
 	return _out;
 }
