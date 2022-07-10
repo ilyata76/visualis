@@ -1,4 +1,4 @@
-0.4.0 alpha
+0.5.0 alpha
 1: main directions
 2: Co cube
 3: Co vertex
