@@ -123,19 +123,15 @@ void draw_sample(Settings& _settings, std::vector<Vertex>& _vct, int argc, char*
 	m_count = glob_settings.other_settings.materials.size();
 
 	if (glob_settings.other_settings.multilayering) {
-
 		for (const auto& x : glob_settings.other_settings.layers) {
 			layers_colors[x.number] = x.color;
 		}
-
 	}
 
 	if (glob_settings.other_settings.multimaterialing) {
-
 		for (const auto& x : glob_settings.other_settings.materials) {
 			materials_colors[x.number] = x.color;
 		}
-
 	}
 
 	log("System initialized", RGB_GREEN);
@@ -902,6 +898,8 @@ void subwindow_0_menu_init() {
 		glutAddMenuEntry("Invert control", MENU_RENDER_INVERT_CONTROL);
 		glutAddMenuEntry("Restore gap=7", MENU_RENDER_RESTORE_GAP);
 		glutAddMenuEntry("Lighting on/off (beta)", MENU_RENDER_LIGHTING);
+		glutAddMenuEntry("MultiLAYER mode on/off", MENU_RENDER_MULTILAYER);
+		glutAddMenuEntry("MultiMATERIAL mode on/off", MENU_RENDER_MULTIMATERIAL);
 
 
 	glutAttachMenu(GLUT_RIGHT_BUTTON);
@@ -930,8 +928,76 @@ void subwindow_0_menu(int code) {
 
 		case MENU_RENDER_LIGHTING: glob_settings.freeglut_settings.beta_light = !glob_settings.freeglut_settings.beta_light;
 			if (glob_settings.freeglut_settings.beta_light) log("Beta lighting was enabled", RGB_RED);
-			else log("Beta lighting was disabled", RGB_GREEN);
+			else log("Beta lighting was disabled", RGB_BLUE);
 			postRedisplay();
+
+
+		case MENU_RENDER_MULTILAYER: {
+			glob_settings.other_settings.multilayering = !glob_settings.other_settings.multilayering;
+
+			if (glob_settings.other_settings.multilayering) {
+				log("Multi layer mode was enabled", RGB_BLUE);
+
+				l_count = count_of_layers(glob_vct);
+
+				log("Count of layers: " + std::to_string(l_count), RGB_GREEN);
+
+				if (glob_settings.other_settings.layers.size() != l_count) {
+					for (int j = 0; j < l_count; ++j) {
+						if (!layer_in_vector(glob_settings.other_settings.layers, j)) {
+							Rgb rgb(int_rand_result(0, 255) / 255.0, int_rand_result(0, 255) / 255.0, int_rand_result(0, 255) / 255.0);
+							Layer layer(rgb, j);
+							glob_settings.other_settings.layers.push_back(layer);
+							log("Layer " + std::to_string(j) + " was added", RGB_BLACK);
+						}
+					}
+				}
+
+				if (glob_settings.other_settings.multilayering) {
+					for (const auto& x : glob_settings.other_settings.layers) {
+						layers_colors[x.number] = x.color;
+					}
+					log("Layer map was recalculated", RGB_BLACK);
+				}
+			} else log("Multi layer mode was disabled", RGB_BLUE);
+
+			postRedisplay();
+		} break;
+
+
+		case MENU_RENDER_MULTIMATERIAL: {
+			glob_settings.other_settings.multimaterialing = !glob_settings.other_settings.multimaterialing;
+
+			if (glob_settings.other_settings.multimaterialing) {
+				log("Multi material mode was enabled", RGB_BLUE);
+
+				m_count = count_of_materials(glob_vct);
+
+				log("Count of materials: " + std::to_string(m_count), RGB_GREEN);
+
+				if (glob_settings.other_settings.materials.size() != m_count) {
+					for (int j = 0; j < m_count; ++j) {
+						if (!material_in_vector(glob_settings.other_settings.materials, j)) {
+							Rgb rgb(int_rand_result(0, 255) / 255.0, int_rand_result(0, 255) / 255.0, int_rand_result(0, 255) / 255.0);
+							Material material(rgb, j);
+							glob_settings.other_settings.materials.push_back(material);
+							log("Material " + std::to_string(j) + " was added", RGB_BLACK);
+						}
+					}
+				}
+
+
+				if (glob_settings.other_settings.multimaterialing) {
+					for (const auto& x : glob_settings.other_settings.materials) {
+						materials_colors[x.number] = x.color;
+					}
+					log("Material map was recalculated", RGB_BLACK);
+				}
+			} else log("Multi material mode was disabled", RGB_BLUE);
+
+
+			postRedisplay();
+		} break;
 
 		default:
 			break;
@@ -1865,6 +1931,9 @@ void display_subwindow_2() {
 			(std::wstring(L"Shape - ") + glob_settings.freeglut_settings.shape_wstr),
 			(std::wstring(L"Gap - ") + std::to_wstring(glob_settings.freeglut_settings.gap)),
 			(std::wstring(L"Coloring sample - ") + (glob_settings.freeglut_settings.coloring_sample ? L"true" : L"false")),
+			(std::wstring(L"Multilayer mode - ") + (glob_settings.other_settings.multilayering ? L"true" : L"false")),
+			(std::wstring(L"Multimaterial mode - ") + (glob_settings.other_settings.multimaterialing ? L"true" : L"false")),
+			(std::wstring(L"Lighting (beta) - ") + (glob_settings.freeglut_settings.beta_light ? L"true" : L"false")),
 			(std::wstring(L"Index of spin - ") + (glob_settings.global_settings.index_of_spin == VVIS_DRAW_ALL ? L"DRAW ALL" : std::to_wstring(glob_settings.global_settings.index_of_spin))),
 			(std::wstring(L"Path to folder - ") + str2wstr(glob_settings.global_settings.path_to_folder)),
 			(std::wstring(L"Path to sconf file - ") + str2wstr(glob_settings.global_settings.path_to_sconfiguration_file)),
