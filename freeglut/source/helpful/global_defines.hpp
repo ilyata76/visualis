@@ -75,6 +75,6 @@ constexpr char VVIS_OTHER_SETTINGS[] = "other";
 
 /// UNKNOW_MAP_SECOND
 
-#define VVIS_UNKNOWW_MAP_SECOND 9911
+constexpr auto VVIS_UNKNOWW_MAP_SECOND = 9911;
 
 #endif

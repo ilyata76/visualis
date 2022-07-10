@@ -195,8 +195,6 @@ bool Settings::save(wchar_t _flag) {
 
 			}
 
-
-			// TODO: save layers/materials
 		}
 
 
