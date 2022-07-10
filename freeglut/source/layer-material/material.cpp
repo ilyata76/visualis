@@ -49,3 +49,13 @@ Material find_material_in_vector(std::vector<Material>& _vct, int _index) {
 
 	throw Exceptio(100, L"no index");
 }
+
+int count_of_materials(const std::vector<Vertex>& _vct) {
+	int temp = 0;
+
+	for (const auto& x : _vct) {
+		if (x.material > temp) temp = x.material;
+	}
+
+	return temp + 1;
+}

@@ -4,6 +4,7 @@
 #define MATERIAL_HPP
 
 	#include "../color/RGB.hpp"
+	#include "../vertex-shape/vertex.hpp"
 
 	struct Material {
 
@@ -23,6 +24,8 @@
 	bool set_material(std::vector<Material>& _vct, int _index, Material _mat);
 	bool remove_material(std::vector<Material>& _vct, int _index);
 	Material find_material_in_vector(std::vector<Material>& _vct, int _index);
+
+	int count_of_materials(const std::vector<Vertex>& _vrt);
 
 
 #endif // !MATERIAL_HPP

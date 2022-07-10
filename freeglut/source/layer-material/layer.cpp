@@ -48,3 +48,13 @@ Layer find_layer_in_vector(std::vector<Layer> _vct, int _index) {
 
 	throw Exceptio(100, L"no index");
 }
+
+int count_of_layers(const std::vector<Vertex>& _vct) {
+	int temp = 0;
+
+	for (const auto& x : _vct) {
+		if (x.layer > temp) temp = x.layer;
+	}
+
+	return temp + 1;
+}

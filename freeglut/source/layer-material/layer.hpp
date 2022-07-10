@@ -4,6 +4,7 @@
 #define LAYER_HPP
 
 	#include "../color/RGB.hpp"
+	#include "../vertex-shape/vertex.hpp"
 
 	struct Layer {
 
@@ -23,6 +24,8 @@
 	bool set_layer(std::vector<Layer>& _vct, int _index, Layer _lay);
 	bool remove_layer(std::vector<Layer>& _vct, int _index);
 	Layer find_layer_in_vector(std::vector<Layer> _vct, int _index);
+	
+	int count_of_layers(const std::vector<Vertex>& _vct);
 
 
 #endif // !LAYER_HPP

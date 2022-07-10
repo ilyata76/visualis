@@ -803,9 +803,53 @@ bool Interpretator::visualize_handler(std::vector<std::wstring> _commands) {
 			if (!boolean) return false;
 
 			std::wcout << L"\tloading... : ";
-			//TODO: int& count_of_mat / layers 
+
 			std::vector<Vertex> vct = sconfiguration_parsing(this->app_settings.global_settings.path_to_folder + "/" + VVIS_VVIS_FILE_START_NAME_WSTR + v5_get_file_number(std::to_string(this->app_settings.global_settings.number_of_file)) + VVIS_VVIS_FILE_FORMAT_WSTR);
 			std::wcout << vct.size() << L" vertexes has been loaded\n";
+			
+			
+			
+
+			if (this->app_settings.other_settings.multilayering) {
+				int l_count = 0;
+				std::wcout << L"\tcounting layers... : ";
+				l_count = count_of_layers(vct);
+				std::wcout << l_count<< L'\n';
+
+				if (this->app_settings.other_settings.layers.size() != l_count) {
+					std::wcout << L"\tlayers : ";
+					for (int j = 0; j < l_count; ++j) {
+						if (!layer_in_vector(this->app_settings.other_settings.layers, j)) {
+							Layer layer(Rgb(((255.0 / l_count) * j) / 255.0, ((255.0 / l_count) * j) / 255.0, ((255.0 / l_count) * j) / 255.0), j);
+							this->app_settings.other_settings.layers.push_back(layer);
+							std::wcout << j << L" ";
+						} 
+					} std::wcout << L"- was added\n";
+				}
+
+			}
+
+			if (this->app_settings.other_settings.multimaterialing) {
+				int m_count = 0;
+				std::wcout << L"\tcounting layers... : ";
+				m_count = count_of_materials(vct);
+				std::wcout << m_count << L'\n';
+
+				if (this->app_settings.other_settings.materials.size() != m_count) {
+					std::wcout << L"\tmaterials : ";
+					for (int j = 0; j < m_count; ++j) {
+						if (!material_in_vector(this->app_settings.other_settings.materials, j)) {
+							Material material(Rgb(((255.0 / m_count) * j) / 255.0, ((255.0 / m_count) * j) / 255.0, ((255.0 / m_count) * j) / 255.0), j);
+							this->app_settings.other_settings.materials.push_back(material);
+							std::wcout << j << L" ";
+						} 
+					} std::wcout << L" - was added\n";
+				}
+
+			}
+
+
+			
 			//дозагрузка уровней и материалов
 			std::wcout << L"\tvisualizing..." << L'\n';
 			

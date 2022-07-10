@@ -85,40 +85,10 @@
                     49
                 ]
             },
-            "1": {
-                "color": {
-                    "blue": 0,
-                    "green": 300,
-                    "red": 300
-                },
-                "index": 2,
-                "name": [
-                    97,
-                    98,
-                    111,
-                    98,
-                    117,
-                    115
-                ]
-            },
-            "count": 2
+            "count": 1
         },
         "materials": {
             "0": {
-                "color": {
-                    "blue": 100,
-                    "green": 100,
-                    "red": 100
-                },
-                "index": 3,
-                "name": [
-                    97,
-                    98,
-                    111,
-                    98
-                ]
-            },
-            "1": {
                 "color": {
                     "blue": 10,
                     "green": 10,
@@ -129,7 +99,7 @@
                     50
                 ]
             },
-            "count": 2
+            "count": 1
         },
         "multilayer": true,
         "multimaterial": false,
