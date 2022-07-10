@@ -2,7 +2,7 @@
 
 set (VISUALIS vvis) 
 
-project (${VISUALIS} VERSION 0.2.0)
+project (${VISUALIS} VERSION 0.4.0)
 
 # ----------- | VISUALIS PROJECT : OPTIONS | ----------- 
 

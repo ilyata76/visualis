@@ -620,7 +620,15 @@ bool Interpretator::set_handler(std::vector<std::wstring> _commands) {
 
 									} break;
 
+		case INTER_COMMAND_SET_MULTIMATERIAL: if (_commands.size() < 3) { std::wcout << L"\tEmpty instruction\n"; return false; }
+											this->app_settings.other_settings.multimaterialing = by_synonyms(_commands[2]) == L"yes" ? true : false;
+											std::wcout << L"\tMultimaterial setting \"" << std::boolalpha << this->app_settings.other_settings.multimaterialing << L"\" has been set up\n";
+											break;
 
+		case INTER_COMMAND_SET_MULTILAYER: if (_commands.size() < 3) { std::wcout << L"\tEmpty instruction\n"; return false; }
+										 this->app_settings.other_settings.multilayering = by_synonyms(_commands[2]) == L"yes" ? true : false;
+										 std::wcout << L"\tMultilayer setting \"" << std::boolalpha << this->app_settings.other_settings.multilayering << L"\" has been set up\n";
+										 break;
 
 		case VVIS_UNKNOWW_MAP_SECOND: std::wcout << L"\tUnknow subcommand: " << _commands[1] << L'\n'; return false; break;
 		default: break;
@@ -688,6 +696,8 @@ bool Interpretator::unset_handler(std::vector<std::wstring> _commands) {
 		case INTER_COMMAND_SET_GAP: std::wcout << L"\tSuccessful\n"; this->app_settings.freeglut_settings.gap = 7; break;
 
 		case INTER_COMMAND_SET_POLIGONRATE: std::wcout << L"\tSuccessful\n"; this->app_settings.freeglut_settings.polygonrate = 7; break;
+
+			// TODO: unset materials, layers
 
 		case VVIS_UNKNOWW_MAP_SECOND: std::wcout << L"\tUnknow subcommand: " << _commands[1] << L'\n'; return false; break;
 		default: break;
@@ -872,7 +882,9 @@ bool set_command_maps(Interpretator& _inter) {
 		{L"gap", INTER_COMMAND_SET_GAP},
 		{L"polygonrate", INTER_COMMAND_SET_POLIGONRATE}, {L"pr", INTER_COMMAND_SET_POLIGONRATE},
 		{L"layer", INTER_COMMAND_SET_LAYER},
-		{L"material", INTER_COMMAND_SET_MATERIAL}
+		{L"material", INTER_COMMAND_SET_MATERIAL},
+		{L"multimaterial", INTER_COMMAND_SET_MULTIMATERIAL},
+		{L"multilayer", INTER_COMMAND_SET_MULTILAYER}
 	};
 
 	_inter.convert_sub_command = {
