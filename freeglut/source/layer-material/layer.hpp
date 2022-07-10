@@ -7,17 +7,19 @@
 
 	struct Layer {
 
-		Rgb background;
+		Rgb color;
 		std::wstring name;
 		int number;
 
-		Layer() : background(Rgb(0.5, 0.5, 0.5)), name(L"undefined"), number(0) {};
-		Layer(Rgb& _background, std::wstring& _name, int _number) : background(_background), name(_name), number(_number) {};
+		Layer() : color(Rgb(0.5, 0.5, 0.5)), name(L"undefined"), number(0) {};
+		Layer(Rgb& _color, std::wstring& _name, int _number) : color(_color), name(_name), number(_number) {};
+		Layer(Rgb& _color, int _number) : color(_color), name(std::to_wstring(_number)), number(_number) {};
 
 		friend std::wostream& operator<<(std::wostream& _out, const Layer& _layer);
 
 	};
 
+	bool layer_in_vector(std::vector<Layer>& _vct, int _index);
 	Layer find_layer_in_vector(std::vector<Layer> _vct, int _index);
 
 
