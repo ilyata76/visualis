@@ -159,6 +159,9 @@ bool Settings::save(wchar_t _flag) {
 
 			_json[VVIS_OTHER_SETTINGS]["inverted_black_text_axis"] = this->other_settings.inverted_black_text_axis;
 
+			_json[VVIS_OTHER_SETTINGS]["multilayer"] = this->other_settings.multilayering;
+
+			_json[VVIS_OTHER_SETTINGS]["multimaterial"] = this->other_settings.multimaterialing;
 
 			int materials_count = this->other_settings.materials.size();
 			int layers_count = this->other_settings.layers.size();
