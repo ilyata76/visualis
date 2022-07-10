@@ -8,6 +8,12 @@ std::vector<Rgb> vct_log_colorful;
 
 bool have_additional_sub_windows = false;
 
+std::map<int, Rgb> layers_colors;
+std::map<int, Rgb> materials_colors;
+
+int l_count = 0;
+int m_count = 0;
+
 std::map<std::wstring, Rgb> colors = {
 	{L"white", Rgb(255.0 / 255.0, 255.0 / 255.0, 255.0 / 255.0)},
 	{L"red", Rgb(195.0 / 255.0, 21.0 / 255.0, 21.0 / 255.0)},
@@ -112,6 +118,25 @@ void draw_sample(Settings& _settings, std::vector<Vertex>& _vct, int argc, char*
 
 	vct_log = {};
 	vct_log_colorful = {};
+
+	l_count = glob_settings.other_settings.layers.size();
+	m_count = glob_settings.other_settings.materials.size();
+
+	if (glob_settings.other_settings.multilayering) {
+
+		for (const auto& x : glob_settings.other_settings.layers) {
+			layers_colors[x.number] = x.color;
+		}
+
+	}
+
+	if (glob_settings.other_settings.multimaterialing) {
+
+		for (const auto& x : glob_settings.other_settings.materials) {
+			materials_colors[x.number] = x.color;
+		}
+
+	}
 
 	log("System initialized", RGB_GREEN);
 
@@ -686,8 +711,15 @@ void draw_shape(int index) {
 
 	Rgb color_config(0.0, 0.0, 0.0);
 
-	if (glob_settings.freeglut_settings.coloring_sample) {
+	if (glob_settings.freeglut_settings.coloring_sample && !glob_settings.other_settings.multilayering && !glob_settings.other_settings.multimaterialing) {
 		color_config = get_color_by_direction(current_vertex.spin.x, current_vertex.spin.y, current_vertex.spin.z);
+	} else {
+		if (glob_settings.other_settings.multilayering) {
+			color_config = layers_colors[current_vertex.layer];
+		}
+		if (glob_settings.other_settings.multimaterialing) {
+			color_config = materials_colors[current_vertex.material];
+		}
 	}
 
 	shape->draw(color_config, args_for_draw);
