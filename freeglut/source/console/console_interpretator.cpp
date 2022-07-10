@@ -253,7 +253,7 @@ bool Interpretator::help_handler(std::vector<std::wstring> _commands) {
 			
 			std::wcout << L"\n";
 			std::wcout << L"\tAliases: set\n";
-
+			// TODO: multi set layer
 			break;
 
 		case INTER_COMMAND_HELP_UNSET:			
@@ -603,7 +603,7 @@ bool Interpretator::set_handler(std::vector<std::wstring> _commands) {
 										) { std::wcout << L"\tIncorrect format\n"; return false; }
 
 										Material a;
-										Rgb color = Rgb(std::stoi(_commands[3]) / 255, std::stoi(_commands[4]) / 255, std::stoi(_commands[5]) / 255);
+										Rgb color = Rgb(std::stoi(_commands[3]) / 255.0, std::stoi(_commands[4]) / 255.0, std::stoi(_commands[5]) / 255.0);
 
 										if (_commands.size() == 6) {
 											a = Material(color, std::stoi(_commands[2]));
@@ -697,7 +697,22 @@ bool Interpretator::unset_handler(std::vector<std::wstring> _commands) {
 
 		case INTER_COMMAND_SET_POLIGONRATE: std::wcout << L"\tSuccessful\n"; this->app_settings.freeglut_settings.polygonrate = 7; break;
 
-			// TODO: unset materials, layers
+		case INTER_COMMAND_SET_MULTIMATERIAL:  std::wcout << L"\tSuccessful\n"; this->app_settings.other_settings.multimaterialing = false; break;
+		
+		case INTER_COMMAND_SET_MULTILAYER:  std::wcout << L"\tSuccessful\n"; this->app_settings.other_settings.multilayering = false; break;
+
+		case INTER_COMMAND_SET_MATERIAL: if (_commands.size() < 3 || !is_number(_commands[2])) 
+											{ std::wcout << L"\tIncorrect format\n"; return false; } 
+									   if(remove_material(this->app_settings.other_settings.materials, std::stoi(_commands[2]))) std::wcout << L"\tSuccessful\n";
+									   else std::wcout << L"\tUnsuccessful\n";
+									   break;
+
+		case INTER_COMMAND_SET_LAYER: if (_commands.size() < 3 || !is_number(_commands[2])) 
+											{ std::wcout << L"\tIncorrect format\n"; return false; } 
+									   if (remove_layer(this->app_settings.other_settings.layers, std::stoi(_commands[2]))) std::wcout << L"\tSuccessful\n";
+									   else std::wcout << L"\tUnsuccessful\n";
+									   
+									   break;
 
 		case VVIS_UNKNOWW_MAP_SECOND: std::wcout << L"\tUnknow subcommand: " << _commands[1] << L'\n'; return false; break;
 		default: break;

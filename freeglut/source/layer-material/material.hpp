@@ -21,6 +21,7 @@
 
 	bool material_in_vector(std::vector<Material>& _vct, int _index);
 	bool set_material(std::vector<Material>& _vct, int _index, Material _mat);
+	bool remove_material(std::vector<Material>& _vct, int _index);
 	Material find_material_in_vector(std::vector<Material>& _vct, int _index);
 
 

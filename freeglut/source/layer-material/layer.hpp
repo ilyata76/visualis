@@ -21,6 +21,7 @@
 
 	bool layer_in_vector(std::vector<Layer>& _vct, int _index);
 	bool set_layer(std::vector<Layer>& _vct, int _index, Layer _lay);
+	bool remove_layer(std::vector<Layer>& _vct, int _index);
 	Layer find_layer_in_vector(std::vector<Layer> _vct, int _index);
 
 

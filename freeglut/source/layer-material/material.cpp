@@ -26,6 +26,20 @@ bool set_material(std::vector<Material>& _vct, int _index, Material _mat) {
 	return true;
 }
 
+bool remove_material(std::vector<Material>& _vct, int _index) {
+	if (!material_in_vector(_vct, _index)) return false;
+
+	std::vector<Material> res;
+
+	for (auto& x : _vct) {
+		if (x.number != _index) res.push_back(x);
+	}
+	
+	_vct = res;
+
+	return true;
+}
+
 Material find_material_in_vector(std::vector<Material>& _vct, int _index) {
 	Assert(_vct.size() > 0);
 	
