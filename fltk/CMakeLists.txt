@@ -12,8 +12,16 @@ set (ENTRYPOINT_VISUALIS_GUI
 	source/main.cpp
 ) 
 
-set (HEADERS_VISUALIS_GUI)
-set (SOURCES_VISUALIS_GUI)
+set (HEADERS_VISUALIS_GUI
+    source/fltk/widgetlist.hpp
+    source/fltk/application.hpp
+
+)
+set (SOURCES_VISUALIS_GUI
+    source/fltk/widgetlist.cpp
+    source/fltk/application.cpp
+
+)
 set (RESOURCES_VISUALIS_GUI)
 
 # ----------- | SUBDIRECTORIES | ----------- 
@@ -22,7 +30,7 @@ add_subdirectory(source/libraries/fltk)
 
 # ----------- | includes | ----------- 
 
-include_directories(${CMAKE_CURRENT_BINARY_DIR}/source/libraries/fltk fltk)
+include_directories(${CMAKE_CURRENT_BINARY_DIR}/source/libraries/fltk fltk) # для config.h
 
 # ----------- | EXECUTABLE | ----------- 
 
@@ -32,6 +40,11 @@ add_executable(${VISUALIS_GUI}
     ${SOURCES_VISUALIS_GUI}
     ${RESOURCES_VISUALIS_GUI}
 )
+
+# ----------- | includes | ----------- 
+
+target_include_directories( ${VISUALIS_GUI} PUBLIC ${CMAKE_CURRENT_LIST_DIR}/source/libraries/fltk ) # для проекта
+target_include_directories( ${VISUALIS_GUI} PUBLIC ${CMAKE_CURRENT_LIST_DIR} ) # для проекта
 
 # ----------- | LINKING LIBRARIES | ----------- 
 
