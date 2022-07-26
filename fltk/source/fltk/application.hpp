@@ -5,6 +5,12 @@
 
 	#include <FL/Fl.H>
 
-	// fun windowing
+	class Settings {
+
+		int width; // ширина окна
+		int height; // высотка окна
+		int gap; // gap, который будет отделять glut окно от границ обычного
+
+	};
 
 #endif // !MY_APPLICATION_HPP

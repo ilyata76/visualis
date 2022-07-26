@@ -28,6 +28,8 @@ set (RESOURCES_VISUALIS_GUI)
 
 add_subdirectory(source/libraries/fltk)
 
+add_subdirectory(source/libraries/exceptio)
+
 # ----------- | includes | ----------- 
 
 include_directories(${CMAKE_CURRENT_BINARY_DIR}/source/libraries/fltk fltk) # для config.h
@@ -49,3 +51,4 @@ target_include_directories( ${VISUALIS_GUI} PUBLIC ${CMAKE_CURRENT_LIST_DIR} ) #
 # ----------- | LINKING LIBRARIES | ----------- 
 
 target_link_libraries(${VISUALIS_GUI} fltk)
+target_link_libraries(${VISUALIS_GUI} exceptio)

@@ -6,14 +6,21 @@
 #include <FL/Fl_Menu_.H>
 #include <FL/Fl_Box.H>
 
+#include <vector>
+
+#include <source/libraries/exceptio/src/assert.hpp>
+#include <source/libraries/exceptio/src/assert_3rd.hpp>
+#include <source/libraries/exceptio/src/exceptio.hpp>
+
 int main(int argc, char** argv) {
 
-	WidgetList* WL = new WidgetList;
-	WL->add(1, new Fl_Button(10, 10, 10, 10, "hello"));
-	WL->add(2, new Fl_Button(10, 10, 10, 10, "hello"));
-	WL->add(3, new Fl_Button(10, 10, 10, 10, "hello"));
-	WL->add(4, new Fl_Box(10, 10, 10, 10, "a"));
-	std::wcout << (*WL)[4]->label();
-	delete WL;
+	//WidgetList* WL = new WidgetList;
+	//WL->add(1, new Fl_Button(10, 10, 10, 10, "hello"));
+	//WL->add(2, new Fl_Button(10, 10, 10, 10, "hello"));
+	//WL->add(3, new Fl_Button(10, 10, 10, 10, "hello"));
+	//WL->add(4, new Fl_Box(10, 10, 10, 10, "a"));
+	//if ((*WL)[5] != nullptr) std::wcout << (*WL)[5]->label();
+	//delete WL;
+
 	return 0;
 }
