@@ -15,9 +15,12 @@
 
 int main(int argc, char** argv) {
 
+	std::list<std::string>* log = new std::list<std::string>;
+
 	Settings* stg = new Settings{argc, argv};
-	windowing(stg);
+	windowing(stg, log);
 	
 	delete stg;
+
 	return 0;
 }

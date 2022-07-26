@@ -14,6 +14,8 @@
 	#include <source/fltk/widgetlist.hpp>
 
 	#include <vector>
+	#include <string>
+	#include <list>
 
 	constexpr auto WIDGET_MAIN_MENU = 1000;
 
@@ -32,10 +34,10 @@
 			~Settings();
 
 
-		friend bool create_main_menu(Settings* _settings);
-		friend bool windowing(Settings* _settings);
+		friend bool create_main_menu(Settings* _settings, std::list<std::string>* log);
+		friend bool windowing(Settings* _settings, std::list<std::string>* log);
 	};
 
-	
+	void log(std::string _str, std::list<std::string>* log, bool full = false);
 
 #endif // !MY_APPLICATION_HPP
