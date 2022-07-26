@@ -1,13 +1,38 @@
 cmake_minimum_required(VERSION 3.0)
 
-project(app)
+set (VISUALIS_GUI vvis_gui) 
+
+project(${VISUALIS_GUI} VERSION 0.1.0)
 
 option (FLTK_BUILD_TEST     "Build test/demo programs" OFF)
 
+# ----------- | VISUALIS PROJECT FILES | ----------- 
+
+set (ENTRYPOINT_VISUALIS_GUI
+	source/main.cpp
+) 
+
+set (HEADERS_VISUALIS_GUI)
+set (SOURCES_VISUALIS_GUI)
+set (RESOURCES_VISUALIS_GUI)
+
+# ----------- | SUBDIRECTORIES | ----------- 
+
 add_subdirectory(source/libraries/fltk)
+
+# ----------- | includes | ----------- 
 
 include_directories(${CMAKE_CURRENT_BINARY_DIR}/source/libraries/fltk fltk)
 
-add_executable(my_execut main.cpp)
+# ----------- | EXECUTABLE | ----------- 
 
-target_link_libraries(my_execut fltk)
+add_executable(${VISUALIS_GUI} 
+    ${ENTRYPOINT_VISUALIS_GUI} 
+    ${HEADERS_VISUALIS_GUI} 
+    ${SOURCES_VISUALIS_GUI}
+    ${RESOURCES_VISUALIS_GUI}
+)
+
+# ----------- | LINKING LIBRARIES | ----------- 
+
+target_link_libraries(${VISUALIS_GUI} fltk)
