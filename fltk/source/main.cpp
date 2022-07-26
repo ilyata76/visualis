@@ -15,7 +15,6 @@
 
 int main(int argc, char** argv) {
 
-
 	Settings* stg = new Settings{argc, argv};
 	windowing(stg);
 	

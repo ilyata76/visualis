@@ -28,6 +28,8 @@
 			Settings(int argc, char** argv);
 			~Settings();
 
+
+		friend bool create_main_menu(Settings* _settings);
 		friend bool windowing(Settings* _settings);
 	};
 

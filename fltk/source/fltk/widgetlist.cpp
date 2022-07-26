@@ -63,7 +63,7 @@ bool WidgetList::remove(int _index) {
 bool WidgetList::set_tied(int _index) {
 	try {
 
-		if (this->exist(_index)) return (this->map[_index].second = true);
+		if (this->exist(_index)) { this->map[_index].second = true; return (this->map[_index].second == true); }
 		else return false;
 
 	} catch (std::exception& E) {
@@ -74,7 +74,7 @@ bool WidgetList::set_tied(int _index) {
 bool WidgetList::set_untied(int _index) {
 	try {
 
-		if (this->exist(_index)) return !(this->map[_index].second = false);
+		if (this->exist(_index)) { this->map[_index].second = false; return (this->map[_index].second == false); }
 		else return false;
 
 	} catch (std::exception& E) {
@@ -96,7 +96,7 @@ Fl_Widget* WidgetList::operator[](int _index) {
 WidgetList::~WidgetList() {
 
 	for (auto& iterator : this->map) {
-		if (!iterator.second.second) delete iterator.second.first;
+		if (this->tied(iterator.first) == false) delete iterator.second.first;
 	}
 	// DELETE MAIN_WINDOW юбрнлюрхвеяйх нвхыюер бяе бхдферш, й мелс опхбъгюммше
 }
