@@ -15,18 +15,10 @@
 
 int main(int argc, char** argv) {
 
-	WidgetList* WL = new WidgetList;
-	Fl_Button* a = new Fl_Button{ 10, 10, 10, 10, "hello" };
-	WL->add(1, a);
-	//delete a;
-	//WL->add(3, new Fl_Button(10, 10, 10, 10, "hello"));
-	//WL->add(4, new Fl_Box(10, 10, 10, 10, "a"));
-	if ((*WL)[1] != nullptr) std::wcout << (*WL)[1]->label();
-	
+
 	Settings* stg = new Settings{argc, argv};
 	windowing(stg);
+	
 	delete stg;
-	delete a;
-	delete WL;
 	return 0;
 }

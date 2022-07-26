@@ -5,8 +5,14 @@
 
 	#include <FL/Fl.H>
 	#include <FL/Fl_Window.H>
+	#include <FL/Fl_Menu.H>
+	#include <FL/Fl_Menu_Bar.H>
+
+	#include <source/fltk/widgetlist.hpp>
 
 	#include <vector>
+
+	constexpr auto WIDGET_MAIN_MENU = 1000;
 
 	class Settings {
 		protected:
