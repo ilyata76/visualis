@@ -50,5 +50,5 @@ target_include_directories( ${VISUALIS_GUI} PUBLIC ${CMAKE_CURRENT_LIST_DIR} ) #
 
 # ----------- | LINKING LIBRARIES | ----------- 
 
-target_link_libraries(${VISUALIS_GUI} fltk)
 target_link_libraries(${VISUALIS_GUI} exceptio)
+target_link_libraries(${VISUALIS_GUI} fltk ${FLTK_PLATFORM_DEPENDENT_LIBS})

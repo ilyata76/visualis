@@ -48,8 +48,8 @@ Fl_Widget* WidgetList::operator[](int _index) {
 
 WidgetList::~WidgetList() {
 
-	for (const auto& iterator : this->map) {
-		delete iterator.second;
-	}
+	//for (const auto& iterator : this->map) {
+	//	delete iterator.second;
+	//}
 
 }
