@@ -47,7 +47,7 @@ Settings::~Settings() {
 }
 
 bool create_main_menu(Settings* _settings) {
-	if (widgetlist.add(WIDGET_MAIN_MENU, new Fl_Menu_Bar{ -1, -1, _settings->width + 2, _settings->height / 10, "main_menu" })) {
+	if (widgetlist.add(WIDGET_MAIN_MENU, new Fl_Menu_Bar{ -1, -1, _settings->width + 2, 25, "main_menu" })) {
 		Fl_Menu_Bar* menu = static_cast<Fl_Menu_Bar*>(widgetlist[WIDGET_MAIN_MENU]);
 		menu->menu(menu_items);
 		return true;
@@ -57,19 +57,32 @@ bool create_main_menu(Settings* _settings) {
 
 bool windowing(Settings* _settings) {
 
+	_settings->width = Fl::w() / 2;
+	_settings->height = Fl::h() / 2;
+
 	if (!create_main_menu(_settings)) throw std::exception("[]create_main_menu doesnt work correctly");
 
-	Fl_Window* main_window = new Fl_Window{ _settings->width, _settings->height };
+	Fl_Window* main_window = new Fl_Window{ 0, 0,  _settings->width, _settings->height, "main_window"};
+	Fl_Box* box = new Fl_Box(10, 10, 10, 10, "abobus");
 
 	main_window->add(widgetlist[WIDGET_MAIN_MENU]); 
 		widgetlist.set_tied(WIDGET_MAIN_MENU);
+
 		// widgetlist.set_untied(WIDGET_MAIN_MENU); будет крашить, что верно!
 
 	main_window->end();
-	main_window->show(_settings->argc, _settings->argv);
 
+	Fl_Group* resble = new Fl_Group{ 0, widgetlist[WIDGET_MAIN_MENU]->h(), 
+									widgetlist[WIDGET_MAIN_MENU]->w(), main_window->h() - widgetlist[WIDGET_MAIN_MENU]->h() 
+									};
+
+	main_window->resizable(resble); /*задали изменяемую область resble, не задевающую меню*/
+	
+	main_window->show(_settings->argc, _settings->argv);
+	
 	Fl::run();
 
+	delete resble;
 	delete main_window;
 	
 	return true;

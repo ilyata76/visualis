@@ -7,6 +7,9 @@
 	#include <FL/Fl_Window.H>
 	#include <FL/Fl_Menu.H>
 	#include <FL/Fl_Menu_Bar.H>
+	#include <FL/Fl_Double_Window.H>
+	#include <FL/Fl_Group.H>
+	#include <FL/Fl_Box.H>
 
 	#include <source/fltk/widgetlist.hpp>
 
