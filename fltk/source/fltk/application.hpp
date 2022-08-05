@@ -10,6 +10,10 @@
 	#include <FL/Fl_Double_Window.H>
 	#include <FL/Fl_Group.H>
 	#include <FL/Fl_Box.H>
+	
+	#include <FL/forms.H> // боксы
+
+#include <FL/Fl_Native_File_Chooser.H>
 
 	#include <source/fltk/widgetlist.hpp>
 
@@ -35,6 +39,10 @@
 
 
 		friend bool create_main_menu(Settings* _settings, std::list<std::string>* log);
+			friend void callback_file_new_sconfiguration(Fl_Widget* _w, void*);
+			friend void callback_file_new_vampire_configuration_folder(Fl_Widget* _w, void*);
+			friend void callback_file_new_vampire_configuration_file(Fl_Widget* _w, void*);
+
 		friend bool windowing(Settings* _settings, std::list<std::string>* log);
 	};
 

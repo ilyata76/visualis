@@ -4,15 +4,47 @@ WidgetList widgetlist = {};
 
 std::list<std::string>* global_log;
 
-void callback(Fl_Widget* _w, void*) {
-	log("sconfiguration?", global_log, true);
+void callback_file_new_sconfiguration(Fl_Widget* _w, void*) {
+
+	log("Sconfiguration callback: ", global_log, true);
+
+	Fl_Native_File_Chooser* chooser = new Fl_Native_File_Chooser{ Fl_Native_File_Chooser::BROWSE_FILE };
+
+	chooser->title("Select the sconfiguration file");
+	chooser->directory("/");
+	
+	switch (chooser->show()) {
+		case 1:		log("\t Canceled", global_log, true);													break;
+		case -1:	log("\t Error: \n\t" + std::string{ chooser->errmsg() }, global_log, true);				break;
+		case 0:		log("\t Selected file: \n\t" + std::string{ chooser->filename() }, global_log, true);	break;
+		default:																							break;
+	}
+
+	delete chooser;
+}
+
+void callback_file_new_vampire_configuration_folder(Fl_Widget* _w, void*) {
+
+	log("Vampire config callback: ", global_log, true);
+	Fl_Window* choice_window = new Fl_Window{ 100, 100,  30, 30, "choice_window" };
+
+	choice_window->end();
+	choice_window->show();
+
+	choice_window->callback([](Fl_Widget* _w, void* _v) { 	
+		Fl_Window* current_window = (Fl_Window*)(_v);
+		delete current_window;
+	}, (void*)(choice_window)); // вызывается при попытке закрыть окно
+
 }
 
 Fl_Menu_Item menu_items[] = {
 	{"&File", FL_CTRL + 'f'/*hotkey*/, 0/*callback fun*/, 0, FL_SUBMENU/*flags*/},
 		{"&new", FL_CTRL + 'n', 0, 0, FL_SUBMENU},
-			{"s&configuration ", FL_CTRL + 'c', callback, 0, 0}, /*вызвать поиск файла*/
-			{"&vampire configuration ", FL_CTRL + 'v', 0, 0, 0},  /*вызвать новое окно в котором будут поля или выбрать папку*/
+			{"s&configuration ", FL_CTRL + 'c', callback_file_new_sconfiguration, 0, 0}, /*вызвать поиск файла*/
+			{"&vampire configuration ", FL_CTRL + 'v', 0, 0, FL_SUBMENU},  /*вызвать новое окно в котором будут поля или выбрать папку*/
+				{"folder ", FL_CTRL + 'v', callback_file_new_vampire_configuration_folder, 0, 0},  /*вызвать новое окно в котором будут поля или выбрать папку*/
+				{},
 			{}, /*больше не submenu*/
 		{"&settings", FL_CTRL + 's', 0, 0, FL_SUBMENU},
 			{"&save", FL_CTRL + 's', 0, 0, 0},  /*вызвать поиск папки*/
@@ -24,6 +56,7 @@ Fl_Menu_Item menu_items[] = {
 		{}, /*больше не submenu*/
 	{"&Settings", FL_CTRL + 's', 0, 0, 0}, /*здесь всё в подменю будет в том числе мод multimaterial, multilayer и пр. и цвет вообще всё*/
 	{"View", 0, 0, 0, 0}, /*оси*/
+	{"Logging", 0, 0, 0, 0}, /*оси*/
 	{"Run", 0, 0, 0, FL_MENU_INACTIVE},
 	{"Help", 0, 0, 0, 0},
 };
@@ -69,13 +102,14 @@ bool windowing(Settings* _settings, std::list<std::string>* _log) {
 	_settings->width = Fl::w() / 2;
 	_settings->height = Fl::h() / 2;
 
-	if (!create_main_menu(_settings, _log)) throw std::exception("[]create_main_menu doesnt work correctly");
+	if (!create_main_menu(_settings, _log)) throw std::exception{ "[]create_main_menu doesnt work correctly" };
 
-	Fl_Window* main_window = new Fl_Window{ 0, 0,  _settings->width, _settings->height, "main_window"};
-	Fl_Box* box = new Fl_Box(10, 10, 10, 10, "abobus");
+	Fl_Window* main_window = new Fl_Window{ 100, 100,  _settings->width, _settings->height, "main_window"};
+	Fl_Box* box = new Fl_Box{ 10, 10, 10, 10, "abobus" };
 
 	main_window->add(widgetlist[WIDGET_MAIN_MENU]); 
 		widgetlist.set_tied(WIDGET_MAIN_MENU);
+		fl_set_object_boxtype(widgetlist[WIDGET_MAIN_MENU], FL_FLAT_BOX); // FL_NO_BOX может быть как поверх экрана
 		// widgetlist.set_untied(WIDGET_MAIN_MENU); будет крашить, что верно!
 
 	main_window->end();
@@ -92,6 +126,7 @@ bool windowing(Settings* _settings, std::list<std::string>* _log) {
 
 	delete resble;
 	delete main_window;
+	widgetlist.~WidgetList();
 	
 	return true;
 }

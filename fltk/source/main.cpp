@@ -21,6 +21,7 @@ int main(int argc, char** argv) {
 	windowing(stg, log);
 	
 	delete stg;
+	delete log;
 
 	return 0;
 }
