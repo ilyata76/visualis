@@ -1,9 +1,15 @@
 #include "./widgetlist.hpp"
 
 bool WidgetList::exist(int _index) {
-	auto it = this->map.find(_index);
+	try {
+		if (this->map.empty()) return false;
+		
+		auto it = this->map.find(_index);
 
-	return (it != map.end());
+		return (it != map.end());
+	} catch (...) {
+		return false;
+	}
 }
 
 bool WidgetList::tied(int _index) {

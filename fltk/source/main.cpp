@@ -15,13 +15,11 @@
 
 int main(int argc, char** argv) {
 
-	std::list<std::string>* log = new std::list<std::string>;
+	Data* data = new Data{ new std::list<std::string>, new Settings{argc, argv} };
 
-	Settings* stg = new Settings{argc, argv};
-	windowing(stg, log);
+	windowing(data);
 	
-	delete stg;
-	delete log;
+	data->~Data(); // деструктор сам удалит лог и stg
 
 	return 0;
 }
