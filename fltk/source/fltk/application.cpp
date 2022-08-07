@@ -26,29 +26,94 @@ void callback_file_new_sconfiguration(Fl_Widget* _w, void* _v) {
 	delete chooser;
 }
 
+void choice_callback_folder(Fl_Widget* _w, void* _v) {
+	Windata* wd = static_cast<Windata*>(_v);
+
+	wd->window->label("FOLDER CHOICE\n");
+	
+	auto* button = static_cast<Fl_Button*>((*wd->widgets)[WIDGET_BUTTON_PICK_FOLDER]);
+		button->show();
+
+	button = static_cast<Fl_Button*>((*wd->widgets)[WIDGET_BUTTON_PICK_ATOMS_FILE]);
+		button->hide();
+
+	button = static_cast<Fl_Button*>((*wd->widgets)[WIDGET_BUTTON_PICK_SPINS_FILE]);
+		button->hide();
+
+	button = static_cast<Fl_Button*>((*wd->widgets)[WIDGET_BUTTON_CONFIRM]);
+		button->hide();
+}
+
+void choice_callback_file(Fl_Widget* _w, void* _v) {
+	Windata* wd = static_cast<Windata*>(_v);
+
+	wd->window->label("FILE CHOICE\n");
+	
+	auto* button = static_cast<Fl_Button*>((*wd->widgets)[WIDGET_BUTTON_PICK_FOLDER]);
+		button->hide();
+
+	button = static_cast<Fl_Button*>((*wd->widgets)[WIDGET_BUTTON_PICK_ATOMS_FILE]);
+		button->show();
+
+	button = static_cast<Fl_Button*>((*wd->widgets)[WIDGET_BUTTON_PICK_SPINS_FILE]);
+		button->show();
+
+	button = static_cast<Fl_Button*>((*wd->widgets)[WIDGET_BUTTON_CONFIRM]);
+		button->hide();
+}
+
 void callback_file_new_vampire_configuration(Fl_Widget* _w, void* _v) {
 
 	Data* data = (Data*)_v;
 
 	WidgetList* widgets = new WidgetList;
 
-	const int WIDGET_CHOICE_BUTTON = 200;
-	
+	const int gappy = 10;
+	const int button_height = 25;
+	const int distance = button_height + gappy;
+
 	log("Vampire config callback: ", data->log, true);
 	log("\t Creating choice_window", data->log, true);
 	
-	Fl_Window* choice_window = new Fl_Window{ 100, 100, 300, 300, "choice_window" };
-	
-	widgets->add(WIDGET_CHOICE_BUTTON, new Fl_Choice{ 100, 10, 100, 25, "CHOICE" });
-		
+	Fl_Window* choice_window = new Fl_Window{ 100, 100, 200, 200, "choice_window" };
+
+	Windata* fulldata = new Windata{ data, widgets, choice_window };
+
+	widgets->add(WIDGET_CHOICE_BUTTON, new Fl_Choice{ gappy, gappy, 200 - 2 * gappy, button_height, "CHOICE" });
+	widgets->add(WIDGET_BUTTON_PICK_FOLDER, new Fl_Button{ gappy, 2 * distance, 200 - 2 * gappy, button_height, "folder" });
+	widgets->add(WIDGET_BUTTON_PICK_ATOMS_FILE, new Fl_Button{ gappy, 2 * distance, 200 - 2 * gappy, button_height, "atoms file" });
+	widgets->add(WIDGET_BUTTON_PICK_SPINS_FILE, new Fl_Button{ gappy, 3 * distance, 200 - 2 * gappy, button_height, "spins file" });
+	widgets->add(WIDGET_BUTTON_CONFIRM, new Fl_Button{ gappy, 4 * distance, 200, button_height, "confirm" });
+
 		choice_window->add((*widgets)[WIDGET_CHOICE_BUTTON]);
+		choice_window->add((*widgets)[WIDGET_BUTTON_PICK_FOLDER]);
+		choice_window->add((*widgets)[WIDGET_BUTTON_PICK_ATOMS_FILE]);
+		choice_window->add((*widgets)[WIDGET_BUTTON_PICK_SPINS_FILE]);
+		choice_window->add((*widgets)[WIDGET_BUTTON_CONFIRM]);
 			widgets->set_tied(WIDGET_CHOICE_BUTTON);
+			widgets->set_tied(WIDGET_BUTTON_PICK_FOLDER);
+			widgets->set_tied(WIDGET_BUTTON_PICK_ATOMS_FILE);
+			widgets->set_tied(WIDGET_BUTTON_PICK_SPINS_FILE);
+			widgets->set_tied(WIDGET_BUTTON_CONFIRM);
 
-		Fl_Choice* choice_button = static_cast<Fl_Choice*>((*widgets)[WIDGET_CHOICE_BUTTON]);
-		choice_button->add("abobus");
-		choice_button->add("aaaa");
 
 
+		auto* choice_button = static_cast<Fl_Choice*>((*widgets)[WIDGET_CHOICE_BUTTON]);
+			choice_button->labeltype(FL_FREE_LABELTYPE);
+			choice_button->add("folder", 0, choice_callback_folder, fulldata, 0);
+			choice_button->add("files", 0, choice_callback_file, fulldata, 0);
+
+		auto* button = static_cast<Fl_Button*>((*widgets)[WIDGET_BUTTON_PICK_FOLDER]);
+			button->hide();
+			
+		button = static_cast<Fl_Button*>((*widgets)[WIDGET_BUTTON_PICK_ATOMS_FILE]);
+			button->hide();
+			
+		button = static_cast<Fl_Button*>((*widgets)[WIDGET_BUTTON_PICK_SPINS_FILE]);
+			button->hide();
+			
+		button = static_cast<Fl_Button*>((*widgets)[WIDGET_BUTTON_CONFIRM]);
+			button->hide();
 
 
 	choice_window->end();
@@ -58,18 +123,15 @@ void callback_file_new_vampire_configuration(Fl_Widget* _w, void* _v) {
 
 	// местный widgetlist стоит сюда тоже запихнуть =)
 
-	using windatapair = std::pair<Fl_Window*, Data*>;
-	
-	windatapair* p = new windatapair {choice_window, data};
-
 	choice_window->callback([](Fl_Widget* _w, void* _v) { 
-		windatapair* wdp = (windatapair*)(_v);
-		log("\t Deleting choice_window", wdp->second->log, true);
-		wdp->first->hide();
-		delete wdp->first; 
+		Windata* wdp = (Windata*)(_v);
+		log("\t Deleting choice_window", wdp->data->log, true);
+		//wdp->window->hide();
+		delete wdp->window; 
+		delete wdp->widgets;
 		delete wdp;
 		// а здесь вызвать его деструктор
-		}, (void*)(p) ); // вызывается при попытке закрыть окно
+		}, (void*)(fulldata) ); // вызывается при попытке закрыть окно
 
 	
 
@@ -98,15 +160,13 @@ Settings::Settings(int argc, char** argv) {
 	this->height = 300;
 	this->gap = 5;
 
-	this->path_to_folder = "<none>";
+	this->path_to_folder = "<none>"; // TODO: вынести в отдельные файлы
 	this->path_to_sconfiguration_file = "<none>";
 }
 
 Settings::~Settings() {
 	//
 }
-
-
 
 bool create_main_menu(Data* data) {
 	

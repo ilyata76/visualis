@@ -19,7 +19,7 @@ int main(int argc, char** argv) {
 
 	windowing(data);
 	
-	data->~Data(); // деструктор сам удалит лог и stg
+	delete data; // деструктор сам удалит лог и stg
 
 	return 0;
 }

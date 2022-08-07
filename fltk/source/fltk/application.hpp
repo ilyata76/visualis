@@ -23,7 +23,11 @@
 
 	constexpr auto WIDGET_MAIN_MENU = 1000;
 
-	
+	constexpr int WIDGET_CHOICE_BUTTON = 200;
+	constexpr int WIDGET_BUTTON_PICK_FOLDER = 201;
+	constexpr int WIDGET_BUTTON_PICK_ATOMS_FILE = 202;
+	constexpr int WIDGET_BUTTON_PICK_SPINS_FILE = 203;
+	constexpr int WIDGET_BUTTON_CONFIRM = 204; // TODO: вынести выше
 
 	class Settings {
 		protected:
@@ -48,6 +52,9 @@
 			friend void callback_file_new_sconfiguration(Fl_Widget* _w, void*);
 			friend void callback_file_new_vampire_configuration(Fl_Widget* _w, void*);
 
+		friend void choice_callback_folder(Fl_Widget* _w, void*);
+		friend void choice_callback_file(Fl_Widget* _w, void*);
+
 		friend bool windowing(Data* data);
 	};
 
@@ -64,5 +71,13 @@
 	};
 
 	void log(std::string _str, std::list<std::string>* log, bool full = false);
+
+	struct Windata {
+		Data* data;
+		WidgetList* widgets;
+		Fl_Window* window;
+
+		Windata(Data* _d, WidgetList* _ws, Fl_Window* _w) : data(_d), widgets(_ws), window(_w) {};
+	};
 
 #endif // !MY_APPLICATION_HPP
