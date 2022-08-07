@@ -29,6 +29,8 @@
 	constexpr int WIDGET_BUTTON_PICK_SPINS_FILE = 203;
 	constexpr int WIDGET_BUTTON_CONFIRM = 204; // TODO: вынести выше
 
+	constexpr char PATH_PLUG[] = "none";
+
 	class Settings {
 		protected:
 			int argc;
@@ -39,7 +41,12 @@
 			int gap; // gap, который будет отделять glut окно от границ обычного
 
 			std::string path_to_folder;
+
 			std::string path_to_sconfiguration_file;
+
+			std::string path_to_spins_file;
+
+			std::string path_to_atoms_file;
 
 		public:
 			Settings();

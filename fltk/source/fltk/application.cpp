@@ -18,6 +18,9 @@ void callback_file_new_sconfiguration(Fl_Widget* _w, void* _v) {
 		case -1:	log("\t Error: \n\t\t " + std::string{ chooser->errmsg() }, data->log, true);				break;
 		case 0:		log("\t Selected file: \n\t\t " + std::string{ chooser->filename() }, data->log, true);		
 					data->settings->path_to_sconfiguration_file = chooser->filename();
+					data->settings->path_to_atoms_file = PATH_PLUG;
+					data->settings->path_to_spins_file = PATH_PLUG;
+					data->settings->path_to_folder = PATH_PLUG;
 					log("\t Saved filename: \n\t\t " + data->settings->path_to_sconfiguration_file, data->log, true);
 																												break;
 		default:																								break;
@@ -105,6 +108,7 @@ void callback_file_new_vampire_configuration(Fl_Widget* _w, void* _v) {
 
 		auto* button = static_cast<Fl_Button*>((*widgets)[WIDGET_BUTTON_PICK_FOLDER]);
 			button->hide();
+			// TODO: все кнопкам здесь коллбеки
 			
 		button = static_cast<Fl_Button*>((*widgets)[WIDGET_BUTTON_PICK_ATOMS_FILE]);
 			button->hide();
@@ -147,8 +151,10 @@ Settings::Settings() {
 	this->height = 300;
 	this->gap = 5;
 
-	this->path_to_folder = "<none>";
-	this->path_to_sconfiguration_file = "<none>";
+	this->path_to_folder = PATH_PLUG;
+	this->path_to_sconfiguration_file = PATH_PLUG;
+	this->path_to_spins_file = PATH_PLUG;
+	this->path_to_atoms_file = PATH_PLUG;
 }
 
 Settings::Settings(int argc, char** argv) {
@@ -160,8 +166,10 @@ Settings::Settings(int argc, char** argv) {
 	this->height = 300;
 	this->gap = 5;
 
-	this->path_to_folder = "<none>"; // TODO: вынести в отдельные файлы
-	this->path_to_sconfiguration_file = "<none>";
+	this->path_to_folder = PATH_PLUG;
+	this->path_to_sconfiguration_file = PATH_PLUG;
+	this->path_to_spins_file = PATH_PLUG;
+	this->path_to_atoms_file = PATH_PLUG;
 }
 
 Settings::~Settings() {
