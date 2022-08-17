@@ -12,7 +12,7 @@ void callback_file_new_sconfiguration(Fl_Widget* _w, void* _v) {
 
 	chooser->title("Select the sconfiguration file");
 	chooser->directory("/");
-	
+
 	switch (chooser->show()) {
 		case 1:		log("\t Canceled", data->log, true);														break;
 		case -1:	log("\t Error: \n\t\t " + std::string{ chooser->errmsg() }, data->log, true);				break;
@@ -47,6 +47,37 @@ void choice_callback_folder(Fl_Widget* _w, void* _v) {
 		button->hide();
 }
 
+void callback_choice_folder_new(Fl_Widget* _w, void* _v) {
+	
+	Windata* wd = static_cast<Windata*>(_v);
+	
+	log("Choice folder callback: ", wd->data->log, true);
+	log("\t Creating chooser", wd->data->log, true);
+	Fl_Native_File_Chooser* chooser = new Fl_Native_File_Chooser{ Fl_Native_File_Chooser::BROWSE_DIRECTORY };
+
+	chooser->title("Select the vampire-folder");
+	chooser->directory("/");
+
+	switch (chooser->show()) {
+		case 1:		log("\t Canceled", wd->data->log, true);														break;
+		case -1:	log("\t Error: \n\t\t " + std::string{ chooser->errmsg() }, wd->data->log, true);				break;
+		case 0:		log("\t Selected folder: \n\t\t " + std::string{ chooser->filename() }, wd->data->log, true);
+					wd->data->settings->path_to_folder = chooser->filename();
+					wd->data->settings->path_to_atoms_file = PATH_PLUG;
+					wd->data->settings->path_to_spins_file = PATH_PLUG;
+					wd->data->settings->path_to_sconfiguration_file = PATH_PLUG;
+					log("\t Saved directory: \n\t\t " + wd->data->settings->path_to_folder, wd->data->log, true);
+																												break;
+		default:																								break;
+	};
+
+	auto* button = static_cast<Fl_Button*>((*wd->widgets)[WIDGET_BUTTON_CONFIRM]);
+		button->show();
+
+	delete chooser;
+
+}
+
 void choice_callback_file(Fl_Widget* _w, void* _v) {
 	Windata* wd = static_cast<Windata*>(_v);
 
@@ -63,6 +94,72 @@ void choice_callback_file(Fl_Widget* _w, void* _v) {
 
 	button = static_cast<Fl_Button*>((*wd->widgets)[WIDGET_BUTTON_CONFIRM]);
 		button->hide();
+}
+
+void callback_choice_atoms_new(Fl_Widget* _w, void* _v) {
+	
+	Windata* wd = static_cast<Windata*>(_v);
+	
+	log("Choice atoms file callback: ", wd->data->log, true);
+	log("\t Creating chooser", wd->data->log, true);
+	Fl_Native_File_Chooser* chooser = new Fl_Native_File_Chooser{ Fl_Native_File_Chooser::BROWSE_FILE };
+
+	chooser->title("Select the atoms file");
+	chooser->directory("/");
+
+	switch (chooser->show()) {
+		case 1:		log("\t Canceled", wd->data->log, true);														break;
+		case -1:	log("\t Error: \n\t\t " + std::string{ chooser->errmsg() }, wd->data->log, true);				break;
+		case 0:		log("\t Selected file: \n\t\t " + std::string{ chooser->filename() }, wd->data->log, true);
+					wd->data->settings->path_to_folder = PATH_PLUG;
+					wd->data->settings->path_to_atoms_file = chooser->filename();
+					//wd->data->settings->path_to_spins_file = PATH_PLUG;
+					wd->data->settings->path_to_sconfiguration_file = PATH_PLUG;
+					log("\t Saved file: \n\t\t " + wd->data->settings->path_to_atoms_file, wd->data->log, true);
+																												break;
+		default:																								break;
+	};
+
+	if (wd->data->settings->path_to_atoms_file != PATH_PLUG && wd->data->settings->path_to_spins_file != PATH_PLUG) {
+		auto* button = static_cast<Fl_Button*>((*wd->widgets)[WIDGET_BUTTON_CONFIRM]);
+			button->show();
+	}
+
+	delete chooser;
+
+}
+
+void callback_choice_spins_new(Fl_Widget* _w, void* _v) {
+	
+	Windata* wd = static_cast<Windata*>(_v);
+	
+	log("Choice spins file callback: ", wd->data->log, true);
+	log("\t Creating chooser", wd->data->log, true);
+	Fl_Native_File_Chooser* chooser = new Fl_Native_File_Chooser{ Fl_Native_File_Chooser::BROWSE_FILE };
+
+	chooser->title("Select the spins file");
+	chooser->directory("/");
+
+	switch (chooser->show()) {
+		case 1:		log("\t Canceled", wd->data->log, true);														break;
+		case -1:	log("\t Error: \n\t\t " + std::string{ chooser->errmsg() }, wd->data->log, true);				break;
+		case 0:		log("\t Selected file: \n\t\t " + std::string{ chooser->filename() }, wd->data->log, true);
+					wd->data->settings->path_to_folder = PATH_PLUG;
+					//wd->data->settings->path_to_atoms_file = PATH_PLUG;
+					wd->data->settings->path_to_spins_file = chooser->filename();
+					wd->data->settings->path_to_sconfiguration_file = PATH_PLUG;
+					log("\t Saved file: \n\t\t " + wd->data->settings->path_to_spins_file, wd->data->log, true);
+																												break;
+		default:																								break;
+	};
+
+	if (wd->data->settings->path_to_atoms_file != PATH_PLUG && wd->data->settings->path_to_spins_file != PATH_PLUG) {
+		auto* button = static_cast<Fl_Button*>((*wd->widgets)[WIDGET_BUTTON_CONFIRM]);
+			button->show();
+	}
+
+	delete chooser;
+
 }
 
 void callback_file_new_vampire_configuration(Fl_Widget* _w, void* _v) {
@@ -86,7 +183,7 @@ void callback_file_new_vampire_configuration(Fl_Widget* _w, void* _v) {
 	widgets->add(WIDGET_BUTTON_PICK_FOLDER, new Fl_Button{ gappy, 2 * distance, 200 - 2 * gappy, button_height, "folder" });
 	widgets->add(WIDGET_BUTTON_PICK_ATOMS_FILE, new Fl_Button{ gappy, 2 * distance, 200 - 2 * gappy, button_height, "atoms file" });
 	widgets->add(WIDGET_BUTTON_PICK_SPINS_FILE, new Fl_Button{ gappy, 3 * distance, 200 - 2 * gappy, button_height, "spins file" });
-	widgets->add(WIDGET_BUTTON_CONFIRM, new Fl_Button{ gappy, 4 * distance, 200, button_height, "confirm" });
+	widgets->add(WIDGET_BUTTON_CONFIRM, new Fl_Button{ gappy, 4 * distance, 200 - 2 * gappy, button_height, "confirm" });
 
 		choice_window->add((*widgets)[WIDGET_CHOICE_BUTTON]);
 		choice_window->add((*widgets)[WIDGET_BUTTON_PICK_FOLDER]);
@@ -107,23 +204,25 @@ void callback_file_new_vampire_configuration(Fl_Widget* _w, void* _v) {
 			choice_button->add("files", 0, choice_callback_file, fulldata, 0);
 
 		auto* button = static_cast<Fl_Button*>((*widgets)[WIDGET_BUTTON_PICK_FOLDER]);
+			button->callback(callback_choice_folder_new, fulldata);
 			button->hide();
 			// TODO: все кнопкам здесь коллбеки
 			
 		button = static_cast<Fl_Button*>((*widgets)[WIDGET_BUTTON_PICK_ATOMS_FILE]);
+			button->callback(callback_choice_atoms_new, fulldata);
 			button->hide();
 			
 		button = static_cast<Fl_Button*>((*widgets)[WIDGET_BUTTON_PICK_SPINS_FILE]);
+			button->callback(callback_choice_spins_new, fulldata);
 			button->hide();
 			
 		button = static_cast<Fl_Button*>((*widgets)[WIDGET_BUTTON_CONFIRM]);
+			button->callback(callback_confirm, fulldata);
 			button->hide();
 
 
 	choice_window->end();
 	choice_window->show();
-
-
 
 	// местный widgetlist стоит сюда тоже запихнуть =)
 
@@ -137,9 +236,36 @@ void callback_file_new_vampire_configuration(Fl_Widget* _w, void* _v) {
 		// а здесь вызвать его деструктор
 		}, (void*)(fulldata) ); // вызывается при попытке закрыть окно
 
-	
 
 	// TODO: ещё ничего не готово
+}
+
+void callback_confirm(Fl_Widget* _w, void* _v) {
+
+	Windata* wd = static_cast<Windata*>(_v);
+
+	if ((wd->data->settings->path_to_folder != PATH_PLUG) 
+		||
+		(wd->data->settings->path_to_atoms_file != PATH_PLUG && wd->data->settings->path_to_spins_file != PATH_PLUG)
+		||
+		(wd->data->settings->path_to_sconfiguration_file != PATH_PLUG))
+		wd->data->settings->ready_to_visualization = true;
+
+	log("\t Configuration", wd->data->log, true);
+	
+
+	Data* d = wd->data;
+	Fl_Menu_* mw = static_cast<Fl_Menu_Bar*>((*d->widgetlist)[WIDGET_MAIN_MENU]); 
+	mw->value(0); // обнуление
+	const Fl_Menu_Item* run_button = mw->mvalue()->next(4); //получаем Run (next пропускает подменю)
+	run_button->active();
+	mw->window()->redraw();
+
+	log("\t Deleting choice_window", wd->data->log, true);
+		delete wd->window;
+		delete wd->widgets;
+		delete wd;
+
 }
 
 Settings::Settings() {
@@ -155,6 +281,8 @@ Settings::Settings() {
 	this->path_to_sconfiguration_file = PATH_PLUG;
 	this->path_to_spins_file = PATH_PLUG;
 	this->path_to_atoms_file = PATH_PLUG;
+
+	this->ready_to_visualization = false;
 }
 
 Settings::Settings(int argc, char** argv) {
@@ -170,6 +298,8 @@ Settings::Settings(int argc, char** argv) {
 	this->path_to_sconfiguration_file = PATH_PLUG;
 	this->path_to_spins_file = PATH_PLUG;
 	this->path_to_atoms_file = PATH_PLUG;
+
+	this->ready_to_visualization = false;
 }
 
 Settings::~Settings() {
@@ -201,6 +331,15 @@ bool create_main_menu(Data* data) {
 		menu_items[16] = { "Help", 0, 0, 0, 0 };
 
 		menu->menu(menu_items);
+
+		Fl_Menu_* men = menu;
+		auto button = men->mvalue()->next(4);
+		std::cout << button->label();
+		std::cout << button->active();
+		button->label();
+		std::cout << button->flags;
+
+		menu->redraw();
 
 		return true;
 	}

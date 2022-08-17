@@ -40,6 +40,8 @@
 			int height; // высотка окна
 			int gap; // gap, который будет отделять glut окно от границ обычного
 
+			bool ready_to_visualization;
+
 			std::string path_to_folder;
 
 			std::string path_to_sconfiguration_file;
@@ -58,9 +60,14 @@
 		friend bool create_main_menu(Data* data);
 			friend void callback_file_new_sconfiguration(Fl_Widget* _w, void*);
 			friend void callback_file_new_vampire_configuration(Fl_Widget* _w, void*);
+			
+			friend void callback_confirm(Fl_Widget* _w, void* _v);
 
 		friend void choice_callback_folder(Fl_Widget* _w, void*);
+			friend void callback_choice_folder_new(Fl_Widget* _w, void*);
 		friend void choice_callback_file(Fl_Widget* _w, void*);
+			friend void callback_choice_atoms_new(Fl_Widget* _w, void*);
+			friend void callback_choice_spins_new(Fl_Widget* _w, void*);
 
 		friend bool windowing(Data* data);
 	};
