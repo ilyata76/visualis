@@ -15,8 +15,6 @@
 
 #include "source/fltk/window.hpp"
 
-#define MY_APPLICATION_HPP
-
 int main(int argc, char** argv) {
 
 	Settings* settings = new Settings{ argc, argv };

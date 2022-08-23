@@ -33,7 +33,11 @@ MainWindow::MainWindow(int x, int y, int width, int height, const char* label, S
 									this->main_menu->w(), this->h() - this->main_menu->h()
 	};
 
-	fl_set_object_boxtype(this->main_menu, FL_FLAT_BOX);
+	this->main_menu->box(FL_FLAT_BOX);
+	
+	this->main_menu->color(FL_GREEN); // TODO: настроить
+	this->main_menu->down_color(FL_BLUE); // а то токсично
+	this->main_menu->textcolor(FL_BLACK); //
 
 	this->resizable(this->resizable_group); /*задали изменяемую область resble, не задевающую меню*/
 
@@ -117,7 +121,9 @@ VampireConfigWindow::VampireConfigWindow(int x, int y, int width, int height, co
 		this->button_spins->callback(this->callbackNewSpinsFileVampireConfigurationButton, this);
 	this->button_confirm = new Fl_Button{ gappy, 4 * distance, 200 - 2 * gappy, button_height, "confirm" };
 		this->button_confirm->hide();
-		this->button_confirm->callback(this->callbackConfirmButton, this);
+
+		this->button_confirm->callback(this->callbackConfirmButton, 
+					new std::pair<MainWindow*, VampireConfigWindow*>{ main_window, this });
 
 }
 
@@ -161,7 +167,6 @@ void VampireConfigWindow::callbackNewFolderVampireConfigurationButton(Fl_Widget*
 
 	window->button_confirm->show();
 
-	// TODO
 }
 
 void VampireConfigWindow::callbackNewFileVampireConfigurationChoice(Fl_Widget* _w, void* _v) {
@@ -222,9 +227,18 @@ void VampireConfigWindow::callbackNewSpinsFileVampireConfigurationButton(Fl_Widg
 }
 
 void VampireConfigWindow::callbackConfirmButton(Fl_Widget* _w, void* _v) {
-	VampireConfigWindow* window = static_cast<VampireConfigWindow*>(_v);
-	
-	// TODO
+	auto windows_pair = static_cast<std::pair<MainWindow*, VampireConfigWindow*>*>(_v);
 
-	window->~VampireConfigWindow();
+	MainWindow* main_window = static_cast<MainWindow*>(windows_pair->first);
+	VampireConfigWindow* vamp_window = static_cast<VampireConfigWindow*>(windows_pair->second);
+	
+	auto run_button = const_cast<Fl_Menu_Item*>(main_window->main_menu->find_item("Run"));
+		run_button->activate();
+
+	main_window->main_menu->update();
+	main_window->main_menu->redraw();
+
+	vamp_window->~VampireConfigWindow();
+
+	delete windows_pair;
 }
