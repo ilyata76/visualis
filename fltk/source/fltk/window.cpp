@@ -1,5 +1,15 @@
 #include "window.hpp"
 
+#include <config.h>
+#include <FL/Fl.H>
+#include <FL/Fl_Window.H>
+#include <FL/Fl_Hor_Slider.H>
+#include <FL/Fl_Toggle_Button.H>
+#include <FL/math.h>
+#include <FL/gl.h>
+#include <FL/glut.H>
+#include <FL/Fl_Gl_Window.H>
+
 MainWindow::MainWindow(int x, int y, int width, int height, const char* label, Settings* settings) : Fl_Window(x, y, width, height, label) {
 	this->settings = settings;
 	
@@ -23,7 +33,7 @@ MainWindow::MainWindow(int x, int y, int width, int height, const char* label, S
 	this->menu_items[12] = { "Settings", FL_CTRL + 's', 0, 0, 0 };
 	this->menu_items[13] = { "View", 0, 0, 0, 0 };
 	this->menu_items[14] = { "Logging", 0, 0, 0, 0 };
-	this->menu_items[15] = { "Run", 0, 0, 0, FL_MENU_INACTIVE };
+	this->menu_items[15] = { "Run", 0, this->callbackRun, this, FL_MENU_INACTIVE };
 	this->menu_items[16] = { "Help", 0, 0, 0, 0 };
 	this->menu_items[17] = { };
 	
@@ -59,6 +69,11 @@ bool windowing(Settings* settings) {
 	
 	main_window->show(settings->argc, settings->argv);
 
+
+	Fl_Glut_Window* glut_window = new Fl_Glut_Window{ 100, 100, 100, 100, "glut"};
+
+	glut_window->show(settings->argc, settings->argv);
+
 	Fl::scheme("gtk+");
 	Fl::run();
 
@@ -91,9 +106,18 @@ void MainWindow::callbackNewSconfiguration(Fl_Widget* _w, void* _v) {
 																												break;
 		default:																								break;
 	};
+
+	if (main_window->settings->path_to_sconfiguration_file != PATH_PLUG) {
+
+		auto run_button = const_cast<Fl_Menu_Item*>(main_window->main_menu->find_item("Run")); //
+							run_button->activate();
+
+		main_window->main_menu->update();
+		main_window->main_menu->redraw();
+
+		main_window->settings->ready_to_visualization = true; // TODO: нормальная проверка на файл
+	}
 	
-	if (main_window->settings->path_to_sconfiguration_file != PATH_PLUG) 
-		main_window->settings->ready_to_visualization = true;
 
 	delete chooser;
 }
@@ -112,6 +136,16 @@ void MainWindow::callbackNewVampireConfiguration(Fl_Widget* _w, void* _v) {
 
 	vamp_window->show();
 	vamp_window->callback([](Fl_Widget* _w, void* _v) { delete static_cast<VampireConfigWindow*>(_w); });
+}
+
+void MainWindow::callbackRun(Fl_Widget* _w, void* _v) {
+	MainWindow* main_window = static_cast<MainWindow*>(_v);
+
+	if (main_window->settings->ready_to_visualization) {
+		auto x = sconfiguration_parsing(main_window->settings->path_to_sconfiguration_file);
+		std::cout << x.size();
+	}
+
 }
 
 VampireConfigWindow::VampireConfigWindow(int x, int y, int width, int height, const char* label, MainWindow* main_window) : Fl_Window(x, y, width, height, label) {
@@ -136,7 +170,7 @@ VampireConfigWindow::VampireConfigWindow(int x, int y, int width, int height, co
 	this->text_choice = new Fl_Text_Display{ gappy + 200, gappy, 200 - 2 * gappy, static_cast<int>(button_height + 2) };
 	this->buffer_choice = new Fl_Text_Buffer{}; this->buffer_choice->text("Select folder or each file separately");
 		this->text_choice->buffer(this->buffer_choice);
-		this->text_choice->scrollbar_size(5); // in pixels
+		this->text_choice->scrollbar_size(7); // in pixels
 		this->text_choice->box(FL_FLAT_BOX);
 		this->text_choice->color(FL_MY_BACKGROUND);
 		this->text_choice->textcolor(FL_MY_TEXT);
@@ -155,7 +189,7 @@ VampireConfigWindow::VampireConfigWindow(int x, int y, int width, int height, co
 	this->text_folder = new Fl_Text_Display{ gappy + 200, 2 * distance, 200 - 2 * gappy, static_cast<int>(button_height + 2) };
 	this->buffer_folder = new Fl_Text_Buffer{}; this->buffer_folder->text("select folder");
 		this->text_folder->buffer(this->buffer_folder);
-		this->text_folder->scrollbar_size(5); // in pixels
+		this->text_folder->scrollbar_size(7); // in pixels
 		this->text_folder->box(FL_FLAT_BOX);
 		this->text_folder->color(FL_MY_BACKGROUND);
 		this->text_folder->textcolor(FL_MY_TEXT);
@@ -176,7 +210,7 @@ VampireConfigWindow::VampireConfigWindow(int x, int y, int width, int height, co
 	this->text_atoms = new Fl_Text_Display{ gappy + 200, 2 * distance,  200 - 2 * gappy, static_cast<int>(button_height + 2) };
 	this->buffer_atoms = new Fl_Text_Buffer{}; this->buffer_atoms->text("select atoms file");
 		this->text_atoms->buffer(this->buffer_atoms);
-		this->text_atoms->scrollbar_size(5);
+		this->text_atoms->scrollbar_size(7);
 		this->text_atoms->box(FL_FLAT_BOX);
 		this->text_atoms->color(FL_MY_BACKGROUND);
 		this->text_atoms->textcolor(FL_MY_TEXT);
@@ -198,7 +232,7 @@ VampireConfigWindow::VampireConfigWindow(int x, int y, int width, int height, co
 	this->text_spins = new Fl_Text_Display{ gappy + 200, 3 * distance,  200 - 2 * gappy, static_cast<int>(button_height + 2) };
 	this->buffer_spins = new Fl_Text_Buffer{}; this->buffer_spins->text("select spins file");
 		this->text_spins->buffer(this->buffer_spins);
-		this->text_spins->scrollbar_size(5);
+		this->text_spins->scrollbar_size(7);
 		this->text_spins->box(FL_FLAT_BOX);
 		this->text_spins->color(FL_MY_BACKGROUND);
 		this->text_spins->textcolor(FL_MY_TEXT);

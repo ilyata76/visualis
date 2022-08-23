@@ -26,6 +26,9 @@
 
 	#include "source/settings/settings.hpp"
 
+	#include "source/vampire5/parser-converter.hpp"
+	#include "source/vertex-shape/vertex.hpp"
+
 	const auto FL_MY_BACKGROUND = fl_rgb_color(45, 45, 48);
 	const auto FL_MY_TEXT = fl_rgb_color(230, 244, 255);
 	const auto FL_MY_FOCUS = fl_rgb_color(133, 180, 255);
@@ -48,6 +51,8 @@
 		protected:
 			static void callbackNewSconfiguration(Fl_Widget* _w, void*);
 			static void callbackNewVampireConfiguration(Fl_Widget* _w, void*);
+			
+			static void callbackRun(Fl_Widget* _w, void*);
 
 			friend class VampireConfigWindow;
 

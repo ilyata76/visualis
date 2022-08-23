@@ -17,12 +17,23 @@ set (HEADERS_VISUALIS_GUI
     source/fltk/application.hpp
     source/fltk/window.hpp
     source/settings/settings.hpp
+    source/helpful/global_defines.hpp
+    source/helpful/useful_functions.hpp
+    source/helpful/useful_classes.hpp
+    source/color/RGB.hpp
+    source/vertex-shape/point.hpp
+    source/vertex-shape/spin.hpp
+    source/vertex-shape/vertex.hpp
 )
 set (SOURCES_VISUALIS_GUI
     source/fltk/widgetlist.cpp
     source/fltk/application.cpp
     source/fltk/window.cpp
     source/settings/settings.cpp
+    source/helpful/useful_functions.cpp
+    source/helpful/useful_classes.cpp
+    source/color/RGB.cpp
+    source/vertex-shape/vertex.cpp
 )
 set (RESOURCES_VISUALIS_GUI)
 
@@ -53,4 +64,4 @@ target_include_directories( ${VISUALIS_GUI} PUBLIC ${CMAKE_CURRENT_LIST_DIR} ) #
 # ----------- | LINKING LIBRARIES | ----------- 
 
 target_link_libraries(${VISUALIS_GUI} exceptio)
-target_link_libraries(${VISUALIS_GUI} fltk ${FLTK_PLATFORM_DEPENDENT_LIBS})
+target_link_libraries(${VISUALIS_GUI} fltk ${FLTK_PLATFORM_DEPENDENT_LIBS} ${OPENGL_LIBRARIES} fltk_gl ${OPENGL_LIBRARIES} )
