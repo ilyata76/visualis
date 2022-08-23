@@ -63,6 +63,7 @@
 
 			friend class MainWindow;
 			friend class VampireConfigWindow;
+			friend class GlutWindow;
 			friend bool windowing(Settings* settings);
 	};
 

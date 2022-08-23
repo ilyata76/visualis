@@ -107,14 +107,9 @@
 	};
 
 	class GlutWindow : public Fl_Glut_Window {
-
+		protected:
 			Settings* settings;
-
-			void draw() {
-				glColor3f(1, 0, 0);
-				glutSolidCone(0.1, 100, 10, 10);
-			};
-
+			//void draw(); draw ломает все глутовские приколюхи с коллбеками
 		public:
 			GlutWindow(int x, int y, int width, int height, const char* label, MainWindow*);
 	};

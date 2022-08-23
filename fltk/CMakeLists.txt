@@ -24,6 +24,7 @@ set (HEADERS_VISUALIS_GUI
     source/vertex-shape/point.hpp
     source/vertex-shape/spin.hpp
     source/vertex-shape/vertex.hpp
+    source/vertex-shape/shape.hpp
 )
 set (SOURCES_VISUALIS_GUI
     source/fltk/widgetlist.cpp
@@ -34,6 +35,7 @@ set (SOURCES_VISUALIS_GUI
     source/helpful/useful_classes.cpp
     source/color/RGB.cpp
     source/vertex-shape/vertex.cpp
+    source/vertex-shape/shape.cpp
 )
 set (RESOURCES_VISUALIS_GUI)
 

@@ -4,7 +4,7 @@
 #ifndef SHAPE_HPP
 #define SHAPE_HPP
 
-	#include "../libraries/freeglut/include/GL/freeglut.h"
+	#include <FL/glut.H>
 	#include "./vertex.hpp"
 	#include "../color/RGB.hpp"
 
