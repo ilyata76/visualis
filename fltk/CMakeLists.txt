@@ -15,12 +15,14 @@ set (ENTRYPOINT_VISUALIS_GUI
 set (HEADERS_VISUALIS_GUI
     source/fltk/widgetlist.hpp
     source/fltk/application.hpp
-
+    source/fltk/window.hpp
+    source/settings/settings.hpp
 )
 set (SOURCES_VISUALIS_GUI
     source/fltk/widgetlist.cpp
     source/fltk/application.cpp
-
+    source/fltk/window.cpp
+    source/settings/settings.cpp
 )
 set (RESOURCES_VISUALIS_GUI)
 

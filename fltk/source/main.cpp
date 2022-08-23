@@ -13,13 +13,17 @@
 #include <source/libraries/exceptio/src/assert_3rd.hpp>
 #include <source/libraries/exceptio/src/exceptio.hpp>
 
+#include "source/fltk/window.hpp"
+
+#define MY_APPLICATION_HPP
+
 int main(int argc, char** argv) {
 
-	Data* data = new Data{ new std::list<std::string>, new Settings{argc, argv} };
+	Settings* settings = new Settings{ argc, argv };
 
-	windowing(data);
+	windowing(settings);
 	
-	delete data; // деструктор сам удалит лог и stg
+	//delete settings;
 
 	return 0;
 }
