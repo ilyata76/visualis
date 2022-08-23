@@ -34,13 +34,15 @@ MainWindow::MainWindow(int x, int y, int width, int height, const char* label, S
 	};
 
 	this->main_menu->box(FL_FLAT_BOX);
-	
-	this->main_menu->color(FL_GREEN); // TODO: настроить
-	this->main_menu->down_color(FL_BLUE); // а то токсично
-	this->main_menu->textcolor(FL_BLACK); //
+	this->main_menu->down_box(FL_FLAT_BOX);
+
+	this->main_menu->color(FL_MY_BACKGROUND); // TODO: настроить
+	this->main_menu->down_color(FL_MY_FOCUS); // а то токсично
+	this->main_menu->textcolor(FL_MY_TEXT); //
 
 	this->resizable(this->resizable_group); /*задали изменяемую область resble, не задевающую меню*/
 
+	this->color(FL_MY_BACKGROUND);
 }
 
 MainWindow::~MainWindow() {
@@ -57,6 +59,7 @@ bool windowing(Settings* settings) {
 	
 	main_window->show(settings->argc, settings->argv);
 
+	Fl::scheme("gtk+");
 	Fl::run();
 
 	delete main_window;
@@ -103,6 +106,9 @@ void MainWindow::callbackNewVampireConfiguration(Fl_Widget* _w, void* _v) {
 	VampireConfigWindow* vamp_window = new VampireConfigWindow{ 100, 100, 400, 200, "choice_window", main_window};
 
 	vamp_window->color(FL_MY_BACKGROUND);
+	vamp_window->color2(FL_BLACK);
+	vamp_window->labelcolor(FL_BLACK);
+	vamp_window->selection_color(FL_BLACK);
 
 	vamp_window->show();
 	vamp_window->callback([](Fl_Widget* _w, void* _v) { delete static_cast<VampireConfigWindow*>(_w); });
@@ -118,11 +124,13 @@ VampireConfigWindow::VampireConfigWindow(int x, int y, int width, int height, co
 	this->main_choice = new Fl_Choice { gappy, gappy, 200 - 2 * gappy, button_height, "CHOICE" };
 		this->main_choice->add("folder", 0, this->callbackNewFolderVampireConfigurationChoice, this, 0);
 		this->main_choice->add("files", 0, this->callbackNewFileVampireConfigurationChoice, this, 0);
-		this->main_choice->labeltype(FL_FREE_LABELTYPE);
-		this->main_choice->box(FL_NO_BOX);
-		this->main_choice->color(FL_RED);
-		this->main_choice->down_color(FL_RED);
-		this->main_choice->labelcolor(FL_RED);
+		this->main_choice->labeltype(FL_FREE_LABELTYPE); // no label
+		this->main_choice->box(_FL_OFLAT_BOX);
+		this->main_choice->color(FL_MY_TEXT);
+		this->main_choice->down_color(FL_MY_FOCUS);
+		this->main_choice->selection_color(FL_MY_FOCUS);
+		this->main_choice->color2(FL_MY_FOCUS);
+		this->main_choice->textcolor(FL_BLACK);
 		this->main_choice->down_box(FL_FLAT_BOX);
 
 	this->text_choice = new Fl_Text_Display{ gappy + 200, gappy, 200 - 2 * gappy, static_cast<int>(button_height + 2) };
@@ -131,7 +139,7 @@ VampireConfigWindow::VampireConfigWindow(int x, int y, int width, int height, co
 		this->text_choice->scrollbar_size(5); // in pixels
 		this->text_choice->box(FL_FLAT_BOX);
 		this->text_choice->color(FL_MY_BACKGROUND);
-		this->text_choice->textcolor(FL_WHITE);
+		this->text_choice->textcolor(FL_MY_TEXT);
 		this->text_choice->scrollbar_align(FL_ALIGN_BOTTOM);
 		this->text_choice->selection_color(FL_RED);
 
@@ -140,9 +148,9 @@ VampireConfigWindow::VampireConfigWindow(int x, int y, int width, int height, co
 		this->button_folder->callback(this->callbackNewFolderVampireConfigurationButton, this);
 		this->button_folder->box(FL_ROUNDED_BOX);
 		this->button_folder->down_box(FL_ROUNDED_BOX);
-		this->button_folder->color(FL_WHITE);
+		this->button_folder->color(FL_MY_TEXT);
 		this->button_folder->labelcolor(FL_MY_BACKGROUND);
-		this->button_folder->selection_color(FL_RED);
+		this->button_folder->selection_color(FL_MY_FOCUS);
 
 	this->text_folder = new Fl_Text_Display{ gappy + 200, 2 * distance, 200 - 2 * gappy, static_cast<int>(button_height + 2) };
 	this->buffer_folder = new Fl_Text_Buffer{}; this->buffer_folder->text("select folder");
@@ -150,9 +158,9 @@ VampireConfigWindow::VampireConfigWindow(int x, int y, int width, int height, co
 		this->text_folder->scrollbar_size(5); // in pixels
 		this->text_folder->box(FL_FLAT_BOX);
 		this->text_folder->color(FL_MY_BACKGROUND);
-		this->text_folder->textcolor(FL_WHITE);
+		this->text_folder->textcolor(FL_MY_TEXT);
 		this->text_folder->scrollbar_align(FL_ALIGN_BOTTOM);
-		this->text_folder->selection_color(FL_RED);
+		this->text_folder->selection_color(FL_MY_FOCUS);
 		this->text_folder->hide();
 
 	this->button_atoms = new Fl_Button{ gappy, 2 * distance, 200 - 2 * gappy, button_height, "atoms file" };
@@ -161,9 +169,9 @@ VampireConfigWindow::VampireConfigWindow(int x, int y, int width, int height, co
 		this->button_atoms->color(FL_MY_BACKGROUND);
 		this->button_atoms->box(FL_ROUNDED_BOX);
 		this->button_atoms->down_box(FL_ROUNDED_BOX);
-		this->button_atoms->color(FL_WHITE);
+		this->button_atoms->color(FL_MY_TEXT);
 		this->button_atoms->labelcolor(FL_MY_BACKGROUND);
-		this->button_atoms->selection_color(FL_RED);
+		this->button_atoms->selection_color(FL_MY_FOCUS);
 		
 	this->text_atoms = new Fl_Text_Display{ gappy + 200, 2 * distance,  200 - 2 * gappy, static_cast<int>(button_height + 2) };
 	this->buffer_atoms = new Fl_Text_Buffer{}; this->buffer_atoms->text("select atoms file");
@@ -171,9 +179,9 @@ VampireConfigWindow::VampireConfigWindow(int x, int y, int width, int height, co
 		this->text_atoms->scrollbar_size(5);
 		this->text_atoms->box(FL_FLAT_BOX);
 		this->text_atoms->color(FL_MY_BACKGROUND);
-		this->text_atoms->textcolor(FL_WHITE);
+		this->text_atoms->textcolor(FL_MY_TEXT);
 		this->text_atoms->scrollbar_align(FL_ALIGN_BOTTOM);
-		this->text_atoms->selection_color(FL_RED);
+		this->text_atoms->selection_color(FL_MY_FOCUS);
 		this->text_atoms->hide();
 
 
@@ -183,9 +191,9 @@ VampireConfigWindow::VampireConfigWindow(int x, int y, int width, int height, co
 		this->button_spins->color(FL_MY_BACKGROUND);
 		this->button_spins->box(FL_ROUNDED_BOX);
 		this->button_spins->down_box(FL_ROUNDED_BOX);
-		this->button_spins->color(FL_WHITE);
+		this->button_spins->color(FL_MY_TEXT);
 		this->button_spins->labelcolor(FL_MY_BACKGROUND);
-		this->button_spins->selection_color(FL_RED);
+		this->button_spins->selection_color(FL_MY_FOCUS);
 
 	this->text_spins = new Fl_Text_Display{ gappy + 200, 3 * distance,  200 - 2 * gappy, static_cast<int>(button_height + 2) };
 	this->buffer_spins = new Fl_Text_Buffer{}; this->buffer_spins->text("select spins file");
@@ -193,9 +201,9 @@ VampireConfigWindow::VampireConfigWindow(int x, int y, int width, int height, co
 		this->text_spins->scrollbar_size(5);
 		this->text_spins->box(FL_FLAT_BOX);
 		this->text_spins->color(FL_MY_BACKGROUND);
-		this->text_spins->textcolor(FL_WHITE);
+		this->text_spins->textcolor(FL_MY_TEXT);
 		this->text_spins->scrollbar_align(FL_ALIGN_BOTTOM);
-		this->text_spins->selection_color(FL_RED);
+		this->text_spins->selection_color(FL_MY_FOCUS);
 		this->text_spins->hide();
 
 	this->button_confirm = new Fl_Button{ gappy, 4 * distance, 200 - 2 * gappy, button_height, "confirm" };
@@ -205,9 +213,9 @@ VampireConfigWindow::VampireConfigWindow(int x, int y, int width, int height, co
 		this->button_confirm->color(FL_MY_BACKGROUND);
 		this->button_confirm->box(FL_ROUNDED_BOX);
 		this->button_confirm->down_box(FL_ROUNDED_BOX);
-		this->button_confirm->color(FL_WHITE);
+		this->button_confirm->color(FL_MY_TEXT);
 		this->button_confirm->labelcolor(FL_MY_BACKGROUND);
-		this->button_confirm->selection_color(FL_RED);
+		this->button_confirm->selection_color(FL_MY_FOCUS);
 }
 
 VampireConfigWindow::~VampireConfigWindow() {

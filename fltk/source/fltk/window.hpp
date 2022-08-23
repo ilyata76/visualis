@@ -27,6 +27,8 @@
 	#include "source/settings/settings.hpp"
 
 	const auto FL_MY_BACKGROUND = fl_rgb_color(45, 45, 48);
+	const auto FL_MY_TEXT = fl_rgb_color(230, 244, 255);
+	const auto FL_MY_FOCUS = fl_rgb_color(133, 180, 255);
 
 	class MainWindow : public Fl_Window {
 		protected:
