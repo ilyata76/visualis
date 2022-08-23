@@ -24,6 +24,16 @@
 	#include <string>
 	#include <list>
 
+	#include <config.h>
+	#include <FL/Fl.H>
+	#include <FL/Fl_Window.H>
+	#include <FL/Fl_Hor_Slider.H>
+	#include <FL/Fl_Toggle_Button.H>
+	#include <FL/math.h>
+	#include <FL/gl.h>
+	#include <FL/glut.H>
+	#include <FL/Fl_Gl_Window.H>
+
 	#include "source/settings/settings.hpp"
 
 	#include "source/vampire5/parser-converter.hpp"
@@ -55,6 +65,7 @@
 			static void callbackRun(Fl_Widget* _w, void*);
 
 			friend class VampireConfigWindow;
+			friend class GlutWindow;
 
 	};
 
@@ -93,6 +104,19 @@
 				static void callbackNewSpinsFileVampireConfigurationButton(Fl_Widget* _w, void* _v);
 
 			static void callbackConfirmButton(Fl_Widget* _w, void* _v);
+	};
+
+	class GlutWindow : public Fl_Glut_Window {
+
+			Settings* settings;
+
+			void draw() {
+				glColor3f(1, 0, 0);
+				glutSolidCone(0.1, 100, 10, 10);
+			};
+
+		public:
+			GlutWindow(int x, int y, int width, int height, const char* label, MainWindow*);
 	};
 
 #endif

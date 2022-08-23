@@ -1,14 +1,6 @@
 #include "window.hpp"
 
-#include <config.h>
-#include <FL/Fl.H>
-#include <FL/Fl_Window.H>
-#include <FL/Fl_Hor_Slider.H>
-#include <FL/Fl_Toggle_Button.H>
-#include <FL/math.h>
-#include <FL/gl.h>
-#include <FL/glut.H>
-#include <FL/Fl_Gl_Window.H>
+
 
 MainWindow::MainWindow(int x, int y, int width, int height, const char* label, Settings* settings) : Fl_Window(x, y, width, height, label) {
 	this->settings = settings;
@@ -67,17 +59,29 @@ bool windowing(Settings* settings) {
 
 	MainWindow* main_window = new MainWindow{ 100, 100, settings->width, settings->height, "main_window", settings };
 	
-	main_window->show(settings->argc, settings->argv);
+	GlutWindow* glut_window = new GlutWindow{ main_window->settings->gap,
+		main_window->main_menu->h(),
+		main_window->settings->width - 2 * main_window->settings->gap,
+		main_window->settings->height - main_window->main_menu->h() - main_window->settings->gap, "glut", main_window};
 
 
-	Fl_Glut_Window* glut_window = new Fl_Glut_Window{ 100, 100, 100, 100, "glut"};
 
-	glut_window->show(settings->argc, settings->argv);
+	glut_window->end();
+
+	
+	main_window->show(main_window->settings->argc, main_window->settings->argv);
+
+
+	
+
+	//glut_window->show(settings->argc, settings->argv);
 
 	Fl::scheme("gtk+");
 	Fl::run();
 
+	delete glut_window;
 	delete main_window;
+
 
 	return true;
 }
@@ -389,4 +393,8 @@ void VampireConfigWindow::callbackConfirmButton(Fl_Widget* _w, void* _v) {
 	vamp_window->~VampireConfigWindow();
 
 	delete windows_pair;
+}
+
+GlutWindow::GlutWindow(int x, int y, int width, int height, const char* label, MainWindow* _mw) : Fl_Glut_Window(x, y, width, height, label) {
+	this->settings = _mw->settings;
 }
