@@ -11,6 +11,9 @@
 	#include <FL/Fl_Group.H>
 	#include <FL/Fl_Box.H>
 
+	#include <FL/Fl_Text_Display.H>
+	#include <FL/Fl_Text_Buffer.H>
+
 	#include <FL/forms.H> // боксы
 
 	#include <FL/Fl_Native_File_Chooser.H>
@@ -22,6 +25,8 @@
 	#include <list>
 
 	#include "source/settings/settings.hpp"
+
+	const auto FL_MY_BACKGROUND = fl_rgb_color(45, 45, 48);
 
 	class MainWindow : public Fl_Window {
 		protected:
@@ -55,6 +60,18 @@
 			Fl_Button* button_atoms;
 			Fl_Button* button_spins;
 			Fl_Button* button_confirm;
+
+			Fl_Text_Display* text_folder;
+			Fl_Text_Buffer* buffer_folder;
+
+			Fl_Text_Display* text_atoms;
+			Fl_Text_Buffer* buffer_atoms;
+			
+			Fl_Text_Display* text_spins;
+			Fl_Text_Buffer* buffer_spins;
+
+			Fl_Text_Display* text_choice;
+			Fl_Text_Buffer* buffer_choice;
 
 		public:
 			VampireConfigWindow(int x, int y, int width, int height, const char* label, MainWindow*);
