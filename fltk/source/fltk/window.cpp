@@ -33,6 +33,8 @@ MainWindow::MainWindow(int x, int y, int width, int height, const char* label, S
 									this->main_menu->w(), this->h() - this->main_menu->h()
 	};
 
+	fl_set_object_boxtype(this->main_menu, FL_FLAT_BOX);
+
 	this->resizable(this->resizable_group); /*задали измен€емую область resble, не задевающую меню*/
 
 }
@@ -137,7 +139,29 @@ void VampireConfigWindow::callbackNewFolderVampireConfigurationChoice(Fl_Widget*
 }
 
 void VampireConfigWindow::callbackNewFolderVampireConfigurationButton(Fl_Widget* _w, void* _v) {
-	std::cout << "2\n";
+	VampireConfigWindow* window = static_cast<VampireConfigWindow*>(_v);
+
+	Fl_Native_File_Chooser* chooser = new Fl_Native_File_Chooser{ Fl_Native_File_Chooser::BROWSE_DIRECTORY };
+
+	chooser->title("Select the vampire-folder");
+	chooser->directory("/");
+
+	switch (chooser->show()) {
+		case 1:																									break;
+		case -1:																								break;
+		case 0:
+			window->settings->path_to_folder = chooser->filename();
+			window->settings->path_to_atoms_file = PATH_PLUG;
+			window->settings->path_to_spins_file = PATH_PLUG;
+			window->settings->path_to_sconfiguration_file = PATH_PLUG;											break;
+		default:																								break;
+	};
+	
+	delete chooser;
+
+	window->button_confirm->show();
+
+	// TODO
 }
 
 void VampireConfigWindow::callbackNewFileVampireConfigurationChoice(Fl_Widget* _w, void* _v) {
@@ -150,13 +174,57 @@ void VampireConfigWindow::callbackNewFileVampireConfigurationChoice(Fl_Widget* _
 }
 
 void VampireConfigWindow::callbackNewAtomsFileVampireConfigurationButton(Fl_Widget* _w, void* _v) {
-	std::cout << "4\n";
+	VampireConfigWindow* window = static_cast<VampireConfigWindow*>(_v);
+
+	Fl_Native_File_Chooser* chooser = new Fl_Native_File_Chooser{ Fl_Native_File_Chooser::BROWSE_FILE };
+
+	chooser->title("Select the vampire-folder");
+	chooser->directory("/");
+
+	switch (chooser->show()) {
+		case 1:																									break;
+		case -1:																								break;
+		case 0:
+			window->settings->path_to_folder = PATH_PLUG;
+			window->settings->path_to_atoms_file = chooser->filename();
+			window->settings->path_to_sconfiguration_file = PATH_PLUG;											break;
+		default:																								break;
+	};
+	
+	delete chooser;
+
+	if (window->settings->path_to_atoms_file != PATH_PLUG && window->settings->path_to_spins_file != PATH_PLUG)
+		window->button_confirm->show();
 }
 
 void VampireConfigWindow::callbackNewSpinsFileVampireConfigurationButton(Fl_Widget* _w, void* _v) {
-	std::cout << "5\n";
+	VampireConfigWindow* window = static_cast<VampireConfigWindow*>(_v);
+
+	Fl_Native_File_Chooser* chooser = new Fl_Native_File_Chooser{ Fl_Native_File_Chooser::BROWSE_FILE };
+
+	chooser->title("Select the vampire-folder");
+	chooser->directory("/");
+
+	switch (chooser->show()) {
+		case 1:																									break;
+		case -1:																								break;
+		case 0:
+			window->settings->path_to_folder = PATH_PLUG;
+			window->settings->path_to_spins_file = chooser->filename();
+			window->settings->path_to_sconfiguration_file = PATH_PLUG;											break;
+		default:																								break;
+	};
+	
+	delete chooser;
+
+	if (window->settings->path_to_atoms_file != PATH_PLUG && window->settings->path_to_spins_file != PATH_PLUG)
+		window->button_confirm->show();
 }
 
 void VampireConfigWindow::callbackConfirmButton(Fl_Widget* _w, void* _v) {
-	std::cout << "conf\n";
+	VampireConfigWindow* window = static_cast<VampireConfigWindow*>(_v);
+	
+	// TODO
+
+	window->~VampireConfigWindow();
 }

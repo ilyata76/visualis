@@ -61,7 +61,8 @@
 
 			~Settings() {};
 
-			friend struct MainWindow;
+			friend class MainWindow;
+			friend class VampireConfigWindow;
 			friend bool windowing(Settings* settings);
 	};
 
