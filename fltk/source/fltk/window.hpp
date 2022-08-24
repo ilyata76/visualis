@@ -23,7 +23,7 @@
 	#include <vector>
 	#include <string>
 	#include <list>
-
+ // TODO: прибраться
 	#include <config.h>
 	#include <FL/Fl.H>
 	#include <FL/Fl_Window.H>
@@ -46,6 +46,7 @@
 	class MainWindow : public Fl_Window {
 		protected:
 			Settings* settings;
+			// vector vertex
 
 			Fl_Menu_Item menu_items[100];
 			Fl_Menu_Bar* main_menu;
@@ -107,7 +108,13 @@
 	};
 
 	class GlutWindow : public Fl_Glut_Window {
+		// TODO: vector vertex
 		protected:
+			// TODO: popup через вот это
+			//auto popup = new Fl_Menu_Button{ 0, 0, glut_window->w(), glut_window->h(), "popup" };
+			//popup->type(Fl_Menu_Button::POPUP3);
+			//popup->menu(main_window->menu_items);
+			//glut_window->add(popup);
 			Settings* settings;
 			//void draw(); draw ломает все глутовские приколюхи с коллбеками
 		public:

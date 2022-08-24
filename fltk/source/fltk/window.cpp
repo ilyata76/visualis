@@ -1,9 +1,6 @@
 #include "window.hpp"
 
-void disp();
-void reshape(int, int) {
-	std::cout << "RESHape\n";
-}
+#include <FL/Fl_Menu_Button.H>
 
 MainWindow::MainWindow(int x, int y, int width, int height, const char* label, Settings* settings) : Fl_Window(x, y, width, height, label) {
 	this->settings = settings;
@@ -72,15 +69,19 @@ bool windowing(Settings* settings) {
 		std::cout << "abobus!!!\n"; 
 	};
 	glut_window->display = [] {std::cout << "abobus\n"; };
+	// TODO: disp resh ג מעהוכüםûי פאיכ 
 	glut_window->end();
+	glut_window->show(settings->argc, settings->argv);
 
-	main_window->resizable(glut_window);
+
+
+	//main_window->resizable(glut_window);
 	main_window->show(main_window->settings->argc, main_window->settings->argv);
 
 
 	
 
-	//glut_window->show(settings->argc, settings->argv);
+	//
 
 	Fl::scheme("gtk+");
 	Fl::run();
@@ -398,31 +399,6 @@ void VampireConfigWindow::callbackConfirmButton(Fl_Widget* _w, void* _v) {
 	vamp_window->~VampireConfigWindow();
 
 	delete windows_pair;
-}
-
-
-void disp() {
-	glClearColor(1, 0, 0, 0.0);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-	//glMatrixMode(GL_PROJECTION);
-	//glLoadIdentity();
-
-	//glOrtho(-100, +100, -100, +100, 0.0, 10);
-
-	//glColor3f(0.0, 0.0, 0.0);
-
-	//glMatrixMode(GL_MODELVIEW);
-	//glPushMatrix();
-	//glColor3f(0.0, 0.0, 0.0);
-	//glLoadIdentity();
-	//glRasterPos2i(0.0, 0);
-	//[](std::string text) {int len = text.length(); for (int i = 0; i < len; ++i) glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, text[i]); }("NOTHING TO DISPLAY");
-	//glPopMatrix();
-
-	//glFlush();
-	//glutSwapBuffers();
-
 }
 
 GlutWindow::GlutWindow(int x, int y, int width, int height, const char* label, MainWindow* _mw) : Fl_Glut_Window(x, y, width, height, label) {
